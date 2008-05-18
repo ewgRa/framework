@@ -52,6 +52,8 @@
 
 			if(isset($settings['tables']))
 				$this->setTables($settings['tables']);
+				
+			return $this;
 		}
 		
 		public function setConnector($connector)
