@@ -28,9 +28,9 @@
 		
 		public function initialize($yamlFile)
 		{
-			$settings = $this->loadCache($yamlFile);
+			$this->options = $this->loadCache($yamlFile);
 			
-			if(!$settings)
+			if(!$this->options)
 			{
 				$yamlSettings = YAML::load($yamlFile);
 	
@@ -39,15 +39,15 @@
 					$this->mergeYAMLSections
 				);
 				
-				$this->saveCache($settings, $yamlFile);
-			}
+				foreach($settings as $optionaAlias => $optionValue)
+				{
+					$this->setOption(
+						$optionaAlias,
+						$this->replaceVariables($optionValue)
+					);
+				}
 			
-			foreach($settings as $optionaAlias => $optionValue)
-			{
-				$this->setOption(
-					$optionaAlias,
-					$this->replaceVariables($optionValue)
-				);
+				$this->saveCache($yamlFile);
 			}
 			
 			return $this;
@@ -151,7 +151,7 @@
 			return $settings;			
 		}
 		
-		private function saveCache($settings, $yamlFile)
+		private function saveCache($yamlFile)
 		{
 			if(
 				$this->getCacheConnector()
@@ -159,7 +159,7 @@
 			)
 			{
 				$this->getCacheConnector()->
-					setData($settings, filemtime($yamlFile), $yamlFile, 'config');
+					setData($this->options, filemtime($yamlFile), $yamlFile, 'config');
 			}
 			
 			return $this;
