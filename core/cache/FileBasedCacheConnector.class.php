@@ -1,5 +1,4 @@
 <?php
-	//TODO: setActualTimeByFileMTime
 	class FileBasedCacheConnector
 	{
 		const OS_WIN = 'WIN';
