@@ -5,7 +5,7 @@
 
 		private $tables = array();
 		private $connector = null;
-		private $cacheConnector	= null;		
+		private $cacheRealization	= null;		
 		private $mergeYAMLSections = array();
 		
 		private static $instance = null;
@@ -109,24 +109,24 @@
 			return self::me()->getConnector()->fetchArray($dbResult);
 		}
 
-		public function setCacheConnector($connector)
+		public function setCacheRealization($realization)
 		{
-			$this->cacheConnector = $connector;
+			$this->cacheRealization = $realization;
 			return $this;
 		}
 		
-		public function getCacheConnector()
+		public function getCacheRealization()
 		{
-			return $this->cacheConnector;
+			return $this->cacheRealization;
 		}
 		
 		private function loadCache($yamlFile)
 		{
 			$settings = null;
 			
-			if($this->getCacheConnector())
+			if($this->getCacheRealization())
 			{
-				$settings = $this->getCacheConnector()->
+				$settings = $this->getCacheRealization()->
 					getData(
 						$yamlFile,
 						'yaml/database',
@@ -140,11 +140,11 @@
 		private function saveCache($yamlFile, $cacheData)
 		{
 			if(
-				$this->getCacheConnector()
-				&& $this->getCacheConnector()->isExpired()
+				$this->getCacheRealization()
+				&& $this->getCacheRealization()->isExpired()
 			)
 			{
-				$this->getCacheConnector()->
+				$this->getCacheRealization()->
 					setData($cacheData, filemtime($yamlFile), $yamlFile, 'yaml/database');
 			}
 			

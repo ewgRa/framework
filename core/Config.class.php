@@ -3,7 +3,7 @@
 	{
 		private $options = null;
 		private $mergeYAMLSections = array();
-		private $cacheConnector	= null;		
+		private $cacheRealization	= null;		
 		
 		private static $instance = null;
 		
@@ -15,15 +15,15 @@
 			return parent::getInstance(__CLASS__, self::$instance);
 		}
 		
-		public function setCacheConnector($connector)
+		public function setCacheRealization($realization)
 		{
-			$this->cacheConnector = $connector;
+			$this->cacheRealization = $realization;
 			return $this;
 		}
 		
-		public function getCacheConnector()
+		public function getCacheRealization()
 		{
-			return $this->cacheConnector;
+			return $this->cacheRealization;
 		}
 		
 		public function initialize($yamlFile)
@@ -138,9 +138,9 @@
 		{
 			$settings = null;
 			
-			if($this->getCacheConnector())
+			if($this->getCacheRealization())
 			{
-				$settings = $this->getCacheConnector()->
+				$settings = $this->getCacheRealization()->
 					getData(
 						$yamlFile,
 						'yaml/config',
@@ -154,11 +154,11 @@
 		private function saveCache($yamlFile)
 		{
 			if(
-				$this->getCacheConnector()
-				&& $this->getCacheConnector()->isExpired()
+				$this->getCacheRealization()
+				&& $this->getCacheRealization()->isExpired()
 			)
 			{
-				$this->getCacheConnector()->
+				$this->getCacheRealization()->
 					setData($this->options, filemtime($yamlFile), $yamlFile, 'yaml/config');
 			}
 			

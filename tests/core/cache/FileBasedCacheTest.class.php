@@ -5,7 +5,7 @@
 		
 		public $prefix = 'prefix';
 		
-		public $connector = null;
+		public $realization = null;
 		
 		function setUp()
 		{
@@ -13,8 +13,8 @@
 			
 			mkdir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData');
 			
-			$this->connector =
-				FileBasedCacheConnector::create()->setCacheDir($cacheDataDir);
+			$this->realization =
+				FileBasedCache::create()->setCacheDir($cacheDataDir);
 		}
 		
 		function tearDown()
@@ -26,16 +26,16 @@
 		{
 			$key = array( rand() );
 			
-			$this->connector->setData(
+			$this->realization->setData(
 				$this->cacheData,
-				time() + $this->connector->getDefaultLifeTime(),
+				time() + $this->realization->getDefaultLifeTime(),
 				$key,
 				$this->prefix
 			);
 			
 			$this->assertEqual(
 				$this->cacheData,
-				$this->connector->getData($key, $this->prefix)
+				$this->realization->getData($key, $this->prefix)
 			);
 		}
 
@@ -43,28 +43,28 @@
 		{
 			$key = array( rand() );
 			
-			$this->connector->setData(
+			$this->realization->setData(
 				$this->cacheData,
 				time() - 1,
 				$key,
 				$this->prefix
 			);
 			
-			$this->connector->getData($key, $this->prefix);
+			$this->realization->getData($key, $this->prefix);
 			
-			$this->assertTrue($this->connector->isExpired());
+			$this->assertTrue($this->realization->isExpired());
 		}
 		
 		function testSetAfterGet()
 		{
 			$key = array( rand() );
 			
-			$this->connector->getData($key, $this->prefix);
-			$this->connector->setData($this->cacheData);
+			$this->realization->getData($key, $this->prefix);
+			$this->realization->setData($this->cacheData);
 			
 			$this->assertEqual(
 				$this->cacheData,
-				$this->connector->getData($key, $this->prefix)
+				$this->realization->getData($key, $this->prefix)
 			);
 		}		
 	}

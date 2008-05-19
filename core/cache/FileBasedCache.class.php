@@ -1,5 +1,5 @@
 <?php
-	class FileBasedCacheConnector
+	class FileBasedCache
 	{
 		const OS_WIN = 'WIN';
 		

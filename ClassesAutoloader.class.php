@@ -7,7 +7,7 @@
 		
 		private $foundClasses 		= array();
 		private $searchDirectories	= array();
-		private $cacheConnector		= null;		
+		private $cacheRealization		= null;		
 		private static $instance = null;
 
 		/**
@@ -117,23 +117,23 @@
 			$this->foundClasses[$className] = $classFile;
 		}
 		
-		public function setCacheConnector($connector)
+		public function setCacheRealization($realization)
 		{
-			$this->cacheConnector = $connector;
+			$this->cacheRealization = $realization;
 			return $this;
 		}
 		
-		public function getCacheConnector()
+		public function getCacheRealization()
 		{
-			return $this->cacheConnector;
+			return $this->cacheRealization;
 		}
 		
 		public function loadCache()
 		{
-			if($this->getCacheConnector())
+			if($this->getCacheRealization())
 			{
 				$this->setFoundClasses(
-					$this->getCacheConnector()->getData(
+					$this->getCacheRealization()->getData(
 						$this->getSearchDirectories(),
 						'autoloader'
 					)
@@ -149,9 +149,9 @@
 		
 		private function saveCache()
 		{
-			if($this->getCacheConnector())
+			if($this->getCacheRealization())
 			{
-				$this->getCacheConnector()->setData(
+				$this->getCacheRealization()->setData(
 					$this->getFoundClasses(),
 					null,
 					$this->getSearchDirectories(),

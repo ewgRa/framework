@@ -8,9 +8,9 @@
 		
 		public function testLoad()
 		{
-			if(ClassesAutoloader::me()->getCacheConnector())
+			if(ClassesAutoloader::me()->getCacheRealization())
 			{
-				ClassesAutoloader::me()->getCacheConnector()->disable();
+				ClassesAutoloader::me()->getCacheRealization()->disable();
 			}
 			
 			$className = 'testLoadClass' . rand();
@@ -30,9 +30,9 @@
 			
 			ClassesAutoloader::me()->dropFound($className);
 
-			if(ClassesAutoloader::me()->getCacheConnector())
+			if(ClassesAutoloader::me()->getCacheRealization())
 			{
-				ClassesAutoloader::me()->getCacheConnector()->enable();
+				ClassesAutoloader::me()->getCacheRealization()->enable();
 			}
 		}
 	}

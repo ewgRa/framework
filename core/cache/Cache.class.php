@@ -1,7 +1,7 @@
 <?php
 	class Cache extends Singleton
 	{
-		private $connector = null;
+		private $realization = null;
 		
 		protected static $instance = null;
 
@@ -13,20 +13,20 @@
 			return parent::getInstance(__CLASS__, self::$instance);
 		}
 		
-		public function setConnector($connector)
+		public function setRealization($realization)
 		{
-			$this->connector = $connector;
+			$this->realization = $realization;
 			return $this;
 		}
 		
-		public function getConnector()
+		public function getRealization()
 		{
-			return $this->connector;
+			return $this->realization;
 		}
 		
 		public static function get($key, $prefix = null)
 		{
-			return self::me()->getConnector()->getData($key, $prefix);
+			return self::me()->getRealization()->getData($key, $prefix);
 		}
 		
 		public static function set(
@@ -34,12 +34,12 @@
 			$key = null, $prefix = null
 		)
 		{
-			return self::me()->getConnector()->setData($data, $lifeTillTime, $key, $prefix);
+			return self::me()->getRealization()->setData($data, $lifeTillTime, $key, $prefix);
 		}
 		
 		public static function setActual($time)
 		{
-			return self::me()->getConnector()->setActualTime($time);
+			return self::me()->getRealization()->setActualTime($time);
 		}		
 	}
 ?>

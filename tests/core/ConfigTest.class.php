@@ -120,8 +120,8 @@
 			
 			touch($this->thirdYamlFile,	time());
 			
-			MyTestConfig::me()->setCacheConnector(
-				FileBasedCacheConnector::create()->setCacheDir($this->cacheDataDir)
+			MyTestConfig::me()->setCacheRealization(
+				FileBasedCache::create()->setCacheDir($this->cacheDataDir)
 			);
 			
 			MyTestConfig::me()->
@@ -143,8 +143,8 @@
 			MyTestConfig::me()->setInstance(null);
 			
 			MyTestConfig::me()->
-				setCacheConnector(
-					FileBasedCacheConnector::create()->setCacheDir($this->cacheDataDir)
+				setCacheRealization(
+					FileBasedCache::create()->setCacheDir($this->cacheDataDir)
 				)->
 				setMergeYAMLSections(array('all', 'testSection'))->
 				initialize($this->thirdYamlFile);
@@ -170,8 +170,8 @@
 			
 			touch($this->thirdYamlFile, time());
 			
-			MyTestConfig::me()->setCacheConnector(
-				FileBasedCacheConnector::create()->setCacheDir($this->cacheDataDir)
+			MyTestConfig::me()->setCacheRealization(
+				FileBasedCache::create()->setCacheDir($this->cacheDataDir)
 			);
 			
 			MyTestConfig::me()->
@@ -187,8 +187,8 @@
 			MyTestConfig::me()->setInstance(null);
 			
 			MyTestConfig::me()->
-				setCacheConnector(
-					FileBasedCacheConnector::create()->setCacheDir($this->cacheDataDir)
+				setCacheRealization(
+					FileBasedCache::create()->setCacheDir($this->cacheDataDir)
 				)->
 				setMergeYAMLSections(array('all', 'testSection'))->
 				initialize($this->thirdYamlFile);
