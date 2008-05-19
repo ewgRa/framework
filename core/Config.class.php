@@ -143,7 +143,7 @@
 				$settings = $this->getCacheConnector()->
 					getData(
 						$yamlFile,
-						'config',
+						'yaml/config',
 						file_exists($yamlFile) ? filemtime($yamlFile) : null
 					);
 			}
@@ -159,7 +159,7 @@
 			)
 			{
 				$this->getCacheConnector()->
-					setData($this->options, filemtime($yamlFile), $yamlFile, 'config');
+					setData($this->options, filemtime($yamlFile), $yamlFile, 'yaml/config');
 			}
 			
 			return $this;
