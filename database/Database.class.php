@@ -42,6 +42,20 @@
 				$this->saveCache($yamlFile, $settings);				
 			}
 			
+			if(isset($settings['connector']))
+			{
+				$connector = null; 
+				
+				switch($settings['connector'])
+				{
+					case 'Mysql':
+						$connector = MysqlDatabaseConnector::create();
+					break;
+				}
+				
+				$this->setConnector($connector);
+			}
+			
 			if(isset($settings['host']))
 				$this->getConnector()->setHost($settings['host']);
 			
@@ -57,15 +71,15 @@
 			if(isset($settings['charset']))
 				$this->getConnector()->setCharset($settings['charset']);
 
-			if(isset($settings['tables']))
-				$this->setTables($settings['tables']);
+			if(isset($settings['tableAliases']))
+				$this->setTables($settings['tableAliases']);
 				
 			return $this;
 		}
 		
 		public function setConnector($connector)
 		{
-			$this->connector = $connector();
+			$this->connector = $connector;
 			return $this;
 		}
 		
@@ -82,7 +96,17 @@
 		
 		public static function query($query, $values = array())
 		{
+			if(!self::me()->getConnector()->isConnected())
+			{
+				self::me()->getConnector()->connect();
+			}
+			
 			return self::me()->getConnector()->query($query, $values);
+		}
+
+		public static function fetchArray($dbResult)
+		{
+			return self::me()->getConnector()->fetchArray($dbResult);
 		}
 
 		public function setCacheConnector($connector)

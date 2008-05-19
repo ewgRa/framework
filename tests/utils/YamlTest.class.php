@@ -1,6 +1,4 @@
 <?php
-	require_once LIB_DIR . DIRECTORY_SEPARATOR . 'php/spyc/spyc.php';
-
 	class YAMLTest extends UnitTestCase 
 	{
 		function testLoad()

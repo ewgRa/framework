@@ -9,12 +9,20 @@
 		private $database = null;
 		private $charset = null;
 		
-		protected function __destruct()
+		public function __destruct()
 		{
 			if($this->isConnected())
 			{
 				$this->disconnect();
 			}
+		}
+		
+		/**
+		 * @return MysqlDatabaseConnector
+		 */
+		public static function create()
+		{
+			return new self;
 		}
 		
 		public function connect()

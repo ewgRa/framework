@@ -1,4 +1,6 @@
 <?php
+	require_once(LIB_DIR . '/php/spyc/spyc.php');
+	
 	class YAML
 	{
 		public static function load($file)
