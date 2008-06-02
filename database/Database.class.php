@@ -10,6 +10,9 @@
 		
 		private static $instance = null;
 
+		/**
+		 * @return Database
+		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__, self::$instance);
@@ -66,7 +69,7 @@
 				$this->getConnector()->setPassword($settings['password']);
 
 			if(isset($settings['database']))
-				$this->getConnector()->setDatabase($settings['database']);
+				$this->getConnector()->setDatabaseName($settings['database']);
 
 			if(isset($settings['charset']))
 				$this->getConnector()->setCharset($settings['charset']);
@@ -88,6 +91,15 @@
 			return $this->connector;
 		}
 		
+		public function getTable($alias)
+		{
+			$result = null;
+			
+			if(isset($this->tables[$alias])) $result = $this->tables[$alias];
+
+			return $result;
+		}
+		
 		public function setTables($tables)
 		{
 			$this->tables = $tables;	
@@ -98,7 +110,9 @@
 		{
 			if(!self::me()->getConnector()->isConnected())
 			{
-				self::me()->getConnector()->connect();
+				self::me()->getConnector()->
+					connect()->
+					selectDatabase();
 			}
 			
 			return self::me()->getConnector()->query($query, $values);
@@ -109,6 +123,11 @@
 			return self::me()->getConnector()->fetchArray($dbResult);
 		}
 
+		public static function recordCount($dbResult)
+		{
+			return self::me()->getConnector()->recordCount($dbResult);
+		}
+		
 		public function setCacheRealization($realization)
 		{
 			$this->cacheRealization = $realization;
@@ -129,7 +148,7 @@
 				$settings = $this->getCacheRealization()->
 					getData(
 						$yamlFile,
-						'yaml/database',
+						'site/yaml/database',
 						file_exists($yamlFile) ? filemtime($yamlFile) : null
 					);
 			}

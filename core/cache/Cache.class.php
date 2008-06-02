@@ -24,9 +24,11 @@
 			return $this->realization;
 		}
 		
-		public static function get($key, $prefix = null)
+		public static function get($key, $prefix = null, $actualTime = null)
 		{
-			return self::me()->getRealization()->getData($key, $prefix);
+			return self::me()->getRealization()->getData(
+				$key, $prefix, $actualTime
+			);
 		}
 		
 		public static function set(
@@ -34,12 +36,15 @@
 			$key = null, $prefix = null
 		)
 		{
-			return self::me()->getRealization()->setData($data, $lifeTillTime, $key, $prefix);
+			return self::me()->getRealization()->setData(
+				$data, $lifeTillTime,
+				$key, $prefix
+			);
 		}
-		
-		public static function setActual($time)
+
+		public static function isExpired()
 		{
-			return self::me()->getRealization()->setActualTime($time);
-		}		
+			return self::me()->getRealization()->isExpired();
+		}
 	}
 ?>

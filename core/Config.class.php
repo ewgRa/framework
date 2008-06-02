@@ -143,7 +143,7 @@
 				$settings = $this->getCacheRealization()->
 					getData(
 						$yamlFile,
-						'yaml/config',
+						'site/yaml/config',
 						file_exists($yamlFile) ? filemtime($yamlFile) : null
 					);
 			}

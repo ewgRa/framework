@@ -6,7 +6,7 @@
 		private $host = null;
 		private $user = null;
 		private $password = null;
-		private $database = null;
+		private $databaseName = null;
 		private $charset = null;
 		
 		public function __destruct()
@@ -32,7 +32,7 @@
 			if(!$db)
 			{
 				throw 
-					ExceptionsMapper::me()->createHandler('Database')->
+					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::CONNECT)->
 						setHost($this->host);
 			}
@@ -84,23 +84,31 @@
 			);
 		}
 
-		public function setDatabase($database)
+		public function getDatabaseName()
 		{
-			$this->database = $database;			
+			return $this->databaseName;			
+		}
+		
+		public function setDatabaseName($databaseName)
+		{
+			$this->databaseName = $databaseName;			
 			return $this;
 		}
 		
-		public function selectDatabase($database)
+		public function selectDatabase($databaseName = null)
 		{
-			$this->setDatabase($database);
+			if($databaseName)
+				$this->setDatabaseName($databaseName);
+			else
+				$databaseName = $this->getDatabaseName();
 			
-			if(!mysql_select_db($this->database))
+			if(!mysql_select_db($this->databaseName))
 			{
 				throw 
-					ExceptionsMapper::me()->createHandler('Database')->
+					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SELECT_DATABASE)->
 						setHost($this->host)->
-						setDatabase($this->database);
+						setDatabaseName($this->databaseName);
 			}
 			
 			return $this;
@@ -131,10 +139,10 @@
 			if(mysql_error())
 			{
 				throw 
-					ExceptionsMapper::me()->createHandler('Database')->
+					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SQL_QUERY_ERROR)->
 						setHost($this->host)->
-						setDatabase($this->database)->
+						setDatabaseName($this->databaseName)->
 						setQuery($query)->
 						setError(mysql_error());
 			}

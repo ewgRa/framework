@@ -2,6 +2,8 @@
 	// FIXME: tested?
 	class EngineDispatcher extends Singleton
 	{
+		const OPTIONS_CACHE_LIFE_TIME = 86400;
+		
 		private $fired = false;
 		
 		private static $instance = null;
@@ -29,10 +31,12 @@
 			
 			if(function_exists( 'get_magic_quotes_gpc') && get_magic_quotes_gpc())
 			{
-				$this->strips($_GET);
-				$this->strips($_POST);
-				$this->strips($_COOKIE);
-				$this->strips($_REQUEST);
+				$this->
+					strips($_GET)->
+					strips($_POST)->
+					strips($_COOKIE)->
+					strips($_REQUEST);
+				
 				if(isset($_SERVER['PHP_AUTH_USER']))
 					$this->strips($_SERVER['PHP_AUTH_USER']);
 
@@ -54,10 +58,35 @@
 			return $this->fired;
 		}
 		
-		// FIXME: refatoring?
-		function start()
+		public function loadSiteOptions()
 		{
-			register_shutdown_function(array($this, 'shutdown') );
+			$options = Cache::me()->get(
+				array(__CLASS__, __FUNCTION__),
+				'site/options'
+			);
+
+			if(Cache::me()->isExpired())
+			{
+				$options = array();
+				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Options');
+				
+		        $dbResult = Database::me()->query($dbQuery);
+				
+				while($dbRow = Database::me()->fetchArray($dbResult))
+				{
+					$options[$dbRow['alias']] = $dbRow['value'];
+		        }
+
+				Cache::me()->set($options, self::OPTIONS_CACHE_LIFE_TIME);
+			}
+            
+			return $options;			
+		}
+		
+		// FIXME: refatoring?
+		public function start()
+		{
+			register_shutdown_function(array($this, 'shutdown'));
 
 			$exceptionMap = Config::me()->getOption('exceptionMap');
 			
@@ -71,10 +100,22 @@
 				}
 			}
 			
-			return $this;
+			Session::me()->relativeStart();
 			
-			# Объект сессии
-			if( !$this->AlreadyStartEasy ) $Session = new EngineSession();
+			if(Session::get('userId'))
+			{
+				User::me()->setUserId(Session::get('userId'));
+			}
+			
+			foreach($this->loadSiteOptions() as $option => $value)
+			{
+				Config::me()->setOption($option, $value);
+			}
+			
+			var_dump(Config::me());
+			die;
+
+/*			return $this;
 			
 			# Объект посетитель
 			$User = new EngineUser();
@@ -85,10 +126,7 @@
 			# Объект распознает какую страницу пользователь загружает
 			$Page = new EnginePage();
 			
-			if( !$this->AlreadyStartEasy ) $Session->RelativeStart();
-			if( !$this->AlreadyStartEasy && array_key_exists( 'debug_server', $Session->Data ) && $Session->Data['debug_server'] ) Config::setOption( 'Debug mode', true );
-			$this->AlreadyStartEasy = true;
-
+*/
 			EventDispatcher::ThrowEvent( 'EngineStarted' );
 		}
 		
@@ -143,27 +181,13 @@
 			EventDispatcher::ThrowEvent( 'View', $DataCollector->GetData() );
 		}
 		
-		private function strips(&$el)
-		{
-			if(is_array($el))
-			{
-				foreach($el as $k => $v)
-					$this->strips($el[$k]);
-			}
-			else
-				$el = stripslashes($el);
-		}
-		
-		
 		// FIXME: refatoring?
 		/**
 		 * Завершение работы движка и окончательный вывод данных
 		 */
 		function Shutdown()
 		{
-			return;
-			
-			$EngineEcho = ob_get_contents();
+/*			$EngineEcho = ob_get_contents();
 			ob_clean();
 			if( Config::getOption( 'Debug mode' ) )
 			{
@@ -206,23 +230,8 @@
 				echo $EngineEcho;
 			}
 			exit();
+*/
 		}
-		
-		
-		// FIXME: refatoring?
-		function DebugDBProvider()
-		{
-			$DB = Registry::Get( 'DB' );
-			return array( 'Data' => $DB->Log, 'Prefix' => 'DB' );
-		}
-
-		
-		// FIXME: refatoring?
-		function DebugEventsProvider()
-		{
-			return array( 'Data' => $this->EventsLog, 'Prefix' => 'Events' );
-		}
-
 		
 		// FIXME: refatoring?
 		function ForwardToURI( $URI )
@@ -235,6 +244,19 @@
 			
 			Registry::Set( 'EngineDispatcher', $this );
 			$this->Fire();
+		}
+		
+		private function strips(&$el)
+		{
+			if(is_array($el))
+			{
+				foreach($el as &$v)
+					$this->strips($v);
+			}
+			else
+				$el = stripslashes($el);
+				
+			return $this;
 		}
 	}
 ?>
