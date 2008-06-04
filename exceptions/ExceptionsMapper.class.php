@@ -33,7 +33,11 @@
 		/**
 		 * @return DefaultException
 		 */
-		public function createException($exceptionAlias, $code = 0, $message = null)
+		public function createException(
+			$exceptionAlias,
+			$code = 0,
+			$message = null
+		)
 		{
 			$className = 'DefaultException';
 			

@@ -141,6 +141,8 @@
 		
 		private function loadCache($yamlFile)
 		{
+			Assert::fileExists($yamlFile);
+			
 			$settings = null;
 			
 			if($this->getCacheRealization())
@@ -158,6 +160,8 @@
 		
 		private function saveCache($yamlFile, $cacheData)
 		{
+			Assert::fileExists($yamlFile);
+			
 			if(
 				$this->getCacheRealization()
 				&& $this->getCacheRealization()->isExpired()
