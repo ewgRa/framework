@@ -112,7 +112,8 @@
 			{
 				self::me()->getConnector()->
 					connect()->
-					selectDatabase();
+					selectDatabase()->
+					selectCharset();
 			}
 			
 			return self::me()->getConnector()->query($query, $values);
@@ -126,6 +127,11 @@
 		public static function recordCount($dbResult)
 		{
 			return self::me()->getConnector()->recordCount($dbResult);
+		}
+		
+		public static function resourceToArray($dbResult)
+		{
+			return self::me()->getConnector()->resourceToArray($dbResult);
 		}
 		
 		public function setCacheRealization($realization)

@@ -28,6 +28,12 @@
 		public function relativeStart()
 		{
 			$this->getRealization()->relativeStart();
+			return $this;
+		}
+		
+		public function isStarted()
+		{
+			return self::me()->getRealization()->isStarted();
 		}
 		
 		public static function get($alias)
@@ -38,6 +44,31 @@
 		public static function set($alias, $value)
 		{
 			return self::me()->getRealization()->set($alias, $value);
+		}
+		
+		public static function drop($alias)
+		{
+			return self::me()->getRealization()->drop($alias);
+		}
+		
+		public static function start()
+		{
+			return self::me()->getRealization()->start();
+		}
+
+		public static function save()
+		{
+			return self::me()->getRealization()->save();
+		}
+		
+		public static function getCookie($alias)
+		{
+			$result = null;
+			
+			if(isset($_COOKIE[$alias]))
+				$result = $_COOKIE[$alias];
+			
+			return $result;
 		}
 	}
 ?>

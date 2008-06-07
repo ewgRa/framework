@@ -102,7 +102,7 @@
 			return $result;
 		}
 
-		protected function replaceVariables($variable)
+		public function replaceVariables($variable)
 		{
 			if(is_array($variable))
 			{

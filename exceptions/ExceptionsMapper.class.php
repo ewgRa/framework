@@ -3,7 +3,8 @@
 	{
 		private $map = array(
 			'Database' => 'DatabaseException',
-			'File' => 'FileException'
+			'File' => 'FileException',
+			'Page' => 'PageException'
 		);
 		
 		private static $instance = null;

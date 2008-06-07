@@ -150,7 +150,7 @@
 			return $resource;
 		}
 
-		public function getRecordCount($resource)
+		public function recordCount($resource)
 		{
 			return mysql_numrows($resource);
 		}

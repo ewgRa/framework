@@ -16,12 +16,6 @@
 			return parent::getInstance(__CLASS__, self::$instance);
 		}
 		
-		// FIXME: refatoring?
-		protected function __construct()
-		{
-//			EventDispatcher::RegisterCatcher( 'AccessToPageGranted',  array( $this, 'OnAccessToPageGranted' ) );
-		}
-
 		public function normalizeRequest()
 		{
 			if(function_exists('set_magic_quotes_runtime'))
@@ -69,21 +63,17 @@
 			{
 				$options = array();
 				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Options');
-				
 		        $dbResult = Database::me()->query($dbQuery);
 				
 				while($dbRow = Database::me()->fetchArray($dbResult))
-				{
 					$options[$dbRow['alias']] = $dbRow['value'];
-		        }
 
 				Cache::me()->set($options, self::OPTIONS_CACHE_LIFE_TIME);
 			}
             
-			return $options;			
+			return $options;
 		}
 		
-		// FIXME: refatoring?
 		public function start()
 		{
 			register_shutdown_function(array($this, 'shutdown'));
@@ -102,32 +92,27 @@
 			
 			Session::me()->relativeStart();
 			
-			if(Session::get('userId'))
-			{
-				User::me()->setUserId(Session::get('userId'));
-			}
+			if(Session::me()->isStarted())
+				User::me()->sessionStarted();
 			
 			foreach($this->loadSiteOptions() as $option => $value)
-			{
 				Config::me()->setOption($option, $value);
-			}
 			
-			var_dump(Config::me());
+			Localizer::me()->defineLanguage();
+			
+			Page::me()->definePage(UrlHelper::me()->getEnginePageUrl());
+			
+			if(Page::me()->getViewType() == View::AJAX)
+				JsHttpRequest::initialize(Config::me()->getOption('charset'));
+			
+			Page::me()->checkAccessPage(User::me()->getRights());
+			
+			var_dump(User::me());
+			var_dump(Localizer::me());
+			var_dump(Page::me());
 			die;
 
-/*			return $this;
-			
-			# Объект посетитель
-			$User = new EngineUser();
-
-			# Объект распознает какой язык предпочел пользователь и нормализует входные данные с учетом этого языка
-			$Localizer = new EngineLocalizer();
-
-			# Объект распознает какую страницу пользователь загружает
-			$Page = new EnginePage();
-			
-*/
-			EventDispatcher::ThrowEvent( 'EngineStarted' );
+//			EventDispatcher::ThrowEvent( 'EngineStarted' );
 		}
 		
 		// FIXME: refatoring?
@@ -145,15 +130,15 @@
 					EventDispatcher::ClearEventCatchers( 'DataRequested' );
 					$DataCollector = DataCollector::Make( 'Redirect' );
 					$View = View::Make( 'Redirect' );
-				break;	
+				break;
 				case 'XSLT':
 					$DataCollector = DataCollector::Make( 'XSLT' );
 					$View = View::Make( 'XSLT' );
-				break;				
+				break;
 				case 'AJAX':
 					$DataCollector = DataCollector::Make( 'AJAX' );
 					$View = View::Make( 'AJAX' );
-				break;				
+				break;
 				case 'JSON':
 					$DataCollector = DataCollector::Make( 'JSON' );
 					$View = View::Make( 'JSON' );
@@ -165,7 +150,7 @@
 				case 'Excel':
 					$DataCollector = DataCollector::Make( 'Excel' );
 					$View = View::Make( 'Excel' );
-				break;				
+				break;
 			}
 
 
@@ -197,7 +182,7 @@
 				{
 					$timing = END_TIME - START_TIME;
 				}
-				else 
+				else
 				{
 					$timing = '-';
 				}

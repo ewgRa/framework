@@ -23,7 +23,7 @@
 
 		public function start()
 		{
-			if(!$this->started)
+			if(!$this->isStarted)
 			{
 				$this->isStarted = true;
 				session_start();
@@ -78,6 +78,12 @@
 		public function set($alias, $value)
 		{
 			$this->data[$alias] = $value;
+			return $this;
+		}
+
+		public function drop($alias)
+		{
+			unset($this->data[$alias]);
 			return $this;
 		}
 	}
