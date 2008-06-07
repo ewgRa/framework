@@ -7,7 +7,7 @@
 		
 		private $foundClasses 		= array();
 		private $searchDirectories	= array();
-		private $cacheRealization		= null;		
+		private $cacheRealization		= null;
 		private static $instance = null;
 
 		/**
@@ -37,13 +37,11 @@
 			}
 
 			if($classFile)
-			{
 				require_once($classFile);
-				// FIXME: if(!class_exists($className))?
-			}
-			else
+
+			if(!class_exists($className) || !$classFile)
 			{
-				$this->dropFound($classFile);
+				$this->dropFound($className);
 				$this->saveCache();
 			}
 			
@@ -52,13 +50,13 @@
 
 		public function getSearchDirectories()
 		{
-			return $this->searchDirectories;	
+			return $this->searchDirectories;
 		}
 		
 		public function setSearchDirectories(array $searchDirectories)
 		{
 			$this->searchDirectories = $searchDirectories;
-			return $this;	
+			return $this;
 		}
 		
 		public function addSearchDirectories(array $searchDirectories)
@@ -68,7 +66,7 @@
 				$searchDirectories
 			);
 			
-			return $this;	
+			return $this;
 		}
 		
 		public function findClassFile($className, $searchDirectories = null)
@@ -158,7 +156,7 @@
 					'autoloader'
 					
 				);
-			}			
+			}
 		}
 
 		private function setFoundClasses($foundClasses)
