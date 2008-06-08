@@ -1,5 +1,5 @@
 <?php
-	class ConfigTest extends UnitTestCase 
+	class ConfigTest extends UnitTestCase
 	{
 		private $cacheDataDir = null;
 		private $firstYamlFile = null;
@@ -8,7 +8,7 @@
 		
 		public function __construct()
 		{
-			$this->cacheDataDir = dirname(__FILE__) . DIRECTORY_SEPARATOR
+			$this->cacheDataDir = TMP_DIR . DIRECTORY_SEPARATOR
 				. 'cacheData';
 				
 			$this->firstYamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -17,7 +17,7 @@
 			$this->secondYamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
 				. 'config.test2.yml';
 
-			$this->thirdYamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
+			$this->thirdYamlFile = TMP_DIR . DIRECTORY_SEPARATOR
 				. 'config.test3.yml';
 		}
 		
@@ -111,14 +111,15 @@
 		
 		function testInitializeCache()
 		{
-			mkdir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData');
+			mkdir(TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData');
 
 			copy(
 				$this->firstYamlFile,
 				$this->thirdYamlFile
 			);
 			
-			touch($this->thirdYamlFile,	time());
+			$time = time();
+			touch($this->thirdYamlFile,	$time);
 			
 			MyTestConfig::me()->setCacheRealization(
 				FileBasedCache::create()->setCacheDir($this->cacheDataDir)
@@ -128,17 +129,12 @@
 				setMergeYAMLSections(array('all', 'testSection'))->
 				initialize($this->thirdYamlFile);
 			
-			$fileMTime = filemtime($this->thirdYamlFile);
-			
 			file_put_contents(
 				$this->thirdYamlFile,
 				''
 			);
 			
-			touch(
-				$this->thirdYamlFile,
-				$fileMTime
-			);
+			touch($this->thirdYamlFile, $time);
 			
 			MyTestConfig::me()->setInstance(null);
 			
@@ -163,8 +159,7 @@
 		
 		function testInitializeExpiredCache()
 		{
-			$this->cacheDataDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData';
-			mkdir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData');
+			mkdir($this->cacheDataDir);
 
 			copy($this->firstYamlFile, $this->thirdYamlFile);
 			
@@ -182,7 +177,7 @@
 
 			unlink($this->thirdYamlFile);
 			copy($this->secondYamlFile, $this->thirdYamlFile);
-			touch($this->thirdYamlFile, $fileMTime + rand());
+			touch($this->thirdYamlFile, $fileMTime + 10);
 			
 			MyTestConfig::me()->setInstance(null);
 			
@@ -203,6 +198,6 @@
 			
 			FrameworkAllTests::deleteDir($this->cacheDataDir);
 			unlink($this->thirdYamlFile);
-		}		
+		}
 	}
 ?>

@@ -1,5 +1,5 @@
 <?php
-	class ClassesAutoloaderTest extends UnitTestCase 
+	class ClassesAutoloaderTest extends UnitTestCase
 	{
 		function testIsSingleton()
 		{
@@ -15,10 +15,11 @@
 			
 			$className = 'testLoadClass' . rand();
 			file_put_contents(
-				dirname(__FILE__) . DIRECTORY_SEPARATOR . $className . '.class.php',
+				TMP_DIR . DIRECTORY_SEPARATOR . $className . '.class.php',
 				str_replace(get_class($this), $className, file_get_contents(__FILE__))
 			);
 			
+			ClassesAutoLoader::me()->addSearchDirectories(array(TMP_DIR));
 			ClassesAutoloader::me()->load($className);
 			
 			if(!class_exists($className))
@@ -26,7 +27,7 @@
 				$this->fail();
 			}
 			
-			unlink(dirname(__FILE__) . DIRECTORY_SEPARATOR . $className . '.class.php');
+			unlink(TMP_DIR . DIRECTORY_SEPARATOR . $className . '.class.php');
 			
 			ClassesAutoloader::me()->dropFound($className);
 

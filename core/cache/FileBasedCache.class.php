@@ -53,12 +53,12 @@
 		public function setCacheDir($cacheDir)
 		{
 			$this->cacheDir = $cacheDir;
-			return $this;	
+			return $this;
 		}
 		
 		public function getCacheDir()
 		{
-			return $this->cacheDir;	
+			return $this->cacheDir;
 		}
 		
 		public function setActualTime($time)
@@ -81,7 +81,7 @@
 		{
 			if(!$actualTime)
 			{
-				$actualTime = time();	
+				$actualTime = time();
 			}
 			
 			if($this->isDisabled())
@@ -89,7 +89,7 @@
 				$this->expired();
 				return null;
 			}
-				
+			
 			$result = null;
 			$fileName = $this->compileFileName($key, $prefix);
 			$this->setFileName($fileName);
@@ -123,23 +123,15 @@
 			$fileName = $this->getFileName();
 			
 			if(!is_null($key))
-			{		
 				$fileName = $this->compileFileName($key, $prefix);
-			}
 
-			// FIXME: if on this stage $filename is null?
 			if(!$fileName)
-			{
-				throw new Exception('no key');				
-			}
+				throw new Exception('no key');
 			
 			if(is_null($lifeTillTime))
-			{
 				$lifeTillTime = time() + $this->getDefaultLifeTime();
-			}
 
 			$this->createPreDirs( $fileName );
-			
 			
 			file_put_contents($fileName, serialize($data));
 			touch( $fileName, $lifeTillTime);
@@ -215,7 +207,7 @@
 		private function createPreDirs($fileName)
 		{
 			$directory = dirname($fileName);
-			
+
 			if(strtoupper(substr(PHP_OS, 0, 3)) === self::OS_WIN)
 			{
 				exec('mkdir "' . $directory . '"');

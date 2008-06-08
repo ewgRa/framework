@@ -1,5 +1,5 @@
 <?php
-	class FileBasedCacheTest extends UnitTestCase 
+	class FileBasedCacheTest extends UnitTestCase
 	{
 		public $cacheData = array('asdasd', 'dvsd', 'qweqwe');
 		
@@ -9,9 +9,9 @@
 		
 		function setUp()
 		{
-			$cacheDataDir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData';
+			$cacheDataDir = TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData';
 			
-			mkdir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData');
+			mkdir(TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData');
 			
 			$this->realization =
 				FileBasedCache::create()->setCacheDir($cacheDataDir);
@@ -19,7 +19,7 @@
 		
 		function tearDown()
 		{
-			FrameworkAllTests::deleteDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cacheData');
+			FrameworkAllTests::deleteDir(TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData');
 		}
 
 		function testSetAndGet()
@@ -66,6 +66,6 @@
 				$this->cacheData,
 				$this->realization->getData($key, $this->prefix)
 			);
-		}		
+		}
 	}
 ?>

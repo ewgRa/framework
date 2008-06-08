@@ -5,9 +5,7 @@
 	{
 		public static function load($file)
 		{
-			$yamlFile = realpath($file);
-			
-			if(!$yamlFile)
+			if(!file_exists($file))
 			{
 				throw
 					ExceptionsMapper::me()->createException('File')->

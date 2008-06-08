@@ -1,5 +1,4 @@
 <?php
-	// FIXME: testing?
 	class LocalizerPathUrlDeterminant
 	{
 		const TYPE = Localizer::DETERMINANT_PATH_BASED;
@@ -16,6 +15,7 @@
 			return self::TYPE;
 		}
 		
+		//	FIXME: testing?
 		public function getDefinedLanguageAbbr()
 		{
 			$result = null;
@@ -31,7 +31,7 @@
 		
 		public function getUrl()
 		{
-			return $this->url;	
+			return $this->url;
 		}
 		
 		public function setUrl($url)
@@ -40,6 +40,7 @@
 			return $this;
 		}
 		
+		// FIXME: testing?
 		public function cutLanguageAbbr($languageAbbr)
 		{
 			return substr($this->getUrl(), strlen('/' . $languageAbbr));

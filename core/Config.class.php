@@ -3,7 +3,7 @@
 	{
 		private $options = null;
 		private $mergeYAMLSections = array();
-		private $cacheRealization	= null;		
+		private $cacheRealization	= null;
 		
 		private static $instance = null;
 		
@@ -29,7 +29,7 @@
 		public function initialize($yamlFile)
 		{
 			$this->options = $this->loadCache($yamlFile);
-			
+
 			if(!$this->options)
 			{
 				$yamlSettings = YAML::load($yamlFile);
@@ -148,7 +148,7 @@
 					);
 			}
 			
-			return $settings;			
+			return $settings;
 		}
 		
 		private function saveCache($yamlFile)
@@ -159,7 +159,7 @@
 			)
 			{
 				$this->getCacheRealization()->
-					setData($this->options, filemtime($yamlFile), $yamlFile, 'yaml/config');
+					setData($this->options, filemtime($yamlFile), $yamlFile, 'site/yaml/config');
 			}
 			
 			return $this;

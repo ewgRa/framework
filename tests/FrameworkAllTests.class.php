@@ -1,13 +1,12 @@
 <?php
-	require_once('simpletest/autorun.php');
-
-	class FrameworkAllTests extends TestSuite
+	class FrameworkAllTests extends GroupTest
 	{
 		private $testDirs = array(
 			'patterns',
 			'exceptions',
 			'core',
 			'core/cache',
+			'core/localizer',
 			'utils',
 			'database'
 		);
@@ -21,7 +20,7 @@
 				
 				foreach($allTestsFile as $testFile)
 				{
-					$this->addFile(
+					$this->addTestFile(
 						$testFile
 					);
 				}
@@ -35,7 +34,7 @@
 			{
 				if(is_dir($file))
 				{
-					self::deleteDir($file);	
+					self::deleteDir($file);
 				}
 				elseif(is_file($file))
 				{

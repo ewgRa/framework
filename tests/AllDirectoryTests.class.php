@@ -1,5 +1,5 @@
 <?php
-	abstract class AllDirectoryTests extends TestSuite
+	class AllDirectoryTests extends GroupTest
 	{
 		protected $testTitle = "All tests";
 		protected $thisFile = __FILE__;
@@ -11,13 +11,13 @@
 				as $testFile
 			)
 			{
-				$this->addFile($testFile);
+				$this->addTestFile($testFile);
 			}
 		}
 		
 		public function __construct()
 		{
-			$this->TestSuite($this->testTitle);
+			$this->GroupTest($this->testTitle);
 			$this->addFiles();
 		}
 	}
