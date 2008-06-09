@@ -101,7 +101,7 @@
 					}
 				}
 				
-				Cache::me()->set($this->rights, self::CACHE_LIFE_TIME);
+				Cache::me()->set($this->rights, time() + self::CACHE_LIFE_TIME);
 			}
 			
 			return $this;

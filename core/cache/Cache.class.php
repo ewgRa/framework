@@ -24,27 +24,27 @@
 			return $this->realization;
 		}
 		
-		public static function get($key, $prefix = null, $actualTime = null)
+		public function get($key, $prefix = null, $actualTime = null)
 		{
-			return self::me()->getRealization()->getData(
+			return $this->getRealization()->getData(
 				$key, $prefix, $actualTime
 			);
 		}
 		
-		public static function set(
+		public function set(
 			$data, $lifeTillTime = null,
 			$key = null, $prefix = null
 		)
 		{
-			return self::me()->getRealization()->setData(
+			return $this->getRealization()->setData(
 				$data, $lifeTillTime,
 				$key, $prefix
 			);
 		}
 
-		public static function isExpired()
+		public function isExpired()
 		{
-			return self::me()->getRealization()->isExpired();
+			return $this->getRealization()->isExpired();
 		}
 	}
 ?>

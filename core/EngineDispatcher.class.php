@@ -68,7 +68,7 @@
 				while($dbRow = Database::me()->fetchArray($dbResult))
 					$options[$dbRow['alias']] = $dbRow['value'];
 
-				Cache::me()->set($options, self::OPTIONS_CACHE_LIFE_TIME);
+				Cache::me()->set($options, time() + self::OPTIONS_CACHE_LIFE_TIME);
 			}
             
 			return $options;

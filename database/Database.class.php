@@ -5,10 +5,10 @@
 
 		private $tables = array();
 		private $connector = null;
-		private $cacheRealization	= null;		
+		private $cacheRealization	= null;
 		private $mergeYAMLSections = array();
 		
-		private static $instance = null;
+		protected static $instance = null;
 
 		/**
 		 * @return Database
@@ -42,12 +42,12 @@
 					$this->getMergeYAMLSections()
 				);
 				
-				$this->saveCache($yamlFile, $settings);				
+				$this->saveCache($yamlFile, $settings);
 			}
 			
 			if(isset($settings['connector']))
 			{
-				$connector = null; 
+				$connector = null;
 				
 				switch($settings['connector'])
 				{
@@ -102,36 +102,36 @@
 		
 		public function setTables($tables)
 		{
-			$this->tables = $tables;	
+			$this->tables = $tables;
 		}
 		
 		
-		public static function query($query, $values = array())
+		public function query($query, $values = array())
 		{
-			if(!self::me()->getConnector()->isConnected())
+			if(!$this->getConnector()->isConnected())
 			{
-				self::me()->getConnector()->
+				$this->getConnector()->
 					connect()->
 					selectDatabase()->
 					selectCharset();
 			}
 			
-			return self::me()->getConnector()->query($query, $values);
+			return $this->getConnector()->query($query, $values);
 		}
 
-		public static function fetchArray($dbResult)
+		public function fetchArray($dbResult)
 		{
-			return self::me()->getConnector()->fetchArray($dbResult);
+			return $this->getConnector()->fetchArray($dbResult);
 		}
 
-		public static function recordCount($dbResult)
+		public function recordCount($dbResult)
 		{
-			return self::me()->getConnector()->recordCount($dbResult);
+			return $this->getConnector()->recordCount($dbResult);
 		}
 		
-		public static function resourceToArray($dbResult)
+		public function resourceToArray($dbResult)
 		{
-			return self::me()->getConnector()->resourceToArray($dbResult);
+			return $this->getConnector()->resourceToArray($dbResult);
 		}
 		
 		public function setCacheRealization($realization)
@@ -161,7 +161,7 @@
 					);
 			}
 			
-			return $settings;			
+			return $settings;
 		}
 		
 		private function saveCache($yamlFile, $cacheData)

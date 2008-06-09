@@ -5,6 +5,9 @@
 		
 		private $url = null;
 		
+		/**
+		 * @return LocalizerPathUrlDeterminant
+		 */
 		public static function create()
 		{
 			return new self;
@@ -15,11 +18,12 @@
 			return self::TYPE;
 		}
 		
-		//	FIXME: testing?
 		public function getDefinedLanguageAbbr()
 		{
 			$result = null;
-			$parts = explode('/', $this->getUrl());
+			
+			$urlParts = parse_url($this->getUrl());
+			$parts = explode('/', $urlParts['path']);
 
 			if(count($parts) > 2)
 			{
@@ -40,10 +44,21 @@
 			return $this;
 		}
 		
-		// FIXME: testing?
 		public function cutLanguageAbbr($languageAbbr)
 		{
-			return substr($this->getUrl(), strlen('/' . $languageAbbr));
+			$result = $this->getUrl();
+			
+			if($this->getDefinedLanguageAbbr() == $languageAbbr)
+			{
+				$result = preg_replace(
+					'@/' . preg_quote($languageAbbr, '@') . '@',
+					'',
+					$this->getUrl(),
+					1
+				);
+			}
+			
+			return $result;
 		}
 	}
 ?>

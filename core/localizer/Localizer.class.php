@@ -1,5 +1,4 @@
 <?php
-	// FIXME: testing?
 	class Localizer extends Singleton
 	{
 		const SOURCE_LANGUAGE_DEFAULT = 1;
@@ -39,7 +38,7 @@
 
 		public function getSource()
 		{
-			return $this->source;	
+			return $this->source;
 		}
 		
 		private function setSource($source)
@@ -70,6 +69,7 @@
 			return $this;
 		}
 		
+		// FIXME: testing?
 		public function defineLanguage()
 		{
 			if(
@@ -107,7 +107,7 @@
 
 			if($this->getSource() == self::SOURCE_LANGUAGE_DEFAULT)
 			{
-				$this->setDefaultLanguage();
+				$this->selectDefaultLanguage();
 			}
 
 			return $this;
@@ -131,13 +131,14 @@
 					$languages[$dbRow['id']] = $dbRow['abbr'];
 				}
 
-				Cache::me()->set($languages, self::CACHE_LIFE_TIME);
+				Cache::me()->set($languages, time() + self::CACHE_LIFE_TIME);
 			}
 			return $languages;
 		}
 
-		private function setDefaultLanguage()
+		public function selectDefaultLanguage()
 		{
+			
 			$this->language = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__),
 				'site/languages'
@@ -147,7 +148,7 @@
 			{
 				$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Languages')
 					. " t1 INNER JOIN " . Database::me()->getTable('Options')
-					. " t2 ON ( t2.alias = 'DefaultLanguage' AND t2.value = t1.id )";
+					. " t2 ON ( t2.alias = 'defaultLanguage' AND t2.value = t1.id )";
 					
 				$this->language = array('abbr' => null, 'id' => null);
 				$dbResult = Database::me()->query($dbQuery);
@@ -159,7 +160,7 @@
 					$this->setLanguageId($dbRow['id']);
 				}
 				
-		        Cache::me()->set($this->language, self::CACHE_LIFE_TIME);
+		        Cache::me()->set($this->language, time() + self::CACHE_LIFE_TIME);
 			}
 			
 			return $this;
