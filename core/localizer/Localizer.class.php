@@ -69,7 +69,6 @@
 			return $this;
 		}
 		
-		// FIXME: testing?
 		public function defineLanguage()
 		{
 			if(

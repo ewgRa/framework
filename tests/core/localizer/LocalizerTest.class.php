@@ -63,6 +63,11 @@
 			);
 		}
 		
+		public function testDefineLanguageCookie()
+		{
+			$this->fail();
+		}
+		
 		public function convertLanguages($languages)
 		{
 			$result = array();
