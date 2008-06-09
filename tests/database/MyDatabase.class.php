@@ -10,10 +10,5 @@
 		{
 			self::$instance = $instance;
 		}
-
-		public static function drop()
-		{
-			self::$instance = null;
-		}
 	}
 ?>

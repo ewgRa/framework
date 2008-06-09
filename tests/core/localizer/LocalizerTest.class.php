@@ -10,12 +10,14 @@
 		{
 			DatabaseMock::create();
 			CacheMock::create();
+			SessionMock::create();
 		}
 		
 		public function tearDown()
 		{
 			DatabaseMock::drop();
 			CacheMock::drop();
+			SessionMock::drop();
 		}
 		
 		public function testGetLanguages()

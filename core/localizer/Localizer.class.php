@@ -72,13 +72,13 @@
 		public function defineLanguage()
 		{
 			if(
-				Session::getCookie('language_id')
-				&& Session::getCookie('language_abbr')
+				Session::me()->getCookie('language_id')
+				&& Session::me()->getCookie('language_abbr')
 			)
 			{
 				$this->
-					setLanguageAbbr(Session::getCookie('language_abbr'))->
-					setLanguageId(Session::getCookie('language_id'));
+					setLanguageAbbr(Session::me()->getCookie('language_abbr'))->
+					setLanguageId(Session::me()->getCookie('language_id'));
 					
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}

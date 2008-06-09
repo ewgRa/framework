@@ -33,35 +33,35 @@
 		
 		public function isStarted()
 		{
-			return self::me()->getRealization()->isStarted();
+			return $this->getRealization()->isStarted();
 		}
 		
-		public static function get($alias)
+		public function get($alias)
 		{
-			return self::me()->getRealization()->get($alias);
+			return $this->getRealization()->get($alias);
 		}
 
-		public static function set($alias, $value)
+		public function set($alias, $value)
 		{
-			return self::me()->getRealization()->set($alias, $value);
+			return $this->getRealization()->set($alias, $value);
 		}
 		
-		public static function drop($alias)
+		public function drop($alias)
 		{
-			return self::me()->getRealization()->drop($alias);
+			return $this->getRealization()->drop($alias);
 		}
 		
-		public static function start()
+		public function start()
 		{
-			return self::me()->getRealization()->start();
+			return $this->getRealization()->start();
 		}
 
-		public static function save()
+		public function save()
 		{
-			return self::me()->getRealization()->save();
+			return $this->getRealization()->save();
 		}
 		
-		public static function getCookie($alias)
+		public function getCookie($alias)
 		{
 			$result = null;
 			
