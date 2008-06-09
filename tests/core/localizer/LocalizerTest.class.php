@@ -11,6 +11,7 @@
 			DatabaseMock::create();
 			CacheMock::create();
 			SessionMock::create();
+			MyTestLocalizer::dropInstance();
 		}
 		
 		public function tearDown()
@@ -18,6 +19,7 @@
 			DatabaseMock::drop();
 			CacheMock::drop();
 			SessionMock::drop();
+			MyTestLocalizer::dropInstance();
 		}
 		
 		public function testGetLanguages()
@@ -67,6 +69,8 @@
 		
 		public function testDefineLanguageCookie()
 		{
+			Localizer::me()->setCookieLanguage(array('id' => 2, 'abbr' => 'en'));
+			
 			$this->fail();
 		}
 		

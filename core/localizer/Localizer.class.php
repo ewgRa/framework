@@ -12,10 +12,11 @@
 		const CACHE_LIFE_TIME = 86400;
 		
 		private $language = array('abbr' => null, 'id' => null);
+		private $cookieLanguage = null;
 		private $source = self::SOURCE_LANGUAGE_DEFAULT;
 		private $determinantRealization = null;
 		
-		private static $instance = null;
+		protected static $instance = null;
 		
 		/**
 		 * @return Localizer
@@ -69,16 +70,18 @@
 			return $this;
 		}
 		
+		public function setCookieLanguage($language)
+		{
+			$this->cookieLanguage = $language;
+			return $this;
+		}
+		
 		public function defineLanguage()
 		{
-			if(
-				Session::me()->getCookie('language_id')
-				&& Session::me()->getCookie('language_abbr')
-			)
+			if($this->cookieLanguage)
 			{
-				$this->
-					setLanguageAbbr(Session::me()->getCookie('language_abbr'))->
-					setLanguageId(Session::me()->getCookie('language_id'));
+				$this->setLanguageAbbr($this->cookieLanguage['id'])->
+					setLanguageId($this->cookieLanguage['abbr']);
 					
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}

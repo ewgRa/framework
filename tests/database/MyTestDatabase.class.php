@@ -1,5 +1,5 @@
 <?php
-	class MyCache extends Cache
+	class MyTestDatabase extends Database
 	{
 		public static function dropInstance()
 		{

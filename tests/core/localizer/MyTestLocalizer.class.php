@@ -1,5 +1,5 @@
 <?php
-	class MySession extends Session
+	class MyTestLocalizer extends Localizer
 	{
 		public static function dropInstance()
 		{
