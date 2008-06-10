@@ -1,5 +1,4 @@
 <?php
-	// FIXME: tested?
 	class FileBasedSession
 	{
 		private $data = array();
