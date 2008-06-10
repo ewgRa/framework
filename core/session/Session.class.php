@@ -1,5 +1,4 @@
 <?php
-	// FIXME: tested?
 	class Session extends Singleton
 	{
 		private $realization = null;
