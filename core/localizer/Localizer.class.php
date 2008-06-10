@@ -80,8 +80,8 @@
 		{
 			if($this->cookieLanguage)
 			{
-				$this->setLanguageAbbr($this->cookieLanguage['id'])->
-					setLanguageId($this->cookieLanguage['abbr']);
+				$this->setLanguageId($this->cookieLanguage['id'])->
+					setLanguageAbbr($this->cookieLanguage['abbr']);
 					
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
@@ -91,7 +91,7 @@
 
 			$languages = $this->getLanguages();
 			
-			if(in_array($probableLanguageAbbr, $languages))
+			if($languages && in_array($probableLanguageAbbr, $languages))
 			{
 				$this->setLanguageAbbr($probableLanguageAbbr);
 				$flipLanguages = array_flip($languages);

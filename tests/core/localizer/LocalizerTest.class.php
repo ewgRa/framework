@@ -69,9 +69,86 @@
 		
 		public function testDefineLanguageCookie()
 		{
-			Localizer::me()->setCookieLanguage(array('id' => 2, 'abbr' => 'en'));
+			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
+			Localizer::me()->setCookieLanguage($cookieLanguage);
+
+			Localizer::me()->setDeterminantRealization(
+				LocalizerPathUrlDeterminant::create()
+			);
 			
-			$this->fail();
+			Localizer::me()->defineLanguage();
+			
+			$this->assertEqual(
+				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_COOKIE
+			);
+
+			$this->assertEqual(Localizer::me()->getLanguageId(), $cookieLanguage['id']);
+			$this->assertEqual(Localizer::me()->getLanguageAbbr(), $cookieLanguage['abbr']);
+		}
+		
+		public function testDefineLanguageUrlAndCookie()
+		{
+			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
+			Localizer::me()->setCookieLanguage($cookieLanguage);
+
+			Localizer::me()->setDeterminantRealization(
+				LocalizerPathUrlDeterminant::create()->
+					setUrl('/ru/test')
+			);
+			
+			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
+			
+			Localizer::me()->defineLanguage();
+
+			
+			$this->assertEqual(
+				Localizer::me()->getSource(),
+				Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
+			);
+
+			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
+			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
+		}
+		
+		public function testDefineLanguageUrl()
+		{
+			Localizer::me()->setDeterminantRealization(
+				LocalizerPathUrlDeterminant::create()->
+					setUrl('/ru/test')
+			);
+
+			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
+			
+			Localizer::me()->defineLanguage();
+
+			
+			$this->assertEqual(
+				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_URL
+			);
+
+			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
+			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
+		}
+		
+		public function testDefineLanguageDefault()
+		{
+			Localizer::me()->setDeterminantRealization(
+				LocalizerPathUrlDeterminant::create()->
+					setUrl('/miracle/test')
+			);
+
+			Cache::me()->setReturnValueAt(0, 'get', array(1 => 'ru', 2 => 'en'));
+			Cache::me()->setReturnValueAt(1, 'get', array('id' => 1, 'abbr' => 'ru'));
+			
+			Localizer::me()->defineLanguage();
+
+			
+			$this->assertEqual(
+				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_DEFAULT
+			);
+
+			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
+			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
 		}
 		
 		public function convertLanguages($languages)
