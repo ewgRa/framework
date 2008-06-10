@@ -93,7 +93,7 @@
 			Session::me()->relativeStart();
 			
 			if(Session::me()->isStarted())
-				User::me()->sessionStarted();
+				User::me()->onSessionStarted();
 			
 			foreach($this->loadSiteOptions() as $option => $value)
 				Config::me()->setOption($option, $value);

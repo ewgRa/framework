@@ -1,6 +1,4 @@
 <?php
-	// FIXME: tested
-	// FIXME: refactoring
 	class User extends Singleton
 	{
 		const WRONG_PASSWORD	= 1;
@@ -144,7 +142,7 @@
 			else return self::WRONG_LOGIN;
 		}
 		
-		public function sessionStarted()
+		public function onSessionStarted()
 		{
 			$user = Session::me()->get('user');
 			if($user)
