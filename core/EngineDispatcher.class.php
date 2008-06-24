@@ -96,7 +96,6 @@
 			foreach($this->loadSiteOptions() as $option => $value)
 				Config::me()->setOption($option, $value);
 			
-			// TODO: Singlton:setInstanceFromCache
 			$instance = Cache::me()->get(
 				array(), 'engine/instances/localizer'
 			);
@@ -119,7 +118,6 @@
 				
 			Localizer::me()->defineLanguage();
 			
-			// TODO: Singlton:setInstanceFromCache
 			$instance = Cache::me()->get(
 				array(WORK_AREA), 'engine/instances/pageurlmapper'
 			);
@@ -136,7 +134,6 @@
 				UrlHelper::me()->getEnginePageUrl()
 			);
 
-			// TODO: Singlton:setInstanceFromCache
 			$instance = Cache::me()->get(
 				array(
 					WORK_AREA,
