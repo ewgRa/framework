@@ -96,14 +96,27 @@
 			foreach($this->loadSiteOptions() as $option => $value)
 				Config::me()->setOption($option, $value);
 			
-			Localizer::me()->
-				selectDefaultLanguage()->
-				loadLanguages()->
-				defineLanguage();
-			
 			// TODO: Singlton:setInstanceFromCache
-			$pageInstance = Cache::me()->get(
-				UrlHelper::me()->getEnginePageUrl(), 'site/page/instances'
+			$instance = Cache::me()->get(
+				array(), 'engine/instances/localizer'
+			);
+			
+			if(Cache::me()->isExpired())
+			{
+				Localizer::me()->
+					loadLanguages()->
+					selectDefaultLanguage();
+				
+				Cache::me()->set(Localizer::me(), time()+Localizer::CACHE_LIFE_TIME);
+			}
+			else
+				Singleton::setInstance('Localizer', $instance);
+				
+			Localizer::me()->defineLanguage();
+				
+			// TODO: Singlton:setInstanceFromCache
+			$instance = Cache::me()->get(
+				UrlHelper::me()->getEnginePageUrl(), 'engine/instances/page'
 			);
 			
 			if(Cache::me()->isExpired())
@@ -112,7 +125,7 @@
 				Cache::me()->set(Page::me(), time()+Page::CACHE_LIFE_TIME);
 			}
 			else
-				Singleton::setInstance('Page', $pageInstance);
+				Singleton::setInstance('Page', $instance);
 			
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));

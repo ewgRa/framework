@@ -123,6 +123,7 @@
 
 		public function definePage($pageUrl)
 		{
+			// FIXME: move DB rewriter to config? or PageRewriter?
 			$dbQuery = "
 				SELECT
 					t1.*, t3.id as layout_file_id, t3.path as layout_file,

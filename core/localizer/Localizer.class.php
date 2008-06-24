@@ -109,23 +109,13 @@
 
 		public function loadLanguages()
 		{
-			$this->languages = Cache::me()->get(
-				array(__CLASS__, __FUNCTION__),
-				'site/languages'
-			);
-			
-			if(Cache::me()->isExpired())
+			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages');
+			$this->languages = array();
+			$dbResult = Database::me()->query($dbQuery);
+
+			while($dbRow = Database::me()->fetchArray($dbResult))
 			{
-				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages');
-				$this->languages = array();
-				$dbResult = Database::me()->query($dbQuery);
-
-				while($dbRow = Database::me()->fetchArray($dbResult))
-				{
-					$this->languages[$dbRow['id']] = $dbRow['abbr'];
-				}
-
-				Cache::me()->set($this->languages, time() + self::CACHE_LIFE_TIME);
+				$this->languages[$dbRow['id']] = $dbRow['abbr'];
 			}
 			
 			return $this;
@@ -138,30 +128,20 @@
 		
 		public function selectDefaultLanguage()
 		{
-			$this->language = Cache::me()->get(
-				array(__CLASS__, __FUNCTION__),
-				'site/languages'
-			);
-			
-			if(Cache::me()->isExpired())
-			{
-				$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Languages')
-					. " t1 INNER JOIN " . Database::me()->getTable('Options')
-					. " t2 ON ( t2.alias = 'defaultLanguage' AND t2.value = t1.id )";
-					
-				$this->language = array('abbr' => null, 'id' => null);
-				$dbResult = Database::me()->query($dbQuery);
-
-				if(Database::me()->recordCount($dbResult))
-				{
-					$dbRow = Database::me()->fetchArray($dbResult);
-					$this->setLanguageAbbr($dbRow['abbr']);
-					$this->setLanguageId($dbRow['id']);
-				}
+			$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Languages')
+				. " t1 INNER JOIN " . Database::me()->getTable('Options')
+				. " t2 ON ( t2.alias = 'defaultLanguage' AND t2.value = t1.id )";
 				
-		        Cache::me()->set($this->language, time() + self::CACHE_LIFE_TIME);
+			$this->language = array('abbr' => null, 'id' => null);
+			$dbResult = Database::me()->query($dbQuery);
+
+			if(Database::me()->recordCount($dbResult))
+			{
+				$dbRow = Database::me()->fetchArray($dbResult);
+				$this->setLanguageAbbr($dbRow['abbr']);
+				$this->setLanguageId($dbRow['id']);
 			}
-			
+				
 			$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
 			
 			return $this;
