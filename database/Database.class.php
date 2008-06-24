@@ -5,7 +5,6 @@
 
 		private $tables = array();
 		private $connector = null;
-		private $cacheRealization	= null;
 		private $mergeYAMLSections = array();
 		
 		/**
@@ -29,20 +28,13 @@
 		
 		public function initialize($yamlFile)
 		{
-			$settings = $this->loadCache($yamlFile);
-			
-			if(!$settings)
-			{
-				$yamlSettings = YAML::load($yamlFile);
-	
-				$settings = Arrays::recursiveMergeByArrayKeys(
-					$yamlSettings,
-					$this->getMergeYAMLSections()
-				);
+			$yamlSettings = YAML::load($yamlFile);
+
+			$settings = Arrays::recursiveMergeByArrayKeys(
+				$yamlSettings,
+				$this->getMergeYAMLSections()
+			);
 				
-				$this->saveCache($yamlFile, $settings);
-			}
-			
 			if(isset($settings['connector']))
 			{
 				$connector = null;
@@ -130,52 +122,6 @@
 		public function resourceToArray($dbResult)
 		{
 			return $this->getConnector()->resourceToArray($dbResult);
-		}
-		
-		public function setCacheRealization($realization)
-		{
-			$this->cacheRealization = $realization;
-			return $this;
-		}
-		
-		public function getCacheRealization()
-		{
-			return $this->cacheRealization;
-		}
-		
-		private function loadCache($yamlFile)
-		{
-			Assert::fileExists($yamlFile);
-			
-			$settings = null;
-			
-			if($this->getCacheRealization())
-			{
-				$settings = $this->getCacheRealization()->
-					getData(
-						$yamlFile,
-						'site/yaml/database',
-						file_exists($yamlFile) ? filemtime($yamlFile) : null
-					);
-			}
-			
-			return $settings;
-		}
-		
-		private function saveCache($yamlFile, $cacheData)
-		{
-			Assert::fileExists($yamlFile);
-			
-			if(
-				$this->getCacheRealization()
-				&& $this->getCacheRealization()->isExpired()
-			)
-			{
-				$this->getCacheRealization()->
-					setData($cacheData, filemtime($yamlFile), $yamlFile, 'yaml/database');
-			}
-			
-			return $this;
 		}
 	}
 ?>

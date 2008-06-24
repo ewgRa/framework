@@ -47,7 +47,7 @@
 			);
 		}
 		
-		public function testSelectDafaultLanguage()
+		public function testSelectDefaultLanguage()
 		{
 			Cache::me()->setReturnValue('isExpired', true);
 			
@@ -137,10 +137,12 @@
 					setUrl('/miracle/test')
 			);
 
-			Cache::me()->setReturnValueAt(0, 'get', array(1 => 'ru', 2 => 'en'));
-			Cache::me()->setReturnValueAt(1, 'get', array('id' => 1, 'abbr' => 'ru'));
+			Cache::me()->setReturnValueAt(0, 'get', array('id' => 1, 'abbr' => 'ru'));
+			Cache::me()->setReturnValueAt(1, 'get', array(1 => 'ru', 2 => 'en'));
 			
-			Localizer::me()->defineLanguage();
+			Localizer::me()->
+				selectDefaultLanguage()->
+				defineLanguage();
 
 			
 			$this->assertEqual(

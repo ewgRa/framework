@@ -96,7 +96,9 @@
 			foreach($this->loadSiteOptions() as $option => $value)
 				Config::me()->setOption($option, $value);
 			
-			Localizer::me()->defineLanguage();
+			Localizer::me()->
+				selectDefaultLanguage()->
+				defineLanguage();
 			
 			// TODO: Singlton:setInstanceFromCache
 			$pageInstance = Cache::me()->get(
@@ -119,6 +121,7 @@
 			
 			var_dump(User::me());
 			var_dump(Config::me());
+			var_dump(Database::me());
 			var_dump(Localizer::me());
 			var_dump(Page::me());
 			die;

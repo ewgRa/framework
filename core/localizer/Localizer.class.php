@@ -13,7 +13,7 @@
 		
 		private $language = array('abbr' => null, 'id' => null);
 		private $cookieLanguage = null;
-		private $source = self::SOURCE_LANGUAGE_DEFAULT;
+		private $source = null;
 		private $determinantRealization = null;
 		
 		/**
@@ -105,11 +105,6 @@
 				}
 			}
 
-			if($this->getSource() == self::SOURCE_LANGUAGE_DEFAULT)
-			{
-				$this->selectDefaultLanguage();
-			}
-
 			return $this;
 		}
 
@@ -138,7 +133,6 @@
 
 		public function selectDefaultLanguage()
 		{
-			
 			$this->language = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__),
 				'site/languages'
@@ -162,6 +156,8 @@
 				
 		        Cache::me()->set($this->language, time() + self::CACHE_LIFE_TIME);
 			}
+			
+			$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
 			
 			return $this;
 		}
