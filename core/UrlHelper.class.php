@@ -44,7 +44,7 @@
 				
 			return $result;
 		}
-
+		
 		public function getBaseUrl()
 		{
 			return $this->getBasedUrl();

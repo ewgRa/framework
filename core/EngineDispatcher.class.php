@@ -110,23 +110,52 @@
 				Cache::me()->set(Localizer::me(), time()+Localizer::CACHE_LIFE_TIME);
 			}
 			else
+			{
+				$localizerPathDeterminant = Localizer::me()->getDeterminantRealization();
 				Singleton::setInstance('Localizer', $instance);
+				Localizer::me()->
+					setDeterminantRealization($localizerPathDeterminant);
+			}
 				
 			Localizer::me()->defineLanguage();
 			
-			
 			// TODO: Singlton:setInstanceFromCache
 			$instance = Cache::me()->get(
-				UrlHelper::me()->getEnginePageUrl(), 'engine/instances/page'
+				array(WORK_AREA), 'engine/instances/pageurlmapper'
 			);
 			
 			if(Cache::me()->isExpired())
 			{
-				Page::me()->definePage(UrlHelper::me()->getEnginePageUrl());
+				PageUrlMapper::me()->loadMap();
+				Cache::me()->set(PageUrlMapper::me(), time() + PageUrlMapper::CACHE_LIFE_TIME);
+			}
+			else
+				Singleton::setInstance('PageUrlMapper', $instance);
+			
+			$pageId = PageUrlMapper::me()->getPageId(
+				UrlHelper::me()->getEnginePageUrl()
+			);
+
+			// TODO: Singlton:setInstanceFromCache
+			$instance = Cache::me()->get(
+				array(
+					WORK_AREA,
+					$pageId ? $pageId : UrlHelper::me()->getEnginePageUrl()
+				),
+				'engine/instances/page'
+			);
+			
+			if(Cache::me()->isExpired())
+			{
+				Page::me()->loadPage(UrlHelper::me()->getEnginePageUrl(), $pageId);
 				Cache::me()->set(Page::me(), time()+Page::CACHE_LIFE_TIME);
 			}
 			else
 				Singleton::setInstance('Page', $instance);
+
+			Page::me()->
+				setRequestUrl(UrlHelper::me()->getEnginePageUrl())->
+				processUrl();
 			
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));
@@ -134,10 +163,6 @@
 			User::me()->login('ewgra', '123123');
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
-			var_dump(User::me());
-			var_dump(Config::me());
-			var_dump(Database::me());
-			var_dump(Localizer::me());
 			var_dump(Page::me());
 			die;
 

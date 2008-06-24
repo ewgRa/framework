@@ -31,7 +31,7 @@
 			
 			if(!$db)
 			{
-				throw 
+				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::CONNECT)->
 						setHost($this->host);
@@ -67,7 +67,7 @@
 		
 		public function setCharset($charset = 'utf8')
 		{
-			$this->charset = $charset;			
+			$this->charset = $charset;
 			return $this;
 		}
 		
@@ -86,12 +86,12 @@
 
 		public function getDatabaseName()
 		{
-			return $this->databaseName;			
+			return $this->databaseName;
 		}
 		
 		public function setDatabaseName($databaseName)
 		{
-			$this->databaseName = $databaseName;			
+			$this->databaseName = $databaseName;
 			return $this;
 		}
 		
@@ -104,7 +104,7 @@
 			
 			if(!mysql_select_db($this->databaseName))
 			{
-				throw 
+				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SELECT_DATABASE)->
 						setHost($this->host)->
@@ -138,7 +138,7 @@
 			
 			if(mysql_error())
 			{
-				throw 
+				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SQL_QUERY_ERROR)->
 						setHost($this->host)->
@@ -163,7 +163,7 @@
 		public function dataSeek($resource, $row)
 		{
 			$row--;
-			mysql_data_seek($resource, $row);	
+			mysql_data_seek($resource, $row);
 			return $this;
 		}
 
@@ -245,7 +245,7 @@
 						{
 							$part = "NULL";
 						}
-						else 
+						else
 						{
 							$value = $this->escape($value);
 							

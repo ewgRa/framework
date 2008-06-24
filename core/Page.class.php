@@ -9,11 +9,14 @@
 		private $layoutFile = null;
 		private $urlMatches = null;
 		private $pathUrlParts = null;
+		private $preg = null;
 		private $title = null;
 		private $description = null;
 		private $keywords = null;
 		private $rights = null;
-
+		private $requestUrl = null;
+		private $url = null;
+		
 		/**
 		 * @return Page
 		 */
@@ -88,6 +91,39 @@
 			return $this->title;
 		}
 
+		private function setUrl($url)
+		{
+			$this->url = $url;
+			return $this;
+		}
+
+		public function getUrl()
+		{
+			return $this->url;
+		}
+		
+		public function setRequestUrl($url)
+		{
+			$this->requestUrl = $url;
+			return $this;
+		}
+
+		public function getRequestUrl()
+		{
+			return $this->requestUrl;
+		}
+		
+		private function setPreg()
+		{
+			$this->preg = true;
+			return $this;
+		}
+
+		public function isPreg()
+		{
+			return $this->preg == true;
+		}
+		
 		private function setDescription($description)
 		{
 			$this->description = $description;
@@ -121,9 +157,8 @@
 			return $this->rights;
 		}
 
-		public function definePage($pageUrl)
+		public function loadPage($pageUrl, $pageId = null)
 		{
-			// FIXME: move DB rewriter to config? or PageRewriter?
 			$dbQuery = "
 				SELECT
 					t1.*, t3.id as layout_file_id, t3.path as layout_file,
@@ -135,27 +170,25 @@
 					ON ( t3.id = t2.file_id )
 				LEFT JOIN " . Database::me()->getTable('PagesData') . " t4
 					ON( t4.page_id = t1.id AND t4.language_id = ? )
-				WHERE IF( t1.preg IS NULL, t1.url = ?, ? REGEXP t1.url)
+				WHERE IF(?, t1.id = ?, t1.url = ?)
 			";
 
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array(Localizer::me()->getLanguageId(), $pageUrl, $pageUrl)
+				array(Localizer::me()->getLanguageId(), $pageId, $pageId, $pageUrl)
 			);
-
-			$pages = null;
-
+			
 			if(Database::me()->recordCount($dbResult))
-				$pages = Database::me()->resourcetoArray($dbResult);
+				$page = Database::me()->fetchArray($dbResult);
 			else
 				throw
 					ExceptionsMapper::me()->createException('Page')->
 						setCode(PageException::PAGE_NOT_FOUND)->
 						setUrl($pageUrl);
-
-			usort($pages, array($this, 'sortPages'));
-			$page = array_shift($pages);
-
+			
+			if($page['preg'])
+				$this->setPreg();
+						
 			$this->
 				setId($page['id'])->
 				setLayoutFile(
@@ -165,32 +198,24 @@
 				setTitle($page['title'])->
 				setDescription($page['description'])->
 				setKeywords($page['keywords'])->
-				setPathUrlParts(explode("/", $pageUrl))->
+				setUrl($page['url'])->
 				loadRights();
-
-			preg_match("@" . $page['url'] . "@", $pageUrl, $pageUrlMatches);
-			$pageUrlMatches = $this->processPageUrlMatches($pageUrlMatches);
-			$this->setUrlMatches($pageUrlMatches);
 
 			return $this;
 		}
 
-		private function sortPages( &$pageA, &$pageB )
+		public function processUrl()
 		{
-			preg_match( "@" . $pageA['url'] . "@", $pageA['real_url'], $matchesA );
-			preg_match( "@" . $pageB['url'] . "@", $pageB['real_url'], $matchesB );
-
-			if(
-				(count($matchesA) < count($matchesB) && !is_null($pageA['preg']))
-				|| is_null($pageB['preg'])
-			)
+			$this->setPathUrlParts(explode("/", $this->getRequestUrl()));
+			
+			if($this->isPreg())
 			{
-				return 1;
+				preg_match("@" . $this->getUrl() . "@", $this->getRequestUrl(), $pageUrlMatches);
+				$pageUrlMatches = $this->processPageUrlMatches($pageUrlMatches);
+				$this->setUrlMatches($pageUrlMatches);
 			}
-
-			return -1;
 		}
-
+		
 		private function processPageUrlMatches($urlMatches)
 		{
 			$result = $urlMatches;
