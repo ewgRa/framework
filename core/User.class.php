@@ -11,14 +11,12 @@
 		private $login = null;
 		private $rights = array();
 
-		private static $instance = null;
-		
 		/**
 		 * @return User
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function getId()
@@ -26,7 +24,7 @@
 			return $this->id;
 		}
 		
-		private function setId($id)
+		protected function setId($id)
 		{
 			$this->id = $id;
 			return $this;
@@ -54,7 +52,7 @@
 			return $this;
 		}
 		
-		private function loadRights()
+		protected function loadRights()
 		{
 			$this->rights = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__, $this->getId()),
@@ -107,9 +105,9 @@
 		
 		public function login($login, $password)
 		{
-			Session::start();
-			Session::drop('user');
-			Session::save();
+			Session::me()->start();
+			Session::me()->drop('user');
+			Session::me()->save();
 			
 			$dbQuery = "SELECT *, password = MD5( ? ) as verify_password FROM "
 				. Database::me()->getTable('Users') . " WHERE login = ?";
@@ -126,7 +124,7 @@
 					$this->setLogin($dbRow['login']);
 					$this->loadRights();
 					
-					Session::set(
+					Session::me()->set(
 						'user',
 						array(
 							'id' => $this->getId(),
@@ -134,7 +132,7 @@
 							'rights' => $this->getRights()
 						)
 					);
-					Session::save();
+					Session::me()->save();
 					return self::SUCCESS_LOGIN;
 				}
 				else return self::WRONG_PASSWORD;

@@ -11,7 +11,7 @@
 			DatabaseMock::create();
 			CacheMock::create();
 			SessionMock::create();
-			MyTestLocalizer::dropInstance();
+			Singleton::dropInstance('Localizer');
 		}
 		
 		public function tearDown()
@@ -19,7 +19,7 @@
 			DatabaseMock::drop();
 			CacheMock::drop();
 			SessionMock::drop();
-			MyTestLocalizer::dropInstance();
+			Singleton::dropInstance('Localizer');
 		}
 		
 		public function testGetLanguages()

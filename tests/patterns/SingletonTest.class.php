@@ -1,8 +1,6 @@
 <?php
 	class MySingletonTest extends Singleton
 	{
-		private static $instance = null;
-		
 		private $testVariable = null;
 		
 		/**
@@ -10,7 +8,7 @@
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function setTestVariable($variable)
@@ -28,22 +26,19 @@
 	
 	class MySingletonTest2 extends MySingletonTest
 	{
-		private static $instance = null;
-
 		/**
 		 * @return MySingletonTest2
 		 */
 		public static function me()
 		{
-			$funcArgs = func_get_args();
-			return parent::getInstance(__CLASS__, $funcArgs, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
-	}	
+	}
 
-	class SingletonTest extends UnitTestCase 
+	class SingletonTest extends UnitTestCase
 	{
-		private $testVar = 'testVar'; 
-		private $constructorArgs = array('constructor', 'arguments'); 
+		private $testVar = 'testVar';
+		private $constructorArgs = array('constructor', 'arguments');
 		
 		function testIsRealySingleton()
 		{
@@ -69,6 +64,6 @@
 				MySingletonTest::me()->getTestVariable()
 				== MySingletonTest2::me()->getTestVariable()
 			);
-		}		
+		}
 	}
 ?>

@@ -3,51 +3,30 @@
 	{
 		private $options = null;
 		private $mergeYAMLSections = array();
-		private $cacheRealization	= null;
-		
-		private static $instance = null;
 		
 		/**
 		 * @return Config
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
-		}
-		
-		public function setCacheRealization($realization)
-		{
-			$this->cacheRealization = $realization;
-			return $this;
-		}
-		
-		public function getCacheRealization()
-		{
-			return $this->cacheRealization;
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function initialize($yamlFile)
 		{
-			$this->options = $this->loadCache($yamlFile);
+			$yamlSettings = YAML::load($yamlFile);
 
-			if(!$this->options)
-			{
-				$yamlSettings = YAML::load($yamlFile);
-	
-				$settings = Arrays::recursiveMergeByArrayKeys(
-					$yamlSettings,
-					$this->mergeYAMLSections
-				);
-				
-				foreach($settings as $optionaAlias => $optionValue)
-				{
-					$this->setOption(
-						$optionaAlias,
-						$this->replaceVariables($optionValue)
-					);
-				}
+			$settings = Arrays::recursiveMergeByArrayKeys(
+				$yamlSettings,
+				$this->mergeYAMLSections
+			);
 			
-				$this->saveCache($yamlFile);
+			foreach($settings as $optionaAlias => $optionValue)
+			{
+				$this->setOption(
+					$optionaAlias,
+					$this->replaceVariables($optionValue)
+				);
 			}
 			
 			return $this;
@@ -132,37 +111,6 @@
 			}
 			
 			return $variable;
-		}
-
-		private function loadCache($yamlFile)
-		{
-			$settings = null;
-			
-			if($this->getCacheRealization())
-			{
-				$settings = $this->getCacheRealization()->
-					getData(
-						$yamlFile,
-						'site/yaml/config',
-						file_exists($yamlFile) ? filemtime($yamlFile) : null
-					);
-			}
-			
-			return $settings;
-		}
-		
-		private function saveCache($yamlFile)
-		{
-			if(
-				$this->getCacheRealization()
-				&& $this->getCacheRealization()->isExpired()
-			)
-			{
-				$this->getCacheRealization()->
-					setData($this->options, filemtime($yamlFile), $yamlFile, 'site/yaml/config');
-			}
-			
-			return $this;
 		}
 	}
 ?>

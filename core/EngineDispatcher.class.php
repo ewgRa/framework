@@ -6,14 +6,12 @@
 		
 		private $fired = false;
 		
-		private static $instance = null;
-		
 		/**
 		 * @return EngineDispatcher
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function normalizeRequest()
@@ -100,14 +98,27 @@
 			
 			Localizer::me()->defineLanguage();
 			
-			Page::me()->definePage(UrlHelper::me()->getEnginePageUrl());
+			// TODO: Singlton:setInstanceFromCache
+			$pageInstance = Cache::me()->get(
+				UrlHelper::me()->getEnginePageUrl(), 'site/page/instances'
+			);
+			
+			if(Cache::me()->isExpired())
+			{
+				Page::me()->definePage(UrlHelper::me()->getEnginePageUrl());
+				Cache::me()->set(Page::me(), time()+Page::CACHE_LIFE_TIME);
+			}
+			else
+				Singleton::setInstance('Page', $pageInstance);
 			
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));
 			
+			User::me()->login('ewgra', '123123');
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
 			var_dump(User::me());
+			var_dump(Config::me());
 			var_dump(Localizer::me());
 			var_dump(Page::me());
 			die;

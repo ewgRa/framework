@@ -3,14 +3,12 @@
 	{
 		private $realization = null;
 		
-		protected static $instance = null;
-
 		/**
 		 * @return Session
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function setRealization($realization)

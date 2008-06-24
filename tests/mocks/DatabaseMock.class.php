@@ -5,13 +5,13 @@
 		{
 			Mock::generate('Database', 'DatabaseTestMock');
 			$database = &new DatabaseTestMock();
-			MyTestDatabase::setInstance($database);
+			Singleton::setInstance('Database', $database);
 			return $database;
 		}
 		
 		public static function drop()
 		{
-			MyTestDatabase::dropInstance();
+			Singleton::dropInstance('Database');
 		}
 	}
 ?>

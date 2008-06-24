@@ -1,29 +1,14 @@
 <?php
 	class MyTestConfig extends Config
 	{
-		private static $instance = null;
-		
-		/**
-		 * @return MyConfigTest
-		 */
-		public static function me()
+		public static function ftReplaceVariables($variables)
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
-		}
-		
-		public function setInstance($instance)
-		{
-			self::$instance = $instance;
+			return self::me()->replaceVariables($variables);
 		}
 
-		public function replaceVariables($variables)
+		public static function ftRegisterConstants()
 		{
-			return parent::replaceVariables($variables);
-		}
-
-		public function registerConstants()
-		{
-			return parent::registerConstants();
+			return self::me()->registerConstants();
 		}
 	}
 ?>

@@ -1,7 +1,5 @@
 <?php
-	// FIXME: tested
-	// FIXME: refactoring
-	// FIXME: cache
+	// FIXME: tested?
 	class Page extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
@@ -16,14 +14,12 @@
 		private $keywords = null;
 		private $rights = null;
 
-		private static $instance = null;
-
 		/**
 		 * @return Page
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 
 		private function setId($id)
@@ -159,7 +155,8 @@
 			usort($pages, array($this, 'sortPages'));
 			$page = array_shift($pages);
 
-			$this->setId($page['id'])->
+			$this->
+				setId($page['id'])->
 				setLayoutFile(
 					Config::me()->replaceVariables($page['layout_file'])
 				)->
@@ -195,6 +192,8 @@
 
 		private function processPageUrlMatches($urlMatches)
 		{
+			$result = $urlMatches;
+
 			$dbQuery = "
 				SELECT * FROM " . Database::me()->getTable('PagesUrlMatchesKeys') . "
 				WHERE page_id = ?
@@ -206,46 +205,36 @@
 			{
 				if(isset($urlMatches[$dbRow['match_position']]))
 				{
-					$urlMatches[$dbRow['key']] = $urlMatches[$dbRow['match_position']];
-					unset($urlMatches[$dbRow['match_position']]);
+					$result[$dbRow['key']] = $result[$dbRow['match_position']];
+					unset($result[$dbRow['match_position']]);
 				}
 			}
 
-			return $urlMatches;
+			return $result;
 		}
 
 		protected function loadRights()
 		{
-			$this->rights = Cache::me()->get(
-				array(__CLASS__, __FUNCTION__, $this->getId()),
-				'site/pages'
-			);
+			$this->rights = array();
 
-			if(Cache::me()->isExpired())
+			$dbQuery = '
+				SELECT
+					t1.right_id, t2.url as redirect_page, t3.alias as right_alias
+				FROM ' . Database::me()->getTable('PagesRights_ref') . ' t1
+				LEFT JOIN ' . Database::me()->getTable('Pages') . ' t2
+					ON( t1.redirect_page_id = t2.id )
+				LEFT JOIN ' . Database::me()->getTable('Rights') . ' t3
+					ON( t3.id = t1.right_id )
+				WHERE t1.page_id = ?';
+
+			$dbResult = Database::me()->query($dbQuery, array($this->getId()));
+
+			while($dbRow = Database::me()->fetchArray($dbResult))
 			{
-				$this->rights = array();
-
-				$dbQuery = '
-					SELECT
-						t1.right_id, t2.url as redirect_page, t3.alias as right_alias
-					FROM ' . Database::me()->getTable('PagesRights_ref') . ' t1
-					LEFT JOIN ' . Database::me()->getTable('Pages') . ' t2
-						ON( t1.redirect_page_id = t2.id )
-					LEFT JOIN ' . Database::me()->getTable('Rights') . ' t3
-						ON( t3.id = t1.right_id )
-					WHERE t1.page_id = ?';
-
-				$dbResult = Database::me()->query($dbQuery, array($this->getId()));
-
-				while($dbRow = Database::me()->fetchArray($dbResult))
-				{
-					$this->rights[$dbRow['right_id']] = array(
-						'redirect_page' => $dbRow['redirect_page'],
-						'right_alias' => $dbRow['right_alias']
-					);
-				}
-
-				Cache::me()->set($this->rights, time() + self::CACHE_LIFE_TIME);
+				$this->rights[$dbRow['right_id']] = array(
+					'redirectPage' => $dbRow['redirect_page'],
+					'rightAlias' => $dbRow['right_alias']
+				);
 			}
 
 			return $this;

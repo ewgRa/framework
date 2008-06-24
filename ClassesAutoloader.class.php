@@ -8,14 +8,13 @@
 		private $foundClasses 		= array();
 		private $searchDirectories	= array();
 		private $cacheRealization		= null;
-		private static $instance = null;
 
 		/**
 		 * @return ClassesAutoloader
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 
 		public function load($className)

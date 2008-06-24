@@ -5,13 +5,13 @@
 		{
 			Mock::generate('Cache', 'CacheTestMock');
 			$cache = &new CacheTestMock();
-			MyTestCache::setInstance($cache);
+			Singleton::setInstance('Cache', $cache);
 			return $cache;
 		}
 
 		public static function drop()
 		{
-			MyTestCache::dropInstance();
+			Singleton::dropInstance('Cache');
 		}
 	}
 ?>

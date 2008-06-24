@@ -5,13 +5,13 @@
 		{
 			Mock::generate('Session', 'SessionTestMock');
 			$session = &new SessionTestMock();
-			MyTestSession::setInstance($session);
+			Singleton::setInstance('Session', $session);
 			return $session;
 		}
 		
 		public static function drop()
 		{
-			MyTestSession::dropInstance();
+			Singleton::dropInstance('Session');
 		}
 	}
 ?>

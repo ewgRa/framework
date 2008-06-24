@@ -16,14 +16,12 @@
 		private $source = self::SOURCE_LANGUAGE_DEFAULT;
 		private $determinantRealization = null;
 		
-		protected static $instance = null;
-		
 		/**
 		 * @return Localizer
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function getLanguageAbbr()

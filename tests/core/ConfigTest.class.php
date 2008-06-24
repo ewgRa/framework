@@ -1,34 +1,23 @@
 <?php
 	class ConfigTest extends UnitTestCase
 	{
-		private $cacheDataDir = null;
-		private $firstYamlFile = null;
-		private $secondYamlFile = null;
-		private $thirdYamlFile = null;
-		
+		private $yamlFile = null;
+
 		public function __construct()
 		{
-			$this->cacheDataDir = TMP_DIR . DIRECTORY_SEPARATOR
-				. 'cacheData';
-				
-			$this->firstYamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
+			$this->yamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
 				. 'config.test.yml';
 				
-			$this->secondYamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
-				. 'config.test2.yml';
-
-			$this->thirdYamlFile = TMP_DIR . DIRECTORY_SEPARATOR
-				. 'config.test3.yml';
 		}
 		
 		function setUp()
 		{
-			MyTestConfig::me()->setInstance(null);
+			Singleton::dropInstance('Config');
 		}
 		
 		function tearDown()
 		{
-			MyTestConfig::me()->setInstance(null);
+			Singleton::dropInstance('Config');
 		}
 		
 		function testIsSingleton()
@@ -98,7 +87,7 @@
 		{
 			MyTestConfig::me()->
 				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->firstYamlFile);
+				initialize($this->yamlFile);
 				
 			$this->assertEqual(
 				MyTestConfig::me()->getOption('testArray'),
@@ -107,97 +96,6 @@
 					'arrayKey2' => 'arrayValue2_testSection',
 				)
 			);
-		}
-		
-		function testInitializeCache()
-		{
-			mkdir(TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData');
-
-			copy(
-				$this->firstYamlFile,
-				$this->thirdYamlFile
-			);
-			
-			$time = time();
-			touch($this->thirdYamlFile,	$time);
-			
-			MyTestConfig::me()->setCacheRealization(
-				FileBasedCache::create()->setCacheDir($this->cacheDataDir)
-			);
-			
-			MyTestConfig::me()->
-				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->thirdYamlFile);
-			
-			file_put_contents(
-				$this->thirdYamlFile,
-				''
-			);
-			
-			touch($this->thirdYamlFile, $time);
-			
-			MyTestConfig::me()->setInstance(null);
-			
-			MyTestConfig::me()->
-				setCacheRealization(
-					FileBasedCache::create()->setCacheDir($this->cacheDataDir)
-				)->
-				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->thirdYamlFile);
-			
-			$this->assertEqual(
-				MyTestConfig::me()->getOption('testArray'),
-				array(
-					'arrayKey1' => 'arrayValue1',
-					'arrayKey2' => 'arrayValue2_testSection',
-				)
-			);
-			
-			FrameworkAllTests::deleteDir($this->cacheDataDir);
-			unlink($this->thirdYamlFile);
-		}
-		
-		function testInitializeExpiredCache()
-		{
-			mkdir($this->cacheDataDir);
-
-			copy($this->firstYamlFile, $this->thirdYamlFile);
-			
-			touch($this->thirdYamlFile, time());
-			
-			MyTestConfig::me()->setCacheRealization(
-				FileBasedCache::create()->setCacheDir($this->cacheDataDir)
-			);
-			
-			MyTestConfig::me()->
-				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->thirdYamlFile);
-			
-			$fileMTime = filemtime($this->thirdYamlFile);
-
-			unlink($this->thirdYamlFile);
-			copy($this->secondYamlFile, $this->thirdYamlFile);
-			touch($this->thirdYamlFile, $fileMTime + 10);
-			
-			MyTestConfig::me()->setInstance(null);
-			
-			MyTestConfig::me()->
-				setCacheRealization(
-					FileBasedCache::create()->setCacheDir($this->cacheDataDir)
-				)->
-				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->thirdYamlFile);
-			
-			$this->assertEqual(
-				MyTestConfig::me()->getOption('testArray'),
-				array(
-					'arrayKey1' => 'arrayValue1',
-					'arrayKey2' => 'arrayValue2_testSection_new',
-				)
-			);
-			
-			FrameworkAllTests::deleteDir($this->cacheDataDir);
-			unlink($this->thirdYamlFile);
 		}
 	}
 ?>

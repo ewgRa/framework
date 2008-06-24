@@ -8,14 +8,12 @@
 		private $cacheRealization	= null;
 		private $mergeYAMLSections = array();
 		
-		protected static $instance = null;
-
 		/**
 		 * @return Database
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 		
 		public function getMergeYAMLSections()

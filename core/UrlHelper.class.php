@@ -2,16 +2,14 @@
 	// tested?
 	class UrlHelper extends Singleton
 	{
-		private $basedUrl = null; 
-		
-		private static $instance = null;
+		private $basedUrl = null;
 		
 		/**
 		 * @return UrlHelper
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 
 		public function setBasedUrl($url)
@@ -28,7 +26,7 @@
 		public function getEnginePageUrl()
 		{
 			$localizerDeterminant = Localizer::me()->getDeterminantRealization();
-			$result = $localizerDeterminant->getUrl(); 
+			$result = $localizerDeterminant->getUrl();
 			
 			if(
 				Localizer::me()->getSource() == Localizer::SOURCE_LANGUAGE_URL
@@ -48,6 +46,6 @@
 
 		public function getBaseUrl()
 		{
-			return $this->getBasedUrl(); 
+			return $this->getBasedUrl();
 		}
 	}

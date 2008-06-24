@@ -4,32 +4,48 @@
 	 * @example
 			class MySingleton extends Singleton
 			{
-				private static $instance = null;
-
 				public static function me()
 				{
-					return parent::getInstance(__CLASS__, self::$instance);
+					return parent::getInstance(__CLASS__);
 				}
 			}
 	 */
 	class Singleton
 	{
+		private static $instances = array();
+		
 		protected function __construct()
 		{
 			
 		}
 		
-		public static function getInstance(
-			$className,
-			&$instance
-		)
+		public static function getInstance($className)
 		{
-			if(!$instance)
-			{
-				$instance = new $className;
-			}
+			if(!isset(self::$instances[$className]))
+				self::$instances[$className] = self::createInstance($className);
+
+			return self::$instances[$className];
+		}
+		
+		public static function createInstance($className)
+		{
+			self::$instances[$className] = new $className;
+
+			return self::$instances[$className];
+		}
+		
+		public static function setInstance($className, $instance)
+		{
+			self::$instances[$className] = $instance;
 
 			return $instance;
+		}
+		
+		public static function dropInstance($className)
+		{
+			unset(self::$instances[$className]);
+
+			return null;
 		}
 		
 		public static function me()
