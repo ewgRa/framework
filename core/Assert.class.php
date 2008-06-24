@@ -1,5 +1,4 @@
 <?php
-	// FIXME: tested?
 	class Assert
 	{
 		public static function notNull($variable, $message)
