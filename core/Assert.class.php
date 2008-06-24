@@ -1,5 +1,5 @@
 <?php
-	// tested?
+	// FIXME: tested?
 	class Assert
 	{
 		public static function notNull($variable, $message)
@@ -24,7 +24,7 @@
 						'File',
 						FileException::FILE_NOT_EXISTS
 					)->
-					setFilePath($filePath)->	
+					setFilePath($filePath)->
 					setFile($trace['file'])->
 					setLine($trace['line']);
 			}
