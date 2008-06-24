@@ -11,9 +11,11 @@
 		
 		const CACHE_LIFE_TIME = 86400;
 		
-		private $language = array('abbr' => null, 'id' => null);
+		private $languageAbbr = null;
+		private $languageId = null;
 		private $languages = null;
-		private $cookieLanguage = null;
+		private $cookieLanguageId = null;
+		private $cookieLanguageAbbr = null;
 		private $source = null;
 		private $determinantRealization = null;
 		
@@ -27,12 +29,12 @@
 		
 		public function getLanguageAbbr()
 		{
-			return $this->language['abbr'];
+			return $this->languageAbbr;
 		}
 		
 		private function setLanguageAbbr($abbr)
 		{
-			$this->language['abbr'] = $abbr;
+			$this->languageAbbr = $abbr;
 			return $this;
 		}
 
@@ -49,12 +51,12 @@
 		
 		public function getLanguageId()
 		{
-			return $this->language['id'];
+			return $this->languageId;
 		}
 		
 		private function setLanguageId($id)
 		{
-			$this->language['id'] = $id;
+			$this->languageId = $id;
 			return $this;
 		}
 
@@ -69,18 +71,19 @@
 			return $this;
 		}
 		
-		public function setCookieLanguage($language)
+		public function setCookieLanguage($languageId, $languageAbbr)
 		{
-			$this->cookieLanguage = $language;
+			$this->cookieLanguageId = $languageId;
+			$this->cookieLanguageAbbr = $languageAbbr;
 			return $this;
 		}
 		
 		public function defineLanguage()
 		{
-			if($this->cookieLanguage)
+			if($this->cookieLanguageId && $this->cookieLanguageAbbr)
 			{
-				$this->setLanguageId($this->cookieLanguage['id'])->
-					setLanguageAbbr($this->cookieLanguage['abbr']);
+				$this->setLanguageId($this->cookieLanguageId)->
+					setLanguageAbbr($this->cookieLanguageAbbr);
 					
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
@@ -132,7 +135,6 @@
 				. " t1 INNER JOIN " . Database::me()->getTable('Options')
 				. " t2 ON ( t2.alias = 'defaultLanguage' AND t2.value = t1.id )";
 				
-			$this->language = array('abbr' => null, 'id' => null);
 			$dbResult = Database::me()->query($dbQuery);
 
 			if(Database::me()->recordCount($dbResult))

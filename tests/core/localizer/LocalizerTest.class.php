@@ -54,7 +54,7 @@
 		public function testDefineLanguageCookie()
 		{
 			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
-			Localizer::me()->setCookieLanguage($cookieLanguage);
+			Localizer::me()->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
 
 			Localizer::me()->setDeterminantRealization(
 				LocalizerPathUrlDeterminant::create()
@@ -73,7 +73,7 @@
 		public function testDefineLanguageUrlAndCookie()
 		{
 			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
-			Localizer::me()->setCookieLanguage($cookieLanguage);
+			Localizer::me()->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
 
 			Localizer::me()->setDeterminantRealization(
 				LocalizerPathUrlDeterminant::create()->
