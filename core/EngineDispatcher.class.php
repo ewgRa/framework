@@ -98,6 +98,7 @@
 			
 			Localizer::me()->
 				selectDefaultLanguage()->
+				loadLanguages()->
 				defineLanguage();
 			
 			// TODO: Singlton:setInstanceFromCache

@@ -12,6 +12,7 @@
 		const CACHE_LIFE_TIME = 86400;
 		
 		private $language = array('abbr' => null, 'id' => null);
+		private $languages = null;
 		private $cookieLanguage = null;
 		private $source = null;
 		private $determinantRealization = null;
@@ -87,12 +88,10 @@
 			$probableLanguageAbbr = $this->getDeterminantRealization()->
 					getDefinedLanguageAbbr();
 
-			$languages = $this->getLanguages();
-			
-			if($languages && in_array($probableLanguageAbbr, $languages))
+			if($this->languages && in_array($probableLanguageAbbr, $this->languages))
 			{
 				$this->setLanguageAbbr($probableLanguageAbbr);
-				$flipLanguages = array_flip($languages);
+				$flipLanguages = array_flip($this->languages);
 				$this->setLanguageId($flipLanguages[$probableLanguageAbbr]);
 
 				if($this->getSource() == self::SOURCE_LANGUAGE_COOKIE)
@@ -108,9 +107,9 @@
 			return $this;
 		}
 
-		public function getLanguages()
+		public function loadLanguages()
 		{
-			$languages = Cache::me()->get(
+			$this->languages = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__),
 				'site/languages'
 			);
@@ -118,19 +117,25 @@
 			if(Cache::me()->isExpired())
 			{
 				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages');
-				$languages = array();
+				$this->languages = array();
 				$dbResult = Database::me()->query($dbQuery);
 
 				while($dbRow = Database::me()->fetchArray($dbResult))
 				{
-					$languages[$dbRow['id']] = $dbRow['abbr'];
+					$this->languages[$dbRow['id']] = $dbRow['abbr'];
 				}
 
-				Cache::me()->set($languages, time() + self::CACHE_LIFE_TIME);
+				Cache::me()->set($this->languages, time() + self::CACHE_LIFE_TIME);
 			}
-			return $languages;
+			
+			return $this;
 		}
 
+		public function getLanguages()
+		{
+			return $this->languages;
+		}
+		
 		public function selectDefaultLanguage()
 		{
 			$this->language = Cache::me()->get(

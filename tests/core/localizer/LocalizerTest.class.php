@@ -29,6 +29,8 @@
 			Database::me()->setReturnValueAt(0, 'fetchArray', $this->languages[0]);
 			Database::me()->setReturnValueAt(1, 'fetchArray', $this->languages[1]);
 			
+			Localizer::me()->loadLanguages();
+			
 			$this->assertEqual(
 				$this->convertLanguages($this->languages),
 				Localizer::me()->getLanguages()
@@ -40,6 +42,8 @@
 			Cache::me()->setReturnValue(
 				'get', $this->convertLanguages($this->languages)
 			);
+			
+			Localizer::me()->loadLanguages();
 			
 			$this->assertEqual(
 				$this->convertLanguages($this->languages),
@@ -98,7 +102,9 @@
 			
 			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
 			
-			Localizer::me()->defineLanguage();
+			Localizer::me()->
+				loadLanguages()->
+				defineLanguage();
 
 			
 			$this->assertEqual(
@@ -119,7 +125,9 @@
 
 			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
 			
-			Localizer::me()->defineLanguage();
+			Localizer::me()->
+				loadLanguages()->
+				defineLanguage();
 
 			
 			$this->assertEqual(
