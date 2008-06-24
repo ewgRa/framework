@@ -1,5 +1,4 @@
 <?php
-	// FIXME: tested?
 	class PageUrlMapper extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
