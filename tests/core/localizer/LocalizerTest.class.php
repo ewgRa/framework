@@ -9,7 +9,6 @@
 		public function setUp()
 		{
 			DatabaseMock::create();
-			CacheMock::create();
 			SessionMock::create();
 			Singleton::dropInstance('Localizer');
 		}
@@ -17,15 +16,12 @@
 		public function tearDown()
 		{
 			DatabaseMock::drop();
-			CacheMock::drop();
 			SessionMock::drop();
 			Singleton::dropInstance('Localizer');
 		}
 		
 		public function testGetLanguages()
 		{
-			Cache::me()->setReturnValue('isExpired', true);
-			
 			Database::me()->setReturnValueAt(0, 'fetchArray', $this->languages[0]);
 			Database::me()->setReturnValueAt(1, 'fetchArray', $this->languages[1]);
 			
@@ -37,24 +33,8 @@
 			);
 		}
 		
-		public function testGetLanguagesFromCache()
-		{
-			Cache::me()->setReturnValue(
-				'get', $this->convertLanguages($this->languages)
-			);
-			
-			Localizer::me()->loadLanguages();
-			
-			$this->assertEqual(
-				$this->convertLanguages($this->languages),
-				Localizer::me()->getLanguages()
-			);
-		}
-		
 		public function testSelectDefaultLanguage()
 		{
-			Cache::me()->setReturnValue('isExpired', true);
-			
 			Database::me()->setReturnValueAt(0, 'recordCount', 1);
 			Database::me()->setReturnValueAt(0, 'fetchArray', $this->languages[0]);
 
@@ -100,8 +80,9 @@
 					setUrl('/ru/test')
 			);
 			
-			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
-			
+			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
+			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
+						
 			Localizer::me()->
 				loadLanguages()->
 				defineLanguage();
@@ -123,8 +104,9 @@
 					setUrl('/ru/test')
 			);
 
-			Cache::me()->setReturnValue('get', array(1 => 'ru', 2 => 'en'));
-			
+			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
+			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
+						
 			Localizer::me()->
 				loadLanguages()->
 				defineLanguage();
@@ -145,8 +127,10 @@
 					setUrl('/miracle/test')
 			);
 
-			Cache::me()->setReturnValueAt(0, 'get', array('id' => 1, 'abbr' => 'ru'));
-			Cache::me()->setReturnValueAt(1, 'get', array(1 => 'ru', 2 => 'en'));
+			Database::me()->setReturnValueAt(0, 'recordCount', 1);
+			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
+			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
+			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
 			
 			Localizer::me()->
 				selectDefaultLanguage()->

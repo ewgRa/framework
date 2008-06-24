@@ -113,7 +113,8 @@
 				Singleton::setInstance('Localizer', $instance);
 				
 			Localizer::me()->defineLanguage();
-				
+			
+			
 			// TODO: Singlton:setInstanceFromCache
 			$instance = Cache::me()->get(
 				UrlHelper::me()->getEnginePageUrl(), 'engine/instances/page'
