@@ -54,7 +54,7 @@
 		{
 			$options = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__),
-				'site/options'
+				'options'
 			);
 
 			if(Cache::me()->isExpired())
@@ -97,7 +97,7 @@
 				Config::me()->setOption($option, $value);
 			
 			$instance = Cache::me()->get(
-				array(), 'engine/instances/localizer'
+				array(), 'localizer'
 			);
 			
 			if(Cache::me()->isExpired())
@@ -119,7 +119,7 @@
 			Localizer::me()->defineLanguage();
 			
 			$instance = Cache::me()->get(
-				array(WORK_AREA), 'engine/instances/pageurlmapper'
+				array(WORK_AREA), 'pageurlmapper'
 			);
 			
 			if(Cache::me()->isExpired())
@@ -139,7 +139,7 @@
 					WORK_AREA,
 					$pageId ? $pageId : UrlHelper::me()->getEnginePageUrl()
 				),
-				'engine/instances/page'
+				'page'
 			);
 			
 			if(Cache::me()->isExpired())

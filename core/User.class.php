@@ -56,7 +56,7 @@
 		{
 			$this->rights = Cache::me()->get(
 				array(__CLASS__, __FUNCTION__, $this->getId()),
-				'site/users'
+				'users'
 			);
 			
 			if(Cache::me()->isExpired())
