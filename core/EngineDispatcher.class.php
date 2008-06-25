@@ -96,26 +96,6 @@
 			foreach($this->loadSiteOptions() as $option => $value)
 				Config::me()->setOption($option, $value);
 			
-			$instance = Cache::me()->get(
-				array(), 'localizer'
-			);
-			
-			if(Cache::me()->isExpired())
-			{
-				Localizer::me()->
-					loadLanguages()->
-					selectDefaultLanguage();
-				
-				Cache::me()->set(Localizer::me(), time()+Localizer::CACHE_LIFE_TIME);
-			}
-			else
-			{
-				$localizerPathDeterminant = Localizer::me()->getDeterminantRealization();
-				Singleton::setInstance('Localizer', $instance);
-				Localizer::me()->
-					setDeterminantRealization($localizerPathDeterminant);
-			}
-				
 			Localizer::me()->defineLanguage();
 			
 			$instance = Cache::me()->get(

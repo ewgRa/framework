@@ -1,12 +1,9 @@
 <?php
-	class FileBasedCache
+	final class FileBasedCache extends Cache
 	{
 		const OS_WIN = 'WIN';
-		
-		private $isDisabled			= false;
-		private $isExpired 			= true;
+
 		private $cacheDir 			= null;
-		private $defaultLifeTime 	= 31536000; #one year
 		private $fileName			= null;
 
 		/**
@@ -15,39 +12,6 @@
 		public static function create()
 		{
 			return new self;
-		}
-		
-		public function disable()
-		{
-			$this->isDisabled = true;
-			return $this;
-		}
-		
-		public function enable()
-		{
-			$this->isDisabled = false;
-			return $this;
-		}
-		
-		public function isDisabled()
-		{
-			return $this->isDisabled;
-		}
-		
-		public function isExpired()
-		{
-			return $this->isExpired;
-		}
-
-		public function getDefaultLifeTime()
-		{
-			return $this->defaultLifeTime;
-		}
-		
-		public function setDefaultLifeTime($defaultLifeTime)
-		{
-			$this->defaultLifeTime = $defaultLifeTime;
-			return $this;
 		}
 		
 		public function setCacheDir($cacheDir)
@@ -61,28 +25,27 @@
 			return $this->cacheDir;
 		}
 		
-		public function setActualTime($time)
+		private function getFileName()
 		{
-			$this->actualTime = $time;
+			return $this->fileName;
+		}
+		
+		private function setFileName($filename)
+		{
+			$this->fileName = $filename;
 			return $this;
 		}
 		
-		public function getActualTime()
+		private function dropFileName()
 		{
-			return $this->actualTime;
+			$this->fileName = null;
+			return $this;
 		}
 		
-		public function dropActualTime()
-		{
-			$this->actualTime = null;
-		}
-		
-		public function getData($key, $prefix = null, $actualTime = null)
+		public function get($key, $prefix = null, $actualTime = null)
 		{
 			if(!$actualTime)
-			{
 				$actualTime = time();
-			}
 			
 			if($this->isDisabled())
 			{
@@ -112,7 +75,7 @@
 			return $result;
 		}
 
-		public function setData(
+		public function set(
 			$data, $lifeTillTime = null,
 			$key = null, $prefix = null
 		)
@@ -139,35 +102,6 @@
 			return $this;
 		}
 
-		private function getFileName()
-		{
-			return $this->fileName;
-		}
-		
-		private function setFileName($filename)
-		{
-			$this->fileName = $filename;
-			return $this;
-		}
-		
-		private function dropFileName()
-		{
-			$this->fileName = null;
-			return $this;
-		}
-		
-		private function expired()
-		{
-			$this->isExpired = true;
-			return $this;
-		}
-		
-		private function actual()
-		{
-			$this->isExpired = false;
-			return $this;
-		}
-		
 		private function compileFileName($key, $prefix)
 		{
 			$fileName = md5(serialize($key));

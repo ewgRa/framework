@@ -26,7 +26,7 @@
 		{
 			$key = array( rand() );
 			
-			$this->realization->setData(
+			$this->realization->set(
 				$this->cacheData,
 				time() + $this->realization->getDefaultLifeTime(),
 				$key,
@@ -35,7 +35,7 @@
 			
 			$this->assertEqual(
 				$this->cacheData,
-				$this->realization->getData($key, $this->prefix)
+				$this->realization->get($key, $this->prefix)
 			);
 		}
 
@@ -43,14 +43,14 @@
 		{
 			$key = array( rand() );
 			
-			$this->realization->setData(
+			$this->realization->set(
 				$this->cacheData,
 				time() - 1,
 				$key,
 				$this->prefix
 			);
 			
-			$this->realization->getData($key, $this->prefix);
+			$this->realization->get($key, $this->prefix);
 			
 			$this->assertTrue($this->realization->isExpired());
 		}
@@ -59,12 +59,12 @@
 		{
 			$key = array( rand() );
 			
-			$this->realization->getData($key, $this->prefix);
-			$this->realization->setData($this->cacheData);
+			$this->realization->get($key, $this->prefix);
+			$this->realization->set($this->cacheData);
 			
 			$this->assertEqual(
 				$this->cacheData,
-				$this->realization->getData($key, $this->prefix)
+				$this->realization->get($key, $this->prefix)
 			);
 		}
 	}

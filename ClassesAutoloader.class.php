@@ -130,7 +130,7 @@
 			if($this->getCacheRealization())
 			{
 				$this->setFoundClasses(
-					$this->getCacheRealization()->getData(
+					$this->getCacheRealization()->get(
 						$this->getSearchDirectories(),
 						'autoloader'
 					)
@@ -148,7 +148,7 @@
 		{
 			if($this->getCacheRealization())
 			{
-				$this->getCacheRealization()->setData(
+				$this->getCacheRealization()->set(
 					$this->getFoundClasses(),
 					null,
 					$this->getSearchDirectories(),

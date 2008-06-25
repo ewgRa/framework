@@ -1,7 +1,9 @@
 <?php
-	class Cache extends Singleton
+	abstract class Cache extends Singleton
 	{
-		private $realization = null;
+		private $isDisabled			= false;
+		private $isExpired 			= true;
+		private $defaultLifeTime 	= 31536000; #one year
 		
 		/**
 		 * @return Cache
@@ -11,38 +13,60 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		public function setRealization($realization)
+		public static function factory($realization)
 		{
-			$this->realization = $realization;
+			 return parent::setInstance(__CLASS__, $realization);
+		}
+		
+		public function disable()
+		{
+			$this->isDisabled = true;
 			return $this;
 		}
 		
-		public function getRealization()
+		public function enable()
 		{
-			return $this->realization;
+			$this->isDisabled = false;
+			return $this;
 		}
 		
-		public function get($key, $prefix = null, $actualTime = null)
+		public function isDisabled()
 		{
-			return $this->getRealization()->getData(
-				$key, $prefix, $actualTime
-			);
+			return $this->isDisabled;
 		}
 		
-		public function set(
-			$data, $lifeTillTime = null,
-			$key = null, $prefix = null
-		)
-		{
-			return $this->getRealization()->setData(
-				$data, $lifeTillTime,
-				$key, $prefix
-			);
-		}
-
 		public function isExpired()
 		{
-			return $this->getRealization()->isExpired();
+			return $this->isExpired;
 		}
+
+		public function getDefaultLifeTime()
+		{
+			return $this->defaultLifeTime;
+		}
+		
+		public function setDefaultLifeTime($defaultLifeTime)
+		{
+			$this->defaultLifeTime = $defaultLifeTime;
+			return $this;
+		}
+		
+		protected function expired()
+		{
+			$this->isExpired = true;
+			return $this;
+		}
+		
+		protected function actual()
+		{
+			$this->isExpired = false;
+			return $this;
+		}
+		
+		abstract public function get($key, $prefix = null, $actualTime = null);
+		
+		abstract public function set(
+			$data, $lifeTillTime = null, $key = null, $prefix = null
+		);
 	}
 ?>
