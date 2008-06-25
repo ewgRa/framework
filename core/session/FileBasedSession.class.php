@@ -1,8 +1,7 @@
 <?php
-	class FileBasedSession
+	final class FileBasedSession extends Session
 	{
 		private $data = array();
-		private $isStarted = false;
 
 		/**
 		 * @return FileBasedSession
@@ -30,11 +29,6 @@
 			}
 			
 			return $this;
-		}
-
-		public function isStarted()
-		{
-			return $this->isStarted;
 		}
 
 		public function save()

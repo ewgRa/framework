@@ -1,8 +1,6 @@
 <?php
 	class UrlHelper extends Singleton
 	{
-		private $basedUrl = null;
-		
 		/**
 		 * @return UrlHelper
 		 */
@@ -11,40 +9,21 @@
 			return parent::getInstance(__CLASS__);
 		}
 
-		public function setBasedUrl($url)
+		public function getEnginePagePath()
 		{
-			$this->basedUrl = $url;
-			return $this;
-		}
-		
-		public function getBasedUrl()
-		{
-			return $this->basedUrl;
-		}
-		
-		public function getEnginePageUrl()
-		{
-			$localizerDeterminant = Localizer::me()->getDeterminantRealization();
-			$result = $localizerDeterminant->getUrl();
+			$result = Localizer::me()->getPath();
 			
 			if(
 				Localizer::me()->getSource() == Localizer::SOURCE_LANGUAGE_URL
 				|| Localizer::me()->getSource() == Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
 			)
 			{
-				if($localizerDeterminant->getType() == Localizer::DETERMINANT_PATH_BASED)
+				if(Localizer::me()->getType() == Localizer::DETERMINANT_PATH_BASED)
 				{
-					$result = $localizerDeterminant->cutLanguageAbbr(
-						Localizer::me()->getLanguageAbbr()
-					);
+					$result = Localizer::me()->cutLanguageAbbr();
 				}
 			}
 				
 			return $result;
-		}
-		
-		public function getBaseUrl()
-		{
-			return $this->getBasedUrl();
 		}
 	}

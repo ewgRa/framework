@@ -25,11 +25,13 @@
 			Database::me()->setReturnValueAt(0, 'fetchArray', $this->languages[0]);
 			Database::me()->setReturnValueAt(1, 'fetchArray', $this->languages[1]);
 			
-			Localizer::me()->loadLanguages();
+			$localizer = LocalizerPathBased::create();
+			
+			$localizer->loadLanguages();
 			
 			$this->assertEqual(
 				$this->convertLanguages($this->languages),
-				Localizer::me()->getLanguages()
+				$localizer->getLanguages()
 			);
 		}
 		
@@ -38,111 +40,97 @@
 			Database::me()->setReturnValueAt(0, 'recordCount', 1);
 			Database::me()->setReturnValueAt(0, 'fetchArray', $this->languages[0]);
 
-			Localizer::me()->selectDefaultLanguage();
+			$localizer = LocalizerPathBased::create();
+			$localizer->selectDefaultLanguage();
 			
 			$this->assertEqual(
 				$this->languages[0]['id'],
-				Localizer::me()->getLanguageId()
+				$localizer->getLanguageId()
 			);
 
 			$this->assertEqual(
 				$this->languages[0]['abbr'],
-				Localizer::me()->getLanguageAbbr()
+				$localizer->getLanguageAbbr()
 			);
 		}
 		
 		public function testDefineLanguageCookie()
 		{
 			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
-			Localizer::me()->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
+			$localizer = LocalizerPathBased::create();
+			$localizer->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
 
-			Localizer::me()->setDeterminantRealization(
-				LocalizerPathUrlDeterminant::create()
-			);
-			
-			Localizer::me()->defineLanguage();
+			$localizer->defineLanguage();
 			
 			$this->assertEqual(
-				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_COOKIE
+				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_COOKIE
 			);
 
-			$this->assertEqual(Localizer::me()->getLanguageId(), $cookieLanguage['id']);
-			$this->assertEqual(Localizer::me()->getLanguageAbbr(), $cookieLanguage['abbr']);
+			$this->assertEqual($localizer->getLanguageId(), $cookieLanguage['id']);
+			$this->assertEqual($localizer->getLanguageAbbr(), $cookieLanguage['abbr']);
 		}
 		
 		public function testDefineLanguageUrlAndCookie()
 		{
 			$cookieLanguage = array('id' => 2, 'abbr' => 'en');
-			Localizer::me()->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
+			$localizer = LocalizerPathBased::create();
+			$localizer->setCookieLanguage($cookieLanguage['id'], $cookieLanguage['abbr']);
 
-			Localizer::me()->setDeterminantRealization(
-				LocalizerPathUrlDeterminant::create()->
-					setUrl('/ru/test')
-			);
+			$localizer->setPath('/ru/test');
 			
 			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
 			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
 						
-			Localizer::me()->
-				loadLanguages()->
-				defineLanguage();
+			$localizer->loadLanguages()->defineLanguage();
 
 			
 			$this->assertEqual(
-				Localizer::me()->getSource(),
+				$localizer->getSource(),
 				Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
 			);
 
-			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
-			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
+			$this->assertEqual($localizer->getLanguageId(), 1);
+			$this->assertEqual($localizer->getLanguageAbbr(), 'ru');
 		}
 		
 		public function testDefineLanguageUrl()
 		{
-			Localizer::me()->setDeterminantRealization(
-				LocalizerPathUrlDeterminant::create()->
-					setUrl('/ru/test')
-			);
+			$localizer = LocalizerPathBased::create();
+			$localizer->setPath('/ru/test');
 
 			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
 			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
 						
-			Localizer::me()->
-				loadLanguages()->
-				defineLanguage();
+			$localizer->loadLanguages()->defineLanguage();
 
 			
 			$this->assertEqual(
-				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_URL
+				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_URL
 			);
 
-			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
-			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
+			$this->assertEqual($localizer->getLanguageId(), 1);
+			$this->assertEqual($localizer->getLanguageAbbr(), 'ru');
 		}
 		
 		public function testDefineLanguageDefault()
 		{
-			Localizer::me()->setDeterminantRealization(
-				LocalizerPathUrlDeterminant::create()->
-					setUrl('/miracle/test')
-			);
+			$localizer = LocalizerPathBased::create();
+			$localizer->setPath('/miracle/test');
 
 			Database::me()->setReturnValueAt(0, 'recordCount', 1);
 			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
 			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
 			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
 			
-			Localizer::me()->
-				selectDefaultLanguage()->
-				defineLanguage();
+			$localizer->selectDefaultLanguage()->defineLanguage();
 
 			
 			$this->assertEqual(
-				Localizer::me()->getSource(), Localizer::SOURCE_LANGUAGE_DEFAULT
+				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_DEFAULT
 			);
 
-			$this->assertEqual(Localizer::me()->getLanguageId(), 1);
-			$this->assertEqual(Localizer::me()->getLanguageAbbr(), 'ru');
+			$this->assertEqual($localizer->getLanguageId(), 1);
+			$this->assertEqual($localizer->getLanguageAbbr(), 'ru');
 		}
 		
 		public function convertLanguages($languages)

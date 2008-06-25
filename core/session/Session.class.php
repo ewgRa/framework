@@ -1,8 +1,8 @@
 <?php
-	class Session extends Singleton
+	abstract class Session extends Singleton
 	{
-		private $realization = null;
-		
+		protected $isStarted = false;
+
 		/**
 		 * @return Session
 		 */
@@ -10,52 +10,10 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
-		public function setRealization($realization)
-		{
-			$this->realization = $realization;
-			return $this;
-		}
-		
-		public function getRealization()
-		{
-			return $this->realization;
-		}
 
-		public function relativeStart()
+		public static function factory($realization)
 		{
-			$this->getRealization()->relativeStart();
-			return $this;
-		}
-		
-		public function isStarted()
-		{
-			return $this->getRealization()->isStarted();
-		}
-		
-		public function get($alias)
-		{
-			return $this->getRealization()->get($alias);
-		}
-
-		public function set($alias, $value)
-		{
-			return $this->getRealization()->set($alias, $value);
-		}
-		
-		public function drop($alias)
-		{
-			return $this->getRealization()->drop($alias);
-		}
-		
-		public function start()
-		{
-			return $this->getRealization()->start();
-		}
-
-		public function save()
-		{
-			return $this->getRealization()->save();
+			 return parent::setInstance(__CLASS__, $realization);
 		}
 		
 		public function getCookie($alias)
@@ -67,5 +25,18 @@
 			
 			return $result;
 		}
+
+		public function isStarted()
+		{
+			return $this->isStarted;
+		}
+		
+		abstract public function relativeStart();
+		abstract public function start();
+		abstract public function save();
+		abstract public function getId();
+		abstract public function get($alias);
+		abstract public function set($alias, $value);
+		abstract public function drop($alias);
 	}
 ?>

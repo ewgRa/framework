@@ -111,27 +111,27 @@
 				Singleton::setInstance('PageUrlMapper', $instance);
 			
 			$pageId = PageUrlMapper::me()->getPageId(
-				UrlHelper::me()->getEnginePageUrl()
+				UrlHelper::me()->getEnginePagePath()
 			);
 
 			$instance = Cache::me()->get(
 				array(
 					WORK_AREA,
-					$pageId ? $pageId : UrlHelper::me()->getEnginePageUrl()
+					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
 				),
 				'page'
 			);
 			
 			if(Cache::me()->isExpired())
 			{
-				Page::me()->loadPage(UrlHelper::me()->getEnginePageUrl(), $pageId);
+				Page::me()->loadPage(UrlHelper::me()->getEnginePagePath(), $pageId);
 				Cache::me()->set(Page::me(), time()+Page::CACHE_LIFE_TIME);
 			}
 			else
 				Singleton::setInstance('Page', $instance);
 
 			Page::me()->
-				setRequestUrl(UrlHelper::me()->getEnginePageUrl())->
+				setRequestUrl(UrlHelper::me()->getEnginePagePath())->
 				processUrl();
 			
 			if(Page::me()->getViewType() == View::AJAX)
@@ -141,6 +141,7 @@
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
 			var_dump(Page::me());
+			var_dump(Localizer::me());
 			die;
 
 //			EventDispatcher::ThrowEvent( 'EngineStarted' );

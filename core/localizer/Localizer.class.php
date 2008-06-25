@@ -1,5 +1,5 @@
 <?php
-	class Localizer extends Singleton
+	abstract class Localizer extends Singleton
 	{
 		const SOURCE_LANGUAGE_DEFAULT = 1;
 		const SOURCE_LANGUAGE_COOKIE = 2;
@@ -17,8 +17,9 @@
 		private $cookieLanguageId = null;
 		private $cookieLanguageAbbr = null;
 		private $source = null;
-		private $determinantRealization = null;
 		
+		protected $type = null;
+
 		/**
 		 * @return Localizer
 		 */
@@ -27,12 +28,22 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		public static function factory($realization)
+		{
+			return parent::setInstance(__CLASS__, $realization);
+		}
+		
+		public function getType()
+		{
+			return $this->type;
+		}
+		
 		public function getLanguageAbbr()
 		{
 			return $this->languageAbbr;
 		}
 		
-		private function setLanguageAbbr($abbr)
+		public function setLanguageAbbr($abbr)
 		{
 			$this->languageAbbr = $abbr;
 			return $this;
@@ -60,15 +71,9 @@
 			return $this;
 		}
 
-		public function getDeterminantRealization()
+		public function getLanguages()
 		{
-			return $this->determinantRealization;
-		}
-		
-		public function setDeterminantRealization($determinantRealization)
-		{
-			$this->determinantRealization = $determinantRealization;
-			return $this;
+			return $this->languages;
 		}
 		
 		public function setCookieLanguage($languageId, $languageAbbr)
@@ -88,8 +93,7 @@
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
 
-			$probableLanguageAbbr = $this->getDeterminantRealization()->
-					getDefinedLanguageAbbr();
+			$probableLanguageAbbr = $this->getDefinedLanguageAbbr();
 
 			if($this->languages && in_array($probableLanguageAbbr, $this->languages))
 			{
@@ -124,11 +128,6 @@
 			return $this;
 		}
 
-		public function getLanguages()
-		{
-			return $this->languages;
-		}
-		
 		public function selectDefaultLanguage()
 		{
 			$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Languages')
@@ -148,5 +147,8 @@
 			
 			return $this;
 		}
+		
+		abstract public function getDefinedLanguageAbbr();
+		abstract public function cutLanguageAbbr();
 	}
 ?>
