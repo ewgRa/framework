@@ -7,15 +7,15 @@
 		private $id = null;
 		private $viewType = null;
 		private $layoutFile = null;
-		private $urlMatches = null;
-		private $pathUrlParts = null;
+		private $pathMatches = null;
+		private $pathParts = null;
 		private $preg = null;
 		private $title = null;
 		private $description = null;
 		private $keywords = null;
 		private $rights = null;
-		private $requestUrl = null;
-		private $url = null;
+		private $requestPath = null;
+		private $path = null;
 		
 		/**
 		 * @return Page
@@ -58,26 +58,26 @@
 			return $this->layoutFile;
 		}
 
-		private function setUrlMatches($urlMatches)
+		private function setPathMatches($pathMatches)
 		{
-			$this->urlMatches = $urlMatches;
+			$this->pathMatches = $pathMatches;
 			return $this;
 		}
 
-		public function getUrlMatches()
+		public function getPathMatches()
 		{
-			return $this->urlMatches;
+			return $this->pathMatches;
 		}
 
-		private function setPathUrlParts($pathUrlParts)
+		private function setPathParts($pathParts)
 		{
-			$this->pathUrlParts = $pathUrlParts;
+			$this->pathParts = $pathParts;
 			return $this;
 		}
 
-		public function getPathUrlParts()
+		public function getPathParts()
 		{
-			return $this->pathUrlParts;
+			return $this->pathParts;
 		}
 
 		private function setTitle($title)
@@ -91,26 +91,26 @@
 			return $this->title;
 		}
 
-		private function setUrl($url)
+		private function setPath($path)
 		{
-			$this->url = $url;
+			$this->path = $path;
 			return $this;
 		}
 
-		public function getUrl()
+		public function getPath()
 		{
-			return $this->url;
+			return $this->path;
 		}
 		
-		public function setRequestUrl($url)
+		public function setRequestPath($path)
 		{
-			$this->requestUrl = $url;
+			$this->requestPath = $path;
 			return $this;
 		}
 
-		public function getRequestUrl()
+		public function getRequestPath()
 		{
-			return $this->requestUrl;
+			return $this->requestPath;
 		}
 		
 		private function setPreg()
@@ -157,7 +157,7 @@
 			return $this->rights;
 		}
 
-		public function loadPage($pageUrl, $pageId = null)
+		public function loadPage($pagePath, $pageId = null)
 		{
 			$dbQuery = "
 				SELECT
@@ -170,12 +170,12 @@
 					ON ( t3.id = t2.file_id )
 				LEFT JOIN " . Database::me()->getTable('PagesData') . " t4
 					ON( t4.page_id = t1.id AND t4.language_id = ? )
-				WHERE IF(?, t1.id = ?, t1.url = ?)
+				WHERE IF(?, t1.id = ?, t1.path = ?)
 			";
 
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array(Localizer::me()->getLanguageId(), $pageId, $pageId, $pageUrl)
+				array(Localizer::me()->getLanguageId(), $pageId, $pageId, $pagePath)
 			);
 			
 			if(Database::me()->recordCount($dbResult))
@@ -184,7 +184,7 @@
 				throw
 					ExceptionsMapper::me()->createException('Page')->
 						setCode(PageException::PAGE_NOT_FOUND)->
-						setUrl($pageUrl);
+						setUrl($pagePath);
 			
 			if($page['preg'])
 				$this->setPreg();
@@ -198,27 +198,27 @@
 				setTitle($page['title'])->
 				setDescription($page['description'])->
 				setKeywords($page['keywords'])->
-				setUrl($page['url'])->
+				setPath($page['path'])->
 				loadRights();
 
 			return $this;
 		}
 
-		public function processUrl()
+		public function processPath()
 		{
-			$this->setPathUrlParts(explode("/", $this->getRequestUrl()));
+			$this->setPathParts(explode("/", $this->getRequestPath()));
 			
 			if($this->isPreg())
 			{
-				preg_match("@" . $this->getUrl() . "@", $this->getRequestUrl(), $pageUrlMatches);
-				$pageUrlMatches = $this->processPageUrlMatches($pageUrlMatches);
-				$this->setUrlMatches($pageUrlMatches);
+				preg_match("@" . $this->getPath() . "@", $this->getRequestPath(), $pagePathMatches);
+				$pagePathMatches = $this->processPathMatches($pagePathMatches);
+				$this->setPathMatches($pagePathMatches);
 			}
 		}
 		
-		private function processPageUrlMatches($urlMatches)
+		private function processPathMatches($pathMatches)
 		{
-			$result = $urlMatches;
+			$result = $pathMatches;
 
 			$dbQuery = "
 				SELECT * FROM " . Database::me()->getTable('PagesUrlMatchesKeys') . "
@@ -229,7 +229,7 @@
 
 			while($dbRow = Database::me()->fetchArray($dbResult))
 			{
-				if(isset($urlMatches[$dbRow['match_position']]))
+				if(isset($pathMatches[$dbRow['match_position']]))
 				{
 					$result[$dbRow['key']] = $result[$dbRow['match_position']];
 					unset($result[$dbRow['match_position']]);
@@ -245,7 +245,7 @@
 
 			$dbQuery = '
 				SELECT
-					t1.right_id, t2.url as redirect_page, t3.alias as right_alias
+					t1.right_id, t2.path as redirect_page, t3.alias as right_alias
 				FROM ' . Database::me()->getTable('PagesRights_ref') . ' t1
 				LEFT JOIN ' . Database::me()->getTable('Pages') . ' t2
 					ON( t1.redirect_page_id = t2.id )

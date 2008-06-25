@@ -99,18 +99,18 @@
 			Localizer::me()->defineLanguage();
 			
 			$instance = Cache::me()->get(
-				array(WORK_AREA), 'pageurlmapper'
+				array(WORK_AREA), 'pagepathmapper'
 			);
 			
 			if(Cache::me()->isExpired())
 			{
-				PageUrlMapper::me()->loadMap();
-				Cache::me()->set(PageUrlMapper::me(), time() + PageUrlMapper::CACHE_LIFE_TIME);
+				PagePathMapper::me()->loadMap();
+				Cache::me()->set(PagePathMapper::me(), time() + PagePathMapper::CACHE_LIFE_TIME);
 			}
 			else
-				Singleton::setInstance('PageUrlMapper', $instance);
+				Singleton::setInstance('PagePathMapper', $instance);
 			
-			$pageId = PageUrlMapper::me()->getPageId(
+			$pageId = PagePathMapper::me()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
 
@@ -131,8 +131,8 @@
 				Singleton::setInstance('Page', $instance);
 
 			Page::me()->
-				setRequestUrl(UrlHelper::me()->getEnginePagePath())->
-				processUrl();
+				setRequestPath(UrlHelper::me()->getEnginePagePath())->
+				processPath();
 			
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));

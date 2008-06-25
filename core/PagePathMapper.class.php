@@ -1,5 +1,5 @@
 <?php
-	class PageUrlMapper extends Singleton
+	class PagePathMapper extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
 		
@@ -16,25 +16,25 @@
 		public function loadMap()
 		{
 			$dbQuery = '
-				SELECT url, id FROM ' . Database::me()->getTable('Pages') . '
+				SELECT path, id FROM ' . Database::me()->getTable('Pages') . '
 				WHERE preg IS NOT NULL
 			';
 
 			$dbResult = Database::me()->query($dbQuery);
 
 			while($dbRow = Database::me()->fetchArray($dbResult))
-				$this->map[$dbRow['id']] = $dbRow['url'];
+				$this->map[$dbRow['id']] = $dbRow['path'];
 			
 			return $this;
 		}
 		
-		public function getPageId($url)
+		public function getPageId($path)
 		{
 			$result = null;
 			
 			foreach($this->map as $pageId => $pagePattern)
 			{
-				if(preg_match('@' . $pagePattern . '@', $url))
+				if(preg_match('@' . $pagePattern . '@', $path))
 				{
 					$result = $pageId;
 					break;
