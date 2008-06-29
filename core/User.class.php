@@ -52,16 +52,23 @@
 			return $this;
 		}
 		
+		public function addRight($rightId, $rightAlias)
+		{
+			$this->rights[$rightId] = $rightAlias;
+			return $this;
+		}
+		
 		protected function loadRights()
 		{
-			$this->rights = Cache::me()->get(
-				array(__CLASS__, __FUNCTION__, $this->getId()),
-				'users'
-			);
-			
-			if(Cache::me()->isExpired())
+			$cacheTicket = Cache::me()->createTicket()->
+				setPrefix('users')->
+				setKey(__CLASS__, __FUNCTION__, $this->getId())->
+				setActualTime(time() + self::CACHE_LIFE_TIME)->
+				restoreData();
+						
+			if($cacheTicket->isExpired())
 			{
-				$this->rights = array();
+				$this->setRights(array());
 				
 				if($this->getId())
 				{
@@ -83,7 +90,7 @@
 								continue;
 
 							$inheritanceId[] = $dbRow['id'];
-							$this->rights[$dbRow['id']] = $dbRow['alias'];
+							$this->addRight($dbRow['id'], $dbRow['alias']);
 						}
 
 						$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
@@ -97,8 +104,10 @@
 					}
 				}
 				
-				Cache::me()->set($this->rights, time() + self::CACHE_LIFE_TIME);
+				$cacheTicket->setData($this->getRights())->storeData();
 			}
+			else
+				$this->setRights($cacheTicket->getData());
 			
 			return $this;
 		}

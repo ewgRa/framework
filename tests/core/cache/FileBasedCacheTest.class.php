@@ -24,48 +24,34 @@
 
 		function testSetAndGet()
 		{
-			$key = array( rand() );
-			
-			$this->realization->set(
-				$this->cacheData,
-				time() + $this->realization->getDefaultLifeTime(),
-				$key,
-				$this->prefix
-			);
-			
+			$cacheTicket = $this->realization->createTicket()->
+				setPrefix($this->prefix)->
+				setKey(rand())->
+				setData($this->cacheData)->
+				storeData()->
+				setData(null)->
+				restoreData();
+							
 			$this->assertEqual(
 				$this->cacheData,
-				$this->realization->get($key, $this->prefix)
+				$cacheTicket->getData()
 			);
 		}
 
 		function testGetExpired()
 		{
-			$key = array( rand() );
-			
-			$this->realization->set(
-				$this->cacheData,
-				time() - 1,
-				$key,
-				$this->prefix
-			);
-			
-			$this->realization->get($key, $this->prefix);
-			
-			$this->assertTrue($this->realization->isExpired());
-		}
-		
-		function testSetAfterGet()
-		{
-			$key = array( rand() );
-			
-			$this->realization->get($key, $this->prefix);
-			$this->realization->set($this->cacheData);
-			
-			$this->assertEqual(
-				$this->cacheData,
-				$this->realization->get($key, $this->prefix)
-			);
+			$cacheTicket = $this->realization->createTicket();
+
+			$cacheTicket->
+				setActualTime($cacheTicket->getLifeTime()+1)->
+				setPrefix($this->prefix)->
+				setKey(rand())->
+				setData($this->cacheData)->
+				storeData()->
+				setData(null)->
+				restoreData();
+
+			$this->assertTrue($cacheTicket->isExpired());
 		}
 	}
 ?>

@@ -3,7 +3,6 @@
 	{
 		private $isDisabled			= false;
 		private $isExpired 			= true;
-		private $defaultLifeTime 	= 31536000; #one year
 		
 		/**
 		 * @return Cache
@@ -15,7 +14,10 @@
 		
 		public static function factory($realization)
 		{
-			 return parent::setInstance(__CLASS__, $realization);
+			$reflection = new ReflectionMethod($realization, 'create');
+
+			return
+				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
 		public function disable()
@@ -35,38 +37,10 @@
 			return $this->isDisabled;
 		}
 		
-		public function isExpired()
-		{
-			return $this->isExpired;
-		}
-
-		public function getDefaultLifeTime()
-		{
-			return $this->defaultLifeTime;
-		}
+		abstract public function get(CacheTicket $ticket);
 		
-		public function setDefaultLifeTime($defaultLifeTime)
-		{
-			$this->defaultLifeTime = $defaultLifeTime;
-			return $this;
-		}
+		abstract public function set(CacheTicket $ticket);
 		
-		protected function expired()
-		{
-			$this->isExpired = true;
-			return $this;
-		}
-		
-		protected function actual()
-		{
-			$this->isExpired = false;
-			return $this;
-		}
-		
-		abstract public function get($key, $prefix = null, $actualTime = null);
-		
-		abstract public function set(
-			$data, $lifeTillTime = null, $key = null, $prefix = null
-		);
+		abstract public function createTicket();
 	}
 ?>

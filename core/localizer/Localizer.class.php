@@ -30,7 +30,10 @@
 		
 		public static function factory($realization)
 		{
-			return parent::setInstance(__CLASS__, $realization);
+			$reflection = new ReflectionMethod($realization, 'create');
+
+			return
+				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
 		public function getType()

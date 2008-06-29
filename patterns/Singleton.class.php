@@ -12,7 +12,7 @@
 	 */
 	class Singleton
 	{
-		private static $instances = array();
+		public static $instances = array();
 		
 		protected function __construct()
 		{

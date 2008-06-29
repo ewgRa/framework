@@ -3,6 +3,8 @@
 	{
 		const CACHE_LIFE_TIME = 86400;
 		
+		private $map = null;
+		
 		/**
 		 * @return PageUrlRewriter
 		 */
@@ -10,8 +12,6 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
-		private $map = null;
 		
 		public function loadMap()
 		{

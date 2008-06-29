@@ -129,12 +129,12 @@
 		{
 			if($this->getCacheRealization())
 			{
-				$this->setFoundClasses(
-					$this->getCacheRealization()->get(
-						$this->getSearchDirectories(),
-						'autoloader'
-					)
-				);
+				$cacheTicket = $this->getCacheRealization()->createTicket()->
+					setPrefix('autoloader')->
+					setKey($this->getSearchDirectories())->
+					restoreData();
+
+				$this->setFoundClasses($cacheTicket->getData());
 			}
 		}
 
@@ -148,13 +148,11 @@
 		{
 			if($this->getCacheRealization())
 			{
-				$this->getCacheRealization()->set(
-					$this->getFoundClasses(),
-					null,
-					$this->getSearchDirectories(),
-					'autoloader'
-					
-				);
+				$cacheTicket = $this->getCacheRealization()->createTicket()->
+					setPrefix('autoloader')->
+					setKey($this->getSearchDirectories())->
+					setData($this->getFoundClasses())->
+					storeData();
 			}
 		}
 

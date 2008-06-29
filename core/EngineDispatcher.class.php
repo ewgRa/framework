@@ -52,24 +52,28 @@
 		
 		public function loadSiteOptions()
 		{
-			$options = Cache::me()->get(
-				array(__CLASS__, __FUNCTION__),
-				'options'
-			);
-
-			if(Cache::me()->isExpired())
+			$result = array();
+			
+			$cacheTicket = Cache::me()->createTicket()->
+				setPrefix('options')->
+				setKey(__CLASS__, __FUNCTION__)->
+				setActualTime(time() + self::OPTIONS_CACHE_LIFE_TIME)->
+				restoreData();
+			
+			if($cacheTicket->isExpired())
 			{
-				$options = array();
 				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Options');
 		        $dbResult = Database::me()->query($dbQuery);
 				
 				while($dbRow = Database::me()->fetchArray($dbResult))
-					$options[$dbRow['alias']] = $dbRow['value'];
+					$result[$dbRow['alias']] = $dbRow['value'];
 
-				Cache::me()->set($options, time() + self::OPTIONS_CACHE_LIFE_TIME);
+				$cacheTicket->setData($result)->storeData();
 			}
+			else
+				$result = $cacheTicket->getData();
             
-			return $options;
+			return $result;
 		}
 		
 		public function start()
@@ -98,37 +102,40 @@
 			
 			Localizer::me()->defineLanguage();
 			
-			$instance = Cache::me()->get(
-				array(WORK_AREA), 'pagepathmapper'
-			);
+			$cacheTicket = Cache::me()->createTicket()->
+				setPrefix('pagepathmapper')->
+				setKey(WORK_AREA)->
+				setActualTime(time() + PagePathMapper::CACHE_LIFE_TIME)->
+				restoreData();
 			
-			if(Cache::me()->isExpired())
+			if($cacheTicket->isExpired())
 			{
 				PagePathMapper::me()->loadMap();
-				Cache::me()->set(PagePathMapper::me(), time() + PagePathMapper::CACHE_LIFE_TIME);
+				$cacheTicket->setData(PagePathMapper::me())->storeData();
 			}
 			else
-				Singleton::setInstance('PagePathMapper', $instance);
+				Singleton::setInstance('PagePathMapper', $cacheTicket->getData());
 			
 			$pageId = PagePathMapper::me()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
 
-			$instance = Cache::me()->get(
-				array(
+			$cacheTicket = Cache::me()->createTicket()->
+				setPrefix('page')->
+				setKey(
 					WORK_AREA,
 					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
-				),
-				'page'
-			);
+				)->
+				setActualTime(time() + Page::CACHE_LIFE_TIME)->
+				restoreData();
 			
-			if(Cache::me()->isExpired())
+			if($cacheTicket->isExpired())
 			{
 				Page::me()->loadPage(UrlHelper::me()->getEnginePagePath(), $pageId);
-				Cache::me()->set(Page::me(), time()+Page::CACHE_LIFE_TIME);
+				$cacheTicket->setData(Page::me())->storeData();
 			}
 			else
-				Singleton::setInstance('Page', $instance);
+				Singleton::setInstance('Page', $cacheTicket->getData());
 
 			Page::me()->
 				setRequestPath(UrlHelper::me()->getEnginePagePath())->

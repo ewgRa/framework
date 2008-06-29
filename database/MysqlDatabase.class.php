@@ -1,24 +1,8 @@
 <?php
-	class MysqlDatabaseConnector
+	class MysqlDatabase extends Database
 	{
-		private $connected = false;
-		
-		private $host = null;
-		private $user = null;
-		private $password = null;
-		private $databaseName = null;
-		private $charset = null;
-		
-		public function __destruct()
-		{
-			if($this->isConnected())
-			{
-				$this->disconnect();
-			}
-		}
-		
 		/**
-		 * @return MysqlDatabaseConnector
+		 * @return MysqlDatabase
 		 */
 		public static function create()
 		{
@@ -42,35 +26,6 @@
 			return $this;
 		}
 		
-		public function setHost($host)
-		{
-			$this->host = $host;
-			return $this;
-		}
-		
-		public function getHost()
-		{
-			return $this->host;
-		}
-		
-		public function setUser($user)
-		{
-			$this->user = $user;
-			return $this;
-		}
-		
-		public function setPassword($passwod)
-		{
-			$this->password = $passwod;
-			return $this;
-		}
-		
-		public function setCharset($charset = 'utf8')
-		{
-			$this->charset = $charset;
-			return $this;
-		}
-		
 		public function selectCharset($charset = 'utf8')
 		{
 			$this->setCharset($charset);
@@ -84,17 +39,6 @@
 			);
 		}
 
-		public function getDatabaseName()
-		{
-			return $this->databaseName;
-		}
-		
-		public function setDatabaseName($databaseName)
-		{
-			$this->databaseName = $databaseName;
-			return $this;
-		}
-		
 		public function selectDatabase($databaseName = null)
 		{
 			if($databaseName)
@@ -121,18 +65,16 @@
 			return $this;
 		}
 
-		public function isConnected()
-		{
-			return $this->connected;
-		}
-
 		// TODO: think about $values must be a DBValue::equal, DBValue::like or something else instance
 		public function query($query, $values = array())
 		{
-			if(count($values))
+			if(!$this->isConnected())
 			{
-				$query = $this->processQuery($query, $values);
+				$this->connect()->selectDatabase()->selectCharset();
 			}
+			
+			if(count($values))
+				$query = $this->processQuery($query, $values);
 			
 			$resource = mysql_query($query);
 			
@@ -225,48 +167,6 @@
 			}
 			
 			return $variable;
-		}
-
-		private function processQuery($query, $values = array())
-		{
-			$query = str_replace('?', '??', $query);
-			$queryParts = explode('?', $query);
-			$partsCounter = 0;
-			
-			foreach($queryParts as $partKey => $part)
-			{
-				if($partsCounter%2)
-				{
-					if(!is_null(key($values)))
-					{
-						$value = $values[key($values)];
-						
-						if(is_null($value))
-						{
-							$part = "NULL";
-						}
-						else
-						{
-							$value = $this->escape($value);
-							
-							if(is_array($value))
-								$part = "'" . join("', '", $value) . "'";
-							else
-								$part = "'" . $value . "'";
-						}
-						next($values);
-					}
-					else
-					{
-						$part = "?";
-					}
-				}
-				
-				$queryParts[$partKey] = $part;
-				$partsCounter++;
-			}
-			
-			return join('', $queryParts);
 		}
 	}
 ?>

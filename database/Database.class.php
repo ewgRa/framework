@@ -1,11 +1,18 @@
 <?php
-	class Database extends Singleton
+	abstract class Database extends Singleton
 	{
 		const YAML_DATABASE_FILE_NAME = 'database.yml';
 
 		private $tables = array();
-		private $connector = null;
 		private $mergeYAMLSections = array();
+		
+		private $connected = false;
+		
+		private $host = null;
+		private $user = null;
+		private $password = null;
+		private $databaseName = null;
+		private $charset = null;
 		
 		/**
 		 * @return Database
@@ -15,6 +22,109 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		public static function factory($realization)
+		{
+			$reflection = new ReflectionMethod($realization, 'create');
+
+			return
+				parent::setInstance(__CLASS__, $reflection->invoke(null));
+		}
+		
+		public function __destruct()
+		{
+			if($this->isConnected())
+			{
+				$this->disconnect();
+			}
+		}
+		
+		public function setHost($host)
+		{
+			$this->host = $host;
+			return $this;
+		}
+		
+		public function getHost()
+		{
+			return $this->host;
+		}
+		
+		public function setUser($user)
+		{
+			$this->user = $user;
+			return $this;
+		}
+		
+		public function setPassword($passwod)
+		{
+			$this->password = $passwod;
+			return $this;
+		}
+		
+		public function setCharset($charset = 'utf8')
+		{
+			$this->charset = $charset;
+			return $this;
+		}
+		
+		public function getDatabaseName()
+		{
+			return $this->databaseName;
+		}
+		
+		public function setDatabaseName($databaseName)
+		{
+			$this->databaseName = $databaseName;
+			return $this;
+		}
+		
+		public function isConnected()
+		{
+			return $this->connected;
+		}
+
+		private function processQuery($query, $values = array())
+		{
+			$query = str_replace('?', '??', $query);
+			$queryParts = explode('?', $query);
+			$partsCounter = 0;
+			
+			foreach($queryParts as $partKey => $part)
+			{
+				if($partsCounter%2)
+				{
+					if(!is_null(key($values)))
+					{
+						$value = $values[key($values)];
+						
+						if(is_null($value))
+						{
+							$part = "NULL";
+						}
+						else
+						{
+							$value = $this->escape($value);
+							
+							if(is_array($value))
+								$part = "'" . join("', '", $value) . "'";
+							else
+								$part = "'" . $value . "'";
+						}
+						next($values);
+					}
+					else
+					{
+						$part = "?";
+					}
+				}
+				
+				$queryParts[$partKey] = $part;
+				$partsCounter++;
+			}
+			
+			return join('', $queryParts);
+		}
+
 		public function getMergeYAMLSections()
 		{
 			return $this->mergeYAMLSections;
@@ -35,20 +145,6 @@
 				$this->getMergeYAMLSections()
 			);
 				
-			if(isset($settings['connector']))
-			{
-				$connector = null;
-				
-				switch($settings['connector'])
-				{
-					case 'Mysql':
-						$connector = MysqlDatabaseConnector::create();
-					break;
-				}
-				
-				$this->setConnector($connector);
-			}
-			
 			if(isset($settings['host']))
 				$this->getConnector()->setHost($settings['host']);
 			
@@ -70,17 +166,6 @@
 			return $this;
 		}
 		
-		public function setConnector($connector)
-		{
-			$this->connector = $connector;
-			return $this;
-		}
-		
-		public function getConnector()
-		{
-			return $this->connector;
-		}
-		
 		public function getTable($alias)
 		{
 			$result = null;
@@ -93,35 +178,6 @@
 		public function setTables($tables)
 		{
 			$this->tables = $tables;
-		}
-		
-		
-		public function query($query, $values = array())
-		{
-			if(!$this->getConnector()->isConnected())
-			{
-				$this->getConnector()->
-					connect()->
-					selectDatabase()->
-					selectCharset();
-			}
-			
-			return $this->getConnector()->query($query, $values);
-		}
-
-		public function fetchArray($dbResult)
-		{
-			return $this->getConnector()->fetchArray($dbResult);
-		}
-
-		public function recordCount($dbResult)
-		{
-			return $this->getConnector()->recordCount($dbResult);
-		}
-		
-		public function resourceToArray($dbResult)
-		{
-			return $this->getConnector()->resourceToArray($dbResult);
 		}
 	}
 ?>

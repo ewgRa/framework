@@ -4,7 +4,6 @@
 		const OS_WIN = 'WIN';
 
 		private $cacheDir 			= null;
-		private $fileName			= null;
 
 		/**
 		 * @return FileBasedCache
@@ -12,6 +11,12 @@
 		public static function create()
 		{
 			return new self;
+		}
+		
+		public function createTicket()
+		{
+			return FileBasedCacheTicket::create()->
+				setCacheInstance($this);
 		}
 		
 		public function setCacheDir($cacheDir)
@@ -25,79 +30,59 @@
 			return $this->cacheDir;
 		}
 		
-		private function getFileName()
+		public function get(CacheTicket $ticket)
 		{
-			return $this->fileName;
-		}
-		
-		private function setFileName($filename)
-		{
-			$this->fileName = $filename;
-			return $this;
-		}
-		
-		private function dropFileName()
-		{
-			$this->fileName = null;
-			return $this;
-		}
-		
-		public function get($key, $prefix = null, $actualTime = null)
-		{
-			if(!$actualTime)
-				$actualTime = time();
-			
 			if($this->isDisabled())
 			{
 				$this->expired();
 				return null;
 			}
 			
+			$actualTime = $ticket->getActualTime();
+
+			if(!$actualTime)
+				$actualTime = time();
+			
 			$result = null;
-			$fileName = $this->compileFileName($key, $prefix);
-			$this->setFileName($fileName);
+			
+			$fileName = $this->compileFileName(
+				$ticket->getKey(), $ticket->getPrefix()
+			);
 			
 			if(!file_exists($fileName))
 			{
-				$this->expired();
+				$ticket->expired();
 			}
 			elseif(filemtime($fileName) < $actualTime)
 			{
 				unlink($fileName);
-				$this->expired();
+				$ticket->expired();
 			}
 			else
 			{
-				$this->actual();
+				$ticket->actual();
 				$result = unserialize(file_get_contents($fileName));
 			}
 
 			return $result;
 		}
 
-		public function set(
-			$data, $lifeTillTime = null,
-			$key = null, $prefix = null
-		)
+		public function set(CacheTicket $ticket)
 		{
 			if($this->isDisabled())
 				return null;
 
-			$fileName = $this->getFileName();
-			
-			if(!is_null($key))
-				$fileName = $this->compileFileName($key, $prefix);
-
+			$fileName = $this->compileFileName(
+				$ticket->getKey(), $ticket->getPrefix()
+			);
+				
 			if(!$fileName)
 				throw new Exception('no key');
 			
-			if(is_null($lifeTillTime))
-				$lifeTillTime = time() + $this->getDefaultLifeTime();
-
-			$this->createPreDirs( $fileName );
+			$this->createPreDirs($fileName);
 			
-			file_put_contents($fileName, serialize($data));
-			touch( $fileName, $lifeTillTime);
+			file_put_contents($fileName, serialize($ticket->getData()));
+			touch($fileName, $ticket->getLifeTime());
 			
 			return $this;
 		}

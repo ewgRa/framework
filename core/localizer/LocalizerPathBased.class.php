@@ -42,15 +42,7 @@
 			$result = $this->getPath();
 			
 			if($this->getDefinedLanguageAbbr() == $this->getLanguageAbbr())
-			{
-				// FIXME: use substr
-				$result = preg_replace(
-					'@/' . preg_quote($this->getLanguageAbbr(), '@') . '@',
-					'',
-					$this->getPath(),
-					1
-				);
-			}
+				$result = substr($result, strlen($this->getLanguageAbbr()) + 1);
 			
 			return $result;
 		}

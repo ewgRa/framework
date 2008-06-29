@@ -19,7 +19,10 @@
 		
 		public function testLoadRights()
 		{
-			Cache::me()->setReturnValue('isExpired', true);
+			$cacheTicketMock = CacheTicketMock::create();
+			$cacheTicketMock->setReturnValue('isExpired', true);
+			
+			Cache::me()->setReturnValue('createTicket', $cacheTicketMock);
 			
 			MyTestUser::ftSetId(10);
 			Database::me()->setReturnValueAt(0, 'recordCount', true);
@@ -52,8 +55,12 @@
 		
 		public function testLoadRightsFromCache()
 		{
+			$cacheTicketMock = CacheTicketMock::create();
+			$cacheTicketMock->setReturnValue('getData', array(1 => 'root', 2 => 'demo'));
+			$cacheTicketMock->setReturnValue('isExpired', false);
 			
-			Cache::me()->setReturnValue('get', array(1 => 'root', 2 => 'demo'));
+			Cache::me()->setReturnValue('createTicket', $cacheTicketMock);
+			
 			$this->assertEqual(
 				MyTestUser::ftLoadRights()->getRights(),
 				array(1 => 'root', 2 => 'demo')
