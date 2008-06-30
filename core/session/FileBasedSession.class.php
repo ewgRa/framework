@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	final class FileBasedSession extends Session
 	{
 		private $data = array();

@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	// TODO: runtime cache!!!
 	// TODO: packets
 	class ClassesAutoloader extends Singleton

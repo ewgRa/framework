@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	final class FileBasedCache extends Cache
 	{
 		const OS_WIN = 'WIN';

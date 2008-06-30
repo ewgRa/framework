@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class ClassesAutoloaderTest extends UnitTestCase
 	{
 		function testIsSingleton()

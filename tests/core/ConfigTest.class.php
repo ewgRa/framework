@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class ConfigTest extends UnitTestCase
 	{
 		private $yamlFile = null;

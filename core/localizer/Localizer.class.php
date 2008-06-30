@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	abstract class Localizer extends Singleton
 	{
 		const SOURCE_LANGUAGE_DEFAULT = 1;

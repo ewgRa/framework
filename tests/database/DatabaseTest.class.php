@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class DatabaseTest extends UnitTestCase
 	{
 		public function testIsSingleton()

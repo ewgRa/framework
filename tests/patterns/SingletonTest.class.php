@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class MySingletonTest extends Singleton
 	{
 		private $testVariable = null;

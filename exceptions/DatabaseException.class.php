@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class DatabaseException extends DefaultException
 	{
 		const CONNECT = 1001;
@@ -44,10 +46,10 @@
 
 					if(!$this->message)
 					{
-						$this->setMessage('Could not connect to database');	
+						$this->setMessage('Could not connect to database');
 					}
 					
-					$resultString = 
+					$resultString =
 						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
 						. "Host: {$this->host}\n\n";
@@ -56,9 +58,9 @@
 
 					if(!$this->message)
 					{
-						$this->setMessage('Could not select database');	
+						$this->setMessage('Could not select database');
 					}
-					$resultString = 
+					$resultString =
 						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
 						. "Host: {$this->host}\n\n"
@@ -68,7 +70,7 @@
 
 					if(!$this->message)
 					{
-						$this->setMessage('SQL query has error');	
+						$this->setMessage('SQL query has error');
 					}
 					
 					$trace = $this->getTrace();
@@ -76,15 +78,15 @@
 					$file = $single_trace['file'];
 					$line = $single_trace['line'];
 					
-					$resultString = 
-						__CLASS__ 
+					$resultString =
+						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
 						. "Host: {$this->host}\n\n"
 						. "Database: {$this->databaseName}\n\n"
 						. "Query: {$this->query}\n\n"
 						. "Error: {$this->error}\n\n"
 						. "Query executed from: {$file} at line {$line}\n\n";
-				break;				
+				break;
 			}
 			
 			return $resultString;

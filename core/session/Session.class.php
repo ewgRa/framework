@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	abstract class Session extends Singleton
 	{
 		protected $isStarted = false;

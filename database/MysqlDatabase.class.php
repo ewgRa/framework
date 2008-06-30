@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class MysqlDatabase extends Database
 	{
 		/**

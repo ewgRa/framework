@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class UserTest extends UnitTestCase
 	{
 		public function setUp()

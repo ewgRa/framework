@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	abstract class CacheTicket
 	{
 		private $cacheInstance = null;

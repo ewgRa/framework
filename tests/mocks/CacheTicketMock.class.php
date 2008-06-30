@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class CacheTicketMock
 	{
 		public static function create()

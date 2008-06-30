@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class MyTestConfig extends Config
 	{
 		public static function ftReplaceVariables($variables)

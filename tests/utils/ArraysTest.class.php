@@ -1,5 +1,7 @@
 <?php
-	class ArraysTest extends UnitTestCase 
+	/* $Id$ */
+
+	class ArraysTest extends UnitTestCase
 	{
 		public $array = null;
 		
@@ -45,6 +47,6 @@
 					'test3' => $this->array['section']['test3']
 				)
 			);
-		}		
+		}
 	}
 ?>

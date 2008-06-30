@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class User extends Singleton
 	{
 		const WRONG_PASSWORD	= 1;

@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class FileBasedCacheTest extends UnitTestCase
 	{
 		public $cacheData = array('asdasd', 'dvsd', 'qweqwe');

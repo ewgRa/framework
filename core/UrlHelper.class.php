@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	class UrlHelper extends Singleton
 	{
 		private $realRequestPath = null;

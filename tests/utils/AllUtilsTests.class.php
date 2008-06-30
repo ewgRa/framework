@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class AllUtilsTests extends AllDirectoryTests
 	{
 		protected $testTitle = "All utils tests";

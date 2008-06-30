@@ -1,5 +1,7 @@
 <?php
-	class YAMLTest extends UnitTestCase 
+	/* $Id$ */
+
+	class YAMLTest extends UnitTestCase
 	{
 		function testLoad()
 		{
@@ -21,6 +23,6 @@
 					)
 				)
 			);
-		}		
+		}
 	}
 ?>

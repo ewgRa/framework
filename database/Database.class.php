@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	abstract class Database extends Singleton
 	{
 		const YAML_DATABASE_FILE_NAME = 'database.yml';

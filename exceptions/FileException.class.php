@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class FileException extends DefaultException
 	{
 		const FILE_NOT_EXISTS = 2001;
@@ -21,10 +23,10 @@
 
 					if(!$this->message)
 					{
-						$this->setMessage('File doesn\'t exists');	
+						$this->setMessage('File doesn\'t exists');
 					}
 					
-					$resultString = 
+					$resultString =
 						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
 						. "Filepath: {$this->filePath}\n\n"

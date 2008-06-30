@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class LocalizerPathBasedTest extends UnitTestCase
 	{
 		public function testDefineLanguagePath()

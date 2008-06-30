@@ -1,7 +1,9 @@
 <?php
+	/* $Id$ */
+
 	define( 'TEST_CONST', 'value' );
 	
-	class VariablesTest extends UnitTestCase 
+	class VariablesTest extends UnitTestCase
 	{
 		function testGetValueByString()
 		{
@@ -56,6 +58,6 @@
 			
 			$this->assertTrue(defined('testConstant'));
 			$this->assertEqual(constant('testConstant'), $constantValue);
-		}		
+		}
 	}
 ?>

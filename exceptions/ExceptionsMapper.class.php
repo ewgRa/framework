@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class ExceptionsMapper extends Singleton
 	{
 		private $map = array(
@@ -44,7 +46,7 @@
 			
 			if($this->getClassName($exceptionAlias))
 			{
-				$className = $this->getClassName($exceptionAlias);	
+				$className = $this->getClassName($exceptionAlias);
 			}
 
 			$result = new $className($message, $code);

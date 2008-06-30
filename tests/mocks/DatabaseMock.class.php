@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class DatabaseMock
 	{
 		public static function create()

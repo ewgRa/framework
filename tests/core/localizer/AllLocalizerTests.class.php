@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class AllLocalizerTests extends AllDirectoryTests
 	{
 		protected $testTitle = "All localizer tests";

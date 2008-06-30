@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class PageException extends DefaultException
 	{
 		const PAGE_NOT_FOUND = 1001;

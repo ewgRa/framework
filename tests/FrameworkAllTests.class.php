@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class FrameworkAllTests extends GroupTest
 	{
 		private $testDirs = array(

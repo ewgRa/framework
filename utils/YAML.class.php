@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	require_once(LIB_DIR . '/php/spyc/spyc.php');
 	
 	class YAML

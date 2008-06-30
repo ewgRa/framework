@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class MyTestUser extends User
 	{
 		public static function ftSetId($id)

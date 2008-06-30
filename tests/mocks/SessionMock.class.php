@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class SessionMock
 	{
 		public static function create()

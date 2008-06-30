@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class LocalizerTest extends UnitTestCase
 	{
 		private $languages = array(

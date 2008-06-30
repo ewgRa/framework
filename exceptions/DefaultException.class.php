@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class DefaultException extends Exception
 	{
 		public function setLine($line)

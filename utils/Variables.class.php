@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class Variables
 	{
 		public static function getValueByString($variableName)
@@ -27,7 +29,7 @@
 					{
 						if($varName[0] == '$')
 							$varName .= "['" . $variableMatches[2] . "']";
-						else 
+						else
 							$varName = null;
 					}
 					elseif($varName != $variableName)
@@ -43,9 +45,9 @@
 								'$result = isset('
 								. $varName. ') ? '
 								. $varName. ' : null;'
-							);	
+							);
 						}
-						else 
+						else
 						{
 							if(defined($varName))
 							{
@@ -67,7 +69,7 @@
 				{
 					define($constName, $constValue);
 				}
-			}			
+			}
 		}
 	}
 ?>

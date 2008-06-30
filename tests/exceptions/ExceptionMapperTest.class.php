@@ -1,5 +1,7 @@
 <?php
-	class MyException extends DefaultException 
+	/* $Id$ */
+
+	class MyException extends DefaultException
 	{
 	    public function setParam($param)
 		{
@@ -13,7 +15,7 @@
 		}
 	}
 	
-	class ExceptionMapperTest extends UnitTestCase 
+	class ExceptionMapperTest extends UnitTestCase
 	{
 		const EXCEPTION_ALIAS = 'test';
 		
@@ -55,6 +57,6 @@
 				ExceptionsMapper::me()->createException('testDefaultException')
 					instanceof DefaultException
 			);
-		}		
+		}
 	}
 ?>

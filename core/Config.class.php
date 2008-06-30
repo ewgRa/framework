@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	class Config extends Singleton
 	{
 		private $options = null;

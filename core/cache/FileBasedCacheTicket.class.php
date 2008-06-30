@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	final class FileBasedCacheTicket extends CacheTicket
 	{
 		public static function create()

@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+	
 	final class LocalizerPathBased extends Localizer
 	{
 		protected $path = null;

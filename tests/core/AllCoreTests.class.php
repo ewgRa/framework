@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class AllCoreTests extends AllDirectoryTests
 	{
 		protected $testTitle = "All core tests";
