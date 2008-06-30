@@ -1,5 +1,5 @@
 <?php
-	/* $Id: $ */
+	/* $Id$ */
 
 	// FIXME: tested?
 	// FIXME: refactoring?
