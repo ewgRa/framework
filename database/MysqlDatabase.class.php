@@ -11,18 +11,17 @@
 		
 		public function connect()
 		{
-			$db = @mysql_connect($this->host, $this->user, $this->password);
+			$db = mysql_connect($this->getHost(), $this->getUser(), $this->getPassword());
 			
 			if(!$db)
 			{
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::CONNECT)->
-						setHost($this->host);
+						setHost($this->getHost());
 			}
 			
-			$this->connected = true;
-			
+			$this->connected();
 			return $this;
 		}
 		
@@ -46,13 +45,13 @@
 			else
 				$databaseName = $this->getDatabaseName();
 			
-			if(!mysql_select_db($this->databaseName))
+			if(!mysql_select_db($this->getDatabaseName()))
 			{
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SELECT_DATABASE)->
-						setHost($this->host)->
-						setDatabaseName($this->databaseName);
+						setHost($this->getHost())->
+						setDatabaseName($this->getDatabaseName());
 			}
 			
 			return $this;
@@ -83,8 +82,8 @@
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SQL_QUERY_ERROR)->
-						setHost($this->host)->
-						setDatabaseName($this->databaseName)->
+						setHost($this->getHost())->
+						setDatabaseName($this->getDatabaseName())->
 						setQuery($query)->
 						setError(mysql_error());
 			}
@@ -152,7 +151,7 @@
 			return mysql_insert_id();
 		}
 
-		private function escape($variable)
+		protected function escape($variable)
 		{
 			if(is_array($variable))
 			{

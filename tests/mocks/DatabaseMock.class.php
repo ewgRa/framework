@@ -3,7 +3,7 @@
 	{
 		public static function create()
 		{
-			Mock::generate('Database', 'DatabaseTestMock');
+			Mock::generate('MysqlDatabase', 'DatabaseTestMock');
 			$database = &new DatabaseTestMock();
 			Singleton::setInstance('Database', $database);
 			return $database;

@@ -30,6 +30,12 @@
 				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
+		public function connected()
+		{
+			$this->connected = true;
+			return $this;
+		}
+		
 		public function __destruct()
 		{
 			if($this->isConnected())
@@ -55,12 +61,22 @@
 			return $this;
 		}
 		
+		public function getUser()
+		{
+			return $this->user;
+		}
+		
 		public function setPassword($passwod)
 		{
 			$this->password = $passwod;
 			return $this;
 		}
 		
+		public function getPassword()
+		{
+			return $this->password;
+		}
+				
 		public function setCharset($charset = 'utf8')
 		{
 			$this->charset = $charset;
@@ -83,7 +99,7 @@
 			return $this->connected;
 		}
 
-		private function processQuery($query, $values = array())
+		protected function processQuery($query, $values = array())
 		{
 			$query = str_replace('?', '??', $query);
 			$queryParts = explode('?', $query);
@@ -146,19 +162,19 @@
 			);
 				
 			if(isset($settings['host']))
-				$this->getConnector()->setHost($settings['host']);
+				$this->setHost($settings['host']);
 			
 			if(isset($settings['user']))
-				$this->getConnector()->setUser($settings['user']);
+				$this->setUser($settings['user']);
 
 			if(isset($settings['password']))
-				$this->getConnector()->setPassword($settings['password']);
+				$this->setPassword($settings['password']);
 
 			if(isset($settings['database']))
-				$this->getConnector()->setDatabaseName($settings['database']);
+				$this->setDatabaseName($settings['database']);
 
 			if(isset($settings['charset']))
-				$this->getConnector()->setCharset($settings['charset']);
+				$this->setCharset($settings['charset']);
 
 			if(isset($settings['tableAliases']))
 				$this->setTables($settings['tableAliases']);

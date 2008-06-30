@@ -3,6 +3,8 @@
 	{
 		public function testIsSingleton()
 		{
+			Database::factory('MysqlDatabase');
+			
 			$this->assertTrue(Database::me() instanceof Singleton);
 		}
 	}
