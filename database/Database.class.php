@@ -30,7 +30,7 @@
 				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
-		public function connected()
+		public function setConnected()
 		{
 			$this->connected = true;
 			return $this;

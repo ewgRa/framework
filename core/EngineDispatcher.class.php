@@ -39,7 +39,7 @@
 			return $this;
 		}
 
-		public function fired()
+		public function setFired()
 		{
 			$this->fired = true;
 			return $this;
@@ -144,7 +144,6 @@
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));
 			
-			User::me()->login('ewgra', '123123');
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
 			var_dump(Page::me());

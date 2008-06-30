@@ -154,7 +154,8 @@
 			$user = Session::me()->get('user');
 			if($user)
 			{
-				$this->setId($user['id'])->
+				$this->
+					setId($user['id'])->
 					setLogin($user['login'])->
 					setRights($user['rights']);
 			}

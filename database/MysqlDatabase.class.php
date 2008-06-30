@@ -21,7 +21,7 @@
 						setHost($this->getHost());
 			}
 			
-			$this->connected();
+			$this->setConnected();
 			return $this;
 		}
 		
