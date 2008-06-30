@@ -1,4 +1,5 @@
 <?php
+	/* $Id$ */
 	abstract class Cache extends Singleton
 	{
 		private $isDisabled			= false;
