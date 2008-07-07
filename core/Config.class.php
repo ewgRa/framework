@@ -4,7 +4,6 @@
 	class Config extends Singleton
 	{
 		private $options = null;
-		private $mergeYAMLSections = array();
 		
 		/**
 		 * @return Config
@@ -16,13 +15,8 @@
 		
 		public function initialize($yamlFile)
 		{
-			$yamlSettings = YAML::load($yamlFile);
+			$settings = YAML::load($yamlFile);
 
-			$settings = Arrays::recursiveMergeByArrayKeys(
-				$yamlSettings,
-				$this->mergeYAMLSections
-			);
-			
 			foreach($settings as $optionaAlias => $optionValue)
 			{
 				$this->setOption(
@@ -31,17 +25,6 @@
 				);
 			}
 			
-			return $this;
-		}
-		
-		public function getMergeYAMLSections()
-		{
-			return $this->mergeYAMLSections;
-		}
-		
-		public function setMergeYAMLSections(array $sections)
-		{
-			$this->mergeYAMLSections = $sections;
 			return $this;
 		}
 		

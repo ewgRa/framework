@@ -87,15 +87,13 @@
 		
 		function testInitialize()
 		{
-			MyTestConfig::me()->
-				setMergeYAMLSections(array('all', 'testSection'))->
-				initialize($this->yamlFile);
+			MyTestConfig::me()->initialize($this->yamlFile);
 				
 			$this->assertEqual(
 				MyTestConfig::me()->getOption('testArray'),
 				array(
 					'arrayKey1' => 'arrayValue1',
-					'arrayKey2' => 'arrayValue2_testSection',
+					'arrayKey2' => 'arrayValue2',
 				)
 			);
 		}

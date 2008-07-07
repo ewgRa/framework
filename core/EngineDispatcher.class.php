@@ -106,7 +106,7 @@
 			
 			$cacheTicket = Cache::me()->createTicket()->
 				setPrefix('pagepathmapper')->
-				setKey(WORK_AREA)->
+				setKey('pagepathmapper')->
 				setActualTime(time() + PagePathMapper::CACHE_LIFE_TIME)->
 				restoreData();
 			
@@ -125,7 +125,6 @@
 			$cacheTicket = Cache::me()->createTicket()->
 				setPrefix('page')->
 				setKey(
-					WORK_AREA,
 					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
 				)->
 				setActualTime(time() + Page::CACHE_LIFE_TIME)->

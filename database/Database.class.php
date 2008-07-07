@@ -6,7 +6,6 @@
 		const YAML_DATABASE_FILE_NAME = 'database.yml';
 
 		private $tables = array();
-		private $mergeYAMLSections = array();
 		
 		private $connected = false;
 		
@@ -143,26 +142,10 @@
 			return join('', $queryParts);
 		}
 
-		public function getMergeYAMLSections()
-		{
-			return $this->mergeYAMLSections;
-		}
-		
-		public function setMergeYAMLSections(array $sections)
-		{
-			$this->mergeYAMLSections = $sections;
-			return $this;
-		}
-		
 		public function initialize($yamlFile)
 		{
-			$yamlSettings = YAML::load($yamlFile);
+			$settings = YAML::load($yamlFile);
 
-			$settings = Arrays::recursiveMergeByArrayKeys(
-				$yamlSettings,
-				$this->getMergeYAMLSections()
-			);
-				
 			if(isset($settings['host']))
 				$this->setHost($settings['host']);
 			
