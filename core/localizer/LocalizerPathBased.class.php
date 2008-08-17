@@ -7,7 +7,7 @@
 		protected $type = self::DETERMINANT_PATH_BASED;
 		
 		/**
-		 * @return LocalizerPathUrl
+		 * @return LocalizerPathBased
 		 */
 		public static function create()
 		{

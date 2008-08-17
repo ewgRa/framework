@@ -132,7 +132,9 @@
 			if(strtoupper(substr(PHP_OS, 0, 3)) === self::OS_WIN)
 			{
 				exec('mkdir "' . $directory . '"');
-			} else {
+			}
+			else
+			{
 				exec('mkdir -p "' . $directory . '"');
 			}
 			

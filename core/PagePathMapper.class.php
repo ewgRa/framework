@@ -1,6 +1,7 @@
 <?php
 	/* $Id$ */
 
+	// FIXME: tested?
 	class PagePathMapper extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
@@ -8,7 +9,7 @@
 		private $map = null;
 		
 		/**
-		 * @return PageUrlRewriter
+		 * @return PagePathMapper
 		 */
 		public static function me()
 		{

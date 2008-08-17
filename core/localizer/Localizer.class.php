@@ -135,11 +135,15 @@
 
 		public function selectDefaultLanguage()
 		{
-			$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Languages')
-				. " t1 INNER JOIN " . Database::me()->getTable('Options')
-				. " t2 ON ( t2.alias = 'defaultLanguage' AND t2.value = t1.id )";
-				
-			$dbResult = Database::me()->query($dbQuery);
+			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages')
+				. " WHERE abbr = ?";
+			
+			$projectOptions = Config::me()->getOption('project');
+			
+			$dbResult = Database::me()->query(
+				$dbQuery,
+				array($projectOptions['defaultLanguage'])
+			);
 
 			if(Database::me()->recordCount($dbResult))
 			{

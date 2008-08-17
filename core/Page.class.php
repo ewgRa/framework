@@ -1,13 +1,14 @@
 <?php
 	/* $Id$ */
-	
+
+	// FIXME: tested?	
 	class Page extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
 
 		private $id = null;
 		private $viewType = null;
-		private $layoutFile = null;
+		private $layoutFileId = null;
 		private $pathMatches = null;
 		private $pathParts = null;
 		private $preg = null;
@@ -48,15 +49,15 @@
 			return $this->viewType;
 		}
 
-		private function setLayoutFile($layoutFile)
+		private function setLayoutFileId($fileId)
 		{
-			$this->layoutFile = $layoutFile;
+			$this->layoutFileId = $fileId;
 			return $this;
 		}
 
-		public function getLayoutFile()
+		public function getLayoutFileId()
 		{
-			return $this->layoutFile;
+			return $this->layoutFileId;
 		}
 
 		private function setPathMatches($pathMatches)
@@ -162,13 +163,11 @@
 		{
 			$dbQuery = "
 				SELECT
-					t1.*, t3.id as layout_file_id, t3.path as layout_file,
+					t1.*, t2.file_id as layout_file_id,
 					t4.title, t4.description, t4.keywords
 				FROM " . Database::me()->getTable('Pages') . " t1
 				LEFT JOIN " . Database::me()->getTable('Layouts') . " t2
 					ON( t2.id =	t1.layout_id)
-				LEFT JOIN " . Database::me()->getTable('ViewFiles') . " t3
-					ON ( t3.id = t2.file_id )
 				LEFT JOIN " . Database::me()->getTable('PagesData') . " t4
 					ON( t4.page_id = t1.id AND t4.language_id = ? )
 				WHERE IF(?, t1.id = ?, t1.path = ?)
@@ -192,8 +191,8 @@
 						
 			$this->
 				setId($page['id'])->
-				setLayoutFile(
-					Config::me()->replaceVariables($page['layout_file'])
+				setLayoutFileId(
+					Config::me()->replaceVariables($page['layout_file_id'])
 				)->
 				setViewType($page['view_type'])->
 				setTitle($page['title'])->

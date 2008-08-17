@@ -52,32 +52,6 @@
 			return $this->fired;
 		}
 		
-		public function loadSiteOptions()
-		{
-			$result = array();
-			
-			$cacheTicket = Cache::me()->createTicket()->
-				setPrefix('options')->
-				setKey(__CLASS__, __FUNCTION__)->
-				setActualTime(time() + self::OPTIONS_CACHE_LIFE_TIME)->
-				restoreData();
-			
-			if($cacheTicket->isExpired())
-			{
-				$dbQuery = "SELECT * FROM " . Database::me()->getTable('Options');
-		        $dbResult = Database::me()->query($dbQuery);
-				
-				while($dbRow = Database::me()->fetchArray($dbResult))
-					$result[$dbRow['alias']] = $dbRow['value'];
-
-				$cacheTicket->setData($result)->storeData();
-			}
-			else
-				$result = $cacheTicket->getData();
-            
-			return $result;
-		}
-		
 		public function start()
 		{
 			register_shutdown_function(array($this, 'shutdown'));
@@ -99,14 +73,13 @@
 			if(Session::me()->isStarted())
 				User::me()->onSessionStarted();
 			
-			foreach($this->loadSiteOptions() as $option => $value)
-				Config::me()->setOption($option, $value);
-			
 			Localizer::me()->defineLanguage();
+			
+			// TODO: check cache data for path. if no cache, load page, and then
+			// 	 check preg pages
 			
 			$cacheTicket = Cache::me()->createTicket()->
 				setPrefix('pagepathmapper')->
-				setKey('pagepathmapper')->
 				setActualTime(time() + PagePathMapper::CACHE_LIFE_TIME)->
 				restoreData();
 			
@@ -147,8 +120,10 @@
 			
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
-			var_dump(Page::me());
-			var_dump(Localizer::me());
+			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
+			
+			var_dump(ControllerDispatcher::me()->render());
+
 			die;
 
 //			EventDispatcher::ThrowEvent( 'EngineStarted' );

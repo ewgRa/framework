@@ -3,8 +3,6 @@
 
 	abstract class Database extends Singleton
 	{
-		const YAML_DATABASE_FILE_NAME = 'database.yml';
-
 		private $tables = array();
 		
 		private $connected = false;
@@ -179,6 +177,14 @@
 		public function setTables($tables)
 		{
 			$this->tables = $tables;
+		}
+		
+		public function queryString($query, $values = array())
+		{
+			if(count($values))
+				$query = $this->processQuery($query, $values);
+				
+			return $query;
 		}
 	}
 ?>

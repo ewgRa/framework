@@ -6,7 +6,8 @@
 		const CONNECT = 1001;
 		const SELECT_DATABASE = 1002;
 		const SQL_QUERY_ERROR = 1003;
-
+		const NO_RESULT = 1004;
+		
 		private $host = null;
 		private $databaseName = null;
 		private $query = null;

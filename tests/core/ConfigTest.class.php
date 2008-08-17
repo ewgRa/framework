@@ -87,13 +87,16 @@
 		
 		function testInitialize()
 		{
-			MyTestConfig::me()->initialize($this->yamlFile);
+			MyTestConfig::me()->
+				initialize($this->yamlFile);
 				
 			$this->assertEqual(
-				MyTestConfig::me()->getOption('testArray'),
+				MyTestConfig::me()->getOption('all'),
 				array(
-					'arrayKey1' => 'arrayValue1',
-					'arrayKey2' => 'arrayValue2',
+					'testArray' => array(
+						'arrayKey1' => 'arrayValue1',
+						'arrayKey2' => 'arrayValue2'
+					)
 				)
 			);
 		}
