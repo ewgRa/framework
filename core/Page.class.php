@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?	
+	// FIXME: tested?
 	class Page extends Singleton
 	{
 		const CACHE_LIFE_TIME = 86400;
@@ -12,9 +12,6 @@
 		private $pathMatches = null;
 		private $pathParts = null;
 		private $preg = null;
-		private $title = null;
-		private $description = null;
-		private $keywords = null;
 		private $rights = null;
 		private $requestPath = null;
 		private $path = null;
@@ -27,6 +24,16 @@
 			return parent::getInstance(__CLASS__);
 		}
 
+		public static function create($pagePath, $pageId = null)
+		{
+			parent::setInstance(
+				__CLASS__,
+				self::loadPage($pagePath, $pageId)
+			);
+			
+			self::me()->afterLoadPage();
+		}
+		
 		private function setId($id)
 		{
 			$this->id = $id;
@@ -82,17 +89,6 @@
 			return $this->pathParts;
 		}
 
-		private function setTitle($title)
-		{
-			$this->title = $title;
-			return $this;
-		}
-
-		public function getTitle()
-		{
-			return $this->title;
-		}
-
 		private function setPath($path)
 		{
 			$this->path = $path;
@@ -126,28 +122,6 @@
 			return $this->preg == true;
 		}
 		
-		private function setDescription($description)
-		{
-			$this->description = $description;
-			return $this;
-		}
-
-		public function getDescription()
-		{
-			return $this->description;
-		}
-
-		private function setKeywords($keywords)
-		{
-			$this->keywords = $keywords;
-			return $this;
-		}
-
-		public function getKeywords()
-		{
-			return $this->keywords;
-		}
-
 		private function setRights($rights)
 		{
 			$this->rights = $rights;
@@ -159,23 +133,20 @@
 			return $this->rights;
 		}
 
-		public function loadPage($pagePath, $pageId = null)
+		private static function loadPage($pagePath, $pageId = null)
 		{
 			$dbQuery = "
 				SELECT
-					t1.*, t2.file_id as layout_file_id,
-					t4.title, t4.description, t4.keywords
+					t1.*, t2.file_id as layout_file_id
 				FROM " . Database::me()->getTable('Pages') . " t1
 				LEFT JOIN " . Database::me()->getTable('Layouts') . " t2
 					ON( t2.id =	t1.layout_id)
-				LEFT JOIN " . Database::me()->getTable('PagesData') . " t4
-					ON( t4.page_id = t1.id AND t4.language_id = ? )
 				WHERE IF(?, t1.id = ?, t1.path = ?)
 			";
 
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array(Localizer::me()->getLanguageId(), $pageId, $pageId, $pagePath)
+				array($pageId, $pageId, $pagePath)
 			);
 			
 			if(Database::me()->recordCount($dbResult))
@@ -186,22 +157,28 @@
 						setCode(PageException::PAGE_NOT_FOUND)->
 						setUrl($pagePath);
 			
-			if($page['preg'])
-				$this->setPreg();
+			$pageInstance = null;
 						
-			$this->
+			switch($page['view_type'])
+			{
+				case View::XSLT:
+					$pageInstance = HtmlPage::create();
+				break;
+			}
+			
+			if($page['preg'])
+				$pageInstance->setPreg();
+						
+			$pageInstance->
 				setId($page['id'])->
 				setLayoutFileId(
 					Config::me()->replaceVariables($page['layout_file_id'])
 				)->
 				setViewType($page['view_type'])->
-				setTitle($page['title'])->
-				setDescription($page['description'])->
-				setKeywords($page['keywords'])->
 				setPath($page['path'])->
 				loadRights();
 
-			return $this;
+			return $pageInstance;
 		}
 
 		public function processPath()

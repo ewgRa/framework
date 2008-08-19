@@ -78,7 +78,7 @@
 					'position' => $controller->getPositionInSection()
 				);
 			}
-			
+
 			return
 				ModelAndView::create()->
 					setModel($model)->

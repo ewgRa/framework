@@ -38,6 +38,14 @@
 
 			foreach($files as $file)
 			{
+				$file['path'] = str_replace(
+					'\\',
+					'/',
+					realpath(
+						Config::me()->replaceVariables($file['path'])
+					)
+				);
+				
 				$importNode = $this->xslDocument->createElementNS(
 					$this->xslDocument->documentElement->namespaceURI,
 					'xsl:import'
@@ -59,8 +67,7 @@
 			$proc = new XsltProcessor();
 			$proc->importStylesheet($this->xslDocument);
 
-			return
-				$proc->transformToXML($model);
+			return $proc->transformToXML($model);
 		}
 		
 		function toString()

@@ -89,14 +89,12 @@
 		{
 			MyTestConfig::me()->
 				initialize($this->yamlFile);
-				
+			
 			$this->assertEqual(
-				MyTestConfig::me()->getOption('all'),
+				MyTestConfig::me()->getOption('testArray'),
 				array(
-					'testArray' => array(
-						'arrayKey1' => 'arrayValue1',
-						'arrayKey2' => 'arrayValue2'
-					)
+					'arrayKey1' => 'arrayValue1',
+					'arrayKey2' => 'arrayValue2'
 				)
 			);
 		}

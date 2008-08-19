@@ -105,7 +105,7 @@
 			
 			if($cacheTicket->isExpired())
 			{
-				Page::me()->loadPage(UrlHelper::me()->getEnginePagePath(), $pageId);
+				Page::create(UrlHelper::me()->getEnginePagePath(), $pageId);
 				$cacheTicket->setData(Page::me())->storeData();
 			}
 			else

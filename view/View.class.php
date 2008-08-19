@@ -5,6 +5,7 @@
 	class View
 	{
 		const AJAX = 'AJAX';
+		const XSLT = 'XSLT';
 		
 		public static function createByFileId($fileId)
 		{
@@ -13,10 +14,7 @@
 			$dbQuery = "SELECT * FROM " . Database::me()->getTable('ViewFiles')
 				. ' WHERE id = ?';
 			
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array($fileId)
-			);
+			$dbResult = Database::me()->query($dbQuery, array($fileId));
 
 			$file = Database::me()->fetchArray($dbResult);
 			
@@ -25,8 +23,7 @@
 			switch($file['content-type'])
 			{
 				case MimeContentTypes::TEXT_XSLT:
-					$result = XsltView::create()->
-						loadLayout($file);
+					$result = XsltView::create()->loadLayout($file);
 				break;
 			}
 			
