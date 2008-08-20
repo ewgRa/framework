@@ -58,7 +58,7 @@
 				FROM " . Database::me()->getTable('Controllers') . " t1
 				INNER JOIN " . Database::me()->getTable('PagesControllers_ref') . " t2
 					ON( t1.id = t2.controller_id AND t2.page_id = ? )
-				ORDER BY load_priority IS NULL, load_priority
+				ORDER BY load_priority, load_priority IS NULL
 			";
 			
 			$dbResult = Database::me()->query($dbQuery, array($pageId));

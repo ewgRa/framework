@@ -4,8 +4,6 @@
 	// FIXME: tested?
 	class EngineDispatcher extends Singleton
 	{
-		const OPTIONS_CACHE_LIFE_TIME = 86400;
-		
 		private $fired = false;
 		
 		/**
@@ -125,124 +123,13 @@
 			var_dump(ControllerDispatcher::me()->render());
 
 			die;
-
-//			EventDispatcher::ThrowEvent( 'EngineStarted' );
+			
+			return $this;
 		}
 		
-		// FIXME: refatoring?
-		/**
-		 * Событие срабатывающее при успешном доступе к странице
-		 */
-		function OnAccessToPageGranted()
+		private function shutdown()
 		{
-			# Определяем какой вид DataCollector'а и View необходимо инициализировать
-			$Page = Registry::Get( 'Page' );
-
-			switch( $Page->GetViewType() )
-			{
-				case 'Redirect':
-					EventDispatcher::ClearEventCatchers( 'DataRequested' );
-					$DataCollector = DataCollector::Make( 'Redirect' );
-					$View = View::Make( 'Redirect' );
-				break;
-				case 'XSLT':
-					$DataCollector = DataCollector::Make( 'XSLT' );
-					$View = View::Make( 'XSLT' );
-				break;
-				case 'AJAX':
-					$DataCollector = DataCollector::Make( 'AJAX' );
-					$View = View::Make( 'AJAX' );
-				break;
-				case 'JSON':
-					$DataCollector = DataCollector::Make( 'JSON' );
-					$View = View::Make( 'JSON' );
-				break;
-				case 'Native':
-					$DataCollector = DataCollector::Make( 'Native' );
-					$View = View::Make( 'Native' );
-				break;
-				case 'Excel':
-					$DataCollector = DataCollector::Make( 'Excel' );
-					$View = View::Make( 'Excel' );
-				break;
-			}
-
-
-			Registry::Set( 'View', $View );
-
-						
-			# Загружаем модули
-			$ModuleDispatcher = new ModuleDispatcher();
-			$ModuleDispatcher->LoadModules();
-
 			
-			EventDispatcher::ThrowEvent( 'RequestData' );
-			EventDispatcher::ThrowEvent( 'View', $DataCollector->GetData() );
-		}
-		
-		// FIXME: refatoring?
-		/**
-		 * Завершение работы движка и окончательный вывод данных
-		 */
-		function Shutdown()
-		{
-/*			$EngineEcho = ob_get_contents();
-			ob_clean();
-			if( Config::getOption( 'Debug mode' ) )
-			{
-				$Debug = new Debug();
-				$Debug->Set( $_SERVER, 'Server' );
-				if( defined( 'END_TIME' ) && defined( 'START_TIME' ) )
-				{
-					$timing = END_TIME - START_TIME;
-				}
-				else
-				{
-					$timing = '-';
-				}
-				$Debug->Set( $timing, 'GenerationTime' );
-				$Debug->Set( $EngineEcho, 'EngineEcho' );
-
-				# Лог-данные по БД
-				$Debug->DataReceiver( $this->DebugDBProvider() );
-				
-				#События
-				$this->EventsLog = EventDispatcher::GetLog();
-				$Debug->DataReceiver( $this->DebugEventsProvider() );
-
-				EventDispatcher::RegisterCatcher( 'DebugDataProvide', array( $Debug, 'DataReceiver' ) );
-				EventDispatcher::ThrowEvent( 'DebugDataRequested' );
-				
-				$Session = Registry::Get( 'Session' );
-				if( !array_key_exists( 'Debug', $Session->Data ) ) $Session->Data['Debug'] = array();
-				$Session->Data['Debug'][] = $Debug->GetData();
-				$Session->Save();
-			}
-			
-			if( $this->FiredStatus )
-			{
-				$View = Registry::Get( 'View', false );
-				$View->Shutdown();
-			}
-			else
-			{
-				echo $EngineEcho;
-			}
-			exit();
-*/
-		}
-		
-		// FIXME: refatoring?
-		function ForwardToURI( $URI )
-		{
-			$_SERVER['REQUEST_URI'] = $URI;
-
-
-			EventDispatcher::ClearAllCatchers();
-			EventDispatcher::RegisterCatcher( 'AccessToPageGranted',  array( $this, 'OnAccessToPageGranted' ) );
-			
-			Registry::Set( 'EngineDispatcher', $this );
-			$this->Fire();
 		}
 		
 		private function strips(&$el)

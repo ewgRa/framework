@@ -65,7 +65,11 @@
 		
 		abstract public function getModel();
 
-
+		public function importSettings($settings)
+		{
+			return $this;
+		}
+		
 		public function getRenderedModel()
 		{
 			return
