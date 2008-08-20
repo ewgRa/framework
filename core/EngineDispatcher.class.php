@@ -100,7 +100,7 @@
 				setKey(
 					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
 				)->
-				setActualTime(time() + Page::CACHE_LIFE_TIME)->
+				setActualTime(time() + BasePage::CACHE_LIFE_TIME)->
 				restoreData();
 			
 			if($cacheTicket->isExpired())

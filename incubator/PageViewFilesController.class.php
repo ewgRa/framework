@@ -15,9 +15,7 @@
 			$viewFilesId = array();
 			
 			foreach(ControllerDispatcher::me()->getControllers() as $controller)
-			{
 				$viewFilesId[] = $controller->getViewFileId();
-			}
 			
 			return $this->getPageViewFiles($viewFilesId);
 		}

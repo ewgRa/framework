@@ -2,7 +2,7 @@
 	/* $Id$ */
 
 	// FIXME: tested?
-	class HtmlPage extends Page
+	class HtmlPage extends BasePage
 	{
 		private $title = null;
 		private $description = null;

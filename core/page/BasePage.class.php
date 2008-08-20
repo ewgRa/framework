@@ -2,7 +2,7 @@
 	/* $Id$ */
 
 	// FIXME: tested?
-	class Page extends Singleton
+	class BasePage
 	{
 		const CACHE_LIFE_TIME = 86400;
 
@@ -16,25 +16,7 @@
 		private $requestPath = null;
 		private $path = null;
 		
-		/**
-		 * @return Page
-		 */
-		public static function me()
-		{
-			return parent::getInstance(__CLASS__);
-		}
-
-		public static function create($pagePath, $pageId = null)
-		{
-			parent::setInstance(
-				__CLASS__,
-				self::loadPage($pagePath, $pageId)
-			);
-			
-			self::me()->afterLoadPage();
-		}
-		
-		private function setId($id)
+		public function setId($id)
 		{
 			$this->id = $id;
 			return $this;
@@ -45,7 +27,7 @@
 			return $this->id;
 		}
 
-		private function setViewType($viewType)
+		public function setViewType($viewType)
 		{
 			$this->viewType = $viewType;
 			return $this;
@@ -56,7 +38,7 @@
 			return $this->viewType;
 		}
 
-		private function setLayoutFileId($fileId)
+		public function setLayoutFileId($fileId)
 		{
 			$this->layoutFileId = $fileId;
 			return $this;
@@ -67,7 +49,7 @@
 			return $this->layoutFileId;
 		}
 
-		private function setPathMatches($pathMatches)
+		public function setPathMatches($pathMatches)
 		{
 			$this->pathMatches = $pathMatches;
 			return $this;
@@ -78,7 +60,7 @@
 			return $this->pathMatches;
 		}
 
-		private function setPathParts($pathParts)
+		public function setPathParts($pathParts)
 		{
 			$this->pathParts = $pathParts;
 			return $this;
@@ -89,7 +71,7 @@
 			return $this->pathParts;
 		}
 
-		private function setPath($path)
+		public function setPath($path)
 		{
 			$this->path = $path;
 			return $this;
@@ -111,7 +93,7 @@
 			return $this->requestPath;
 		}
 		
-		private function setPreg()
+		public function setPreg()
 		{
 			$this->preg = true;
 			return $this;
@@ -122,7 +104,7 @@
 			return $this->preg == true;
 		}
 		
-		private function setRights($rights)
+		public function setRights($rights)
 		{
 			$this->rights = $rights;
 			return $this;
@@ -131,54 +113,6 @@
 		public function getRights()
 		{
 			return $this->rights;
-		}
-
-		private static function loadPage($pagePath, $pageId = null)
-		{
-			$dbQuery = "
-				SELECT
-					t1.*, t2.file_id as layout_file_id
-				FROM " . Database::me()->getTable('Pages') . " t1
-				LEFT JOIN " . Database::me()->getTable('Layouts') . " t2
-					ON( t2.id =	t1.layout_id)
-				WHERE IF(?, t1.id = ?, t1.path = ?)
-			";
-
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array($pageId, $pageId, $pagePath)
-			);
-			
-			if(Database::me()->recordCount($dbResult))
-				$page = Database::me()->fetchArray($dbResult);
-			else
-				throw
-					ExceptionsMapper::me()->createException('Page')->
-						setCode(PageException::PAGE_NOT_FOUND)->
-						setUrl($pagePath);
-			
-			$pageInstance = null;
-						
-			switch($page['view_type'])
-			{
-				case View::XSLT:
-					$pageInstance = HtmlPage::create();
-				break;
-			}
-			
-			if($page['preg'])
-				$pageInstance->setPreg();
-						
-			$pageInstance->
-				setId($page['id'])->
-				setLayoutFileId(
-					Config::me()->replaceVariables($page['layout_file_id'])
-				)->
-				setViewType($page['view_type'])->
-				setPath($page['path'])->
-				loadRights();
-
-			return $pageInstance;
 		}
 
 		public function processPath()
@@ -193,7 +127,7 @@
 			}
 		}
 		
-		private function processPathMatches($pathMatches)
+		public function processPathMatches($pathMatches)
 		{
 			$result = $pathMatches;
 
@@ -216,7 +150,7 @@
 			return $result;
 		}
 
-		protected function loadRights()
+		public function loadRights()
 		{
 			$this->rights = array();
 
