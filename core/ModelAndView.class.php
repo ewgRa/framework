@@ -7,7 +7,7 @@
 		private $view = null;
 		private $model = null;
 		
-		public function create()
+		public static function create()
 		{
 			return new self;
 		}

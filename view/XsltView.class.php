@@ -8,14 +8,17 @@
 		private $xslDocument = null;
 		private $meta = null;
 		
-		public function create()
+		public static function create()
 		{
 			return new self;
 		}
 		
 		public function loadLayout($file)
 		{
-			$this->xslDocument = DomDocument::loadXML(
+			$projectOptions = Config::me()->getOption('project');
+			$this->xslDocument = new DomDocument('1.0', $projectOptions['charset']);
+
+			$this->xslDocument->loadXML(
 				file_get_contents($file['path'])
 			);
 			

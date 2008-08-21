@@ -4,7 +4,7 @@
 	// FIXME: tested?
 	class EngineDispatcher extends Singleton
 	{
-		private $fired = false;
+		private $renderedOutput = null;
 		
 		/**
 		 * @return EngineDispatcher
@@ -39,21 +39,12 @@
 			return $this;
 		}
 
-		public function setFired()
-		{
-			$this->fired = true;
-			return $this;
-		}
-
-		public function isFired()
-		{
-			return $this->fired;
-		}
-		
 		public function start()
 		{
+			ob_start();
+	
 			register_shutdown_function(array($this, 'shutdown'));
-
+			
 			$exceptionMap = Config::me()->getOption('exceptionMap');
 			
 			if($exceptionMap)
@@ -120,16 +111,23 @@
 			
 			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
 			
-			var_dump(ControllerDispatcher::me()->render());
-
-			die;
-			
 			return $this;
 		}
 		
-		private function shutdown()
+		public function render()
 		{
+			$this->renderedOutput = ControllerDispatcher::me()->render();
+			return $this;
+		}
+		
+		public function shutdown()
+		{
+			$engineEcho = ob_get_contents();
+			ob_clean();
+
+			var_dump($engineEcho);
 			
+			var_dump($this->renderedOutput);
 		}
 		
 		private function strips(&$el)
@@ -143,6 +141,7 @@
 				$el = stripslashes($el);
 				
 			return $this;
+			
 		}
 	}
 ?>
