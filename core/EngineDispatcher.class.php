@@ -125,9 +125,9 @@
 			$engineEcho = ob_get_contents();
 			ob_clean();
 
-			var_dump($engineEcho);
+			if(strlen($engineEcho)) echo $engineEcho;
 			
-			var_dump($this->renderedOutput);
+			echo $this->renderedOutput;
 		}
 		
 		private function strips(&$el)

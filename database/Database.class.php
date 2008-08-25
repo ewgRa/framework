@@ -170,7 +170,13 @@
 			$result = null;
 			
 			if(isset($this->tables[$alias])) $result = $this->tables[$alias];
-
+			else
+				throw ExceptionsMapper::me()->createException(
+					'Database',
+					DatabaseException::UNDEFINED_TABLE
+				)->
+				setTableAlias($alias);
+				
 			return $result;
 		}
 		

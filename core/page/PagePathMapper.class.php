@@ -18,6 +18,8 @@
 		
 		public function loadMap()
 		{
+			$this->map = array();
+			
 			$dbQuery = '
 				SELECT path, id FROM ' . Database::me()->getTable('Pages') . '
 				WHERE preg IS NOT NULL
