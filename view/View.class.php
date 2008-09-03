@@ -16,15 +16,18 @@
 			
 			$dbResult = Database::me()->query($dbQuery, array($fileId));
 
-			$file = Database::me()->fetchArray($dbResult);
-			
-			$file['path'] = Config::me()->replaceVariables($file['path']);
-			
-			switch($file['content-type'])
+			if(Database::me()->recordCount($dbResult))
 			{
-				case MimeContentTypes::TEXT_XSLT:
-					$result = XsltView::create()->loadLayout($file);
-				break;
+				$file = Database::me()->fetchArray($dbResult);
+				
+				$file['path'] = Config::me()->replaceVariables($file['path']);
+				
+				switch($file['content-type'])
+				{
+					case MimeContentTypes::TEXT_XSLT:
+						$result = XsltView::create()->loadLayout($file);
+					break;
+				}
 			}
 			
 			return $result;

@@ -39,7 +39,7 @@
 			return $this;
 		}
 
-		public function start()
+		public function prepareStart()
 		{
 			ob_start();
 	
@@ -62,6 +62,11 @@
 			if(Session::me()->isStarted())
 				User::me()->onSessionStarted();
 			
+			return $this;
+		}
+		
+		public function start()
+		{
 			Localizer::me()->defineLanguage();
 			
 			// TODO: check cache data for path. if no cache, load page, and then
@@ -127,6 +132,7 @@
 
 			if(strlen($engineEcho)) echo $engineEcho;
 			
+			Page::me()->getHeader()->output();
 			echo $this->renderedOutput;
 		}
 		
@@ -142,6 +148,16 @@
 				
 			return $this;
 			
+		}
+		
+		public function redirectToUri($uri)
+		{
+			Localizer::me()->setPath($uri);
+			EngineDispatcher::me()->
+				start()->
+				render();
+			
+			exit(1);
 		}
 	}
 ?>

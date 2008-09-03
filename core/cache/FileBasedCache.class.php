@@ -129,6 +129,7 @@
 		{
 			$directory = dirname($fileName);
 
+			// FIXME: use mkdir with recursive flag
 			if(strtoupper(substr(PHP_OS, 0, 3)) === self::OS_WIN)
 			{
 				exec('mkdir "' . $directory . '"');

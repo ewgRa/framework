@@ -201,5 +201,13 @@
 
 			return true;
 		}
+
+		/**
+		 * @return PageHeader
+		 */
+		public function getHeader()
+		{
+			return PageHeader::me();
+		}
 	}
 ?>

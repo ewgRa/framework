@@ -50,7 +50,11 @@
 		
 		public function render()
 		{
-			return $this->view->transform($this->getViewModel());
+			if($this->view)
+				return $this->view->transform($this->getViewModel());
+				
+			return null;
+			
 		}
 	}
 ?>
