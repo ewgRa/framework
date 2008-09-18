@@ -35,6 +35,42 @@
 			return $this->cacheInstance;
 		}
 		
+		public function fillParams(array $params = null)
+		{
+			if($params)
+			{
+				if(isset($params['prefix']))
+					$this->setPrefix($params['prefix']);
+
+				if(isset($params['lifeTime']))
+				{
+					$this->setLifeTime(time() + $params['lifeTime']);
+				}
+			}
+			
+			return $this;
+		}
+		
+/**
+ * on the future when will be need remove time() from lifeTime or actualTime
+ 		private function isRemoveNowTime($param)
+		{
+			if(
+				!isset($params['removeNowFromActualTime'])
+				|| (
+					$params['removeNowFromActualTime'] !== 0
+					&& $params['removeNowFromActualTime'] !== '0'
+					&& $params['removeNowFromActualTime'] !== 'no'
+					&& $params['removeNowFromActualTime'] !== 'false'
+				)
+			)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+*/
 		public function getPrefix()
 		{
 			return $this->prefix;

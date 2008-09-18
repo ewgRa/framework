@@ -15,10 +15,11 @@
 			return new self;
 		}
 		
-		public function createTicket()
+		public function createTicket($ticketAlias = null)
 		{
 			return FileBasedCacheTicket::create()->
-				setCacheInstance($this);
+				setCacheInstance($this)->
+				fillParams($this->getTicketParams($ticketAlias));
 		}
 		
 		public function setCacheDir($cacheDir)

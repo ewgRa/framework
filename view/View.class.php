@@ -27,6 +27,9 @@
 					case MimeContentTypes::TEXT_XSLT:
 						$result = XsltView::create()->loadLayout($file);
 					break;
+					case MimeContentTypes::APPLICATION_PHP:
+						$result = XsltView::create()->loadLayout($file);
+					break;
 				}
 			}
 			

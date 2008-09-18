@@ -65,18 +65,11 @@
 			return $this;
 		}
 		
-		public function start()
+		private function loadPagePathMapper()
 		{
-			Localizer::me()->defineLanguage();
-			
-			// TODO: check cache data for path. if no cache, load page, and then
-			// 	 check preg pages
-			
-			$cacheTicket = Cache::me()->createTicket()->
-				setPrefix('pagepathmapper')->
-				setActualTime(time() + PagePathMapper::CACHE_LIFE_TIME)->
+			$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
 				restoreData();
-			
+
 			if($cacheTicket->isExpired())
 			{
 				PagePathMapper::me()->loadMap();
@@ -84,17 +77,20 @@
 			}
 			else
 				Singleton::setInstance('PagePathMapper', $cacheTicket->getData());
-			
+				
+			return $this;
+		}
+		
+		private function loadPage()
+		{
 			$pageId = PagePathMapper::me()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
 
-			$cacheTicket = Cache::me()->createTicket()->
-				setPrefix('page')->
+			$cacheTicket = Cache::me()->createTicket('page')->
 				setKey(
 					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
 				)->
-				setActualTime(time() + BasePage::CACHE_LIFE_TIME)->
 				restoreData();
 			
 			if($cacheTicket->isExpired())
@@ -105,6 +101,20 @@
 			else
 				Singleton::setInstance('Page', $cacheTicket->getData());
 
+			return $this;
+		}
+		
+		public function start()
+		{
+			Localizer::me()->defineLanguage();
+			
+			// TODO: check cache data for path. if no cache, load page, and then
+			// 	 check preg pages
+			
+			$this->loadPagePathMapper();
+			
+			$this->loadPage();
+			
 			Page::me()->
 				setRequestPath(UrlHelper::me()->getEnginePagePath())->
 				processPath();
@@ -114,6 +124,7 @@
 			
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
+			// FIXME: cache controller dispatcher?
 			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
 			
 			return $this;

@@ -4,8 +4,6 @@
 	// FIXME: tested?
 	class BasePage
 	{
-		const CACHE_LIFE_TIME = 86400;
-
 		private $id = null;
 		private $viewType = null;
 		private $layoutFileId = null;

@@ -7,8 +7,6 @@
 		const WRONG_LOGIN		= 2;
 		const SUCCESS_LOGIN		= 3;
 		
-		const CACHE_LIFE_TIME = 86400;
-		
 		private $id = null;
 		private $login = null;
 		private $rights = array();
@@ -62,10 +60,8 @@
 		
 		protected function loadRights()
 		{
-			$cacheTicket = Cache::me()->createTicket()->
-				setPrefix('users')->
+			$cacheTicket = Cache::me()->createTicket('user')->
 				setKey(__CLASS__, __FUNCTION__, $this->getId())->
-				setActualTime(time() + self::CACHE_LIFE_TIME)->
 				restoreData();
 						
 			if($cacheTicket->isExpired())

@@ -11,8 +11,6 @@
 		const DETERMINANT_PATH_BASED = 5;
 		const DETERMINANT_HOST_BASED = 6;
 		
-		const CACHE_LIFE_TIME = 86400;
-		
 		private $languageAbbr = null;
 		private $languageId = null;
 		private $languages = null;

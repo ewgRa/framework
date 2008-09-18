@@ -5,13 +5,50 @@
 	{
 		private $isDisabled			= false;
 		private $isExpired 			= true;
-		
+		private $config				= null;
+
 		/**
 		 * @return Cache
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
+		}
+		
+		public function loadConfig($yamlFile)
+		{
+			$cacheTicket = $this->createTicket()->
+				setPrefix('config')->
+				setKey($yamlFile)->
+				setActualTime(filemtime($yamlFile))->
+				restoreData();
+
+			if($cacheTicket->isExpired())
+			{
+				$this->config = YAML::load($yamlFile);
+				
+				$cacheTicket->
+					setData($this->config)->
+					setLifeTime(filemtime($yamlFile))->
+					storeData();
+			}
+			else
+				$this->config = $cacheTicket->getData();
+				
+			return $this;
+		}
+		
+		public function getConfig()
+		{
+			return $this->config;
+		}
+		
+		public function getTicketParams($ticketAlias)
+		{
+			if(isset($this->config[$ticketAlias]))
+				return $this->config[$ticketAlias];
+			
+			return null;
 		}
 		
 		public static function factory($realization)

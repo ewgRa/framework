@@ -5,7 +5,7 @@
 	{
 		private $sectionId = null;
 		private $positionInSection = null;
-		private $cacheKey = null;
+		private $cacheTicket = null;
 		private $viewFileId = null;
 		
 		public function setSectionId($sectionId)
@@ -30,19 +30,19 @@
 			return $this->positionInSection;
 		}
 		
-		public function hasCacheKey()
+		public function hasCacheTicket()
 		{
-			return !is_null($this->cacheKey);
+			return !is_null($this->cacheTicket);
 		}
 		
-		public function getCacheKey()
+		public function getCacheTicket()
 		{
-			return $this->cacheKey;
+			return $this->cacheTicket;
 		}
 		
-		protected function setCacheKey()
+		protected function setCacheTicket(CacheTicket $cacheTicket)
 		{
-			$this->cacheKey = func_get_args();
+			$this->cacheTicket = $cacheTicket;
 			return $this;
 		}
 		
@@ -71,6 +71,33 @@
 		}
 		
 		public function getRenderedModel()
+		{
+			$renderedModel = null;
+			
+			if($this->hasCacheTicket())
+			{
+				$this->getCacheTicket()->restoreData();
+				
+				if($this->getCacheTicket()->isExpired())
+				{
+					$renderedModel = $this->renderModel();
+					
+					$this->getCacheTicket()->
+						setData($renderedModel)->
+						storeData();
+				}
+				else
+					$renderedModel = $this->getCacheTicket()->getData();
+			}
+
+			if(is_null($renderedModel))
+				$renderedModel = $this->renderModel();
+			
+			return
+				$renderedModel;
+		}
+		
+		private function renderModel()
 		{
 			return
 				ModelAndView::create()->
