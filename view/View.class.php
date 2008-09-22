@@ -28,11 +28,11 @@
 						$result = XsltView::create()->loadLayout($file);
 					break;
 					case MimeContentTypes::APPLICATION_PHP:
-						$result = XsltView::create()->loadLayout($file);
+						$result = PhpView::create()->loadLayout($file);
 					break;
 				}
 			}
-			
+						
 			return $result;
 		}
 	}

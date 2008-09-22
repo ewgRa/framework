@@ -12,17 +12,17 @@
 			return parent::getInstance(__CLASS__);
 		}
 
-		public static function create($pagePath, $pageId = null)
+		public static function create($pageId)
 		{
 			parent::setInstance(
 				__CLASS__,
-				self::loadPage($pagePath, $pageId)
+				self::loadPage($pageId)
 			);
 			
 			self::me()->afterLoadPage();
 		}
 		
-		private static function loadPage($pagePath, $pageId = null)
+		private static function loadPage($pageId)
 		{
 			$dbQuery = "
 				SELECT
@@ -30,21 +30,15 @@
 				FROM " . Database::me()->getTable('Pages') . " t1
 				LEFT JOIN " . Database::me()->getTable('Layouts') . " t2
 					ON( t2.id =	t1.layout_id)
-				WHERE IF(?, t1.id = ?, t1.path = ?)
+				WHERE t1.id = ?
 			";
 
 			$dbResult = Database::me()->query(
 				$dbQuery,
-				array($pageId, $pageId, $pagePath)
+				array($pageId)
 			);
 			
-			if(Database::me()->recordCount($dbResult))
-				$page = Database::me()->fetchArray($dbResult);
-			else
-				throw
-					ExceptionsMapper::me()->createException('Page')->
-						setCode(PageException::PAGE_NOT_FOUND)->
-						setUrl($pagePath);
+			$page = Database::me()->fetchArray($dbResult);
 			
 			$pageInstance = null;
 						

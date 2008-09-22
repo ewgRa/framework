@@ -14,6 +14,11 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		public function getRenderedOutput()
+		{
+			return $this->renderedOutput;
+		}
+		
 		public function normalizeRequest()
 		{
 			if(function_exists('set_magic_quotes_runtime'))
@@ -41,10 +46,6 @@
 
 		public function prepareStart()
 		{
-			ob_start();
-	
-			register_shutdown_function(array($this, 'shutdown'));
-			
 			$exceptionMap = Config::me()->getOption('exceptionMap');
 			
 			if($exceptionMap)
@@ -65,37 +66,34 @@
 			return $this;
 		}
 		
-		private function loadPagePathMapper()
+		private function getPagePathMapper()
 		{
+			$result = null;
+			
 			$cacheTicket = Cache::me()->createTicket('pagePathMapper')->
 				restoreData();
 
 			if($cacheTicket->isExpired())
 			{
-				PagePathMapper::me()->loadMap();
-				$cacheTicket->setData(PagePathMapper::me())->storeData();
+				$result = PagePathMapper::create()->loadMap();
+
+				$cacheTicket->setData($result)->storeData();
 			}
 			else
-				Singleton::setInstance('PagePathMapper', $cacheTicket->getData());
+				$result = $cacheTicket->getData();
 				
-			return $this;
+			return $result;
 		}
 		
-		private function loadPage()
+		private function loadPage($pageId)
 		{
-			$pageId = PagePathMapper::me()->getPageId(
-				UrlHelper::me()->getEnginePagePath()
-			);
-
 			$cacheTicket = Cache::me()->createTicket('page')->
-				setKey(
-					$pageId ? $pageId : UrlHelper::me()->getEnginePagePath()
-				)->
+				setKey($pageId)->
 				restoreData();
 			
 			if($cacheTicket->isExpired())
 			{
-				Page::create(UrlHelper::me()->getEnginePagePath(), $pageId);
+				Page::create($pageId);
 				$cacheTicket->setData(Page::me())->storeData();
 			}
 			else
@@ -108,12 +106,19 @@
 		{
 			Localizer::me()->defineLanguage();
 			
-			// TODO: check cache data for path. if no cache, load page, and then
-			// 	 check preg pages
+			$pageId = $this->getPagePathMapper()->getPageId(
+				UrlHelper::me()->getEnginePagePath()
+			);
 			
-			$this->loadPagePathMapper();
+			if(!$pageId)
+			{
+				throw
+					ExceptionsMapper::me()->createException('Page')->
+						setCode(PageException::PAGE_NOT_FOUND)->
+						setUrl(UrlHelper::me()->getEnginePagePath());
+			}
 			
-			$this->loadPage();
+			$this->loadPage($pageId);
 			
 			Page::me()->
 				setRequestPath(UrlHelper::me()->getEnginePagePath())->
@@ -136,17 +141,6 @@
 			return $this;
 		}
 		
-		public function shutdown()
-		{
-			$engineEcho = ob_get_contents();
-			ob_clean();
-
-			if(strlen($engineEcho)) echo $engineEcho;
-			
-			Page::me()->getHeader()->output();
-			echo $this->renderedOutput;
-		}
-		
 		private function strips(&$el)
 		{
 			if(is_array($el))
@@ -164,11 +158,10 @@
 		public function redirectToUri($uri)
 		{
 			Localizer::me()->setPath($uri);
-			EngineDispatcher::me()->
+
+			return EngineDispatcher::me()->
 				start()->
 				render();
-			
-			exit(1);
 		}
 	}
 ?>

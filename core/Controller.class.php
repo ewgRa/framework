@@ -60,7 +60,9 @@
 		public function createView()
 		{
 			return
-				View::createByFileId($this->getViewFileId());
+				$this->getViewFileId() ?
+					View::createByFileId($this->getViewFileId())
+					: null;
 		}
 		
 		abstract public function getModel();

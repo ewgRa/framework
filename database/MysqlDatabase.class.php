@@ -77,6 +77,16 @@
 			if(count($values))
 				$query = $this->processQuery($query, $values);
 			
+			if(Debug::me()->isEnabled())
+			{
+				$debugItem = DebugItem::create()->
+					setType(DebugItem::DATABASE)->
+					setData($query)->
+					setTrace(debug_backtrace());
+				
+				Debug::me()->addItem($debugItem);
+			}
+				
 			$resource = mysql_query($query);
 			
 			if(mysql_error())

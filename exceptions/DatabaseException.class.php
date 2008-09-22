@@ -78,12 +78,9 @@
 
 					if(!$this->message)
 						$this->setMessage('SQL query has error');
-					
-					$trace = $this->getTrace();
-					$single_trace = $trace[1];
-					$file = $single_trace['file'];
-					$line = $single_trace['line'];
-					
+
+					$trace = $this->getSingleTrace(1);
+
 					$resultString =
 						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
@@ -91,23 +88,20 @@
 						. "Database: {$this->databaseName}\n\n"
 						. "Query: {$this->query}\n\n"
 						. "Error: {$this->error}\n\n"
-						. "Query executed from: {$file} at line {$line}\n\n";
+						. "Query executed from: {$trace->getFile()} at line {$trace->getLine()}\n\n";
 				break;
 				case self::UNDEFINED_TABLE:
 
 					if(!$this->message)
 						$this->setMessage('Known nothing about DB table alias');
 					
-					$trace = $this->getTrace();
-					$single_trace = $trace[1];
-					$file = $single_trace['file'];
-					$line = $single_trace['line'];
-					
+					$trace = $this->getSingleTrace(1);
+						
 					$resultString =
 						__CLASS__
 						. ": [{$this->code}]:\n\n{$this->message}\n\n"
 						. "Table alias: {$this->tableAlias}\n\n"
-						. "Get table from: {$file} at line {$line}\n\n";
+						. "Get table from: {$trace->getFile()} at line {$trace->getLine()}\n\n";
 				break;
 			}
 			

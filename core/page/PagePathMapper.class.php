@@ -2,31 +2,35 @@
 	/* $Id$ */
 
 	// FIXME: tested?
-	class PagePathMapper extends Singleton
+	class PagePathMapper
 	{
+		const NON_PREG = 0;
+		const PREG = 1;
+		
 		private $map = null;
 		
-		/**
-		 * @return PagePathMapper
-		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 		
 		public function loadMap()
 		{
-			$this->map = array();
+			$this->map = array(self::NON_PREG => array(), self::PREG => array());
 			
 			$dbQuery = '
-				SELECT path, id FROM ' . Database::me()->getTable('Pages') . '
-				WHERE preg IS NOT NULL
-			';
+				SELECT path, id, preg
+				FROM ' . Database::me()->getTable('Pages');
 
 			$dbResult = Database::me()->query($dbQuery);
 
 			while($dbRow = Database::me()->fetchArray($dbResult))
-				$this->map[$dbRow['id']] = $dbRow['path'];
+			{
+				$preg = is_null($dbRow['preg']) ? self::PREG : self::NON_PREG;
+				$this->map[$preg][$dbRow['id']] = $dbRow['path'];
+			}
+			
+			$this->map[self::NON_PREG] = array_flip($this->map[self::NON_PREG]);
 			
 			return $this;
 		}
@@ -35,12 +39,17 @@
 		{
 			$result = null;
 			
-			foreach($this->map as $pageId => $pagePattern)
+			if(isset($this->map[self::NON_PREG][$path]))
+				$result = $this->map[self::NON_PREG][$path];
+			else
 			{
-				if(preg_match('@' . $pagePattern . '@', $path))
+				foreach($this->map[self::NON_PREG] as $pageId => $pagePattern)
 				{
-					$result = $pageId;
-					break;
+					if(preg_match('@' . $pagePattern . '@', $path))
+					{
+						$result = $pageId;
+						break;
+					}
 				}
 			}
 			

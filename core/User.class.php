@@ -150,6 +150,7 @@
 		public function onSessionStarted()
 		{
 			$user = Session::me()->get('user');
+
 			if($user)
 			{
 				$this->

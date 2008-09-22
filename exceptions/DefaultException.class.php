@@ -3,18 +3,6 @@
 
 	class DefaultException extends Exception
 	{
-		public function setLine($line)
-		{
-			$this->line = $line;
-			return $this;
-		}
-		
-		public function setFile($file)
-		{
-			$this->file = $file;
-			return $this;
-		}
-		
 		public function setCode($code)
 		{
 			$this->code = $code;
@@ -25,6 +13,28 @@
 		{
 			$this->message = $message;
 			return $this;
+		}
+		
+		/**
+		 * @param integer $index
+		 * @return Trace
+		 */
+		protected function getSingleTrace($index)
+		{
+			$trace = $this->getTrace();
+			$singleTrace = $trace[$index];
+			
+			$trace = Trace::create()->
+				setLine($singleTrace['line'])->
+				setFile($singleTrace['file']);
+			
+			
+			return $trace;
+		}
+		
+		public function toHtmlString()
+		{
+			return '<pre>' . $this->__toString() .'</pre>';
 		}
 	}
 ?>

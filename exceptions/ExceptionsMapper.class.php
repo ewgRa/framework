@@ -51,11 +51,6 @@
 
 			$result = new $className($message, $code);
 			
-			$trace = debug_backtrace();
-			$trace = array_shift($trace);
-			$result->setLine($trace['line']);
-			$result->setFile($trace['file']);
-			
 			return $result;
 		}
 	}
