@@ -3,8 +3,6 @@
 	
 	final class FileBasedCache extends Cache
 	{
-		const OS_WIN = 'WIN';
-
 		private $cacheDir 			= null;
 
 		/**
@@ -130,16 +128,9 @@
 		{
 			$directory = dirname($fileName);
 
-			// FIXME: use mkdir with recursive flag
-			if(strtoupper(substr(PHP_OS, 0, 3)) === self::OS_WIN)
-			{
-				exec('mkdir "' . $directory . '"');
-			}
-			else
-			{
-				exec('mkdir -p "' . $directory . '"');
-			}
-			
+			if(!file_exists($directory))
+				mkdir($directory, 0777, true);
+							
 			return true;
 		}
 	}

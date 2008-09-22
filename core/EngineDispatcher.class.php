@@ -129,8 +129,20 @@
 			
 			Page::me()->checkAccessPage(User::me()->getRights());
 			
-			// FIXME: cache controller dispatcher?
-			ControllerDispatcher::me()->loadControllers(Page::me()->getId());
+			$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
+				setKey(Page::me()->getId())->
+				restoreData();
+			
+			if($cacheTicket->isExpired())
+			{
+				ControllerDispatcher::me()->loadControllers(Page::me()->getId());
+				$cacheTicket->setData(ControllerDispatcher::me())->storeData();
+			}
+			else
+				Singleton::setInstance(
+					'ControllerDispatcher',
+					$cacheTicket->getData()
+				);
 			
 			return $this;
 		}

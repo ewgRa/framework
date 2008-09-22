@@ -26,7 +26,7 @@
 
 			while($dbRow = Database::me()->fetchArray($dbResult))
 			{
-				$preg = is_null($dbRow['preg']) ? self::PREG : self::NON_PREG;
+				$preg = is_null($dbRow['preg']) ? self::NON_PREG : self::PREG;
 				$this->map[$preg][$dbRow['id']] = $dbRow['path'];
 			}
 			
