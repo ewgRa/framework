@@ -41,9 +41,20 @@
 			return $this;
 		}
 		
+		public function hasRight($alias)
+		{
+			return isset($this->rights[$alias]);
+		}
+		
 		public function getRights()
 		{
 			return $this->rights;
+		}
+		
+		public function dropRights()
+		{
+			$this->rights = array();
+			return $this;
 		}
 		
 		public function setRights($rights)
@@ -60,52 +71,41 @@
 		
 		protected function loadRights()
 		{
-			$cacheTicket = Cache::me()->createTicket('user')->
-				setKey(__CLASS__, __FUNCTION__, $this->getId())->
-				restoreData();
-						
-			if($cacheTicket->isExpired())
+			$this->dropRights();
+			
+			if($this->getId())
 			{
-				$this->setRights(array());
+				$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
+					. " t1 INNER JOIN " . Database::me()->getTable('UsersRights_ref')
+					. " t2 ON ( t1.id = t2.right_id AND t2.user_id = ? )";
+
+				$dbResult = Database::me()->query(
+					$dbQuery, array($this->getId())
+				);
 				
-				if($this->getId())
+				while(Database::me()->recordCount($dbResult))
 				{
+					$inheritanceId = array();
+
+					while($dbRow = Database::me()->fetchArray($dbResult))
+					{
+						if($this->hasRight($dbRow['alias']))
+							continue;
+
+						$inheritanceId[] = $dbRow['id'];
+						$this->addRight($dbRow['id'], $dbRow['alias']);
+					}
+
 					$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
-						. " t1 INNER JOIN " . Database::me()->getTable('UsersRights_ref')
-						. " t2 ON ( t1.id = t2.right_id AND t2.user_id = ? )";
+						. " t1 INNER JOIN " . Database::me()->getTable('Rights_inheritance')
+						. " t2 ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )";
 
 					$dbResult = Database::me()->query(
-						$dbQuery, array($this->getId())
+						$dbQuery,
+						array($inheritanceId)
 					);
-					
-					while(Database::me()->recordCount($dbResult))
-					{
-						$inheritanceId = array();
-
-						while($dbRow = Database::me()->fetchArray($dbResult))
-						{
-							if(in_array($dbRow['alias'], $this->rights))
-								continue;
-
-							$inheritanceId[] = $dbRow['id'];
-							$this->addRight($dbRow['id'], $dbRow['alias']);
-						}
-
-						$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
-							. " t1 INNER JOIN " . Database::me()->getTable('Rights_inheritance')
-							. " t2 ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )";
-
-						$dbResult = Database::me()->query(
-							$dbQuery,
-							array($inheritanceId)
-						);
-					}
 				}
-				
-				$cacheTicket->setData($this->getRights())->storeData();
 			}
-			else
-				$this->setRights($cacheTicket->getData());
 			
 			return $this;
 		}
@@ -146,7 +146,8 @@
 			}
 			else return self::WRONG_LOGIN;
 		}
-		
+
+		// FIXME: move this method to anywhere :)
 		public function onSessionStarted()
 		{
 			$user = Session::me()->get('user');

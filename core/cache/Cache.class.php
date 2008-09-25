@@ -43,9 +43,14 @@
 			return $this->config;
 		}
 		
+		public function hasTicketParams($ticketAlias)
+		{
+			return isset($this->config[$ticketAlias]);
+		}
+		
 		public function getTicketParams($ticketAlias)
 		{
-			if(isset($this->config[$ticketAlias]))
+			if($this->hasTicketParams($ticketAlias))
 				return $this->config[$ticketAlias];
 			
 			return null;

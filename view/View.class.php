@@ -11,28 +11,51 @@
 		{
 			$result = null;
 			
-			$dbQuery = "SELECT * FROM " . Database::me()->getTable('ViewFiles')
-				. ' WHERE id = ?';
+			$cacheTicket = null;
 			
-			$dbResult = Database::me()->query($dbQuery, array($fileId));
-
-			if(Database::me()->recordCount($dbResult))
+			if(Cache::me()->hasTicketParams('view'))
 			{
-				$file = Database::me()->fetchArray($dbResult);
+				$cacheTicket = Cache::me()->createTicket('view')->
+					setKey($fileId);
+
+				$cacheTicket->restoreData();
+			}
+			
+			if(!$cacheTicket || $cacheTicket->isExpired())
+			{
+				$dbQuery = "SELECT * FROM " . Database::me()->getTable('ViewFiles')
+					. ' WHERE id = ?';
 				
-				$file['path'] = Config::me()->replaceVariables($file['path']);
-				
-				switch($file['content-type'])
+				$dbResult = Database::me()->query($dbQuery, array($fileId));
+	
+				if(Database::me()->recordCount($dbResult))
 				{
-					case MimeContentTypes::TEXT_XSLT:
-						$result = XsltView::create()->loadLayout($file);
-					break;
-					case MimeContentTypes::APPLICATION_PHP:
-						$result = PhpView::create()->loadLayout($file);
-					break;
+					$file = Database::me()->fetchArray($dbResult);
+					
+					$file['path'] = Config::me()->replaceVariables($file['path']);
+					
+					switch($file['content-type'])
+					{
+						case MimeContentTypes::TEXT_XSLT:
+							$result = XsltView::create()->loadLayout($file);
+						break;
+						case MimeContentTypes::APPLICATION_PHP:
+							$result = PhpView::create()->loadLayout($file);
+						break;
+					}
+				}
+				
+				if($cacheTicket)
+				{
+					$cacheTicket->setData($result)->storeData();
 				}
 			}
-						
+			else
+			{
+				$result = $cacheTicket->getData();
+			}
+			
+							
 			return $result;
 		}
 	}

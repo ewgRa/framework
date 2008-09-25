@@ -9,7 +9,7 @@
 		
 		private $foundClasses 		= array();
 		private $searchDirectories	= array();
-		private $cacheRealization		= null;
+		private $cacheTicket		= null;
 
 		/**
 		 * @return ClassesAutoloader
@@ -19,6 +19,22 @@
 			return parent::getInstance(__CLASS__);
 		}
 
+		public function setCacheTicket(CacheTicket $ticket)
+		{
+			$this->cacheTicket = $ticket;
+			return $this;
+		}
+		
+		public function getCacheTicket()
+		{
+			return $this->cacheTicket;
+		}
+		
+		public function hasCacheTicket()
+		{
+			return !is_null($this->cacheTicket);
+		}
+		
 		public function load($className)
 		{
 			if(class_exists($className))
@@ -116,27 +132,13 @@
 			$this->foundClasses[$className] = $classFile;
 		}
 		
-		public function setCacheRealization($realization)
-		{
-			$this->cacheRealization = $realization;
-			return $this;
-		}
-		
-		public function getCacheRealization()
-		{
-			return $this->cacheRealization;
-		}
-		
 		public function loadCache()
 		{
-			if($this->getCacheRealization())
+			if($this->hasCacheTicket())
 			{
-				$cacheTicket = $this->getCacheRealization()->createTicket()->
-					setPrefix('autoloader')->
-					setKey($this->getSearchDirectories())->
-					restoreData();
-
-				$this->setFoundClasses($cacheTicket->getData());
+				$this->setFoundClasses(
+					$this->getCacheTicket()->restoreData()->getData()
+				);
 			}
 		}
 
@@ -148,11 +150,9 @@
 		
 		private function saveCache()
 		{
-			if($this->getCacheRealization())
+			if($this->hasCacheTicket())
 			{
-				$cacheTicket = $this->getCacheRealization()->createTicket()->
-					setPrefix('autoloader')->
-					setKey($this->getSearchDirectories())->
+				$this->getCacheTicket()->
 					setData($this->getFoundClasses())->
 					storeData();
 			}

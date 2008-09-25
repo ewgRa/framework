@@ -14,7 +14,7 @@
 		public function loadLayout($file)
 		{
 			$projectOptions = Config::me()->getOption('project');
-			$this->xslDocument = new DomDocument('1.0', $projectOptions['charset']);
+			$this->xslDocument = new ExtendedDomDocument('1.0', $projectOptions['charset']);
 
 			$this->xslDocument->loadXML(
 				file_get_contents($file['path'])

@@ -48,5 +48,10 @@
 		{
 			return $this->items;
 		}
+
+		public function getItem($index)
+		{
+			return $this->items[$index];
+		}
 	}
 ?>

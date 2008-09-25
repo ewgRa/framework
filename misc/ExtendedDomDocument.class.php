@@ -38,5 +38,18 @@
 
 			return $node;
 		}
+		
+		public function __sleep()
+		{
+			$this->xml = $this->toString();
+			
+			return array('xml');
+		}
+		
+		public function __wakeup()
+		{
+			$this->loadXML($this->xml);
+			unset($this->xml);
+		}
 	}
 ?>

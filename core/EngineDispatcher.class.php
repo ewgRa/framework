@@ -85,27 +85,8 @@
 			return $result;
 		}
 		
-		private function loadPage($pageId)
+		private function initPage()
 		{
-			$cacheTicket = Cache::me()->createTicket('page')->
-				setKey($pageId)->
-				restoreData();
-			
-			if($cacheTicket->isExpired())
-			{
-				Page::create($pageId);
-				$cacheTicket->setData(Page::me())->storeData();
-			}
-			else
-				Singleton::setInstance('Page', $cacheTicket->getData());
-
-			return $this;
-		}
-		
-		public function start()
-		{
-			Localizer::me()->defineLanguage();
-			
 			$pageId = $this->getPagePathMapper()->getPageId(
 				UrlHelper::me()->getEnginePagePath()
 			);
@@ -118,8 +99,18 @@
 						setUrl(UrlHelper::me()->getEnginePagePath());
 			}
 			
-			$this->loadPage($pageId);
+			$cacheTicket = Cache::me()->createTicket('page')->
+				setKey($pageId)->
+				restoreData();
 			
+			if($cacheTicket->isExpired())
+			{
+				Page::create($pageId);
+				$cacheTicket->setData(Page::me())->storeData();
+			}
+			else
+				Singleton::setInstance('Page', $cacheTicket->getData());
+
 			Page::me()->
 				setRequestPath(UrlHelper::me()->getEnginePagePath())->
 				processPath();
@@ -127,8 +118,25 @@
 			if(Page::me()->getViewType() == View::AJAX)
 				JsHttpRequest::initialize(Config::me()->getOption('charset'));
 			
+			// FIXME: operation with user
 			Page::me()->checkAccessPage(User::me()->getRights());
+
+			return $this;
+		}
+		
+		public function start()
+		{
+			Localizer::me()->defineLanguage();
 			
+			$this->initPage();
+			
+			$this->initControllerDispatcher();
+			
+			return $this;
+		}
+		
+		protected function initControllerDispatcher()
+		{
 			$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
 				setKey(Page::me()->getId())->
 				restoreData();
@@ -143,7 +151,7 @@
 					'ControllerDispatcher',
 					$cacheTicket->getData()
 				);
-			
+				
 			return $this;
 		}
 		

@@ -68,22 +68,27 @@
 		
 		public function render()
 		{
-			$model = array();
+			return
+				ModelAndView::create()->
+					setModel($this->getModel())->
+					setView(View::createByFileId(Page::me()->getLayoutFileId()))->
+					render();
+		}
+		
+		private function getModel()
+		{
+			$result = array();
 			
 			foreach($this->getControllers() as $controller)
 			{
-				$model[] = array(
+				$result[] = array(
 					'data' => $controller->getRenderedModel(),
 					'section' => $controller->getSectionId(),
 					'position' => $controller->getPositionInSection()
 				);
 			}
-
-			return
-				ModelAndView::create()->
-					setModel($model)->
-					setView(View::createByFileId(Page::me()->getLayoutFileId()))->
-					render();
+			
+			return $result;
 		}
 	}
 ?>
