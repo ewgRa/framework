@@ -2,10 +2,8 @@
 	/* $Id$ */
 
 	// FIXME: tested?
-	class BaseView
+	abstract class BaseView implements ViewInterface
 	{
-		
-		//FIXME: move this method to EngineDispatcher?
 		protected function getLayoutIncludeFiles($fileId)
 		{
 			$result = array();
@@ -29,9 +27,7 @@
 				array($fileId, $fileId)
 			);
 			
-			$files = Database::me()->resourceToArray($dbResult);
-
-			foreach($files as $file)
+			foreach(Database::me()->resourceToArray($dbResult) as $file)
 			{
 				$result[] = str_replace(
 					'\\',

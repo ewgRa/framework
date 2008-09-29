@@ -61,7 +61,7 @@
 		{
 			return
 				$this->getViewFileId() ?
-					View::createByFileId($this->getViewFileId())
+					ViewFactory::createByFileId($this->getViewFileId())
 					: null;
 		}
 		

@@ -7,11 +7,17 @@
 		private $layoutFile = null;
 		private $includeFiles = null;
 		
+		/**
+		 * @return PhpView
+		 */
 		public static function create()
 		{
 			return new self;
 		}
 		
+		/**
+		 * @return PhpView
+		 */
 		public function loadLayout($file)
 		{
 			$this->layoutFile = $file['path'];
@@ -29,13 +35,12 @@
 				
 			require($this->layoutFile);
 
-			$result = ob_get_contents();
-			ob_clean();
+			$result = ob_get_clean();
 			
 			return $result;
 		}
 		
-		function toString()
+		public function toString()
 		{
 			return __FILE__ . '@' . __LINE__;
 		}

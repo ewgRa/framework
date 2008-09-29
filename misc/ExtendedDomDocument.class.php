@@ -5,11 +5,6 @@
 		const DEFAULT_NODE_PREFIX = 'item';
 		const DEFAULT_NUMERIC_NODE_ATTRIBUTE = 'key';
 		
-		public function toString()
-		{
-			return $this->saveXML();
-		}
-		
 		public function createNodeFromArray($array, $nodeName, $attributes = array())
 		{
 			if(is_numeric($nodeName))
@@ -37,6 +32,26 @@
 			}
 
 			return $node;
+		}
+		
+		public function importFile($filePath)
+		{
+			$importNode = $this->createElementNS(
+				$this->documentElement->namespaceURI,
+				'xsl:import'
+			);
+			
+			$importNode->setAttribute('href', $filePath);
+			
+			$this->documentElement->insertBefore(
+				$importNode,
+				$this->documentElement->firstChild->nextSibling
+			);
+		}
+		
+		public function toString()
+		{
+			return $this->saveXML();
 		}
 		
 		public function __sleep()

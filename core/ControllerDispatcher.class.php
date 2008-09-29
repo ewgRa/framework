@@ -68,11 +68,12 @@
 		
 		public function render()
 		{
-			return
-				ModelAndView::create()->
-					setModel($this->getModel())->
-					setView(View::createByFileId(Page::me()->getLayoutFileId()))->
-					render();
+			return ModelAndView::create()->
+				setModel($this->getModel())->
+				setView(
+					ViewFactory::createByFileId(Page::me()->getLayoutFileId())
+				)->
+				render();
 		}
 		
 		private function getModel()

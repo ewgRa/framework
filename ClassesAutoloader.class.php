@@ -1,9 +1,22 @@
 <?php
 	/* $Id$ */
 
-	// TODO: runtime cache!!!
-	// TODO: packets
-	class ClassesAutoloader extends Singleton
+	/**
+	 * @author Evgeniy N. Sokolov
+	 * @example
+			ClassesAutoloader::me()->
+				setSearchDirectories($searchDirectories)->
+				setCacheTicket($cacheTicket)->
+				loadCache();
+		
+			unset($searchDirectories);
+
+			function __autoload($className)
+			{
+				ClassesAutoloader::me()->load($className);
+			}
+ 	 */
+	final class ClassesAutoloader extends Singleton
 	{
 		const CLASS_FILE_EXTENSION	= '.class.php';
 		
@@ -19,12 +32,18 @@
 			return parent::getInstance(__CLASS__);
 		}
 
+		/**
+		 * @return ClassesAutoloader
+		 */
 		public function setCacheTicket(CacheTicket $ticket)
 		{
 			$this->cacheTicket = $ticket;
 			return $this;
 		}
 		
+		/**
+		 * @return CacheTicket
+		 */
 		public function getCacheTicket()
 		{
 			return $this->cacheTicket;
@@ -35,6 +54,36 @@
 			return !is_null($this->cacheTicket);
 		}
 		
+		/**
+		 * @return ClassesAutoloader
+		 */
+		public function setSearchDirectories(array $searchDirectories)
+		{
+			$this->searchDirectories = $searchDirectories;
+			return $this;
+		}
+		
+		public function getSearchDirectories()
+		{
+			return $this->searchDirectories;
+		}
+		
+		/**
+		 * @return ClassesAutoloader
+		 */
+		public function addSearchDirectories(array $searchDirectories)
+		{
+			$this->searchDirectories = array_merge(
+				$this->searchDirectories,
+				$searchDirectories
+			);
+			
+			return $this;
+		}
+		
+		/**
+		 * @return ClassesAutoloader
+		 */
 		public function load($className)
 		{
 			if(class_exists($className))
@@ -47,53 +96,40 @@
 				$classFile = $this->findClassFile($className);
 
 				if($classFile)
-				{
-					$this->setClassFile($className, $classFile);
-					$this->saveCache();
-				}
+					$this->setClassFile($className, $classFile)->saveCache();
 			}
 
 			if($classFile)
 				require_once($classFile);
 
 			if(!class_exists($className) || !$classFile)
+				$this->dropFound($className)->saveCache();
+			
+			return $this;
+		}
+				
+		/**
+		 * @return ClassesAutoloader
+		 */
+		public function loadCache()
+		{
+			if(
+				$this->hasCacheTicket()
+				&& $foundClasses = $this->getCacheTicket()->restoreData()->getData()
+			)
 			{
-				$this->dropFound($className);
-				$this->saveCache();
+				$this->setFoundClasses($foundClasses);
 			}
 			
 			return $this;
 		}
 
-		public function getSearchDirectories()
-		{
-			return $this->searchDirectories;
-		}
-		
-		public function setSearchDirectories(array $searchDirectories)
-		{
-			$this->searchDirectories = $searchDirectories;
-			return $this;
-		}
-		
-		public function addSearchDirectories(array $searchDirectories)
-		{
-			$this->searchDirectories = array_merge(
-				$this->searchDirectories,
-				$searchDirectories
-			);
-			
-			return $this;
-		}
-		
-		public function findClassFile($className, $searchDirectories = null)
+		private function findClassFile($className, array $searchDirectories = null)
 		{
 			$result = null;
 			
 			if(!$searchDirectories)
-			{
 				$searchDirectories = $this->getSearchDirectories();
-			}
 			
 			foreach($searchDirectories as $directory)
 			{
@@ -107,7 +143,7 @@
 						);
 						
 						if($result)
-							break;
+							break 2;
 					}
 					elseif(
 						is_file($fileName)
@@ -116,38 +152,35 @@
 					)
 					{
 						$result = $fileName;
-						break;
+						break 2;
 					}
 				}
-				
-				if($result)
-					break;
 			}
 			
 			return $result;
 		}
 		
-		public function setClassFile($className, $classFile)
+		/**
+		 * @return ClassesAutoloader
+		 */
+		private function setClassFile($className, $classFile)
 		{
 			$this->foundClasses[$className] = $classFile;
+			return $this;
 		}
 		
-		public function loadCache()
-		{
-			if($this->hasCacheTicket())
-			{
-				$this->setFoundClasses(
-					$this->getCacheTicket()->restoreData()->getData()
-				);
-			}
-		}
-
-		public function dropFound($className)
+		/**
+		 * @return ClassesAutoloader
+		 */
+		private function dropFound($className)
 		{
 			unset($this->foundClasses[$className]);
 			return $this;
 		}
 		
+		/**
+		 * @return ClassesAutoloader
+		 */
 		private function saveCache()
 		{
 			if($this->hasCacheTicket())
@@ -156,9 +189,14 @@
 					setData($this->getFoundClasses())->
 					storeData();
 			}
+			
+			return $this;
 		}
 
-		private function setFoundClasses($foundClasses)
+		/**
+		 * @return ClassesAutoloader
+		 */
+		private function setFoundClasses(array $foundClasses)
 		{
 			$this->foundClasses = $foundClasses;
 			return $this;
@@ -176,17 +214,9 @@
 		
 		private function getFoundClassFile($className)
 		{
-			if($this->isFound($className))
-			{
-				return $this->foundClasses[$className];
-			}
-			
-			return null;
+			return $this->isFound($className)
+				? $this->foundClasses[$className]
+				: null;
 		}
-	}
-		
-	function __autoload($className)
-	{
-		ClassesAutoloader::me()->load($className);
 	}
 ?>

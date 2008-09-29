@@ -11,6 +11,9 @@
 			return new self;
 		}
 		
+		/**
+		 * @return MysqlDatabase
+		 */
 		public function connect()
 		{
 			$db = mysql_connect($this->getHost(), $this->getUser(), $this->getPassword());
@@ -27,6 +30,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return MysqlDatabase
+		 */
 		public function selectCharset($charset = 'utf8')
 		{
 			$this->setCharset($charset);
@@ -38,8 +44,13 @@
 				'SET collation_connection = ?',
 				array($charset . '_general_ci')
 			);
+			
+			return $this;
 		}
 
+		/**
+		 * @return MysqlDatabase
+		 */
 		public function selectDatabase($databaseName = null)
 		{
 			if($databaseName)
@@ -59,6 +70,9 @@
 			return $this;
 		}
 
+		/**
+		 * @return MysqlDatabase
+		 */
 		public function disconnect()
 		{
 			mysql_close();
@@ -66,13 +80,14 @@
 			return $this;
 		}
 
-		// TODO: think about $values must be a DBValue::equal, DBValue::like or something else instance
+		/**
+		 * @todo think about $values must be a DBValue::equal, DBValue::like
+		 * 		 or something else instance
+		 */
 		public function query($query, $values = array())
 		{
 			if(!$this->isConnected())
-			{
 				$this->connect()->selectDatabase()->selectCharset();
-			}
 			
 			if(count($values))
 				$query = $this->processQuery($query, $values);
@@ -113,10 +128,12 @@
 			return mysql_fetch_assoc($resource);
 		}
 
+		/**
+		 * @return MysqlDatabase
+		 */
 		public function dataSeek($resource, $row)
 		{
-			$row--;
-			mysql_data_seek($resource, $row);
+			mysql_data_seek($resource, $row - 1);
 			return $this;
 		}
 
@@ -168,14 +185,10 @@
 			if(is_array($variable))
 			{
 				foreach($variable as &$value)
-				{
 					$value = $this->escape($value);
-				}
 			}
 			else
-			{
 				$variable = mysql_escape_string($variable);
-			}
 			
 			return $variable;
 		}

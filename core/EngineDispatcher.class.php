@@ -105,7 +105,7 @@
 			
 			if($cacheTicket->isExpired())
 			{
-				Page::create($pageId);
+				Page::me()->load($pageId);
 				$cacheTicket->setData(Page::me())->storeData();
 			}
 			else
@@ -114,9 +114,6 @@
 			Page::me()->
 				setRequestPath(UrlHelper::me()->getEnginePagePath())->
 				processPath();
-			
-			if(Page::me()->getViewType() == View::AJAX)
-				JsHttpRequest::initialize(Config::me()->getOption('charset'));
 			
 			// FIXME: operation with user
 			Page::me()->checkAccessPage(User::me()->getRights());

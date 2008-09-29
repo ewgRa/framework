@@ -24,41 +24,17 @@
 			return $this;
 		}
 		
-		public function getViewModel()
+		public function getModel()
 		{
-			$result = null;
-			
-			if($this->view instanceof XsltView)
-			{
-				$projectOptions = Config::me()->getOption('project');
-		
-				$result = new ExtendedDomDocument(
-					'1.0',
-					$projectOptions['charset']
-				);
-
-				$root = $result->createNodeFromArray(
-					$this->model,
-					'document'
-				);
-
-				$result->appendChild($root);
-			}
-			elseif($this->view instanceof PhpView)
-			{
-				$result = $this->model;
-			}
-			
-			return $result;
+			return $this->model;
 		}
 		
 		public function render()
 		{
 			if($this->view)
-				return $this->view->transform($this->getViewModel());
+				return $this->view->transform($this->getModel());
 				
 			return null;
-			
 		}
 	}
 ?>

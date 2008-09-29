@@ -3,15 +3,13 @@
 
 	abstract class Database extends Singleton
 	{
-		private $tables = array();
-		
-		private $connected = false;
-		
-		private $host = null;
-		private $user = null;
-		private $password = null;
-		private $databaseName = null;
-		private $charset = null;
+		private $tables 		= array();
+		private $connected		= false;
+		private $host			= null;
+		private $user			= null;
+		private $password		= null;
+		private $databaseName	= null;
+		private $charset		= null;
 		
 		/**
 		 * @return Database
@@ -21,6 +19,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return Database
+		 */
 		public static function factory($realization)
 		{
 			$reflection = new ReflectionMethod($realization, 'create');
@@ -38,9 +39,7 @@
 		public function __destruct()
 		{
 			if($this->isConnected())
-			{
 				$this->disconnect();
-			}
 		}
 		
 		public function setHost($host)
@@ -113,9 +112,7 @@
 						$value = $values[key($values)];
 						
 						if(is_null($value))
-						{
 							$part = "NULL";
-						}
 						else
 						{
 							$value = $this->escape($value);
@@ -125,12 +122,11 @@
 							else
 								$part = "'" . $value . "'";
 						}
+
 						next($values);
 					}
 					else
-					{
 						$part = "?";
-					}
 				}
 				
 				$queryParts[$partKey] = $part;
@@ -183,6 +179,7 @@
 		public function setTables($tables)
 		{
 			$this->tables = $tables;
+			return $this;
 		}
 		
 		public function queryString($query, $values = array())
