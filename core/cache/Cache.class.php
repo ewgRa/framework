@@ -25,7 +25,7 @@
 
 			if($cacheTicket->isExpired())
 			{
-				$this->config = YAML::load($yamlFile);
+				$this->config = Yaml::load($yamlFile);
 				
 				$cacheTicket->
 					setData($this->config)->

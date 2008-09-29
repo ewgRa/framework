@@ -138,7 +138,7 @@
 
 		public function initialize($yamlFile)
 		{
-			$settings = YAML::load($yamlFile);
+			$settings = Yaml::load($yamlFile);
 
 			if(isset($settings['host']))
 				$this->setHost($settings['host']);

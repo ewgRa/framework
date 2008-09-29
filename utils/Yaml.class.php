@@ -1,10 +1,14 @@
 <?php
 	/* $Id$ */
 
-	require_once(LIB_DIR . '/php/spyc/spyc.php');
+	if(!class_exists('Spyc') && defined('LIB_DIR'))
+		require_once(LIB_DIR . '/php/spyc/spyc.php');
 	
-	class YAML
+	class Yaml
 	{
+		/**
+		 * @example ../tests/utils/YamlTest.class.php
+		 */
 		public static function load($file)
 		{
 			if(!file_exists($file))

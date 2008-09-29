@@ -3,16 +3,18 @@
 
 	class Trace
 	{
-		private $line;
-		private $file;
+		private $line = null;
+		private $file = null;
 		
+		/**
+		 * @return Trace
+		 */
 		public static function create()
 		{
 			return new self;
 		}
 		
 		/**
-		 * @param integer $line
 		 * @return Trace
 		 */
 		public function setLine($line)
@@ -21,16 +23,12 @@
 			return $this;
 		}
 
-		/**
-		 * @return integer
-		 */
 		public function getLine()
 		{
 			return $this->line;
 		}
 		
 		/**
-		 * @param string $file
 		 * @return Trace
 		 */
 		public function setFile($file)
@@ -39,9 +37,6 @@
 			return $this;
 		}
 		
-		/**
-		 * @return string
-		 */
 		public function getFile()
 		{
 			return $this->file;

@@ -15,7 +15,7 @@
 		
 		public function initialize($yamlFile)
 		{
-			$settings = YAML::load($yamlFile);
+			$settings = Yaml::load($yamlFile);
 
 			foreach($settings as $optionaAlias => $optionValue)
 			{

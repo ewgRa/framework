@@ -1,11 +1,11 @@
 <?php
 	/* $Id$ */
 
-	class YAMLTest extends UnitTestCase
+	class YamlTest extends UnitTestCase
 	{
 		function testLoad()
 		{
-			$array = Spyc::YAMLLoad( dirname(__FILE__) . '/yaml.test.yml' );
+			$array = Yaml::load(dirname(__FILE__) . '/yaml.test.yml');
 			
 			$this->assertEqual(
 				$array,

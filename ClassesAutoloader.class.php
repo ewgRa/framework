@@ -2,20 +2,10 @@
 	/* $Id$ */
 
 	/**
-	 * @author Evgeniy N. Sokolov
-	 * @example
-			ClassesAutoloader::me()->
-				setSearchDirectories($searchDirectories)->
-				setCacheTicket($cacheTicket)->
-				loadCache();
-		
-			unset($searchDirectories);
-
-			function __autoload($className)
-			{
-				ClassesAutoloader::me()->load($className);
-			}
- 	 */
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	final class ClassesAutoloader extends Singleton
 	{
 		const CLASS_FILE_EXTENSION	= '.class.php';

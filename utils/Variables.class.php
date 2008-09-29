@@ -3,14 +3,15 @@
 
 	class Variables
 	{
+		/**
+		 * @example ../tests/utils/VariablesTest.class.php
+		 */
 		public static function getValueByString($variableName)
 		{
 			$result = null;
 			
 			if(defined($variableName))
-			{
 				$result = constant($variableName);
-			}
 			else
 			{
 				$variableMatches = null;
@@ -33,9 +34,7 @@
 							$varName = null;
 					}
 					elseif($varName != $variableName)
-					{
 						$varName = null;
-					}
 
 					if($varName)
 					{
@@ -50,9 +49,7 @@
 						else
 						{
 							if(defined($varName))
-							{
 								$result = constant($varName);
-							}
 						}
 					}
 				}
@@ -61,15 +58,18 @@
 			return $result;
 		}
 		
+		/**
+		 * @example utils/VariablesTest.class.php
+		 */
 		public static function registerAsConstants(array $variables)
 		{
 			foreach($variables as $constName => $constValue)
 			{
 				if(!defined($constName))
-				{
 					define($constName, $constValue);
-				}
 			}
+			
+			return true;
 		}
 	}
 ?>

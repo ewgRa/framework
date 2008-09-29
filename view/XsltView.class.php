@@ -4,8 +4,8 @@
 	// FIXME: tested?
 	class XsltView extends BaseView
 	{
-		private $charset = 'utf8';
-		private $version = '1.0';
+		private $charset	 = 'utf8';
+		private $version	 = '1.0';
 		private $xslDocument = null;
 
 		/**
