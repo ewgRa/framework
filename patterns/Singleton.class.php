@@ -2,23 +2,14 @@
 	/* $Id$ */
 
 	/**
-	 * Singletone pattern
-	 * @example
-			class MySingleton extends Singleton
-			{
-				public static function me()
-				{
-					return parent::getInstance(__CLASS__);
-				}
-			}
-	 */
+	 * @example ../tests/patterns/SingletonTest.class.php
+ 	 */
 	class Singleton
 	{
-		public static $instances = array();
+		private static $instances = array();
 		
 		protected function __construct()
 		{
-			
 		}
 		
 		public static function getInstance($className)
@@ -46,13 +37,10 @@
 		public static function dropInstance($className)
 		{
 			unset(self::$instances[$className]);
-
-			return null;
 		}
 		
 		public static function me()
 		{
-			
 		}
 	}
 ?>

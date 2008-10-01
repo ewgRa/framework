@@ -61,11 +61,11 @@
 			return $this;
 		}
 		
-		public function transform(array $model)
+		public function transform($model)
 		{
 			$domModel = $this->createDomDocument();
 
-			$root = $domModel->createNodeFromArray(
+			$root = $domModel->createNodeFromVar(
 				$model,
 				'document'
 			);

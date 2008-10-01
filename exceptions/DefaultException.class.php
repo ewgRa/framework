@@ -3,12 +3,18 @@
 
 	class DefaultException extends Exception
 	{
+		/**
+		 * @return DefaultException
+		 */
 		public function setCode($code)
 		{
 			$this->code = $code;
 			return $this;
 		}
 
+		/**
+		 * @return DefaultException
+		 */
 		public function setMessage($message)
 		{
 			$this->message = $message;
@@ -16,7 +22,6 @@
 		}
 		
 		/**
-		 * @param integer $index
 		 * @return Trace
 		 */
 		protected function getSingleTrace($index)

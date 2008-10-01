@@ -26,7 +26,7 @@
 			return $this;
 		}
 		
-		public function transform(array $model)
+		public function transform($model)
 		{
 			ob_start();
 			

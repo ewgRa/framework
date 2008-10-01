@@ -7,7 +7,7 @@
 
 		public function loadLayout($file);
 		
-		public function transform(array $model);
+		public function transform($model);
 		
 		public function toString();
 	}

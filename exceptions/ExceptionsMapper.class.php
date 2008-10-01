@@ -4,9 +4,9 @@
 	class ExceptionsMapper extends Singleton
 	{
 		private $map = array(
-			'Database' => 'DatabaseException',
-			'File' => 'FileException',
-			'Page' => 'PageException'
+			'Database'	=> 'DatabaseException',
+			'File'		=> 'FileException',
+			'Page'		=> 'PageException'
 		);
 		
 		private static $instance = null;
@@ -16,9 +16,12 @@
 		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__, self::$instance);
+			return parent::getInstance(__CLASS__);
 		}
 
+		/**
+		 * @return ExceptionsMapper
+		 */
 		public function setClassName($exceptionAlias, $className)
 		{
 			$this->map[$exceptionAlias] = $className;
@@ -27,10 +30,10 @@
 
 		public function getClassName($exceptionAlias)
 		{
-			if(isset($this->map[$exceptionAlias]))
-				return $this->map[$exceptionAlias];
-				
-			return null;
+			return
+				isset($this->map[$exceptionAlias])
+					? $this->map[$exceptionAlias]
+					: null;
 		}
 		
 		/**
@@ -45,13 +48,9 @@
 			$className = 'DefaultException';
 			
 			if($this->getClassName($exceptionAlias))
-			{
 				$className = $this->getClassName($exceptionAlias);
-			}
-
-			$result = new $className($message, $code);
 			
-			return $result;
+			return new $className($message, $code);
 		}
 	}
 ?>

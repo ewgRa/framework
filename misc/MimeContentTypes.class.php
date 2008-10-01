@@ -1,4 +1,6 @@
 <?php
+	/* $Id$ */
+
 	class MimeContentTypes
 	{
 		const APPLICATION_PHP = 'application/php';

@@ -1,11 +1,20 @@
 <?php
+	/* $Id$ */
+
 	// FIXME:tested?
 	class ExtendedDomDocument extends DOMDocument
 	{
 		const DEFAULT_NODE_PREFIX = 'item';
 		const DEFAULT_NUMERIC_NODE_ATTRIBUTE = 'key';
 		
-		public function createNodeFromArray($array, $nodeName, $attributes = array())
+		/**
+		 * @return DomNode
+		 */
+		public function createNodeFromVar(
+			$var,
+			$nodeName,
+			array $attributes = array()
+		)
 		{
 			if(is_numeric($nodeName))
 			{
@@ -16,24 +25,25 @@
 			$node = $this->createElement($nodeName);
 
 			foreach($attributes as $k => $v )
-			{
 				$node->setAttribute($k, $v);
-			}
 
-			if(!is_array($array))
+			if(!is_array($var))
 			{
-				$CData = $this->createCDATASection($array);
+				$CData = $this->createCDATASection($var);
 				$node->appendChild($CData);
 			}
 			else
 			{
-				foreach($array as $k => $v)
-					$node->appendChild($this->createNodeFromArray($v, $k));
+				foreach($var as $k => $v)
+					$node->appendChild($this->{__FUNCTION__}($v, $k));
 			}
 
 			return $node;
 		}
 		
+		/**
+		 * @return ExtendedDomDocument
+		 */
 		public function importFile($filePath)
 		{
 			$importNode = $this->createElementNS(
@@ -47,6 +57,8 @@
 				$importNode,
 				$this->documentElement->firstChild->nextSibling
 			);
+			
+			return $this;
 		}
 		
 		public function toString()
@@ -61,10 +73,15 @@
 			return array('xml');
 		}
 		
+		/**
+		 * @return ExtendedDomDocument
+		 */
 		public function __wakeup()
 		{
 			$this->loadXML($this->xml);
 			unset($this->xml);
+			
+			return $this;
 		}
 	}
 ?>

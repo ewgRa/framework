@@ -7,6 +7,9 @@
 		
 		private $filePath = null;
 		
+		/**
+		 * @return FileException
+		 */
 		public function setFilePath($filePath)
 		{
 			$this->filePath = $filePath;
@@ -15,26 +18,27 @@
 		
 		public function __toString()
 		{
-			$resultString = parent::__toString();
+			$resultString = array(parent::__toString());
 			
 			switch( $this->code )
 			{
 				case self::FILE_NOT_EXISTS:
 
 					if(!$this->message)
-					{
 						$this->setMessage('File doesn\'t exists');
-					}
 					
-					$resultString =
-						__CLASS__
-						. ": [{$this->code}]:\n\n{$this->message}\n\n"
-						. "Filepath: {$this->filePath}\n\n"
-						. "Current directory: " . getcwd() . "\n\n";
+					$resultString = array(
+						__CLASS__ . ": [{$this->code}]:",
+						$this->message,
+						"Filepath: {$this->filePath}",
+						"Current directory: " . getcwd()
+					);
 				break;
 			}
 			
-			return $resultString;
+			$resultString[] = '';
+			
+			return join(PHP_EOL . PHP_EOL, $resultString);
 		}
 	}
 ?>
