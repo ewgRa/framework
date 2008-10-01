@@ -26,7 +26,7 @@
 						setHost($this->getHost());
 			}
 			
-			$this->setConnected();
+			$this->connected();
 			return $this;
 		}
 		
@@ -84,24 +84,10 @@
 		 * @todo think about $values must be a DBValue::equal, DBValue::like
 		 * 		 or something else instance
 		 */
-		public function query($query, $values = array())
+		public function query($query, array $values = array())
 		{
-			if(!$this->isConnected())
-				$this->connect()->selectDatabase()->selectCharset();
-			
-			if(count($values))
-				$query = $this->processQuery($query, $values);
-			
-			if(Debug::me()->isEnabled())
-			{
-				$debugItem = DebugItem::create()->
-					setType(DebugItem::DATABASE)->
-					setData($query)->
-					setTrace(debug_backtrace());
-				
-				Debug::me()->addItem($debugItem);
-			}
-				
+			$query = $this->prepareQuery($query, $values);
+							
 			$resource = mysql_query($query);
 			
 			if(mysql_error())
@@ -175,17 +161,17 @@
 			return count($limit) ? ' LIMIT ' . join(', ', $limit) : '';
 		}
 
-		public function getInsertedID()
+		public function getInsertedId()
 		{
 			return mysql_insert_id();
 		}
 
-		protected function escape($variable)
+		public function escape($variable)
 		{
 			if(is_array($variable))
 			{
 				foreach($variable as &$value)
-					$value = $this->escape($value);
+					$value = $this->{__FUNCTION__}($value);
 			}
 			else
 				$variable = mysql_escape_string($variable);

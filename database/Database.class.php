@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	abstract class Database extends Singleton
+	abstract class Database extends Singleton implements DatabaseInterface
 	{
 		private $tables 		= array();
 		private $connected		= false;
@@ -30,18 +30,18 @@
 				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
-		public function setConnected()
+		/**
+		 * @return Database
+		 */
+		public function connected()
 		{
 			$this->connected = true;
 			return $this;
 		}
 		
-		public function __destruct()
-		{
-			if($this->isConnected())
-				$this->disconnect();
-		}
-		
+		/**
+		 * @return Database
+		 */
 		public function setHost($host)
 		{
 			$this->host = $host;
@@ -53,6 +53,9 @@
 			return $this->host;
 		}
 		
+		/**
+		 * @return Database
+		 */
 		public function setUser($user)
 		{
 			$this->user = $user;
@@ -64,6 +67,9 @@
 			return $this->user;
 		}
 		
+		/**
+		 * @return Database
+		 */
 		public function setPassword($passwod)
 		{
 			$this->password = $passwod;
@@ -74,7 +80,10 @@
 		{
 			return $this->password;
 		}
-				
+		
+		/**
+		 * @return Database
+		 */
 		public function setCharset($charset = 'utf8')
 		{
 			$this->charset = $charset;
@@ -86,6 +95,9 @@
 			return $this->databaseName;
 		}
 		
+		/**
+		 * @return Database
+		 */
 		public function setDatabaseName($databaseName)
 		{
 			$this->databaseName = $databaseName;
@@ -97,45 +109,9 @@
 			return $this->connected;
 		}
 
-		protected function processQuery($query, $values = array())
-		{
-			$query = str_replace('?', '??', $query);
-			$queryParts = explode('?', $query);
-			$partsCounter = 0;
-			
-			foreach($queryParts as $partKey => $part)
-			{
-				if($partsCounter%2)
-				{
-					if(!is_null(key($values)))
-					{
-						$value = $values[key($values)];
-						
-						if(is_null($value))
-							$part = "NULL";
-						else
-						{
-							$value = $this->escape($value);
-							
-							if(is_array($value))
-								$part = "'" . join("', '", $value) . "'";
-							else
-								$part = "'" . $value . "'";
-						}
-
-						next($values);
-					}
-					else
-						$part = "?";
-				}
-				
-				$queryParts[$partKey] = $part;
-				$partsCounter++;
-			}
-			
-			return join('', $queryParts);
-		}
-
+		/**
+		 * @return Database
+		 */
 		public function initialize($yamlFile)
 		{
 			$settings = Yaml::load($yamlFile);
@@ -176,18 +152,87 @@
 			return $result;
 		}
 		
-		public function setTables($tables)
+		/**
+		 * @return Database
+		 */
+		public function setTables(array $tables)
 		{
 			$this->tables = $tables;
 			return $this;
 		}
 		
-		public function queryString($query, $values = array())
+		public function queryString($query, array $values = array())
 		{
 			if(count($values))
 				$query = $this->processQuery($query, $values);
 				
 			return $query;
+		}
+
+		protected function prepareQuery($query, array $values)
+		{
+			if(!$this->isConnected())
+				$this->connect()->selectDatabase()->selectCharset();
+			
+			if(count($values))
+				$query = $this->processQuery($query, $values);
+			
+			if(Debug::me()->isEnabled())
+			{
+				$debugItem = DebugItem::create()->
+					setType(DebugItem::DATABASE)->
+					setData($query)->
+					setTrace(debug_backtrace());
+				
+				Debug::me()->addItem($debugItem);
+			}
+			
+			return $query;
+		}
+		
+		protected function processQuery($query, array $values = array())
+		{
+			$query = str_replace('?', '??', $query);
+			$queryParts = explode('?', $query);
+			$partsCounter = 0;
+			
+			foreach($queryParts as $partKey => $part)
+			{
+				if($partsCounter%2)
+				{
+					if(!is_null(key($values)))
+					{
+						$value = $values[key($values)];
+						
+						if(is_null($value))
+							$part = "NULL";
+						else
+						{
+							$value = $this->escape($value);
+							
+							if(is_array($value))
+								$part = "'" . join("', '", $value) . "'";
+							else
+								$part = "'" . $value . "'";
+						}
+
+						next($values);
+					}
+					else
+						$part = "?";
+				}
+				
+				$queryParts[$partKey] = $part;
+				$partsCounter++;
+			}
+			
+			return join('', $queryParts);
+		}
+		
+		public function __destruct()
+		{
+			if($this->isConnected())
+				$this->disconnect();
 		}
 	}
 ?>
