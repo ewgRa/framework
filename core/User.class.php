@@ -7,9 +7,9 @@
 		const WRONG_LOGIN		= 2;
 		const SUCCESS_LOGIN		= 3;
 		
-		private $id = null;
-		private $login = null;
-		private $rights = array();
+		private $id		= null;
+		private $login	= null;
+		private $rights	= array();
 
 		/**
 		 * @return User
@@ -24,7 +24,10 @@
 			return $this->id;
 		}
 		
-		protected function setId($id)
+		/**
+		 * @return User
+		 */
+		private function setId($id)
 		{
 			$this->id = $id;
 			return $this;
@@ -35,6 +38,9 @@
 			return $this->login;
 		}
 		
+		/**
+		 * @return User
+		 */
 		private function setLogin($login)
 		{
 			$this->login = $login;
@@ -51,62 +57,30 @@
 			return $this->rights;
 		}
 		
+		/**
+		 * @return User
+		 */
 		public function dropRights()
 		{
 			$this->rights = array();
 			return $this;
 		}
 		
+		/**
+		 * @return User
+		 */
 		public function setRights($rights)
 		{
 			$this->rights = $rights;
 			return $this;
 		}
 		
+		/**
+		 * @return User
+		 */
 		public function addRight($rightId, $rightAlias)
 		{
 			$this->rights[$rightId] = $rightAlias;
-			return $this;
-		}
-		
-		protected function loadRights()
-		{
-			$this->dropRights();
-			
-			if($this->getId())
-			{
-				$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
-					. " t1 INNER JOIN " . Database::me()->getTable('UsersRights_ref')
-					. " t2 ON ( t1.id = t2.right_id AND t2.user_id = ? )";
-
-				$dbResult = Database::me()->query(
-					$dbQuery, array($this->getId())
-				);
-				
-				while(Database::me()->recordCount($dbResult))
-				{
-					$inheritanceId = array();
-
-					while($dbRow = Database::me()->fetchArray($dbResult))
-					{
-						if($this->hasRight($dbRow['alias']))
-							continue;
-
-						$inheritanceId[] = $dbRow['id'];
-						$this->addRight($dbRow['id'], $dbRow['alias']);
-					}
-
-					$dbQuery = "SELECT t1.* FROM " . Database::me()->getTable('Rights')
-						. " t1 INNER JOIN " . Database::me()->getTable('Rights_inheritance')
-						. " t2 ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )";
-
-					$dbResult = Database::me()->query(
-						$dbQuery,
-						array($inheritanceId)
-					);
-				}
-			}
-			
 			return $this;
 		}
 		
@@ -116,8 +90,11 @@
 			Session::me()->drop('user');
 			Session::me()->save();
 			
-			$dbQuery = "SELECT *, password = MD5( ? ) as verify_password FROM "
-				. Database::me()->getTable('Users') . " WHERE login = ?";
+			$dbQuery = "
+				SELECT *, password = MD5( ? ) as verify_password
+					FROM " . Database::me()->getTable('Users') . "
+				WHERE login = ?
+			";
 
 			$dbResult = Database::me()->query($dbQuery, array($password, $login));
 
@@ -139,6 +116,7 @@
 							'rights' => $this->getRights()
 						)
 					);
+					
 					Session::me()->save();
 					return self::SUCCESS_LOGIN;
 				}
@@ -158,6 +136,54 @@
 					setId($user['id'])->
 					setLogin($user['login'])->
 					setRights($user['rights']);
+			}
+			
+			return $this;
+		}
+
+		/**
+		 * @return User
+		 */
+		private function loadRights()
+		{
+			$this->dropRights();
+			
+			if($this->getId())
+			{
+				$dbQuery = "
+					SELECT t1.* FROM " . Database::me()->getTable('Rights') . " t1
+					INNER JOIN " . Database::me()->getTable('UsersRights_ref') . " t2
+						ON ( t1.id = t2.right_id AND t2.user_id = ? )
+				";
+
+				$dbResult = Database::me()->query(
+					$dbQuery, array($this->getId())
+				);
+				
+				while(Database::me()->recordCount($dbResult))
+				{
+					$inheritanceId = array();
+
+					while($dbRow = Database::me()->fetchArray($dbResult))
+					{
+						if($this->hasRight($dbRow['alias']))
+							continue;
+
+						$inheritanceId[] = $dbRow['id'];
+						$this->addRight($dbRow['id'], $dbRow['alias']);
+					}
+
+					$dbQuery = "
+						SELECT t1.* FROM " . Database::me()->getTable('Rights') . " t1
+						INNER JOIN " . Database::me()->getTable('Rights_inheritance') . " t2
+							ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )
+					";
+
+					$dbResult = Database::me()->query(
+						$dbQuery,
+						array($inheritanceId)
+					);
+				}
 			}
 			
 			return $this;

@@ -13,20 +13,23 @@
 
 		public function getEnginePagePath()
 		{
-			$result = Localizer::me()->getPath();
-			
-			if(
-				Localizer::me()->getSource() == Localizer::SOURCE_LANGUAGE_URL
-				|| Localizer::me()->getSource() == Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
-			)
-			{
-				if(Localizer::me()->getType() == Localizer::DETERMINANT_PATH_BASED)
-				{
-					$result = Localizer::me()->cutLanguageAbbr();
-				}
-			}
-				
-			return $result;
+			return
+				$this->isLanguageInUrl()
+					? Localizer::me()->cutLanguageAbbr()
+					: Localizer::me()->getPath();
+		}
+		
+		public function isLanguageInUrl()
+		{
+			return
+				in_array(
+					Localizer::me()->getSource(),
+					array(
+						Localizer::SOURCE_LANGUAGE_URL,
+						Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
+					)
+				)
+				&& Localizer::me()->getType() == Localizer::DETERMINANT_PATH_BASED;
 		}
 	}
 ?>
