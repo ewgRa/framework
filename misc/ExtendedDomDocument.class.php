@@ -2,6 +2,13 @@
 	/* $Id$ */
 
 	// FIXME:tested?
+
+
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	class ExtendedDomDocument extends DOMDocument
 	{
 		const DEFAULT_NODE_PREFIX = 'item';
