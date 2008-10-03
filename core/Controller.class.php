@@ -3,32 +3,8 @@
 
 	abstract class Controller
 	{
-		private $sectionId = null;
-		private $positionInSection = null;
 		private $cacheTicket = null;
-		private $viewFileId = null;
-		
-		public function setSectionId($sectionId)
-		{
-			$this->sectionId = $sectionId;
-			return $this;
-		}
-
-		public function getSectionId()
-		{
-			return $this->sectionId;
-		}
-		
-		public function setPositionInSection($position)
-		{
-			$this->positionInSection = $position;
-			return $this;
-		}
-
-		public function getPositionInSection()
-		{
-			return $this->positionInSection;
-		}
+		private $view = null;
 		
 		public function hasCacheTicket()
 		{
@@ -46,23 +22,15 @@
 			return $this;
 		}
 		
-		public function setViewFileId($fileId)
+		public function setView(BaseView $view = null)
 		{
-			$this->viewFileId = $fileId;
+			$this->view = $view;
 			return $this;
 		}
 		
-		public function getViewFileId()
+		public function getView()
 		{
-			return $this->viewFileId;
-		}
-		
-		public function createView()
-		{
-			return
-				$this->getViewFileId() ?
-					ViewFactory::createByFileId($this->getViewFileId())
-					: null;
+			return $this->view;
 		}
 		
 		abstract public function getModel();
@@ -101,7 +69,7 @@
 		
 		private function renderModel()
 		{
-			$view	= $this->createView();
+			$view	= $this->getView();
 			$model	= $this->getModel();
 			
 			return $view

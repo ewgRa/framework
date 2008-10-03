@@ -19,9 +19,13 @@
 			return $this->controllers;
 		}
 		
-		public function addController($controller)
+		public function addController($controller, $section, $position)
 		{
-			$this->controllers[] = $controller;
+			$this->controllers[] = array(
+				'instance' => $controller,
+				'section'	 => $section,
+				'position'	 => $position
+			);
 		}
 		
 		public function loadControllers($pageId)
@@ -33,17 +37,26 @@
 			{
 				$controllerInstance = new $controller['name'];
 				
-				if(is_null($controller['module_settings']))
-					$controller['module_settings'] = array();
-				else $controller['module_settings'] = unserialize($controller['module_settings']);
+				$controller['module_settings'] =
+					is_null($controller['module_settings'])
+						? array()
+						: unserialize($controller['module_settings']);
 
 				$controllerInstance->
 					importSettings($controller['module_settings'])->
-					setSectionId($controller['section_id'])->
-					setPositionInSection($controller['position_in_section'])->
-					setViewFileId($controller['view_file_id']);
+					setView(
+						$controller['view_file_id']
+							? ViewFactory::createByFileId(
+								$controller['view_file_id']
+							)
+							: null
+					);
 					
-				$this->addController($controllerInstance);
+				$this->addController(
+					$controllerInstance,
+					$controller['section_id'],
+					$controller['position_in_section']
+				);
 			}
 
 			return true;
@@ -83,9 +96,9 @@
 			foreach($this->getControllers() as $controller)
 			{
 				$result[] = array(
-					'data' => $controller->getRenderedModel(),
-					'section' => $controller->getSectionId(),
-					'position' => $controller->getPositionInSection()
+					'data' => $controller['instance']->getRenderedModel(),
+					'section' => $controller['section'],
+					'position' => $controller['position']
 				);
 			}
 			
