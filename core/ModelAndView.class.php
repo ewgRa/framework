@@ -7,17 +7,31 @@
 		private $view = null;
 		private $model = null;
 		
+		/**
+		 * @return ModelAndView
+		 */
 		public static function create()
 		{
 			return new self;
 		}
 		
-		public function setView($view)
+		/**
+		 * @return ModelAndView
+		 */
+		public function setView(BaseView $view)
 		{
 			$this->view = $view;
 			return $this;
 		}
 		
+		public function hasView()
+		{
+			return !is_null($this->view);
+		}
+		
+		/**
+		 * @return ModelAndView
+		 */
 		public function setModel($model)
 		{
 			$this->model = $model;
@@ -31,10 +45,10 @@
 		
 		public function render()
 		{
-			if($this->view)
-				return $this->view->transform($this->getModel());
-				
-			return null;
+			if(!$this->hasView())
+				throw new Exception('no view for render');
+
+			return $this->view->transform($this->getModel());
 		}
 	}
 ?>

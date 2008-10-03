@@ -101,11 +101,15 @@
 		
 		private function renderModel()
 		{
-			return
-				ModelAndView::create()->
-					setModel($this->getModel())->
-					setView($this->createView())->
-					render();
+			$view	= $this->createView();
+			$model	= $this->getModel();
+			
+			return $view
+				? ModelAndView::create()->
+					setModel($model)->
+					setView($view)->
+					render()
+				: null;
 		}
 	}
 ?>
