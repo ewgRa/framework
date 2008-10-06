@@ -79,17 +79,7 @@
 			return Database::me()->resourceToArray($dbResult);
 		}
 		
-		public function render()
-		{
-			return ModelAndView::create()->
-				setModel($this->getModel())->
-				setView(
-					ViewFactory::createByFileId(Page::me()->getLayoutFileId())
-				)->
-				render();
-		}
-		
-		private function getModel()
+		public function getModel()
 		{
 			$result = array();
 			
