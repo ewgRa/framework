@@ -1,6 +1,11 @@
 <?php
 	/* $Id$ */
 	
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	class Config extends Singleton
 	{
 		private $options = null;
@@ -13,6 +18,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return Config
+		 */
 		public function initialize($yamlFile)
 		{
 			$settings = Yaml::load($yamlFile);
@@ -28,26 +36,9 @@
 			return $this;
 		}
 		
-		// FIXME: wtf (use only in delpress)?
-		public function setCookieDomain()
-		{
-			if(!$this->getOption('cookieDomain'))
-			{
-				$domain = str_replace( 'www.', '', $_SERVER['HTTP_HOST'] );
-				$this->setOption('cookieDomain', $domain);
-			}
-			
-			$cookieParams = session_get_cookie_params();
-			session_set_cookie_params (
-				$cookieParams['lifetime'],
-				$cookieParams['path'],
-				$this->getOption('cookieDomain'),
-				$cookieParams['secure']
-			);
-			
-			return $this;
-		}
-		
+		/**
+		 * @return Config
+		 */
 		public function setOption($alias, $value)
 		{
 			$this->options[$alias] = $value;
@@ -71,14 +62,12 @@
 			if(is_array($variable))
 			{
 				foreach($variable as &$var)
-				{
 					$var = $this->replaceVariables($var);
-				}
 			}
 			else
 			{
 				$matches = null;
-				preg_match_all( '/%(.*?)%/', $variable, $matches );
+				preg_match_all('/%(.*?)%/', $variable, $matches);
 				
 				foreach(array_unique($matches[1]) as $match)
 				{
