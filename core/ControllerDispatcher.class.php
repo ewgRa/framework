@@ -1,13 +1,18 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
+	*/
 	class ControllerDispatcher extends Singleton
 	{
 		private $controllers = array();
 		
 		/**
-		 * @return ModuleDispatcher
+		 * @return ControllerDispatchers
 		 */
 		public static function me()
 		{
@@ -19,6 +24,9 @@
 			return $this->controllers;
 		}
 		
+		/**
+		 * @return ControllerDispatcher
+		 */
 		public function addController($controller, $section, $position)
 		{
 			$this->controllers[] = array(
@@ -26,8 +34,13 @@
 				'section'	 => $section,
 				'position'	 => $position
 			);
+			
+			return $this;
 		}
 		
+		/**
+		 * @return ControllerDispatcher
+		 */
 		public function loadControllers($pageId)
 		{
 			$this->controllers = array();
@@ -59,7 +72,7 @@
 				);
 			}
 
-			return true;
+			return $this;
 		}
 		
 		private function getPageControllers($pageId)
