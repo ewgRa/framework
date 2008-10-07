@@ -1,14 +1,19 @@
 <?php
 	/* $Id$ */
 	
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	class DebugItem
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;
 		
 		private $trace = null;
-		private $type = null;
-		private $data = null;
+		private $type  = null;
+		private $data  = null;
 		
 		/**
 		 * @return DebugItem
@@ -19,7 +24,6 @@
 		}
 		
 		/**
-		 * @param array $trace
 		 * @return DebugItem
 		 */
 		public function setTrace(array $trace)
@@ -36,7 +40,6 @@
 			return $this->trace;
 		}
 		/**
-		 * @param integer $type
 		 * @return DebugItem
 		 */
 		public function setType($type)
@@ -45,16 +48,12 @@
 			return $this;
 		}
 		
-		/**
-		 * @return integer
-		 */
 		public function getType()
 		{
 			return $this->type;
 		}
 
 		/**
-		 * @param string $data
 		 * @return DebugItem
 		 */
 		public function setData($data)
@@ -63,9 +62,6 @@
 			return $this;
 		}
 		
-		/**
-		 * @return string
-		 */
 		public function getData()
 		{
 			return $this->data;
