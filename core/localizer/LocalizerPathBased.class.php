@@ -1,6 +1,11 @@
 <?php
 	/* $Id$ */
 	
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	final class LocalizerPathBased extends Localizer
 	{
 		protected $path = null;
@@ -19,6 +24,9 @@
 			return $this->path;
 		}
 		
+		/**
+		 * @return LocalizerPathBased
+		 */
 		public function setPath($path)
 		{
 			$this->path = $path;
@@ -32,9 +40,7 @@
 			$parts = explode('/', $this->getPath());
 
 			if(count($parts) > 2)
-			{
 				$result = $parts[1];
-			}
 			
 			return $result;
 		}

@@ -1,22 +1,27 @@
 <?php
 	/* $Id$ */
 
-	abstract class Localizer extends Singleton
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
+	abstract class Localizer extends Singleton implements LocalizerInterface
 	{
-		const SOURCE_LANGUAGE_DEFAULT = 1;
-		const SOURCE_LANGUAGE_COOKIE = 2;
-		const SOURCE_LANGUAGE_URL = 3;
+		const SOURCE_LANGUAGE_DEFAULT 		 = 1;
+		const SOURCE_LANGUAGE_COOKIE  		 = 2;
+		const SOURCE_LANGUAGE_URL 	  		 = 3;
 		const SOURCE_LANGUAGE_URL_AND_COOKIE = 4;
 		
 		const DETERMINANT_PATH_BASED = 5;
 		const DETERMINANT_HOST_BASED = 6;
 		
-		private $languageAbbr = null;
-		private $languageId = null;
-		private $languages = null;
-		private $cookieLanguageId = null;
+		private $languageAbbr 		= null;
+		private $languageId 		= null;
+		private $languages 			= null;
+		private $cookieLanguageId 	= null;
 		private $cookieLanguageAbbr = null;
-		private $source = null;
+		private $source 			= null;
 		
 		protected $type = null;
 
@@ -26,14 +31,6 @@
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
-		}
-		
-		public static function factory($realization)
-		{
-			$reflection = new ReflectionMethod($realization, 'create');
-
-			return
-				parent::setInstance(__CLASS__, $reflection->invoke(null));
 		}
 		
 		public function getType()
@@ -46,6 +43,9 @@
 			return $this->languageAbbr;
 		}
 		
+		/**
+		 * @return Localizer
+		 */
 		public function setLanguageAbbr($abbr)
 		{
 			$this->languageAbbr = $abbr;
@@ -57,7 +57,10 @@
 			return $this->source;
 		}
 		
-		private function setSource($source)
+		/**
+		 * @return Localizer
+		 */
+		public function setSource($source)
 		{
 			$this->source = $source;
 			return $this;
@@ -68,7 +71,10 @@
 			return $this->languageId;
 		}
 		
-		private function setLanguageId($id)
+		/**
+		 * @return Localizer
+		 */
+		public function setLanguageId($id)
 		{
 			$this->languageId = $id;
 			return $this;
@@ -79,6 +85,9 @@
 			return $this->languages;
 		}
 		
+		/**
+		 * @return Localizer
+		 */
 		public function setCookieLanguage($languageId, $languageAbbr)
 		{
 			$this->cookieLanguageId = $languageId;
@@ -86,6 +95,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Localizer
+		 */
 		public function defineLanguage()
 		{
 			if($this->cookieLanguageId && $this->cookieLanguageAbbr)
@@ -104,19 +116,19 @@
 				$flipLanguages = array_flip($this->languages);
 				$this->setLanguageId($flipLanguages[$probableLanguageAbbr]);
 
-				if($this->getSource() == self::SOURCE_LANGUAGE_COOKIE)
-				{
-					$this->setSource(self::SOURCE_LANGUAGE_URL_AND_COOKIE);
-				}
-				else
-				{
-					$this->setSource(self::SOURCE_LANGUAGE_URL);
-				}
+				$this->setSource(
+					$this->getSource() == self::SOURCE_LANGUAGE_COOKIE
+						? self::SOURCE_LANGUAGE_URL_AND_COOKIE
+						: self::SOURCE_LANGUAGE_URL
+				);
 			}
 
 			return $this;
 		}
 
+		/**
+		 * @return Localizer
+		 */
 		public function loadLanguages()
 		{
 			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages');
@@ -124,13 +136,16 @@
 			$dbResult = Database::me()->query($dbQuery);
 
 			while($dbRow = Database::me()->fetchArray($dbResult))
-			{
 				$this->languages[$dbRow['id']] = $dbRow['abbr'];
-			}
 			
 			return $this;
 		}
 
+		/**
+		 * @return Localizer
+		 * // FIXME: we already have languages in LoadLanguages, no needed
+		 * 			execute query
+		 */
 		public function selectDefaultLanguage()
 		{
 			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages')
@@ -154,8 +169,5 @@
 			
 			return $this;
 		}
-		
-		abstract public function getDefinedLanguageAbbr();
-		abstract public function cutLanguageAbbr();
 	}
 ?>
