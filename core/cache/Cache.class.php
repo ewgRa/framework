@@ -1,7 +1,12 @@
 <?php
 	/* $Id$ */
 
-	abstract class Cache extends Singleton
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
+	abstract class Cache extends Singleton implements CacheInterface
 	{
 		private $isDisabled			= false;
 		private $isExpired 			= true;
@@ -15,6 +20,19 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return CacheTicket
+		 */
+		public function createTicket($ticketAlias = null)
+		{
+			return CacheTicket::create()->
+				setCacheInstance($this)->
+				fillParams($this->getTicketParams($ticketAlias));
+		}
+		
+		/**
+		 * @return Cache
+		 */
 		public function loadConfig($yamlFile)
 		{
 			$cacheTicket = $this->createTicket()->
@@ -50,26 +68,23 @@
 		
 		public function getTicketParams($ticketAlias)
 		{
-			if($this->hasTicketParams($ticketAlias))
-				return $this->config[$ticketAlias];
-			
-			return null;
+			return $this->hasTicketParams($ticketAlias)
+				? $this->config[$ticketAlias]
+				: null;
 		}
 		
-		public static function factory($realization)
-		{
-			$reflection = new ReflectionMethod($realization, 'create');
-
-			return
-				parent::setInstance(__CLASS__, $reflection->invoke(null));
-		}
-		
+		/**
+		 * @return Cache
+		 */
 		public function disable()
 		{
 			$this->isDisabled = true;
 			return $this;
 		}
 		
+		/**
+		 * @return Cache
+		 */
 		public function enable()
 		{
 			$this->isDisabled = false;
@@ -80,11 +95,5 @@
 		{
 			return $this->isDisabled;
 		}
-		
-		abstract public function get(CacheTicket $ticket);
-		
-		abstract public function set(CacheTicket $ticket);
-		
-		abstract public function createTicket();
 	}
 ?>

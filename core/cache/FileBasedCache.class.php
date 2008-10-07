@@ -1,6 +1,11 @@
 <?php
 	/* $Id$ */
 	
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	final class FileBasedCache extends Cache
 	{
 		private $cacheDir 			= null;
@@ -13,13 +18,9 @@
 			return new self;
 		}
 		
-		public function createTicket($ticketAlias = null)
-		{
-			return FileBasedCacheTicket::create()->
-				setCacheInstance($this)->
-				fillParams($this->getTicketParams($ticketAlias));
-		}
-		
+		/**
+		 * @return FileBasedCache
+		 */
 		public function setCacheDir($cacheDir)
 		{
 			$this->cacheDir = $cacheDir;
@@ -68,6 +69,9 @@
 			return $result;
 		}
 
+		/**
+		 * @return FileBasedCache
+		 */
 		public function set(CacheTicket $ticket)
 		{
 			if($this->isDisabled())
@@ -124,6 +128,9 @@
 			return join(DIRECTORY_SEPARATOR, $resultArray);
 		}
 
+		/**
+		 * @return FileBasedCache
+		 */
 		private function createPreDirs($fileName)
 		{
 			$directory = dirname($fileName);
@@ -131,7 +138,7 @@
 			if(!file_exists($directory))
 				mkdir($directory, 0777, true);
 							
-			return true;
+			return $this;
 		}
 	}
 ?>
