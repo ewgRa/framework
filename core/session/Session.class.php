@@ -1,7 +1,12 @@
 <?php
 	/* $Id$ */
 
-	abstract class Session extends Singleton
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
+	abstract class Session extends Singleton implements SessionInterface
 	{
 		protected $isStarted = false;
 
@@ -13,35 +18,17 @@
 			return parent::getInstance(__CLASS__);
 		}
 
-		public static function factory($realization)
-		{
-			$reflection = new ReflectionMethod($realization, 'create');
-
-			return
-				parent::setInstance(__CLASS__, $reflection->invoke(null));
-		}
-		
 		public function getCookie($alias)
 		{
-			$result = null;
-			
-			if(isset($_COOKIE[$alias]))
-				$result = $_COOKIE[$alias];
-			
-			return $result;
+			return
+				isset($_COOKIE[$alias])
+					? $_COOKIE[$alias]
+					: null;
 		}
 
 		public function isStarted()
 		{
 			return $this->isStarted;
 		}
-		
-		abstract public function relativeStart();
-		abstract public function start();
-		abstract public function save();
-		abstract public function getId();
-		abstract public function get($alias);
-		abstract public function set($alias, $value);
-		abstract public function drop($alias);
 	}
 ?>

@@ -1,6 +1,11 @@
 <?php
 	/* $Id$ */
 	
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	*/
 	final class FileBasedSession extends Session
 	{
 		private $data = array();
@@ -13,6 +18,9 @@
 			return new self;
 		}
 		
+		/**
+		 * @return FileBasedSession
+		 */
 		public function relativeStart()
 		{
 			if(isset($_REQUEST[session_name()]) && !$this->isStarted())
@@ -21,6 +29,9 @@
 			return $this;
 		}
 
+		/**
+		 * @return FileBasedSession
+		 */
 		public function start()
 		{
 			if(!$this->isStarted)
@@ -33,6 +44,9 @@
 			return $this;
 		}
 
+		/**
+		 * @return FileBasedSession
+		 */
 		public function save()
 		{
 			if(isset($_SESSION))
@@ -70,12 +84,18 @@
 			return $result;
 		}
 		
+		/**
+		 * @return FileBasedSession
+		 */
 		public function set($alias, $value)
 		{
 			$this->data[$alias] = $value;
 			return $this;
 		}
 
+		/**
+		 * @return FileBasedSession
+		 */
 		public function drop($alias)
 		{
 			unset($this->data[$alias]);
