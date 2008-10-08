@@ -16,12 +16,10 @@
 		const DETERMINANT_PATH_BASED = 5;
 		const DETERMINANT_HOST_BASED = 6;
 		
-		private $languageAbbr 		= null;
-		private $languageId 		= null;
-		private $languages 			= null;
-		private $cookieLanguageId 	= null;
-		private $cookieLanguageAbbr = null;
-		private $source 			= null;
+		private $requestLanguage = null;
+		private $languages 		 = null;
+		private $cookieLanguage  = null;
+		private $source 		 = null;
 		
 		protected $type = null;
 
@@ -38,17 +36,17 @@
 			return $this->type;
 		}
 		
-		public function getLanguageAbbr()
+		public function getRequestLanguage()
 		{
-			return $this->languageAbbr;
+			return $this->requestLanguage;
 		}
 		
 		/**
 		 * @return Localizer
 		 */
-		public function setLanguageAbbr($abbr)
+		public function setRequestLanguage(Language $language)
 		{
-			$this->languageAbbr = $abbr;
+			$this->requestLanguage = $language;
 			return $this;
 		}
 
@@ -66,20 +64,6 @@
 			return $this;
 		}
 		
-		public function getLanguageId()
-		{
-			return $this->languageId;
-		}
-		
-		/**
-		 * @return Localizer
-		 */
-		public function setLanguageId($id)
-		{
-			$this->languageId = $id;
-			return $this;
-		}
-
 		public function getLanguages()
 		{
 			return $this->languages;
@@ -88,10 +72,9 @@
 		/**
 		 * @return Localizer
 		 */
-		public function setCookieLanguage($languageId, $languageAbbr)
+		public function setCookieLanguage(Language $language)
 		{
-			$this->cookieLanguageId = $languageId;
-			$this->cookieLanguageAbbr = $languageAbbr;
+			$this->cookieLanguage = $language;
 			return $this;
 		}
 		
@@ -100,11 +83,9 @@
 		 */
 		public function defineLanguage()
 		{
-			if($this->cookieLanguageId && $this->cookieLanguageAbbr)
+			if($this->cookieLanguage)
 			{
-				$this->setLanguageId($this->cookieLanguageId)->
-					setLanguageAbbr($this->cookieLanguageAbbr);
-					
+				$this->setRequestLanguage($this->cookieLanguage);
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
 
@@ -161,8 +142,11 @@
 			if(Database::me()->recordCount($dbResult))
 			{
 				$dbRow = Database::me()->fetchArray($dbResult);
-				$this->setLanguageAbbr($dbRow['abbr']);
-				$this->setLanguageId($dbRow['id']);
+				$this->setRequestLanguage(
+					Language::create()->
+						setId($dbRow['id'])->
+						setAbbr($dbRow['abbr'])
+				);
 			}
 				
 			$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);

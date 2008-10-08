@@ -8,12 +8,8 @@
 	*/
 	interface LocalizerInterface
 	{
-		public function loadLanguages();
+		public function getDefinedLanguageAbbr();
 		
-		public function setCookieLanguage($languageId, $languageAbbr);
-		
-		public function defineLanguage();
-
 		public function cutLanguageAbbr();
 	}
 ?>

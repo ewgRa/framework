@@ -4,14 +4,11 @@
 	// FIXME: tested?
 	class Page extends Singleton
 	{
-		private $id = null;
-		private $layoutFileId = null;
-		private $pathMatches = null;
-		private $pathParts = null;
-		private $preg = null;
-		private $rights = null;
-		private $requestPath = null;
-		private $path = null;
+		private $id				= null;
+		private $layoutFileId	= null;
+		private $preg			= null;
+		private $rights			= null;
+		private $path			= null;
 		
 		/**
 		 * @return Page
@@ -43,28 +40,6 @@
 			return $this->layoutFileId;
 		}
 
-		public function setPathMatches($pathMatches)
-		{
-			$this->pathMatches = $pathMatches;
-			return $this;
-		}
-
-		public function getPathMatches()
-		{
-			return $this->pathMatches;
-		}
-
-		public function setPathParts($pathParts)
-		{
-			$this->pathParts = $pathParts;
-			return $this;
-		}
-
-		public function getPathParts()
-		{
-			return $this->pathParts;
-		}
-
 		public function setPath($path)
 		{
 			$this->path = $path;
@@ -74,17 +49,6 @@
 		public function getPath()
 		{
 			return $this->path;
-		}
-		
-		public function setRequestPath($path)
-		{
-			$this->requestPath = $path;
-			return $this;
-		}
-
-		public function getRequestPath()
-		{
-			return $this->requestPath;
 		}
 		
 		public function setPreg()
@@ -107,41 +71,6 @@
 		public function getRights()
 		{
 			return $this->rights;
-		}
-
-		public function processPath()
-		{
-			$this->setPathParts(explode("/", $this->getRequestPath()));
-			
-			if($this->isPreg())
-			{
-				preg_match("@" . $this->getPath() . "@", $this->getRequestPath(), $pagePathMatches);
-				$pagePathMatches = $this->processPathMatches($pagePathMatches);
-				$this->setPathMatches($pagePathMatches);
-			}
-		}
-		
-		public function processPathMatches($pathMatches)
-		{
-			$result = $pathMatches;
-
-			$dbQuery = "
-				SELECT * FROM " . Database::me()->getTable('PagesUrlMatchesKeys') . "
-				WHERE page_id = ?
-			";
-
-			$dbResult = Database::me()->query($dbQuery, array($this->getId()));
-
-			while($dbRow = Database::me()->fetchArray($dbResult))
-			{
-				if(isset($pathMatches[$dbRow['match_position']]))
-				{
-					$result[$dbRow['key']] = $result[$dbRow['match_position']];
-					unset($result[$dbRow['match_position']]);
-				}
-			}
-
-			return $result;
 		}
 
 		public function loadRights()
