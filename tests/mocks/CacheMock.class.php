@@ -7,7 +7,9 @@
 		{
 			Mock::generate('Cache', 'CacheTestMock');
 			$cache = &new CacheTestMock();
+			
 			Singleton::setInstance('Cache', $cache);
+			
 			return $cache;
 		}
 

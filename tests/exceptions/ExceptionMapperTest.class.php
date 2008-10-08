@@ -1,42 +1,21 @@
 <?php
 	/* $Id$ */
 
-	class MyException extends DefaultException
-	{
-	    public function setParam($param)
-		{
-			$this->param = $param;
-			return $this;
-		}
-
-		public function getParam()
-		{
-			return $this->param;
-		}
-	}
-	
 	class ExceptionMapperTest extends UnitTestCase
 	{
 		const EXCEPTION_ALIAS = 'test';
 		
-		function testIsSingleton()
+		public function testIsSingleton()
 		{
 			$this->assertTrue(ExceptionsMapper::me() instanceof Singleton);
 		}
 
-		function testSetClassName()
+		public function testCreateHandler()
 		{
-			ExceptionsMapper::me()->setClassName(self::EXCEPTION_ALIAS, 'MyException');
-			
-			$this->assertEqual(
-				ExceptionsMapper::me()->getClassName(self::EXCEPTION_ALIAS),
+			ExceptionsMapper::me()->setClassName(
+				self::EXCEPTION_ALIAS,
 				'MyException'
 			);
-		}
-		
-		function testCreateHandler()
-		{
-			ExceptionsMapper::me()->setClassName(self::EXCEPTION_ALIAS, 'MyException');
 			
 			$this->assertTrue(
 				ExceptionsMapper::me()->createException(self::EXCEPTION_ALIAS)
@@ -51,12 +30,26 @@
 			);
 		}
 
-		function testCreateDefaultHandler()
+		public function testCreateDefaultHandler()
 		{
 			$this->assertTrue(
 				ExceptionsMapper::me()->createException('testDefaultException')
 					instanceof DefaultException
 			);
+		}
+	}
+
+	class MyException extends DefaultException
+	{
+	    public function setParam($param)
+		{
+			$this->param = $param;
+			return $this;
+		}
+
+		public function getParam()
+		{
+			return $this->param;
 		}
 	}
 ?>

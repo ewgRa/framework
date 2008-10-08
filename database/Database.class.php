@@ -27,17 +27,6 @@
 		/**
 		 * @return Database
 		 */
-		public static function factory($realization)
-		{
-			$reflection = new ReflectionMethod($realization, 'create');
-
-			return
-				parent::setInstance(__CLASS__, $reflection->invoke(null));
-		}
-		
-		/**
-		 * @return Database
-		 */
 		public function connected()
 		{
 			$this->connected = true;

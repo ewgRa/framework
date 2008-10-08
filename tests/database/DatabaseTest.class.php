@@ -5,7 +5,7 @@
 	{
 		public function testIsSingleton()
 		{
-			Database::factory('MysqlDatabase');
+			DatabaseFactory::factory('MysqlDatabase');
 			
 			$this->assertTrue(Database::me() instanceof Singleton);
 		}
