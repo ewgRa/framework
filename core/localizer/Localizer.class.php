@@ -93,9 +93,13 @@
 
 			if($this->languages && in_array($probableLanguageAbbr, $this->languages))
 			{
-				$this->setLanguageAbbr($probableLanguageAbbr);
 				$flipLanguages = array_flip($this->languages);
-				$this->setLanguageId($flipLanguages[$probableLanguageAbbr]);
+				
+				$this->setRequestLanguage(
+					Language::create()->
+						setAbbr($probableLanguageAbbr)->
+						setId($flipLanguages[$probableLanguageAbbr])
+				);
 
 				$this->setSource(
 					$this->getSource() == self::SOURCE_LANGUAGE_COOKIE

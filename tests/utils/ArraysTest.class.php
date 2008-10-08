@@ -3,7 +3,7 @@
 
 	class ArraysTest extends UnitTestCase
 	{
-		public $array = null;
+		private $array = null;
 		
 		public function setUp()
 		{
@@ -19,7 +19,7 @@
 			);
 		}
 			
-		function testRecursiveMerge()
+		public function testRecursiveMerge()
 		{
 			$this->assertEqual(
 				Arrays::recursiveMerge(
@@ -34,7 +34,7 @@
 			);
 		}
 		
-		function testRecursiveMergeByArrayKeys()
+		public function testRecursiveMergeByArrayKeys()
 		{
 			$this->assertEqual(
 				Arrays::recursiveMergeByArrayKeys(

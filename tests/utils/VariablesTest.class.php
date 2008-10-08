@@ -5,7 +5,7 @@
 	
 	class VariablesTest extends UnitTestCase
 	{
-		function testGetValueByString()
+		public function testGetValueByString()
 		{
 			$this->assertEqual(
 				Variables::getValueByString('TEST_CONST'), TEST_CONST
@@ -50,11 +50,13 @@
 			);
 		}
 
-		function testRegisterAsConstants()
+		public function testRegisterAsConstants()
 		{
 			$constantValue = rand();
 			
-			Variables::registerAsConstants(array('testConstant' => $constantValue));
+			Variables::registerAsConstants(
+				array('testConstant' => $constantValue)
+			);
 			
 			$this->assertTrue(defined('testConstant'));
 			$this->assertEqual(constant('testConstant'), $constantValue);

@@ -21,7 +21,7 @@
 		public function enable();
 
 		public function isDisabled();
-		
+
 		public function hasTicketParams($ticketAlias);
 		
 		public function getTicketParams($ticketAlias);

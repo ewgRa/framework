@@ -54,19 +54,5 @@
 				array(1 => 'root', 2 => 'demo')
 			);
 		}
-		
-		public function testLoadRightsFromCache()
-		{
-			$cacheTicketMock = CacheTicketMock::create();
-			$cacheTicketMock->setReturnValue('getData', array(1 => 'root', 2 => 'demo'));
-			$cacheTicketMock->setReturnValue('isExpired', false);
-			
-			Cache::me()->setReturnValue('createTicket', $cacheTicketMock);
-			
-			$this->assertEqual(
-				MyTestUser::ftLoadRights()->getRights(),
-				array(1 => 'root', 2 => 'demo')
-			);
-		}
 	}
 ?>

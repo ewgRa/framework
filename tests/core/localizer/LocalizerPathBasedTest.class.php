@@ -20,7 +20,9 @@
 			
 			$determinant->
 				setPath('/thisIsLanguage/thisIsUrl.html')->
-				setLanguageAbbr('thisIsLanguage');
+				setRequestLanguage(
+					Language::create()->setAbbr('thisIsLanguage')
+				);
 			
 			$this->assertEqual(
 				$determinant->cutLanguageAbbr(),

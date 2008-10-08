@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class CacheTicket
+	class CacheTicket
 	{
 		private $cacheInstance = null;
 		private $data = null;

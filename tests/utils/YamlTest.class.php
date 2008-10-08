@@ -3,7 +3,7 @@
 
 	class YamlTest extends UnitTestCase
 	{
-		function testLoad()
+		public function testLoad()
 		{
 			$array = Yaml::load(dirname(__FILE__) . '/yaml.test.yml');
 			

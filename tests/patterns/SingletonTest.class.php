@@ -1,6 +1,48 @@
 <?php
 	/* $Id$ */
 
+	class SingletonTest extends UnitTestCase
+	{
+		private $testVar = 'testVar';
+		
+		public function testIsRealySingleton()
+		{
+			$this->assertEqual(
+				MySingletonTest::me()->getTestVariable(),
+				null
+			);
+			
+			MySingletonTest::me()->setTestVariable($this->testVar);
+			
+			$this->assertEqual(
+				MySingletonTest::me()->getTestVariable(),
+				$this->testVar
+			);
+		}
+		
+		public function testExtendsFromSingleton()
+		{
+			MySingletonTest::me()->setTestVariable($this->testVar);
+			MySingletonTest2::me()->setTestVariable($this->testVar . rand());
+			
+			$this->assertNotEqual(
+				MySingletonTest::me()->getTestVariable(),
+				MySingletonTest2::me()->getTestVariable()
+			);
+		}
+
+		public function testExtendsFromSingletonAsSame()
+		{
+			MySingletonTest::me()->setTestVariable($this->testVar);
+			MySingletonTest3::me()->setTestVariable($this->testVar . rand());
+			
+			$this->assertEqual(
+				MySingletonTest::me()->getTestVariable(),
+				MySingletonTest3::me()->getTestVariable()
+			);
+		}
+	}
+
 	class MySingletonTest extends Singleton
 	{
 		private $testVariable = null;
@@ -13,6 +55,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return MySingletonTest
+		 */
 		public function setTestVariable($variable)
 		{
 			$this->testVariable = $variable;
@@ -37,35 +82,14 @@
 		}
 	}
 
-	class SingletonTest extends UnitTestCase
+	class MySingletonTest3 extends MySingletonTest
 	{
-		private $testVar = 'testVar';
-		private $constructorArgs = array('constructor', 'arguments');
-		
-		function testIsRealySingleton()
+		/**
+		 * @return MySingletonTest3
+		 */
+		public static function me()
 		{
-			$this->assertEqual(
-				MySingletonTest::me()->getTestVariable(),
-				null
-			);
-			
-			MySingletonTest::me()->setTestVariable($this->testVar);
-			
-			$this->assertEqual(
-				MySingletonTest::me()->getTestVariable(),
-				$this->testVar
-			);
-		}
-		
-		function testExtendsFromImplementsSingleton()
-		{
-			MySingletonTest::me()->setTestVariable($this->testVar);
-			MySingletonTest2::me()->setTestVariable($this->testVar . rand());
-			
-			$this->assertFalse(
-				MySingletonTest::me()->getTestVariable()
-				== MySingletonTest2::me()->getTestVariable()
-			);
+			return parent::getInstance('MySingletonTest');
 		}
 	}
 ?>

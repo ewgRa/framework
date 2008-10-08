@@ -32,7 +32,7 @@
 		/**
 		 * @return User
 		 */
-		private function setId($id)
+		protected function setId($id)
 		{
 			$this->id = $id;
 			return $this;
@@ -149,7 +149,7 @@
 		/**
 		 * @return User
 		 */
-		private function loadRights()
+		protected function loadRights()
 		{
 			$this->dropRights();
 			
