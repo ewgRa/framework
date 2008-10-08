@@ -3,23 +3,25 @@
 
 	class ConfigTest extends UnitTestCase
 	{
-		private $yamlFile = null;
+		private $savedConfig = null;
+		private $yamlFile	 = null;
 
 		public function __construct()
 		{
 			$this->yamlFile = dirname(__FILE__) . DIRECTORY_SEPARATOR
 				. 'config.test.yml';
-				
+			
 		}
 		
 		function setUp()
 		{
+			$this->savedConfig = serialize(Config::me());
 			Singleton::dropInstance('Config');
 		}
 		
 		function tearDown()
 		{
-			Singleton::dropInstance('Config');
+			Singleton::setInstance('Config', unserialize($this->savedConfig));
 		}
 		
 		function testIsSingleton()
@@ -42,12 +44,12 @@
 			);
 			
 			$this->assertEqual(
-				MyTestConfig::me()->replaceVariables($variable),
+				Config::me()->replaceVariables($variable),
 				$rightVariable
 			);
 			
 			$this->assertEqual(
-				MyTestConfig::me()->replaceVariables($variable[0]),
+				Config::me()->replaceVariables($variable[0]),
 				$rightVariable[0]
 			);
 		}
@@ -55,17 +57,17 @@
 		function testSetAndGetOption()
 		{
 			$variable = array(rand());
-			MyTestConfig::me()->setOption('testval', $variable);
+			Config::me()->setOption('testval', $variable);
 			
 			$this->assertEqual(
-				MyTestConfig::me()->getOption('testval'),
+				Config::me()->getOption('testval'),
 				$variable
 			);
 
-			MyTestConfig::me()->setOption('testval', $variable[0]);
+			Config::me()->setOption('testval', $variable[0]);
 			
 			$this->assertEqual(
-				MyTestConfig::me()->getOption('testval'),
+				Config::me()->getOption('testval'),
 				$variable[0]
 			);
 		}
@@ -74,7 +76,7 @@
 		{
 			try
 			{
-				MyTestConfig::me()->
+				Config::me()->
 					initialize(rand() . '.yml');
 
 				$this->fail('no exception on non exists file');
@@ -87,11 +89,11 @@
 		
 		function testInitialize()
 		{
-			MyTestConfig::me()->
+			Config::me()->
 				initialize($this->yamlFile);
 			
 			$this->assertEqual(
-				MyTestConfig::me()->getOption('testArray'),
+				Config::me()->getOption('testArray'),
 				array(
 					'arrayKey1' => 'arrayValue1',
 					'arrayKey2' => 'arrayValue2'
