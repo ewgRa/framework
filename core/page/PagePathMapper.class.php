@@ -1,22 +1,36 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
+	*/
 	class PagePathMapper
 	{
-		const NON_PREG = 0;
-		const PREG = 1;
+		const NON_PREG	= 0;
+		const PREG		= 1;
 		
 		private $map = null;
 		
+		/**
+		 * @return PagePathMapper
+		 */
 		public static function create()
 		{
 			return new self;
 		}
 		
+		/**
+		 * @return PagePathMapper
+		 */
 		public function loadMap()
 		{
-			$this->map = array(self::NON_PREG => array(), self::PREG => array());
+			$this->map = array(
+				self::NON_PREG => array(),
+				self::PREG => array()
+			);
 			
 			$dbQuery = '
 				SELECT path, id, preg

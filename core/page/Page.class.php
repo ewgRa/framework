@@ -1,7 +1,12 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
+	*/
 	class Page extends Singleton
 	{
 		private $id				= null;
@@ -18,6 +23,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return Page
+		 */
 		public function setId($id)
 		{
 			$this->id = $id;
@@ -29,6 +37,9 @@
 			return $this->id;
 		}
 
+		/**
+		 * @return Page
+		 */
 		public function setLayoutFileId($fileId)
 		{
 			$this->layoutFileId = $fileId;
@@ -40,6 +51,9 @@
 			return $this->layoutFileId;
 		}
 
+		/**
+		 * @return Page
+		 */
 		public function setPath($path)
 		{
 			$this->path = $path;
@@ -51,6 +65,9 @@
 			return $this->path;
 		}
 		
+		/**
+		 * @return Page
+		 */
 		public function setPreg()
 		{
 			$this->preg = true;
@@ -62,7 +79,10 @@
 			return $this->preg == true;
 		}
 		
-		public function setRights($rights)
+		/**
+		 * @return Page
+		 */
+		public function setRights(array $rights)
 		{
 			$this->rights = $rights;
 			return $this;
@@ -73,6 +93,9 @@
 			return $this->rights;
 		}
 
+		/**
+		 * @return Page
+		 */
 		public function loadRights()
 		{
 			$this->rights = array();
@@ -100,6 +123,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Page
+		 */
 		public function checkAccessPage($rights)
 		{
 			if($this->getRights())
@@ -122,7 +148,7 @@
 					}
 			}
 
-			return true;
+			return $this;
 		}
 
 		/**
@@ -133,6 +159,9 @@
 			return PageHeader::me();
 		}
 		
+		/**
+		 * @return Page
+		 */
 		public function load($pageId)
 		{
 			$dbQuery = "
