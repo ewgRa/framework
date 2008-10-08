@@ -3,7 +3,19 @@
 
 	class ExceptionMapperTest extends UnitTestCase
 	{
+		private $savedMapper = null;
+		
 		const EXCEPTION_ALIAS = 'test';
+		
+		public function setUp()
+		{
+			$this->savedMapper = serialize(ExceptionsMapper::me());
+		}
+		
+		public function tearDown()
+		{
+			Singleton::setInstance('ExceptionsMapper', unserialize($this->savedMapper));
+		}
 		
 		public function testIsSingleton()
 		{

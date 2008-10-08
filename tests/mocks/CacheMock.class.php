@@ -3,8 +3,12 @@
 
 	class CacheMock
 	{
+		private $savedCache = null;
+		
 		public static function create()
 		{
+			$this->savedCache = serialize(Cache::me());
+			
 			Mock::generate('Cache', 'CacheTestMock');
 			$cache = &new CacheTestMock();
 			
@@ -15,7 +19,7 @@
 
 		public static function drop()
 		{
-			Singleton::dropInstance('Cache');
+			Singleton::setInstance('Cache', unserialize($this->savedCache));
 		}
 	}
 ?>

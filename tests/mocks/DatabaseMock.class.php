@@ -3,17 +3,34 @@
 
 	class DatabaseMock
 	{
-		public static function create()
+		private static $savedDatabase = null;
+		
+		public static function create($realization = 'MysqlDatabase')
 		{
-			Mock::generate('MysqlDatabase', 'DatabaseTestMock');
+			if(Singleton::hasInstance('Database'))
+				self::$savedDatabase = serialize(Database::me());
+			
+			Mock::generate($realization, 'DatabaseTestMock');
 			$database = &new DatabaseTestMock();
+			
 			Singleton::setInstance('Database', $database);
+			
 			return $database;
 		}
 		
 		public static function drop()
 		{
-			Singleton::dropInstance('Database');
+			if(self::$savedDatabase)
+			{
+				Singleton::setInstance(
+					'Database',
+					unserialize(self::$savedDatabase)
+				);
+				
+				self::$savedDatabase = null;
+			}
+			else
+				Singleton::dropInstance('Database');
 		}
 	}
 ?>
