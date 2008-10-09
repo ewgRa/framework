@@ -31,6 +31,9 @@
 
 		function testReplaceVariables()
 		{
+			if(!isset($_SERVER['HTTP_HOST']))
+				$_SERVER['HTTP_HOST'] = rand();
+			
 			$variable = array(
 				rand() . '%$_SERVER[HTTP_HOST]%' . rand()
 			);

@@ -19,6 +19,9 @@
 				Variables::getValueByString('$_SERVER'), $_SERVER
 			);
 
+			if(!isset($_SERVER['REMOTE_ADDR']))
+				$_SERVER['REMOTE_ADDR'] = rand();
+			
 			$this->assertEqual(
 				Variables::getValueByString('$_SERVER[REMOTE_ADDR]'),
 				$_SERVER['REMOTE_ADDR']
