@@ -72,6 +72,15 @@
 		/**
 		 * @return Localizer
 		 */
+		public function setLanguages(array $languages)
+		{
+			$this->languages = $languages;
+			return $this;
+		}
+		
+		/**
+		 * @return Localizer
+		 */
 		public function setCookieLanguage(Language $language)
 		{
 			$this->cookieLanguage = $language;
@@ -131,29 +140,31 @@
 		 * // FIXME: we already have languages in LoadLanguages, no needed
 		 * 			execute query
 		 */
-		public function selectDefaultLanguage()
+		public function selectDefaultLanguage($languageAbbr)
 		{
-			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages')
-				. " WHERE abbr = ?";
+			$language = Language::create()->setAbbr($languageAbbr);
 			
-			$projectOptions = Config::me()->getOption('project');
-			
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array($projectOptions['defaultLanguage'])
-			);
-
-			if(Database::me()->recordCount($dbResult))
+			if($this->getLanguages())
 			{
-				$dbRow = Database::me()->fetchArray($dbResult);
-				$this->setRequestLanguage(
-					Language::create()->
-						setId($dbRow['id'])->
-						setAbbr($dbRow['abbr'])
-				);
+				$flipLang = array_flip($this->getLanguages());
+
+				if(isset($flipLang[$languageAbbr]))
+					$language->setId($flipLang[$languageAbbr]);
 			}
-				
-			$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
+
+			if($language->getId())
+			{
+				$this->setRequestLanguage($language);
+				$this->setSource(self::SOURCE_LANGUAGE_DEFAULT);
+			}
+			else
+			{
+				throw ExceptionsMapper::me()->createException('Default')->
+					setMessage(
+						'Known nothing about default language '
+						. '"' . $languageAbbr . '"'
+					);
+			}
 			
 			return $this;
 		}

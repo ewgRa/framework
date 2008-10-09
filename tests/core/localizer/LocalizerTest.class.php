@@ -3,6 +3,7 @@
 
 	class LocalizerTest extends UnitTestCase
 	{
+		private $savedLocalizer = null;
 		private $languages = null;
 		
 		public function __construct()
@@ -17,16 +18,28 @@
 		
 		public function setUp()
 		{
+			if(Singleton::hasInstance('Localizer'))
+				$this->savedLocalizer = serialize(Localizer::me());
+
 			DatabaseMock::create();
-			SessionMock::create();
 			Singleton::dropInstance('Localizer');
 		}
 		
 		public function tearDown()
 		{
 			DatabaseMock::drop();
-			SessionMock::drop();
-			Singleton::dropInstance('Localizer');
+
+			if($this->savedLocalizer)
+			{
+				Singleton::setInstance(
+					'Session',
+					unserialize($this->savedLocalizer)
+				);
+				
+				$this->savedLocalizer = null;
+			}
+			else
+				Singleton::dropInstance('Localizer');
 		}
 		
 		public function testGetLanguages()
@@ -55,16 +68,13 @@
 		
 		public function testSelectDefaultLanguage()
 		{
-			Database::me()->setReturnValueAt(0, 'recordCount', 1);
+			$localizer = LocalizerPathBased::create();
 			
-			Database::me()->setReturnValueAt(
-				0,
-				'fetchArray',
-				$this->languageToDbArray($this->languages[0])
+			$localizer->setLanguages(
+				$this->convertLanguages($this->languages)
 			);
 			
-			$localizer = LocalizerPathBased::create();
-			$localizer->selectDefaultLanguage();
+			$localizer->selectDefaultLanguage('ru');
 			
 			$this->assertEqual(
 				$this->languages[0],
@@ -142,14 +152,14 @@
 		public function testDefineLanguageDefault()
 		{
 			$localizer = LocalizerPathBased::create();
+			
 			$localizer->setPath('/miracle/test');
 
-			Database::me()->setReturnValueAt(0, 'recordCount', 1);
-			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
-			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
-			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
-			
-			$localizer->selectDefaultLanguage()->defineLanguage();
+			$localizer->setLanguages(
+				$this->convertLanguages($this->languages)
+			);
+						
+			$localizer->selectDefaultLanguage('ru')->defineLanguage();
 
 			
 			$this->assertEqual(
