@@ -42,6 +42,13 @@
 				Singleton::dropInstance('Localizer');
 		}
 		
+		public function testIsSingleton()
+		{
+			$class = new ReflectionClass('Localizer');
+			
+			$this->assertTrue($class->isSubclassOf('Singleton'));
+		}
+		
 		public function testGetLanguages()
 		{
 			Database::me()->setReturnValueAt(
@@ -95,7 +102,7 @@
 			$localizer->defineLanguage();
 			
 			$this->assertEqual(
-				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_COOKIE
+				$localizer->getSource(), BaseLocalizer::SOURCE_LANGUAGE_COOKIE
 			);
 
 			$this->assertEqual(
@@ -123,7 +130,7 @@
 			
 			$this->assertEqual(
 				$localizer->getSource(),
-				Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
+				BaseLocalizer::SOURCE_LANGUAGE_URL_AND_COOKIE
 			);
 
 			$this->assertEqual($localizer->getRequestLanguage()->getId(), 1);
@@ -142,7 +149,7 @@
 
 			
 			$this->assertEqual(
-				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_URL
+				$localizer->getSource(), BaseLocalizer::SOURCE_LANGUAGE_URL
 			);
 
 			$this->assertEqual($localizer->getRequestLanguage()->getId(), 1);
@@ -163,7 +170,7 @@
 
 			
 			$this->assertEqual(
-				$localizer->getSource(), Localizer::SOURCE_LANGUAGE_DEFAULT
+				$localizer->getSource(), BaseLocalizer::SOURCE_LANGUAGE_DEFAULT
 			);
 
 			$this->assertEqual($localizer->getRequestLanguage()->getId(), 1);

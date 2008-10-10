@@ -6,25 +6,29 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Localizer extends SingletonFactory
+	abstract class BaseSession implements BaseSessionInterface
 	{
+		protected $isStarted = false;
+
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseSession
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
-		/**
-		 * @return BaseLocalizer
-		 */
-		public static function factory($realization)
+
+		public function getCookie($alias)
 		{
-			$method = new ReflectionMethod($realization, 'create');
-			
 			return
-				self::setInstance(__CLASS__, $method->invoke(null));
+				isset($_COOKIE[$alias])
+					? $_COOKIE[$alias]
+					: null;
+		}
+
+		public function isStarted()
+		{
+			return $this->isStarted;
 		}
 	}
 ?>

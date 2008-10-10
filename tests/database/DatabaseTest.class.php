@@ -26,9 +26,9 @@
 		
 		public function testIsSingleton()
 		{
-			DatabaseFactory::factory('MysqlDatabase');
+			$class = new ReflectionClass('Database');
 			
-			$this->assertTrue(Database::me() instanceof Singleton);
+			$this->assertTrue($class->isSubclassOf('Singleton'));
 		}
 	}
 ?>

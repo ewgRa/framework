@@ -1,14 +1,19 @@
 <?php
 	/* $Id$ */
 	
+	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseCache.class.php';
+	
+	if(!class_exists('BaseCache',false) && file_exists($file))
+		require_once($file);
+		
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class FileBasedCache extends Cache
+	final class FileBasedCache extends BaseCache
 	{
-		private $cacheDir 			= null;
+		private $cacheDir = null;
 
 		/**
 		 * @return FileBasedCache

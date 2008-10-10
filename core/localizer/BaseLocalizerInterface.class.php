@@ -6,8 +6,10 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	interface LocalizerInterface
+	interface BaseLocalizerInterface
 	{
+		public static function create();
+		
 		public function getDefinedLanguageAbbr();
 		
 		public function cutLanguageAbbr();

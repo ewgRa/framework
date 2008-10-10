@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class FileBasedSession extends Session
+	final class FileBasedSession extends BaseSession
 	{
 		private $data = array();
 

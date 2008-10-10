@@ -30,11 +30,11 @@
 				in_array(
 					Localizer::me()->getSource(),
 					array(
-						Localizer::SOURCE_LANGUAGE_URL,
-						Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
+						BaseLocalizer::SOURCE_LANGUAGE_URL,
+						BaseLocalizer::SOURCE_LANGUAGE_URL_AND_COOKIE
 					)
 				)
-				&& Localizer::me()->getType() == Localizer::DETERMINANT_PATH_BASED;
+				&& Localizer::me()->getType() == BaseLocalizer::DETERMINANT_PATH_BASED;
 		}
 	}
 ?>

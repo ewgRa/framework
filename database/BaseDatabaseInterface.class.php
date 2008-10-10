@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	interface DatabaseInterface
+	interface BaseDatabaseInterface
 	{
 		public static function create();
 

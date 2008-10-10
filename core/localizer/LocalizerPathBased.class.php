@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class LocalizerPathBased extends Localizer
+	final class LocalizerPathBased extends BaseLocalizer
 	{
 		protected $path = null;
 		protected $type = self::DETERMINANT_PATH_BASED;

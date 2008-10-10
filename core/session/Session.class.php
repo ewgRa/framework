@@ -6,29 +6,25 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class Session extends Singleton implements SessionInterface
+	class Session extends SingletonFactory
 	{
-		protected $isStarted = false;
-
 		/**
-		 * @return Session
+		 * @return BaseLocalizer
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
 		}
-
-		public function getCookie($alias)
+		
+		/**
+		 * @return BaseLocalizer
+		 */
+		public static function factory($realization)
 		{
+			$method = new ReflectionMethod($realization, 'create');
+			
 			return
-				isset($_COOKIE[$alias])
-					? $_COOKIE[$alias]
-					: null;
-		}
-
-		public function isStarted()
-		{
-			return $this->isStarted;
+				self::setInstance(__CLASS__, $method->invoke(null));
 		}
 	}
 ?>

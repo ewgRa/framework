@@ -36,7 +36,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function setCacheInstance(Cache $instance)
+		public function setCacheInstance(BaseCache $instance)
 		{
 			$this->cacheInstance = $instance;
 			return $this;

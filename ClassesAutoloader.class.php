@@ -1,6 +1,12 @@
 <?php
 	/* $Id$ */
 
+	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'patterns'
+			. DIRECTORY_SEPARATOR . 'Singleton.class.php';
+	
+	if(!class_exists('Singleton', false) && file_exists($file))
+		require_once($file);
+	
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>

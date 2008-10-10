@@ -6,8 +6,10 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	interface SessionInterface
+	interface BaseSessionInterface
 	{
+		public static function create();
+		
 		public function relativeStart();
 
 		public function start();

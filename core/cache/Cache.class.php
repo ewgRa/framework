@@ -1,19 +1,22 @@
 <?php
 	/* $Id$ */
 
+	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR
+			. '..' . DIRECTORY_SEPARATOR . 'patterns' . DIRECTORY_SEPARATOR
+			. 'SingletonFactory.class.php';
+	
+	if(!class_exists('SingletonFactory', false) && file_exists($file))
+		require_once($file);
+	
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class Cache extends Singleton implements CacheInterface
+	class Cache extends SingletonFactory
 	{
-		private $isDisabled			= false;
-		private $isExpired 			= true;
-		private $config				= null;
-
 		/**
-		 * @return Cache
+		 * @return BaseCache
 		 */
 		public static function me()
 		{
@@ -21,79 +24,14 @@
 		}
 		
 		/**
-		 * @return CacheTicket
+		 * @return BaseCache
 		 */
-		public function createTicket($ticketAlias = null)
+		public static function factory($realization)
 		{
-			return CacheTicket::create()->
-				setCacheInstance($this)->
-				fillParams($this->getTicketParams($ticketAlias));
-		}
-		
-		/**
-		 * @return Cache
-		 */
-		public function loadConfig($yamlFile)
-		{
-			$cacheTicket = $this->createTicket()->
-				setPrefix('config')->
-				setKey($yamlFile)->
-				setActualTime(filemtime($yamlFile))->
-				restoreData();
-
-			if($cacheTicket->isExpired())
-			{
-				$this->config = Yaml::load($yamlFile);
-				
-				$cacheTicket->
-					setData($this->config)->
-					setLifeTime(filemtime($yamlFile))->
-					storeData();
-			}
-			else
-				$this->config = $cacheTicket->getData();
-				
-			return $this;
-		}
-		
-		public function getConfig()
-		{
-			return $this->config;
-		}
-		
-		public function hasTicketParams($ticketAlias)
-		{
-			return isset($this->config[$ticketAlias]);
-		}
-		
-		public function getTicketParams($ticketAlias)
-		{
-			return $this->hasTicketParams($ticketAlias)
-				? $this->config[$ticketAlias]
-				: null;
-		}
-		
-		/**
-		 * @return Cache
-		 */
-		public function disable()
-		{
-			$this->isDisabled = true;
-			return $this;
-		}
-		
-		/**
-		 * @return Cache
-		 */
-		public function enable()
-		{
-			$this->isDisabled = false;
-			return $this;
-		}
-		
-		public function isDisabled()
-		{
-			return $this->isDisabled;
+			$method = new ReflectionMethod($realization, 'create');
+			
+			return
+				self::setInstance(__CLASS__, $method->invoke(null));
 		}
 	}
 ?>

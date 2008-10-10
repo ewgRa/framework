@@ -6,18 +6,10 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class Database extends Singleton implements DatabaseInterface
+	class Database extends SingletonFactory
 	{
-		private $tables 		= array();
-		private $connected		= false;
-		private $host			= null;
-		private $user			= null;
-		private $password		= null;
-		private $databaseName	= null;
-		private $charset		= null;
-		
 		/**
-		 * @return Database
+		 * @return BaseLocalizer
 		 */
 		public static function me()
 		{
@@ -25,208 +17,14 @@
 		}
 		
 		/**
-		 * @return Database
+		 * @return BaseLocalizer
 		 */
-		public function connected()
+		public static function factory($realization)
 		{
-			$this->connected = true;
-			return $this;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setHost($host)
-		{
-			$this->host = $host;
-			return $this;
-		}
-		
-		public function getHost()
-		{
-			return $this->host;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setUser($user)
-		{
-			$this->user = $user;
-			return $this;
-		}
-		
-		public function getUser()
-		{
-			return $this->user;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setPassword($passwod)
-		{
-			$this->password = $passwod;
-			return $this;
-		}
-		
-		public function getPassword()
-		{
-			return $this->password;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setCharset($charset = 'utf8')
-		{
-			$this->charset = $charset;
-			return $this;
-		}
-		
-		public function getDatabaseName()
-		{
-			return $this->databaseName;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setDatabaseName($databaseName)
-		{
-			$this->databaseName = $databaseName;
-			return $this;
-		}
-		
-		public function isConnected()
-		{
-			return $this->connected;
-		}
-
-		/**
-		 * @return Database
-		 */
-		public function initialize($yamlFile)
-		{
-			$settings = Yaml::load($yamlFile);
-
-			if(isset($settings['host']))
-				$this->setHost($settings['host']);
+			$method = new ReflectionMethod($realization, 'create');
 			
-			if(isset($settings['user']))
-				$this->setUser($settings['user']);
-
-			if(isset($settings['password']))
-				$this->setPassword($settings['password']);
-
-			if(isset($settings['database']))
-				$this->setDatabaseName($settings['database']);
-
-			if(isset($settings['charset']))
-				$this->setCharset($settings['charset']);
-
-			if(isset($settings['tableAliases']))
-				$this->setTables($settings['tableAliases']);
-				
-			return $this;
-		}
-		
-		public function getTable($alias)
-		{
-			$result = null;
-			
-			if(isset($this->tables[$alias])) $result = $this->tables[$alias];
-			else
-				throw ExceptionsMapper::me()->createException(
-					'Database',
-					DatabaseException::UNDEFINED_TABLE
-				)->
-				setTableAlias($alias);
-				
-			return $result;
-		}
-		
-		/**
-		 * @return Database
-		 */
-		public function setTables(array $tables)
-		{
-			$this->tables = $tables;
-			return $this;
-		}
-		
-		public function queryString($query, array $values = array())
-		{
-			if(count($values))
-				$query = $this->processQuery($query, $values);
-				
-			return $query;
-		}
-
-		protected function prepareQuery($query, array $values)
-		{
-			if(!$this->isConnected())
-				$this->connect()->selectDatabase()->selectCharset();
-			
-			if(count($values))
-				$query = $this->processQuery($query, $values);
-			
-			if(Debug::me()->isEnabled())
-			{
-				$debugItem = DebugItem::create()->
-					setType(DebugItem::DATABASE)->
-					setData($query)->
-					setTrace(debug_backtrace());
-				
-				Debug::me()->addItem($debugItem);
-			}
-			
-			return $query;
-		}
-		
-		protected function processQuery($query, array $values = array())
-		{
-			$query = str_replace('?', '??', $query);
-			$queryParts = explode('?', $query);
-			$partsCounter = 0;
-			
-			foreach($queryParts as $partKey => $part)
-			{
-				if($partsCounter%2)
-				{
-					if(!is_null(key($values)))
-					{
-						$value = $values[key($values)];
-						
-						if(is_null($value))
-							$part = "NULL";
-						else
-						{
-							$value = $this->escape($value);
-							
-							if(is_array($value))
-								$part = "'" . join("', '", $value) . "'";
-							else
-								$part = "'" . $value . "'";
-						}
-
-						next($values);
-					}
-					else
-						$part = "?";
-				}
-				
-				$queryParts[$partKey] = $part;
-				$partsCounter++;
-			}
-			
-			return join('', $queryParts);
-		}
-		
-		public function __destruct()
-		{
-			if($this->isConnected())
-				$this->disconnect();
+			return
+				self::setInstance(__CLASS__, $method->invoke(null));
 		}
 	}
 ?>
