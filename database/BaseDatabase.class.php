@@ -179,17 +179,7 @@
 			
 			if(count($values))
 				$query = $this->processQuery($query, $values);
-			
-			if(Debug::me()->isEnabled())
-			{
-				$debugItem = DebugItem::create()->
-					setType(DebugItem::DATABASE)->
-					setData($query)->
-					setTrace(debug_backtrace());
-				
-				Debug::me()->addItem($debugItem);
-			}
-			
+						
 			return $query;
 		}
 		
@@ -230,6 +220,31 @@
 			}
 			
 			return join('', $queryParts);
+		}
+		
+		public function debugQuery($query, $started, $ended)
+		{
+			$debugItem = DebugItem::create()->
+				setType(DebugItem::DATABASE)->
+				setData($query)->
+				setTrace(debug_backtrace())->
+				setStartTime($started)->
+				setEndTime($ended);
+			
+			Debug::me()->addItem($debugItem);
+			
+			return $this;
+		}
+		
+		public function queryError($query)
+		{
+			throw
+				ExceptionsMapper::me()->createException('Database')->
+					setCode(DatabaseException::SQL_QUERY_ERROR)->
+					setHost($this->getHost())->
+					setDatabaseName($this->getDatabaseName())->
+					setQuery($query)->
+					setError(mysql_error());
 		}
 		
 		public function __destruct()

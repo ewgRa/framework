@@ -91,21 +91,20 @@
 		 */
 		public function query($query, array $values = array())
 		{
+			$startTime = microtime(true);
+			
 			$query = $this->prepareQuery($query, $values);
 							
 			$resource = mysql_query($query);
 			
 			if(mysql_error())
-			{
-				throw
-					ExceptionsMapper::me()->createException('Database')->
-						setCode(DatabaseException::SQL_QUERY_ERROR)->
-						setHost($this->getHost())->
-						setDatabaseName($this->getDatabaseName())->
-						setQuery($query)->
-						setError(mysql_error());
-			}
+				parent::queryError($query);
 
+			$endTime = microtime(true);
+				
+			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+				parent::debugQuery($query, $startTime, $endTime);
+			
 			return $resource;
 		}
 

@@ -1,18 +1,15 @@
 <?php
 	/* $Id$ */
-	
+
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Debug extends Singleton
+	class Debug extends SingletonFactory
 	{
-		private $enabled = null;
-		private $items	 = array();
-		
 		/**
-		 * @return Debug
+		 * @return BaseDebug
 		 */
 		public static function me()
 		{
@@ -20,48 +17,14 @@
 		}
 		
 		/**
-		 * @return Debug
+		 * @return BaseLocalizer
 		 */
-		public function enable()
+		public static function factory($realization)
 		{
-			$this->enabled = true;
-			return $this;
-		}
-		
-		/**
-		 * @return Debug
-		 */
-		public function disable()
-		{
-			$this->enabled = null;
-			return $this;
-		}
-		
-		public function isEnabled()
-		{
-			return $this->enabled;
-		}
-		
-		/**
-		 * @return Debug
-		 */
-		public function addItem(DebugItem $item)
-		{
-			$this->items[] = $item;
-			return $this;
-		}
-		
-		public function getItems()
-		{
-			return $this->items;
-		}
-
-		/**
-		 * @return DebugItem
-		 */
-		public function getItem($index)
-		{
-			return $this->items[$index];
+			$method = new ReflectionMethod($realization, 'create');
+			
+			return
+				self::setInstance(__CLASS__, $method->invoke(null));
 		}
 	}
 ?>

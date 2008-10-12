@@ -10,10 +10,14 @@
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;
+		const PAGE			= 3;
+		const REQUEST		= 4;
 		
-		private $trace = null;
-		private $type  = null;
-		private $data  = null;
+		private $trace 		= null;
+		private $type  		= null;
+		private $data  		= null;
+		private $startTime  = null;
+		private $endTime	= null;
 		
 		/**
 		 * @return DebugItem
@@ -21,6 +25,34 @@
 		public static function create()
 		{
 			return new self;
+		}
+		
+		/**
+		 * @return DebugItem
+		 */
+		public function setStartTime($time)
+		{
+			$this->startTime = $time;
+			return $this;
+		}
+		
+		public function getStartTime()
+		{
+			return $this->startTime;
+		}
+		
+		/**
+		 * @return DebugItem
+		 */
+		public function setEndTime($time)
+		{
+			$this->endTime = $time;
+			return $this;
+		}
+		
+		public function getEndTime()
+		{
+			return $this->endTime;
 		}
 		
 		/**
@@ -39,6 +71,16 @@
 		{
 			return $this->trace;
 		}
+		
+		/**
+		 * @return DebugItem
+		 */
+		public function dropTrace()
+		{
+			$this->trace = null;
+			return $this;
+		}
+		
 		/**
 		 * @return DebugItem
 		 */

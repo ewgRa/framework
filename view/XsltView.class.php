@@ -53,13 +53,23 @@
 		/**
 		 * @return XsltView
 		 */
-		public function loadLayout($file)
+		public function createLayout($filePath)
 		{
 			$this->xslDocument = $this->createDomDocument();
 			
 			$this->xslDocument->loadXML(
-				file_get_contents($file['path'])
+				file_get_contents($filePath)
 			);
+			
+			return $this;
+		}
+		
+		/**
+		 * @return XsltView
+		 */
+		public function loadLayout($file)
+		{
+			$this->createLayout($file['path']);
 			
 			foreach($this->getLayoutIncludeFiles($file['id']) as $includeFile)
 				$this->xslDocument->importFile($includeFile['path']);

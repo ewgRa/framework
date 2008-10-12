@@ -41,7 +41,7 @@
 		{
 			if($this->isDisabled())
 			{
-				$this->expired();
+				$ticket->expired();
 				return null;
 			}
 			
@@ -57,9 +57,7 @@
 			);
 			
 			if(!file_exists($fileName))
-			{
 				$ticket->expired();
-			}
 			elseif(filemtime($fileName) < $actualTime)
 			{
 				unlink($fileName);

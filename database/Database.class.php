@@ -9,7 +9,7 @@
 	class Database extends SingletonFactory
 	{
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseDatabase
 		 */
 		public static function me()
 		{
@@ -17,7 +17,7 @@
 		}
 		
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseDatabase
 		 */
 		public static function factory($realization)
 		{

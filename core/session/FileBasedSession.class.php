@@ -43,7 +43,7 @@
 			
 			return $this;
 		}
-
+		
 		/**
 		 * @return FileBasedSession
 		 */
@@ -66,12 +66,9 @@
 
 		public function getId()
 		{
-			$result = null;
-			
-			if($this->isStarted())
-				$result = session_id();
-			
-			return $result;
+			return $this->isStarted()
+				? session_id()
+				: null;
 		}
 		
 		public function get($alias)
