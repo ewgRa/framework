@@ -21,7 +21,7 @@
 		 */
 		public function connect()
 		{
-			$db = mysql_connect($this->getHost(), $this->getUser(), $this->getPassword());
+			$db = @mysql_connect($this->getHost(), $this->getUser(), $this->getPassword());
 			
 			if(!$db)
 			{
