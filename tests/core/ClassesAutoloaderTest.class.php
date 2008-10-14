@@ -25,23 +25,41 @@
 			$this->assertTrue(ClassesAutoloader::me() instanceof Singleton);
 		}
 		
-		public function testLoad()
+		public function testLoadClass()
 		{
-			$className = 'testLoadClass' . rand();
+			$className = __FUNCTION__ . rand();
 			
 			file_put_contents(
-				TMP_DIR . DIRECTORY_SEPARATOR . $className . '.class.php',
+				TMP_DIR . DIRECTORY_SEPARATOR . $className . ClassesAutoLoader::CLASS_FILE_EXTENSION,
 				str_replace(get_class($this), $className, file_get_contents(__FILE__))
 			);
 			
-			$searchDirs = ClassesAutoLoader::me()->getSearchDirectories();
 			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
 			ClassesAutoloader::me()->load($className);
-			ClassesAutoLoader::me()->setSearchDirectories($searchDirs);
 			
-			unlink(TMP_DIR . DIRECTORY_SEPARATOR . $className . '.class.php');
+			unlink(TMP_DIR . DIRECTORY_SEPARATOR . $className . ClassesAutoLoader::CLASS_FILE_EXTENSION);
 			
 			if(!class_exists($className))
+				$this->fail();
+		}
+		
+		public function testLoadInterface()
+		{
+			$interfaceName = __FUNCTION__ . rand();
+			
+			file_put_contents(
+				TMP_DIR . DIRECTORY_SEPARATOR . $interfaceName . ClassesAutoLoader::CLASS_FILE_EXTENSION,
+				"<?php
+					interface {$interfaceName}{}
+				?>"
+			);
+			
+			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			ClassesAutoloader::me()->load($interfaceName);
+			
+			unlink(TMP_DIR . DIRECTORY_SEPARATOR . $interfaceName . ClassesAutoLoader::CLASS_FILE_EXTENSION);
+			
+			if(!interface_exists($interfaceName))
 				$this->fail();
 		}
 	}
