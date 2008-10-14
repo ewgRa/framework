@@ -82,7 +82,7 @@
 		 */
 		public function load($className)
 		{
-			if(class_exists($className))
+			if(class_exists($className) || interface_exists($className))
 				return $this;
 			
 			$classFile = $this->getFoundClassFile($className);
@@ -90,7 +90,7 @@
 			if(!file_exists($this->getFoundClassFile($className)))
 			{
 				$classFile = $this->findClassFile($className);
-
+				
 				if($classFile)
 					$this->setClassFile($className, $classFile)->saveCache();
 			}
@@ -98,7 +98,7 @@
 			if($classFile)
 				require_once($classFile);
 
-			if(!class_exists($className) || !$classFile)
+			if((!class_exists($className) && !interface_exists($className)) || !$classFile)
 				$this->dropFound($className)->saveCache();
 			
 			return $this;
