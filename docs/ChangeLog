@@ -1,4 +1,11 @@
 $Id$
 
+2008-10-15
+	* 1.01 released
+	
+	* Missing argument exception in create ticket (ticketAlias)
+	
+	* NoFoundException in create view (layout_file_id not found)
+
 2008-10-14
 	* 1.0 released

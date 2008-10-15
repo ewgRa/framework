@@ -53,7 +53,7 @@
 					}
 				}
 				else
-					throw new WrongDataException('No layout file');
+					throw new NotFoundException('No layout file');
 				
 				if($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
