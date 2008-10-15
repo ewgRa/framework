@@ -185,10 +185,10 @@
 						
 			$this->
 				setId($page['id'])->
-				setLayoutFileId(
-					Config::me()->replaceVariables($page['layout_file_id'])
+				setLayoutFileId($page['layout_file_id'])->
+				setPath(
+					Config::me()->replaceVariables($page['path'])
 				)->
-				setPath($page['path'])->
 				loadRights();
 
 			return $this;

@@ -98,7 +98,7 @@
 					if(!$this->message)
 						$this->setMessage('SQL query has error');
 
-					$trace = $this->getSingleTrace(1);
+					$trace = $this->getSingleTrace(2);
 
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
@@ -116,7 +116,7 @@
 					if(!$this->message)
 						$this->setMessage('Known nothing about DB table alias');
 					
-					$trace = $this->getSingleTrace(1);
+					$trace = $this->getSingleTrace(2);
 						
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",

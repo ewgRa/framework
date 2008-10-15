@@ -8,7 +8,15 @@
 	*/
 	class Assert
 	{
-		public static function notNull($variable, $message)
+		public static function isTrue($variable, $message = 'Variable is not true!')
+		{
+			if($variable !== true)
+				throw new Exception($message);
+				
+			return true;
+		}
+		
+		public static function notNull($variable, $message = 'Variable is null!')
 		{
 			if(is_null($variable))
 				throw new Exception($message);

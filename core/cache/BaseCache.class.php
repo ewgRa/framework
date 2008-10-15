@@ -11,6 +11,11 @@
 	if(!class_exists('CacheTicket', false) && file_exists($file))
 		require_once($file);
 	
+	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . '../Assert.class.php';
+		
+	if(!class_exists('Assert', false) && file_exists($file))
+		require_once($file);
+		
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -27,9 +32,14 @@
 		 */
 		public function createTicket($ticketAlias = null)
 		{
-			return CacheTicket::create()->
+			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
+				throw new MissingArgumentException();
+			
+			$result = CacheTicket::create()->
 				setCacheInstance($this)->
 				fillParams($this->getTicketParams($ticketAlias));
+				
+			return $result;
 		}
 		
 		/**

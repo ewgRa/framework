@@ -52,6 +52,8 @@
 						break;
 					}
 				}
+				else
+					throw new WrongDataException('No layout file');
 				
 				if($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
