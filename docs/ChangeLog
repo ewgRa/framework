@@ -6,6 +6,10 @@ $Id$
 	* Missing argument exception in create ticket (ticketAlias)
 	
 	* NoFoundException in create view (layout_file_id not found)
+	
+	* DatabaseException query executor change (toString)
+	
+	* Autoloader classes change for interfaces
 
 2008-10-14
 	* 1.0 released
