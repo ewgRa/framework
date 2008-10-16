@@ -57,7 +57,7 @@
 				$result = $this->map[self::NON_PREG][$path];
 			else
 			{
-				foreach($this->map[self::NON_PREG] as $pageId => $pagePattern)
+				foreach($this->map[self::PREG] as $pageId => $pagePattern)
 				{
 					if(preg_match('@' . $pagePattern . '@', $path))
 					{
