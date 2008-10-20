@@ -26,6 +26,12 @@
 					: null;
 		}
 
+		public function setCookie($alias, $value, $expire = null, $path = '/')
+		{
+			setcookie($alias, $value, $expire, $path);
+			return $this;
+		}
+		
 		public function isStarted()
 		{
 			return $this->isStarted;

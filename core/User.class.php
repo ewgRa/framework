@@ -12,6 +12,11 @@
 		const WRONG_LOGIN		= 2;
 		const SUCCESS_LOGIN		= 3;
 		
+		/**
+		 * @var UserDA
+		 */
+		private $da = null;
+		
 		private $id		= null;
 		private $login	= null;
 		private $rights	= array();
@@ -22,6 +27,14 @@
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
+		}
+
+		public function da()
+		{
+			if(!$this->da)
+				$this->da = UserDA::create();
+				
+			return $this->da;
 		}
 		
 		public function getId()
@@ -95,22 +108,14 @@
 			Session::me()->drop('user');
 			Session::me()->save();
 			
-			$dbQuery = "
-				SELECT *, password = MD5( ? ) as verify_password
-					FROM " . Database::me()->getTable('Users') . "
-				WHERE login = ?
-			";
+			$checkPassword = $this->da()->checkLogin($login, $password);
 
-			$dbResult = Database::me()->query($dbQuery, array($password, $login));
-
-			if(Database::me()->recordCount($dbResult))
+			if($checkPassword)
 			{
-				$dbRow = Database::me()->fetchArray($dbResult);
-				
-				if($dbRow['verify_password'])
+				if($checkPassword['verify_password'])
 				{
-					$this->setId($dbRow['id']);
-					$this->setLogin($dbRow['login']);
+					$this->setId($checkPassword['id']);
+					$this->setLogin($checkPassword['login']);
 					$this->loadRights();
 					
 					Session::me()->set(
@@ -155,39 +160,22 @@
 			
 			if($this->getId())
 			{
-				$dbQuery = "
-					SELECT t1.* FROM " . Database::me()->getTable('Rights') . " t1
-					INNER JOIN " . Database::me()->getTable('UsersRights_ref') . " t2
-						ON ( t1.id = t2.right_id AND t2.user_id = ? )
-				";
-
-				$dbResult = Database::me()->query(
-					$dbQuery, array($this->getId())
-				);
+				$rights = $this->da()->loadRights($this->getId());
 				
-				while(Database::me()->recordCount($dbResult))
+				while($rights)
 				{
 					$inheritanceId = array();
 
-					while($dbRow = Database::me()->fetchArray($dbResult))
+					foreach($rights as $right)
 					{
-						if($this->hasRight($dbRow['alias']))
+						if($this->hasRight($right['alias']))
 							continue;
 
-						$inheritanceId[] = $dbRow['id'];
-						$this->addRight($dbRow['id'], $dbRow['alias']);
+						$inheritanceId[] = $right['id'];
+						$this->addRight($right['id'], $right['alias']);
 					}
 
-					$dbQuery = "
-						SELECT t1.* FROM " . Database::me()->getTable('Rights') . " t1
-						INNER JOIN " . Database::me()->getTable('Rights_inheritance') . " t2
-							ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )
-					";
-
-					$dbResult = Database::me()->query(
-						$dbQuery,
-						array($inheritanceId)
-					);
+					$rights = $this->da()->loadInheritanceRights($inheritanceId);
 				}
 			}
 			

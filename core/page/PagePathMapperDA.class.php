@@ -1,0 +1,28 @@
+<?php
+	/* $Id$ */
+
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
+	*/
+	class PagePathMapperDA extends DatabaseRequester
+	{
+		public static function create()
+		{
+			return new self;
+		}
+		
+		public function getMap()
+		{
+			$dbQuery = '
+				SELECT path, id, preg
+				FROM ' . $this->db()->getTable('Pages');
+
+			$dbResult = $this->db()->query($dbQuery);
+			
+			return $this->db()->resourceToArray($dbResult);
+		}
+	}
+?>

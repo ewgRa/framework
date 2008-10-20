@@ -11,6 +11,8 @@
 		private $cacheTicket = null;
 		private $view		 = null;
 		
+		abstract public function getModel();
+
 		public function hasCacheTicket()
 		{
 			return !is_null($this->cacheTicket);
@@ -50,8 +52,6 @@
 			return $this->view;
 		}
 		
-		abstract public function getModel();
-
 		/**
 		 * @return Controller
 		 */

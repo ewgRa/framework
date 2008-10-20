@@ -11,9 +11,14 @@
 	{
 		const NON_PREG	= 0;
 		const PREG		= 1;
+
+		/**
+		 * @var PagePathMapperDA
+		 */
+		private $da = null;
 		
 		private $map = null;
-		
+
 		/**
 		 * @return PagePathMapper
 		 */
@@ -22,6 +27,14 @@
 			return new self;
 		}
 		
+		public function da()
+		{
+			if(!$this->da)
+				$this->da = PagePathMapperDA::create();
+			
+			return $this->da;
+		}
+
 		/**
 		 * @return PagePathMapper
 		 */
@@ -32,16 +45,10 @@
 				self::PREG => array()
 			);
 			
-			$dbQuery = '
-				SELECT path, id, preg
-				FROM ' . Database::me()->getTable('Pages');
-
-			$dbResult = Database::me()->query($dbQuery);
-
-			while($dbRow = Database::me()->fetchArray($dbResult))
+			foreach($this->da()->getMap() as $map)
 			{
-				$preg = is_null($dbRow['preg']) ? self::NON_PREG : self::PREG;
-				$this->map[$preg][$dbRow['id']] = $dbRow['path'];
+				$preg = is_null($map['preg']) ? self::NON_PREG : self::PREG;
+				$this->map[$preg][$map['id']] = $map['path'];
 			}
 			
 			$this->map[self::NON_PREG] = array_flip($this->map[self::NON_PREG]);

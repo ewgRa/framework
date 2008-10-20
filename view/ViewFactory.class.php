@@ -28,14 +28,14 @@
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$dbQuery = "SELECT * FROM " . Database::me()->getTable('ViewFiles')
+				$dbQuery = "SELECT * FROM " . Database::me()->getPool()->getTable('ViewFiles')
 					. ' WHERE id = ?';
 				
-				$dbResult = Database::me()->query($dbQuery, array($fileId));
+				$dbResult = Database::me()->getPool()->query($dbQuery, array($fileId));
 	
-				if(Database::me()->recordCount($dbResult))
+				if(Database::me()->getPool()->recordCount($dbResult))
 				{
-					$file = Database::me()->fetchArray($dbResult);
+					$file = Database::me()->getPool()->fetchArray($dbResult);
 					$file['path'] = Config::me()->replaceVariables($file['path']);
 					
 					switch($file['content-type'])

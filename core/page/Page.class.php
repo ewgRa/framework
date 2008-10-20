@@ -16,11 +16,24 @@
 		private $path			= null;
 		
 		/**
+		 * @var PageDA
+		 */
+		private $da				= null;
+		
+		/**
 		 * @return Page
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
+		}
+
+		public function da()
+		{
+			if(!$this->da)
+				$this->da = PageDA::create();
+				
+			return $this->da;
 		}
 		
 		/**
@@ -100,23 +113,11 @@
 		{
 			$this->rights = array();
 
-			$dbQuery = '
-				SELECT
-					t1.right_id, t2.path as redirect_page, t3.alias as right_alias
-				FROM ' . Database::me()->getTable('PagesRights_ref') . ' t1
-				LEFT JOIN ' . Database::me()->getTable('Pages') . ' t2
-					ON( t1.redirect_page_id = t2.id )
-				LEFT JOIN ' . Database::me()->getTable('Rights') . ' t3
-					ON( t3.id = t1.right_id )
-				WHERE t1.page_id = ?';
-
-			$dbResult = Database::me()->query($dbQuery, array($this->getId()));
-
-			while($dbRow = Database::me()->fetchArray($dbResult))
+			foreach($this->da()->getRights($this->getId()) as $right)
 			{
-				$this->rights[$dbRow['right_id']] = array(
-					'redirectPage' => $dbRow['redirect_page'],
-					'rightAlias' => $dbRow['right_alias']
+				$this->rights[$right['right_id']] = array(
+					'redirectPage' => $right['redirect_page'],
+					'rightAlias' => $right['right_alias']
 				);
 			}
 
@@ -164,21 +165,7 @@
 		 */
 		public function load($pageId)
 		{
-			$dbQuery = "
-				SELECT
-					t1.*, t2.file_id as layout_file_id
-				FROM " . Database::me()->getTable('Pages') . " t1
-				LEFT JOIN " . Database::me()->getTable('Layouts') . " t2
-					ON( t2.id =	t1.layout_id)
-				WHERE t1.id = ?
-			";
-
-			$dbResult = Database::me()->query(
-				$dbQuery,
-				array($pageId)
-			);
-			
-			$page = Database::me()->fetchArray($dbResult);
+			$page = $this->da()->getPage($pageId);
 			
 			if($page['preg'])
 				$this->setPreg();

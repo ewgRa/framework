@@ -51,18 +51,19 @@
 		
 		public function testGetLanguages()
 		{
-			Database::me()->setReturnValueAt(
+			$poolMock = DatabasePoolMock::create();
+			
+			$poolMock->setReturnValueAt(
 				0,
-				'fetchArray',
-				$this->languageToDbArray($this->languages[0])
+				'resourceToArray',
+				array(
+					$this->languageToDbArray($this->languages[0]),
+					$this->languageToDbArray($this->languages[1])
+				)
 			);
 			
-			Database::me()->setReturnValueAt(
-				1,
-				'fetchArray',
-				$this->languageToDbArray($this->languages[1])
-			);
-						
+			Database::me()->setReturnValue('getPool', $poolMock);
+			
 			$localizer = LocalizerPathBased::create();
 			
 			$localizer->loadLanguages();
@@ -122,9 +123,19 @@
 
 			$localizer->setPath('/ru/test');
 			
-			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
-			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
+			$poolMock = DatabasePoolMock::create();
+			
+			$poolMock->setReturnValueAt(
+				0,
+				'resourceToArray',
+				array(
+					array('id'=> 1, 'abbr' => 'ru'),
+					array('id'=> 2, 'abbr' => 'en')
+				)
+			);
 						
+			Database::me()->setReturnValue('getPool', $poolMock);
+			
 			$localizer->loadLanguages()->defineLanguage();
 
 			
@@ -142,9 +153,19 @@
 			$localizer = LocalizerPathBased::create();
 			$localizer->setPath('/ru/test');
 
-			Database::me()->setReturnValueAt(0, 'fetchArray', array('id'=> 1, 'abbr' => 'ru'));
-			Database::me()->setReturnValueAt(1, 'fetchArray', array('id'=> 2, 'abbr' => 'en'));
+			$poolMock = DatabasePoolMock::create();
+			
+			$poolMock->setReturnValueAt(
+				0,
+				'resourceToArray',
+				array(
+					array('id'=> 1, 'abbr' => 'ru'),
+					array('id'=> 2, 'abbr' => 'en')
+				)
+			);
 						
+			Database::me()->setReturnValue('getPool', $poolMock);
+			
 			$localizer->loadLanguages()->defineLanguage();
 
 			

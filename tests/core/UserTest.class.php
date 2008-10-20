@@ -26,21 +26,23 @@
 		{
 			MyTestUser::ftSetId(10);
 			
-			Database::me()->setReturnValueAt(0, 'recordCount', true);
-			Database::me()->setReturnValueAt(1, 'recordCount', true);
-			Database::me()->setReturnValueAt(2, 'recordCount', true);
+			$poolMock = DatabasePoolMock::create();
+			$poolMock->setReturnValueAt(0, 'recordCount', true);
+			$poolMock->setReturnValueAt(1, 'recordCount', true);
 			
-			Database::me()->setReturnValueAt(
+			$poolMock->setReturnValueAt(
 				0,
-				'fetchArray',
-				array('id' => 1, 'alias' => 'root')
+				'resourceToArray',
+				array(array('id' => 1, 'alias' => 'root'))
 			);
 			
-			Database::me()->setReturnValueAt(
-				2,
-				'fetchArray',
-				array('id' => 2, 'alias' => 'demo')
+			$poolMock->setReturnValueAt(
+				1,
+				'resourceToArray',
+				array(array('id' => 2, 'alias' => 'demo'))
 			);
+			
+			Database::me()->setReturnValue('getPool', $poolMock);
 			
 			$this->assertEqual(
 				MyTestUser::ftLoadRights()->getRights(),

@@ -71,6 +71,11 @@
 				: null;
 		}
 		
+		public function has($alias)
+		{
+			return isset($this->data[$alias]);
+		}
+		
 		public function get($alias)
 		{
 			$result = null;

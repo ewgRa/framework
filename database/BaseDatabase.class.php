@@ -8,6 +8,7 @@
 	*/
 	abstract class BaseDatabase implements BaseDatabaseInterface
 	{
+		private $linkIdentifier	= null;
 		private $tables 		= array();
 		private $connected		= false;
 		private $host			= null;
@@ -245,6 +246,20 @@
 					setDatabaseName($this->getDatabaseName())->
 					setQuery($query)->
 					setError(mysql_error());
+		}
+		
+		/**
+		 * @return BaseDatabase
+		 */
+		protected function setLinkIdentifier($link)
+		{
+			$this->linkIdentifier = $link;
+			return $this;
+		}
+		
+		protected function getLinkIdentifier()
+		{
+			return $this->linkIdentifier;
 		}
 		
 		public function __destruct()

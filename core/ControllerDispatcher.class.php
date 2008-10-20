@@ -9,6 +9,11 @@
 	*/
 	class ControllerDispatcher extends Singleton
 	{
+		/**
+		 * @var ControllerDispatcherDA
+		 */
+		private $da = null;
+		
 		private $controllers = array();
 		
 		/**
@@ -17,6 +22,14 @@
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
+		}
+
+		public function da()
+		{
+			if(!$this->da)
+				$this->da = ControllerDispatcherDA::create();
+			
+			return $this->da;
 		}
 		
 		public function getControllers()
@@ -77,19 +90,30 @@
 		
 		private function getPageControllers($pageId)
 		{
-			$dbQuery = "
-				SELECT
-					t1.*, t2.section_id, t2.position_in_section, t2.module_settings,
-					t2.view_file_id
-				FROM " . Database::me()->getTable('Controllers') . " t1
-				INNER JOIN " . Database::me()->getTable('PagesControllers_ref') . " t2
-					ON( t1.id = t2.controller_id AND t2.page_id = ? )
-				ORDER BY load_priority, load_priority IS NULL
-			";
+			$result = null;
 			
-			$dbResult = Database::me()->query($dbQuery, array($pageId));
-
-			return Database::me()->resourceToArray($dbResult);
+			try
+			{
+				$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
+					setKey($pageId)->
+					restoreData();
+			}
+			catch(MissingArgumentException $e)
+			{
+				$cacheTicket = null;
+			}
+			
+			if(!$cacheTicket || $cacheTicket->isExpired())
+			{
+				$result = $this->da()->getPageControllers($pageId);
+				
+				if($cacheTicket)
+					$cacheTicket->setData($result)->storeData();
+			}
+			else
+				$result = $cacheTicket->getData();
+				
+			return $result;
 		}
 		
 		public function getModel()

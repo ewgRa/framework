@@ -43,7 +43,7 @@
 		 */
 		public function setId($id)
 		{
-			$this->id = $id;
+			$this->id = (int)$id;
 			return $this;
 		}
 	}

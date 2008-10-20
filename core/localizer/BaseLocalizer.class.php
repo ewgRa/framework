@@ -24,6 +24,11 @@
 		protected $type = null;
 
 		/**
+		 * @var LocalizerDA
+		 */
+		private $da = null;
+		
+		/**
 		 * @return BaseLocalizer
 		 */
 		public static function me()
@@ -31,15 +36,14 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		/**
-		 * @return BaseLocalizer
-		 */
-		public static function factory($realization)
+		public function da()
 		{
-			return
-				self::setInstance('Localizer', new $realization);
+			if(!$this->da)
+				$this->da = LocalizerDA::create();
+
+			return $this->da;
 		}
-		
+				
 		public function getType()
 		{
 			return $this->type;
@@ -134,12 +138,8 @@
 		 */
 		public function loadLanguages()
 		{
-			$dbQuery = "SELECT * FROM " . Database::me()->getTable('Languages');
-			$this->languages = array();
-			$dbResult = Database::me()->query($dbQuery);
-
-			while($dbRow = Database::me()->fetchArray($dbResult))
-				$this->languages[$dbRow['id']] = $dbRow['abbr'];
+			foreach($this->da()->loadLanguages() as $language)
+				$this->languages[$language['id']] = $language['abbr'];
 			
 			return $this;
 		}

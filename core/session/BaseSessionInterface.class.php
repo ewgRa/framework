@@ -18,6 +18,8 @@
 		
 		public function getId();
 		
+		public function has($alias);
+		
 		public function get($alias);
 		
 		public function set($alias, $value);

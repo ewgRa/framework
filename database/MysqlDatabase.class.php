@@ -21,7 +21,7 @@
 		 */
 		public function connect()
 		{
-			$db = @mysql_connect($this->getHost(), $this->getUser(), $this->getPassword());
+			$db = @mysql_connect($this->getHost(), $this->getUser(), $this->getPassword(), true);
 			
 			if(!$db)
 			{
@@ -31,7 +31,8 @@
 						setHost($this->getHost());
 			}
 			
-			$this->connected();
+			$this->setLinkIdentifier($db)->connected();
+
 			return $this;
 		}
 		
@@ -63,7 +64,7 @@
 			else
 				$databaseName = $this->getDatabaseName();
 			
-			if(!mysql_select_db($this->getDatabaseName()))
+			if(!mysql_select_db($this->getDatabaseName(), $this->getLinkIdentifier()))
 			{
 				throw
 					ExceptionsMapper::me()->createException('Database')->
@@ -80,7 +81,7 @@
 		 */
 		public function disconnect()
 		{
-			mysql_close();
+			mysql_close($this->getLinkIdentifier());
 			$this->connected = false;
 			return $this;
 		}
@@ -95,9 +96,9 @@
 			
 			$query = $this->prepareQuery($query, $values);
 							
-			$resource = mysql_query($query);
+			$resource = mysql_query($query, $this->getLinkIdentifier());
 			
-			if(mysql_error())
+			if(mysql_error($this->getLinkIdentifier()))
 				parent::queryError($query);
 
 			$endTime = microtime(true);
@@ -167,7 +168,7 @@
 
 		public function getInsertedId()
 		{
-			return mysql_insert_id();
+			return mysql_insert_id($this->getLinkIdentifier());
 		}
 
 		public function escape($variable)

@@ -9,6 +9,11 @@
 	class DatabaseDebug extends BaseDebug
 	{
 		/**
+		 * @var DatabaseDebugDA
+		 */
+		private $da = null;
+		
+		/**
 		 * @return DatabaseDebug
 		 */
 		public static function create()
@@ -16,21 +21,25 @@
 			return new self;
 		}
 		
+		public function da()
+		{
+			if(!$this->da)
+				$this->da = DatabaseDebugDA::create();
+			
+			return $this->da;
+		}
+		
 		/**
 		 * @return DatabaseDebug
 		 */
 		public function store()
 		{
-			$dbQuery = "INSERT INTO " . Database::me()->getTable('DebugData')
-				. " SET session_id = ?, data = ?";
-
-
 			foreach($this->getItems() as $item)
 				$item->dropTrace();
 			
-			Database::me()->query(
-				$dbQuery,
-				array(Session::me()->getId(), serialize($this->getItems()))
+			$this->da()->insertItem(
+				Session::me()->getId(),
+				serialize($this->getItems())
 			);
 			
 			return $this;

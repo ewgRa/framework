@@ -26,14 +26,14 @@
 		public static function createInstance($className)
 		{
 			self::$instances[$className] = new $className;
-
+			
 			return self::$instances[$className];
 		}
 		
 		public static function setInstance($className, $instance)
 		{
 			self::$instances[$className] = $instance;
-
+			
 			return $instance;
 		}
 		

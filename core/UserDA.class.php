@@ -1,0 +1,74 @@
+<?php
+	/* $Id$ */
+
+	/**
+	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
+	*/
+	class UserDA extends DatabaseRequester
+	{
+		public static function create()
+		{
+			return new self;
+		}
+		
+		public function checkLogin($login, $password)
+		{
+			$result = null;
+			
+			$dbQuery = "
+				SELECT *, password = MD5( ? ) as verify_password
+					FROM " . $this->db()->getTable('Users') . "
+				WHERE login = ?
+			";
+
+			$dbResult = $this->db()->query($dbQuery, array($password, $login));
+
+			if($this->db()->recordCount($dbResult))
+				$result = $this->db()->fetchArray($dbResult);
+			
+			return $result;
+		}
+
+		public function loadRights($userId)
+		{
+			$result = null;
+			
+			$dbQuery = "
+				SELECT t1.* FROM " . $this->db()->getTable('Rights') . " t1
+				INNER JOIN " . $this->db()->getTable('UsersRights_ref') . " t2
+					ON ( t1.id = t2.right_id AND t2.user_id = ? )
+			";
+
+			$dbResult = $this->db()->query($dbQuery, array($userId));
+			
+			if($this->db()->recordCount($dbResult))
+				$result = $this->db()->resourceToArray($dbResult);
+			
+			return $result;
+		}
+		
+		public function loadInheritanceRights($inheritanceId)
+		{
+			$result = null;
+			
+			$dbQuery = "
+				SELECT t1.* FROM " . $this->db()->getTable('Rights') . " t1
+				INNER JOIN " . $this->db()->getTable('Rights_inheritance') . " t2
+					ON ( t1.id = t2.child_right_id AND t2.right_id IN( ? ) )
+			";
+
+			$dbResult = $this->db()->query(
+				$dbQuery,
+				array($inheritanceId)
+			);
+			
+			if($this->db()->recordCount($dbResult))
+				$result = $this->db()->resourceToArray($dbResult);
+			
+			return $result;
+		}
+	}
+?>

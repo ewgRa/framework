@@ -6,8 +6,10 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Database extends SingletonFactory
+	class Database extends Singleton
 	{
+		private $pools = array();
+		
 		/**
 		 * @return BaseDatabase
 		 */
@@ -16,15 +18,25 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
-		/**
-		 * @return BaseDatabase
-		 */
-		public static function factory($realization)
+		public function addPool(BaseDatabase $pool, $poolAlias = null)
 		{
-			$method = new ReflectionMethod($realization, 'create');
-			
-			return
-				self::setInstance(__CLASS__, $method->invoke(null));
+			$this->pools[$poolAlias] = $pool;
+			return $this;
+		}
+		
+		public function hasPool($poolAlias)
+		{
+			return isset($this->pools[$poolAlias]);
+		}
+		
+		public function getPool($poolAlias = null)
+		{
+			if($this->hasPool($poolAlias))
+				return $this->pools[$poolAlias];
+			else
+				throw new MissingArgumentException(
+					'Known nothing about pool ' . $poolAlias
+				);
 		}
 	}
 ?>

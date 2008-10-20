@@ -5,12 +5,12 @@
 	{
 		private static $savedDatabase = null;
 		
-		public static function create($realization = 'MysqlDatabase')
+		public static function create()
 		{
 			if(Singleton::hasInstance('Database'))
 				self::$savedDatabase = serialize(Database::me());
 			
-			Mock::generate($realization, 'DatabaseTestMock');
+			Mock::generate('Database', 'DatabaseTestMock');
 			$database = &new DatabaseTestMock();
 			
 			Singleton::setInstance('Database', $database);
