@@ -18,7 +18,9 @@
 		{
 			$dbQuery = '
 				SELECT path, id, preg
-				FROM ' . $this->db()->getTable('Pages');
+				FROM ' . $this->db()->getTable('Pages') . '
+				WHERE status = \'normal\'
+			';
 
 			$dbResult = $this->db()->query($dbQuery);
 			
