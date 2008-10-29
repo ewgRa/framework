@@ -14,19 +14,24 @@
 		const UNDEFINED_TABLE	= 1004;
 		const NO_RESULT			= 1005;
 		
-		private $host			= null;
-		private $databaseName	= null;
+		private $pool			= null;
 		private $tableAlias		= null;
-		private $query			= null;
-		private $error			= null;
 		
 		/**
 		 * @return DatabaseException
 		 */
-		public function setHost($host)
+		public function setPool(BaseDatabase $pool)
 		{
-			$this->host = $host;
+			$this->pool = $pool;
 			return $this;
+		}
+		
+		/**
+		 * @return BaseDatabase
+		 */
+		public function getPool()
+		{
+			return $this->pool;
 		}
 		
 		/**
@@ -37,34 +42,7 @@
 			$this->tableAlias = $alias;
 			return $this;
 		}
-		
-		/**
-		 * @return DatabaseException
-		 */
-		public function setDatabaseName($databaseName)
-		{
-			$this->databaseName = $databaseName;
-			return $this;
-		}
-		
-		/**
-		 * @return DatabaseException
-		 */
-		public function setQuery($query)
-		{
-			$this->query = $query;
-			return $this;
-		}
-		
-		/**
-		 * @return DatabaseException
-		 */
-		public function setError($error)
-		{
-			$this->error = $error;
-			return $this;
-		}
-		
+
 		public function __toString()
 		{
 			$resultString = array(parent::__toString());
@@ -78,7 +56,7 @@
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
 						$this->message,
-						"Host: {$this->host}"
+						"Host: {$this->getPool()->getHost()}"
 					);
 				break;
 
@@ -89,8 +67,8 @@
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
 						$this->message,
-						"Host: {$this->host}",
-						"Database: {$this->databaseName}"
+						"Host: {$this->getPool()->getHost()}",
+						"Database: {$this->getPool()->getDatabaseName()}"
 					);
 				break;
 
@@ -103,10 +81,10 @@
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
 						$this->message,
-						"Host: {$this->host}",
-						"Database: {$this->databaseName}",
-						"Query: {$this->query}",
-						"Error: {$this->error}",
+						"Host: {$this->getPool()->getHost()}",
+						"Database: {$this->getPool()->getDatabaseName()}",
+						"Query: {$this->getPool()->getLastQuery()}",
+						"Error: {$this->getPool()->getError()}",
 						"Query executed from: {$trace->getFile()}"
 							. " at line {$trace->getLine()}"
 					);

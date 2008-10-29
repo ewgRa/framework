@@ -36,6 +36,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return LocalizerDA
+		 */
 		public function da()
 		{
 			if(!$this->da)

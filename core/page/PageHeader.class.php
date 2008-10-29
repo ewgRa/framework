@@ -12,7 +12,7 @@
 		private $headers = array();
 		
 		/**
-		 * @return Page
+		 * @return PageHeader
 		 */
 		public static function me()
 		{

@@ -1,9 +1,12 @@
 <?php
 	/* $Id$ */
 
-	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR
-			. '..' . DIRECTORY_SEPARATOR . 'patterns' . DIRECTORY_SEPARATOR
-			. 'SingletonFactory.class.php';
+	$file = join(
+		DIRECTORY_SEPARATOR,
+		array(
+			dirname(__FILE__), '..' , '..' , 'patterns' , 'SingletonFactory.class.php'
+		)
+	);
 	
 	if(!class_exists('SingletonFactory', false) && file_exists($file))
 		require_once($file);

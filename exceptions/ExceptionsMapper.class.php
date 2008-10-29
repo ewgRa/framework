@@ -9,10 +9,10 @@
 	class ExceptionsMapper extends Singleton
 	{
 		private $map = array(
-			'Database'			=> 'DatabaseException',
-			'File'				=> 'FileException',
-			'Page'				=> 'PageException',
-			'Default'			=> 'DefaultException'
+			'Database'	=> 'DatabaseException',
+			'File'		=> 'FileException',
+			'Page'		=> 'PageException',
+			'Default'	=> 'DefaultException'
 		);
 		
 		private static $instance = null;

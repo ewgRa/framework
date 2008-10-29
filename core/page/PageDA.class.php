@@ -9,6 +9,9 @@
 	*/
 	class PageDA extends DatabaseRequester
 	{
+		/**
+		 * @return PageDA
+		 */
 		public static function create()
 		{
 			return new self;

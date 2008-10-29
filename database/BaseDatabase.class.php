@@ -16,6 +16,7 @@
 		private $password		= null;
 		private $databaseName	= null;
 		private $charset		= null;
+		private $lastQuery		= null;
 		
 		/**
 		 * @return BaseDatabase
@@ -106,6 +107,20 @@
 		{
 			$this->databaseName = $databaseName;
 			return $this;
+		}
+		
+		/**
+		 * @return BaseDatabase
+		 */
+		public function setLastQuery($query)
+		{
+			$this->lastQuery = $query;
+			return $this;
+		}
+		
+		public function getLastQuery()
+		{
+			return $this->lastQuery;
 		}
 		
 		public function isConnected()
@@ -237,15 +252,12 @@
 			return $this;
 		}
 		
-		public function queryError($query)
+		public function queryError()
 		{
 			throw
 				ExceptionsMapper::me()->createException('Database')->
 					setCode(DatabaseException::SQL_QUERY_ERROR)->
-					setHost($this->getHost())->
-					setDatabaseName($this->getDatabaseName())->
-					setQuery($query)->
-					setError(mysql_error());
+					setPool($this);
 		}
 		
 		/**

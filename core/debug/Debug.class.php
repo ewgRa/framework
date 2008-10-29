@@ -17,7 +17,7 @@
 		}
 		
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseDebug
 		 */
 		public static function factory($realization)
 		{

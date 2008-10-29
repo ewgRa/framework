@@ -1,12 +1,11 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
-
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
 	*/
 	class XsltView extends BaseView
 	{
@@ -57,9 +56,7 @@
 		{
 			$this->xslDocument = $this->createDomDocument();
 			
-			$this->xslDocument->loadXML(
-				file_get_contents($filePath)
-			);
+			$this->xslDocument->loadXML(file_get_contents($filePath));
 			
 			return $this;
 		}
@@ -81,10 +78,7 @@
 		{
 			$domModel = $this->createDomDocument();
 
-			$root = $domModel->createNodeFromVar(
-				$model,
-				'document'
-			);
+			$root = $domModel->createNodeFromVar($model, 'document');
 
 			$domModel->appendChild($root);
 		

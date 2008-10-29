@@ -52,11 +52,12 @@
 			if(
 				$this->getDefinedLanguageAbbr()
 					== $this->getRequestLanguage()->getAbbr()
-			)
+			) {
 				$result = substr(
 					$result,
 					strlen($this->getRequestLanguage()->getAbbr()) + 1
 				);
+			}
 			
 			return $result;
 		}

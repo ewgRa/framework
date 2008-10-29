@@ -27,6 +27,9 @@
 			return new self;
 		}
 		
+		/**
+		 * @return PagePathMapperDA
+		 */
 		public function da()
 		{
 			if(!$this->da)

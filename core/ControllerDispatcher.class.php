@@ -24,6 +24,9 @@
 			return parent::getInstance(__CLASS__);
 		}
 
+		/**
+		 * @return ControllerDispatcherDA
+		 */
 		public function da()
 		{
 			if(!$this->da)
@@ -43,9 +46,9 @@
 		public function addController($controller, $section, $position)
 		{
 			$this->controllers[] = array(
-				'instance' => $controller,
-				'section'	 => $section,
-				'position'	 => $position
+				'instance'	=> $controller,
+				'section'	=> $section,
+				'position'	=> $position
 			);
 			
 			return $this;
@@ -92,14 +95,12 @@
 		{
 			$result = null;
 			
-			try
-			{
+			try {
 				$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
 					setKey($pageId)->
 					restoreData();
 			}
-			catch(MissingArgumentException $e)
-			{
+			catch(MissingArgumentException $e) {
 				$cacheTicket = null;
 			}
 			

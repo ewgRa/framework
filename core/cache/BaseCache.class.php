@@ -23,9 +23,9 @@
 	*/
 	abstract class BaseCache implements BaseCacheInterface
 	{
-		private $isDisabled			= false;
-		private $isExpired 			= true;
-		private $config				= null;
+		private $isDisabled	= false;
+		private $isExpired 	= true;
+		private $config		= null;
 
 		/**
 		 * @return CacheTicket

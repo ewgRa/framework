@@ -8,7 +8,14 @@
 	*/
 	abstract class Controller
 	{
+		/**
+		 * @var CacheTicket
+		 */
 		private $cacheTicket = null;
+		
+		/**
+		 * @var BaseView
+		 */
 		private $view		 = null;
 		
 		abstract public function getModel();

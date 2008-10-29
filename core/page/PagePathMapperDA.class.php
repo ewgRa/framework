@@ -9,6 +9,9 @@
 	*/
 	class PagePathMapperDA extends DatabaseRequester
 	{
+		/**
+		 * @return PagePathMapperDA
+		 */
 		public static function create()
 		{
 			return new self;

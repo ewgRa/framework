@@ -21,6 +21,9 @@
 			return new self;
 		}
 		
+		/**
+		 * @return DatabaseDebugDA
+		 */
 		public function da()
 		{
 			if(!$this->da)

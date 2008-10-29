@@ -31,8 +31,7 @@
 			if(
 				$this->isLanguageInUrl()
 				&& Localizer::me()->getSource() != BaseLocalizer::SOURCE_LANGUAGE_URL_AND_COOKIE
-			)
-			{
+			) {
 				$result = '/' . Localizer::me()->getRequestLanguage()->getAbbr();
 			}
 			

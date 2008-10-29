@@ -8,12 +8,16 @@
 	*/
 	class CacheTicket
 	{
+		/**
+		 * @var BaseCache
+		 */
 		private $cacheInstance = null;
-		private $data = null;
-		private $prefix = null;
-		private $key = null;
+
+		private $data 		= null;
+		private $prefix 	= null;
+		private $key 		= null;
 		private $actualTime = null;
-		private $isExpired 			= true;
+		private $isExpired	= true;
 		private $lifeTime 	= null;
 		
 		/**

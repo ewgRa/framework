@@ -1,8 +1,10 @@
 <?php
 	/* $Id$ */
 
-	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'patterns'
-			. DIRECTORY_SEPARATOR . 'Singleton.class.php';
+	$file = join(
+		DIRECTORY_SEPARATOR,
+		array(dirname(__FILE__), 'patterns', 'Singleton.class.php')
+	);
 	
 	if(!class_exists('Singleton', false) && file_exists($file))
 		require_once($file);
@@ -112,8 +114,7 @@
 			if(
 				$this->hasCacheTicket()
 				&& $foundClasses = $this->getCacheTicket()->restoreData()->getData()
-			)
-			{
+			) {
 				$this->setFoundClasses($foundClasses);
 			}
 			
@@ -133,10 +134,7 @@
 				{
 					if(is_dir($fileName))
 					{
-						$result = $this->findClassFile(
-							$className,
-							array($fileName)
-						);
+						$result = $this->findClassFile($className, array($fileName));
 						
 						if($result)
 							break 2;
@@ -145,8 +143,7 @@
 						is_file($fileName)
 						&& basename($fileName)
 							== $className . self::CLASS_FILE_EXTENSION
-					)
-					{
+					) {
 						$result = $fileName;
 						break 2;
 					}

@@ -1,18 +1,16 @@
 <?php
 	/* $Id$ */
 
-	// FIXME:tested?
-
-
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME:tested?
 	*/
 	class ExtendedDomDocument extends DOMDocument
 	{
-		const DEFAULT_NODE_PREFIX = 'item';
-		const DEFAULT_NUMERIC_NODE_ATTRIBUTE = 'key';
+		const NODE_PREFIX 				= 'item';
+		const NUMERIC_NODE_ATTRIBUTE 	= 'key';
 		
 		/**
 		 * @return DomNode
@@ -25,26 +23,23 @@
 		{
 			if(is_numeric($nodeName))
 			{
-				$attributes[self::DEFAULT_NUMERIC_NODE_ATTRIBUTE] = $nodeName;
-				$nodeName = self::DEFAULT_NODE_PREFIX;
+				$attributes[self::NUMERIC_NODE_ATTRIBUTE] = $nodeName;
+				$nodeName = self::NODE_PREFIX;
 			}
 			
 			$node = $this->createElement($nodeName);
 
-			foreach($attributes as $k => $v )
+			foreach($attributes as $k => $v)
 				$node->setAttribute($k, $v);
 
-			if(!is_array($var))
-			{
-				$CData = $this->createCDATASection($var);
-				$node->appendChild($CData);
-			}
-			else
+			if(is_array($var))
 			{
 				foreach($var as $k => $v)
 					$node->appendChild($this->{__FUNCTION__}($v, $k));
 			}
-
+			else
+				$node->appendChild($this->createCDATASection($var));
+			
 			return $node;
 		}
 		

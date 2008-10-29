@@ -9,6 +9,9 @@
 	*/
 	class ViewDA extends DatabaseRequester
 	{
+		/**
+		 * @return ViewDA
+		 */
 		public static function create()
 		{
 			return new self;
@@ -36,6 +39,20 @@
 			);
 			
 			return $this->db()->resourceToArray($dbResult);
+		}
+		
+		public function getFile($fileId)
+		{
+			$dbQuery = "
+				SELECT * FROM " . $this->db()->getTable('ViewFiles') . '
+				WHERE id = ?
+			';
+			
+			$dbResult = $this->db()->query($dbQuery, array($fileId));
+
+			return $this->db()->recordCount($dbResult)
+				? $this->db()->fetchArray($dbResult)
+				: null;
 		}
 	}
 ?>

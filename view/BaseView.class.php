@@ -1,12 +1,11 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
-
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
 	*/
 	abstract class BaseView implements ViewInterface
 	{
@@ -26,8 +25,7 @@
 		protected function getLayoutIncludeFiles($fileId)
 		{
 			$result = array();
-			
-			
+				
 			foreach($this->da()->getLayouIncludeFiles($fileId) as $file)
 			{
 				$result[] = str_replace(

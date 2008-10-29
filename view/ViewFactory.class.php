@@ -1,23 +1,34 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
-
-
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
 	*/
 	final class ViewFactory
 	{
+		/**
+		 * @var ViewDA
+		 */
+		private static $da = null;
+		
+		public static function da()
+		{
+			if(!self::$da)
+				self::$da = ViewDA::create();
+				
+			return self::$da;
+		}
+		
 		/**
 		 * @return BaseView
 		 */
 		public static function createByFileId($fileId)
 		{
-			$result = null;
-			$cacheTicket = null;
+			$result 		= null;
+			$cacheTicket 	= null;
 			
 			if(Cache::me()->hasTicketParams('view'))
 			{
@@ -28,14 +39,8 @@
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$dbQuery = "SELECT * FROM " . Database::me()->getPool()->getTable('ViewFiles')
-					. ' WHERE id = ?';
-				
-				$dbResult = Database::me()->getPool()->query($dbQuery, array($fileId));
-	
-				if(Database::me()->getPool()->recordCount($dbResult))
+				if($file = self::da()->getFile($fileId))
 				{
-					$file = Database::me()->getPool()->fetchArray($dbResult);
 					$file['path'] = Config::me()->replaceVariables($file['path']);
 					
 					switch($file['content-type'])

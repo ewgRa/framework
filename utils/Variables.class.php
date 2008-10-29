@@ -27,13 +27,12 @@
 						$variableName,
 						$variableMatches
 					)
-				)
-				{
+				) {
 					$varName = $variableMatches[1];
 
 					if(isset($variableMatches[2]))
 					{
-						if($varName[0] == '$')
+						if(substr($varName, 0, 1) == '$')
 							$varName .= "['" . $variableMatches[2] . "']";
 						else
 							$varName = null;
@@ -43,7 +42,7 @@
 
 					if($varName)
 					{
-						if($varName[0] == '$')
+						if(substr($varName, 0, 1) == '$')
 						{
 							eval(
 								'$result = isset('
@@ -51,11 +50,8 @@
 								. $varName. ' : null;'
 							);
 						}
-						else
-						{
-							if(defined($varName))
-								$result = constant($varName);
-						}
+						elseif(defined($varName))
+							$result = constant($varName);
 					}
 				}
 			}

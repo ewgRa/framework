@@ -9,6 +9,9 @@
 	*/
 	class ControllerDispatcherDA extends DatabaseRequester
 	{
+		/**
+		 * @return ControllerDispatcherDA
+		 */
 		public static function create()
 		{
 			return new self;

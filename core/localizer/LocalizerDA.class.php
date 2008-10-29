@@ -8,6 +8,9 @@
 	*/
 	class LocalizerDA extends DatabaseRequester
 	{
+		/**
+		 * @return LocalizerDA
+		 */
 		public static function create()
 		{
 			return new self;

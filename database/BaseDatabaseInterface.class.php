@@ -33,5 +33,9 @@
 		public function getInsertedId();
 		
 		public function escape($variable);
+
+		public function getError();
+
+		public function getLastQuery();
 	}
 ?>

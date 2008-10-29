@@ -9,6 +9,9 @@
 	*/
 	class UserDA extends DatabaseRequester
 	{
+		/**
+		 * @return UserDA
+		 */
 		public static function create()
 		{
 			return new self;

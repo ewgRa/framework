@@ -1,17 +1,16 @@
 <?php
 	/* $Id$ */
 
-	// FIXME: tested?
-
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
+	 * // FIXME: tested?
 	*/
 	class PhpView extends BaseView
 	{
-		private $layoutFile = null;
-		private $includeFiles = null;
+		private $layoutFile 	= null;
+		private $includeFiles 	= null;
 		
 		/**
 		 * @return PhpView
@@ -41,9 +40,7 @@
 				
 			require($this->layoutFile);
 
-			$result = ob_get_clean();
-			
-			return $result;
+			return ob_get_clean();
 		}
 		
 		public function toString()

@@ -50,9 +50,7 @@
 			$result = null;
 
 			if(isset($this->options[$alias]))
-			{
 				$result = $this->options[$alias];
-			}
 			
 			return $result;
 		}

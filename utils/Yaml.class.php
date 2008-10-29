@@ -2,7 +2,9 @@
 	/* $Id$ */
 
 	if(!class_exists('Spyc') && defined('LIB_DIR'))
-		require_once(LIB_DIR . '/php/spyc/spyc.php');
+		require_once(
+			join(DIRECTORY_SEPARATOR, array(LIB_DIR, 'php', 'spyc', 'spyc.php'))
+		);
 	
 	/**
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3

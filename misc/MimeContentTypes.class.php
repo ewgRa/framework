@@ -8,9 +8,9 @@
 	*/
 	class MimeContentTypes
 	{
-		const APPLICATION_PHP = 'application/php';
-		const TEXT_XSLT = 'text/xslt';
-		const TEXT_CSS = 'text/css';
-		const TEXT_JAVASCRIPT = 'text/javascript';
+		const APPLICATION_PHP 	= 'application/php';
+		const TEXT_XSLT 		= 'text/xslt';
+		const TEXT_CSS 			= 'text/css';
+		const TEXT_JAVASCRIPT 	= 'text/javascript';
 	}
 ?>

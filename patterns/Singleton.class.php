@@ -11,6 +11,9 @@
 	{
 		private static $instances = array();
 		
+		/**
+		 * @return Singleton
+		 */
 		protected function __construct()
 		{
 		}

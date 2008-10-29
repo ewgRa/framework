@@ -28,7 +28,7 @@
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::CONNECT)->
-						setHost($this->getHost());
+						setPool($this);
 			}
 			
 			$this->setLinkIdentifier($db)->connected();
@@ -69,8 +69,7 @@
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SELECT_DATABASE)->
-						setHost($this->getHost())->
-						setDatabaseName($this->getDatabaseName());
+						setPool($this);
 			}
 			
 			return $this;
@@ -98,8 +97,10 @@
 							
 			$resource = mysql_query($query, $this->getLinkIdentifier());
 			
-			if(mysql_error($this->getLinkIdentifier()))
-				parent::queryError($query);
+			$this->setLastQuery($query);
+			
+			if($this->getError())
+				parent::queryError();
 
 			$endTime = microtime(true);
 				
@@ -182,6 +183,11 @@
 				$variable = mysql_escape_string($variable);
 			
 			return $variable;
+		}
+		
+		public function getError()
+		{
+			return mysql_error($this->getLinkIdentifier());
 		}
 	}
 ?>

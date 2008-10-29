@@ -9,7 +9,7 @@
 	class Session extends SingletonFactory
 	{
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseSession
 		 */
 		public static function me()
 		{
@@ -17,7 +17,7 @@
 		}
 		
 		/**
-		 * @return BaseLocalizer
+		 * @return BaseSession
 		 */
 		public static function factory($realization)
 		{

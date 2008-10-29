@@ -8,6 +8,9 @@
 	*/
 	class DatabaseDebugDA extends DatabaseRequester
 	{
+		/**
+		 * @return DatabaseDebugDA
+		 */
 		public static function create()
 		{
 			return new self;
