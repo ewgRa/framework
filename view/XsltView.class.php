@@ -11,6 +11,10 @@
 	{
 		private $charset	 = 'utf8';
 		private $version	 = '1.0';
+		
+		/**
+		 * @var ExtendedDomDocument
+		 */
 		private $xslDocument = null;
 
 		/**
@@ -74,11 +78,11 @@
 			return $this;
 		}
 		
-		public function transform($model)
+		public function transform(Model $model)
 		{
 			$domModel = $this->createDomDocument();
 
-			$root = $domModel->createNodeFromVar($model, 'document');
+			$root = $domModel->createNodeFromVar($model->getData(), 'document');
 
 			$domModel->appendChild($root);
 		

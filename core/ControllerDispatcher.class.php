@@ -117,16 +117,21 @@
 			return $result;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
-			$result = array();
+			$result = Model::create();
 			
 			foreach($this->getControllers() as $controller)
 			{
-				$result[] = array(
-					'data' => $controller['instance']->getRenderedModel(),
-					'section' => $controller['section'],
-					'position' => $controller['position']
+				$result->append(
+					array(
+						'data' => $controller['instance']->getRenderedModel(),
+						'section' => $controller['section'],
+						'position' => $controller['position']
+					)
 				);
 			}
 			

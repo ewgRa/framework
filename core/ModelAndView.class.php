@@ -9,7 +9,14 @@
 	*/
 	class ModelAndView
 	{
+		/**
+		 * @var BaseView
+		 */
 		private $view = null;
+		
+		/**
+		 * @var Model
+		 */
 		private $model = null;
 		
 		/**
@@ -37,12 +44,15 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function setModel($model)
+		public function setModel(Model $model)
 		{
 			$this->model = $model;
 			return $this;
 		}
 		
+		/**
+		 * @return Model
+		 */
 		public function getModel()
 		{
 			return $this->model;

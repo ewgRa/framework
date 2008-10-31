@@ -31,7 +31,7 @@
 			return $this;
 		}
 		
-		public function transform($model)
+		public function transform(Model $model)
 		{
 			ob_start();
 			

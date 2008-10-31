@@ -77,7 +77,7 @@
 			return
 				$this->hasInner()
 					? $this->getInner()->handleRequest()
-					: ModelAndView::create();
+					: ModelAndView::create()->setModel(Model::create());
 		}
 	}
 ?>

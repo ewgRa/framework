@@ -18,6 +18,9 @@
 		 */
 		private $view		 = null;
 		
+		/**
+		 * @return Model
+		 */
 		abstract public function getModel();
 
 		public function hasCacheTicket()
