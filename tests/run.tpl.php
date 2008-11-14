@@ -4,7 +4,7 @@
 	
 	define('SIMPLETEST_DIR', '/usr/share/php/simpletest');
 
-	define('FRAMEWORK_DIR', '/var/www/ewgraProjects/framework/trunk');
+	define('FRAMEWORK_DIR', dirname(__FILE__) . '/..');
 	define('LIB_DIR', '/var/www/ewgraProjects/lib/trunk');
 
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
