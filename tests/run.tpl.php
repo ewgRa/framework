@@ -3,8 +3,10 @@
 	ini_set('display_errors', true);
 	
 	define('SIMPLETEST_DIR', '/usr/share/php/simpletest');
+
 	define('FRAMEWORK_DIR', '/var/www/ewgraProjects/framework/trunk');
 	define('LIB_DIR', '/var/www/ewgraProjects/lib/trunk');
+
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
 	define('CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
 	
