@@ -26,7 +26,16 @@
 	ClassesAutoloader::me()->
 		setSearchDirectories(array(FRAMEWORK_DIR));
 
-	include_once FRAMEWORK_DIR . '/tests/run.php';
+	require_once dirname(__FILE__) . '/FrameworkAllTests.class.php';
+
+	$allTests = new FrameworkAllTests();
+
+	$reporter =
+		PHP_SAPI == 'cli'
+			? new TextReporter()
+			: new HtmlReporter();
+		
+	$allTests->run($reporter);
 
 	function __autoload($className)
 	{
