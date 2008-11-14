@@ -11,7 +11,7 @@
 	if(!file_exists(TMP_DIR))
 		mkdir(TMP_DIR, 0777, true);
 	
-	if(!file_exists(TMP_DIR))
+	if(!file_exists(CACHE_DIR))
 		mkdir(CACHE_DIR, 0777, true);
 		
 	require_once(SIMPLETEST_DIR . '/simpletest.php');
