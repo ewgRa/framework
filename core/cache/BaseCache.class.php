@@ -23,6 +23,9 @@
 	*/
 	abstract class BaseCache implements BaseCacheInterface
 	{
+		const FILE_PERMISSIONS = 0775;
+		const DIR_PERMISSIONS = 0775;
+		
 		private $isDisabled	= false;
 		private $isExpired 	= true;
 		private $config		= null;

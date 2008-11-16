@@ -90,6 +90,7 @@
 			$this->createPreDirs($fileName);
 			
 			file_put_contents($fileName, serialize($ticket->getData()));
+			chmod($fileName, self::FILE_PERMISSIONS);
 			touch($fileName, $ticket->getLifeTime());
 			
 			return $this;
@@ -139,7 +140,7 @@
 			$directory = dirname($fileName);
 
 			if(!file_exists($directory))
-				mkdir($directory, 0777, true);
+				mkdir($directory, self::DIR_PERMISSIONS, true);
 							
 			return $this;
 		}

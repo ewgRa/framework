@@ -8,6 +8,14 @@
 	*/
 	class Assert
 	{
+		public static function isArray($array, $message = 'Variable is not array!')
+		{
+			if(!is_array($array))
+				throw new Exception($message);
+				
+			return true;
+		}
+		
 		public static function isTrue($variable, $message = 'Variable is not true!')
 		{
 			if($variable !== true)
