@@ -21,7 +21,7 @@
 		{
 			$dbQuery = "
 				SELECT
-					t1.*, t2.section_id, t2.position_in_section, t2.module_settings,
+					t1.*, t2.section_id, t2.position_in_section, t2.controller_settings,
 					t2.view_file_id
 				FROM " . $this->db()->getTable('Controllers') . " t1
 				INNER JOIN " . $this->db()->getTable('PagesControllers_ref') . " t2

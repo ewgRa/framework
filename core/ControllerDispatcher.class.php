@@ -66,13 +66,22 @@
 			{
 				$controllerInstance = new $controller['name'];
 				
-				$controller['module_settings'] =
-					is_null($controller['module_settings'])
+				$controller['controller_settings'] =
+					is_null($controller['controller_settings'])
 						? array()
-						: unserialize($controller['module_settings']);
+						: unserialize($controller['controller_settings']);
 
+				if(!is_null($controller['settings']))
+				{
+					$controller['controller_settings'] =
+						array_merge(
+							$controller['controller_settings'],
+							unserialize($controller['settings'])
+						);
+				}
+				
 				$controllerInstance->
-					importSettings($controller['module_settings'])->
+					importSettings($controller['controller_settings'])->
 					setView(
 						$controller['view_file_id']
 							? ViewFactory::createByFileId(

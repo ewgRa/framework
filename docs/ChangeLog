@@ -1,5 +1,10 @@
 $Id$
 
+2008-11.1x
+	* 1.05 released
+	
+	* ControllerDispatcher: add default settings for controller
+
 2008-11-01
 	* 1.04 released
 	

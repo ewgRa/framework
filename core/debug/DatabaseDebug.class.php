@@ -40,12 +40,13 @@
 			foreach($this->getItems() as $item)
 				$item->dropTrace();
 			
-			$this->da()->insertItem(
-				Session::me()->getId(),
-				serialize($this->getItems())
-			);
+			$itemId =
+				$this->da()->insertItem(
+					Session::me()->getId(),
+					serialize($this->getItems())
+				);
 			
-			return $this;
+			return $itemId;
 		}
 	}
 ?>

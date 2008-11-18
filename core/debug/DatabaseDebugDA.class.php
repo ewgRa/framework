@@ -26,7 +26,7 @@
 				array($sessionId, $data)
 			);
 			
-			return $this;
+			return $this->db()->getInsertedId();
 		}
 	}
 ?>
