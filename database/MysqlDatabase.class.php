@@ -100,12 +100,12 @@
 			$this->setLastQuery($query);
 			
 			if($this->getError())
-				parent::queryError();
+				$this->queryError();
 
 			$endTime = microtime(true);
 				
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				parent::debugQuery($query, $startTime, $endTime);
+				$this->debugQuery($query, $startTime, $endTime);
 			
 			return $resource;
 		}

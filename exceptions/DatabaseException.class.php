@@ -15,6 +15,8 @@
 		const NO_RESULT			= 1005;
 		
 		private $pool			= null;
+		private $poolError		= null;
+		private $poolLastQuery	= null;
 		private $tableAlias		= null;
 		
 		/**
@@ -23,6 +25,8 @@
 		public function setPool(BaseDatabase $pool)
 		{
 			$this->pool = $pool;
+			$this->poolError = $pool->getError();
+			$this->poolLastQuery = $pool->getLastQuery();
 			return $this;
 		}
 		
@@ -83,8 +87,8 @@
 						$this->message,
 						"Host: {$this->getPool()->getHost()}",
 						"Database: {$this->getPool()->getDatabaseName()}",
-						"Query: {$this->getPool()->getLastQuery()}",
-						"Error: {$this->getPool()->getError()}",
+						"Query: {$this->poolLastQuery}",
+						"Error: {$this->poolError}",
 						"Query executed from: {$trace->getFile()}"
 							. " at line {$trace->getLine()}"
 					);

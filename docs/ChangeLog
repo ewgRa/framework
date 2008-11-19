@@ -1,6 +1,13 @@
 $Id$
 
-2008-11.1x
+2008-11-19
+	* 1.05.1 released
+	
+	* fix databaseException lastQuery
+	
+	* some cosmetics
+
+2008-11.18
 	* 1.05 released
 	
 	* ControllerDispatcher: add default settings for controller
