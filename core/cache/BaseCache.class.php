@@ -36,7 +36,7 @@
 		public function createTicket($ticketAlias = null)
 		{
 			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
-				throw new MissingArgumentException();
+				throw ExceptionsMapper::me()->createException('MissingArgument');
 			
 			$result = CacheTicket::create()->
 				setCacheInstance($this)->

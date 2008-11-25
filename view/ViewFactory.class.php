@@ -58,7 +58,8 @@
 					}
 				}
 				else
-					throw new NotFoundException('No layout file');
+					throw ExceptionsMapper::me()->createException('NotFound')->
+						setMessage('No layout file');
 				
 				if($cacheTicket)
 					$cacheTicket->setData($result)->storeData();

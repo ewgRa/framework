@@ -34,9 +34,9 @@
 			if($this->hasPool($poolAlias))
 				return $this->pools[$poolAlias];
 			else
-				throw new MissingArgumentException(
-					'Known nothing about pool ' . $poolAlias
-				);
+				throw
+					ExceptionsMapper::me()->createException('MissingArgument')->
+						setMessage('Known nothing about pool ' . $poolAlias);
 		}
 	}
 ?>

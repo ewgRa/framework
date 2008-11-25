@@ -50,9 +50,8 @@
 		public function get($key)
 		{
 			if(!$this->has($key))
-				throw new MissingArgumentException(
-					'known nothing about key "' . $key . '"'
-				);
+				throw ExceptionsMapper::me()->createException('MissingArgument')->
+					setMessage('known nothing about key "' . $key . '"');
 				
 			return $this->data[$key];
 		}
