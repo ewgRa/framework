@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class BaseLocalizer implements BaseLocalizerInterface
+	abstract class BaseLocalizer implements LocalizerInterface
 	{
 		const SOURCE_LANGUAGE_DEFAULT 		 = 1;
 		const SOURCE_LANGUAGE_COOKIE  		 = 2;

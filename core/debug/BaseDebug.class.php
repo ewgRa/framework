@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class BaseDebug implements BaseDebugInterface
+	abstract class BaseDebug implements DebugInterface
 	{
 		private $enabled = null;
 		private $items	 = array();

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class BaseSession implements BaseSessionInterface
+	abstract class BaseSession implements SessionInterface
 	{
 		protected $isStarted = false;
 

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class BaseDatabase implements BaseDatabaseInterface
+	abstract class BaseDatabase implements DatabaseInterface
 	{
 		private $linkIdentifier	= null;
 		private $tables 		= array();

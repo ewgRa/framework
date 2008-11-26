@@ -1,9 +1,9 @@
 <?php
 	/* $Id$ */
 
-	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseCacheInterface.class.php';
+	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CacheInterface.class.php';
 	
-	if(!interface_exists('BaseCacheInterface', false) && file_exists($file))
+	if(!interface_exists('CacheInterface', false) && file_exists($file))
 		require_once($file);
 	
 	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CacheTicket.class.php';
@@ -21,7 +21,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	abstract class BaseCache implements BaseCacheInterface
+	abstract class BaseCache implements CacheInterface
 	{
 		const FILE_PERMISSIONS = 0775;
 		const DIR_PERMISSIONS = 0775;
