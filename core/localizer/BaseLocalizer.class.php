@@ -29,14 +29,6 @@
 		private $da = null;
 		
 		/**
-		 * @return BaseLocalizer
-		 */
-		public static function me()
-		{
-			return parent::getInstance(__CLASS__);
-		}
-		
-		/**
 		 * @return LocalizerDA
 		 */
 		public function da()
