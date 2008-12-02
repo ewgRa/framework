@@ -85,7 +85,7 @@
 			);
 				
 			if(!$fileName)
-				throw ExceptionsMapper::me()->createException('Exception')->
+				throw ExceptionsMapper::me()->createException('DefaultException')->
 						setMessage('no key');
 			
 			$this->createPreDirs($fileName);

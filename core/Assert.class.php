@@ -11,7 +11,7 @@
 		public static function isArray($array, $message = 'Variable is not array!')
 		{
 			if(!is_array($array))
-				throw ExceptionsMapper::me()->createException('Exception')->
+				throw ExceptionsMapper::me()->createException('DefaultException')->
 					setMessage($message);
 				
 			return true;
@@ -20,7 +20,7 @@
 		public static function isTrue($variable, $message = 'Variable is not true!')
 		{
 			if($variable !== true)
-				throw ExceptionsMapper::me()->createException('Exception')->
+				throw ExceptionsMapper::me()->createException('DefaultException')->
 					setMessage($message);
 							
 			return true;
@@ -29,7 +29,7 @@
 		public static function notNull($variable, $message = 'Variable is null!')
 		{
 			if(is_null($variable))
-				throw ExceptionsMapper::me()->createException('Exception')->
+				throw ExceptionsMapper::me()->createException('DefaultException')->
 					setMessage($message);
 							
 			return true;
