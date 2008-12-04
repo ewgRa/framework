@@ -129,7 +129,7 @@
 			return $this;
 		}
 
-		public function resourceToArray($resource, $field = null)
+		public function resourceToArray($resource, $field = null, $key = null)
 		{
 			$result = array();
 			
@@ -141,7 +141,11 @@
 				
 				while($row)
 				{
-					$result[] = is_null($field) ? $row : $row[$field];
+					if($key && isset($row[$key]))
+						$result[$row[$key]] = is_null($field) ? $row : $row[$field];
+					else
+						$result[] = is_null($field) ? $row : $row[$field];
+					
 					$row = $this->fetchArray($resource);
 				}
 			}
