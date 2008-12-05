@@ -25,8 +25,18 @@
 		 */
 		public function loadLayout($file)
 		{
-			$this->layoutFile = $file['path'];
+			$this->loadLayoutByPath($file['path']);
 			$this->includeFiles = $this->getLayoutIncludeFiles($file['id']);
+			
+			return $this;
+		}
+		
+		/**
+		 * @return PhpView
+		 */
+		public function loadLayoutByPath($path)
+		{
+			$this->layoutFile = $path;
 			
 			return $this;
 		}
@@ -35,8 +45,11 @@
 		{
 			ob_start();
 			
-			foreach($this->includeFiles as $file)
-				require($file);
+			if($this->includeFiles)
+			{
+				foreach($this->includeFiles as $file)
+					require($file);
+			}
 				
 			require($this->layoutFile);
 
