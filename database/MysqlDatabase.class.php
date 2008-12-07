@@ -94,7 +94,7 @@
 			$startTime = microtime(true);
 			
 			$query = $this->prepareQuery($query, $values);
-							
+
 			$resource = mysql_query($query, $this->getLinkIdentifier());
 			
 			$this->setLastQuery($query);

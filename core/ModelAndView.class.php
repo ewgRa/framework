@@ -55,6 +55,9 @@
 		 */
 		public function getModel()
 		{
+			if(!$this->model)
+				$this->model = Model::create();
+				
 			return $this->model;
 		}
 		
