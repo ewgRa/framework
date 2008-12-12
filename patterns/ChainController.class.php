@@ -72,12 +72,12 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest()
+		public function handleRequest(ModelAndView $mav)
 		{
 			return
 				$this->hasInner()
-					? $this->getInner()->handleRequest()
-					: ModelAndView::create()->setModel(Model::create());
+					? $this->getInner()->handleRequest($mav)
+					: $mav;
 		}
 	}
 ?>
