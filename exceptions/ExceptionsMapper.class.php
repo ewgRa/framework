@@ -15,7 +15,8 @@
 			'Database'			=> 'DatabaseException',
 			'File'				=> 'FileException',
 			'Page'				=> 'PageException',
-			'Default'			=> 'DefaultException'
+			'Default'			=> 'DefaultException',
+			'BadRequest'		=> 'BadRequestException'
 		);
 		
 		private static $instance = null;
