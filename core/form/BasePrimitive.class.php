@@ -12,6 +12,9 @@
 		private $scopeKey 	= null;
 		private $rawValue	= null;
 		
+		private $nullValues 		= array();
+		private $falseValueIsNull 	= false;
+		
 		/**
 		 * @return BasePrimitive
 		 */
@@ -26,6 +29,15 @@
 			return $this->rawValue;
 		}
 
+		public function getValue()
+		{
+			return
+				in_array($this->getRawValue(), $this->getNullValues())
+				|| ($this->isFalseValueIsNull() && !$this->getRawValue())
+					? null
+					: $this->getRawValue();
+		}
+		
 		/**
 		 * @return BasePrimitive
 		 */
@@ -40,6 +52,43 @@
 			return $this->name;
 		}
 
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setNullValues(array $values)
+		{
+			$this->nullValues = $values;
+			return $this;
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function addNullValue($value)
+		{
+			$this->nullValues[] = $value;
+			return $this;
+		}
+		
+		public function getNullValues()
+		{
+			return $this->nullValues;
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function falseValueIsNull()
+		{
+			$this->falseValueIsNull = true;
+			return $this;
+		}
+		
+		public function isFalseValueIsNull()
+		{
+			return $this->falseValueIsNull;
+		}
+		
 		/**
 		 * @return BasePrimitive
 		 */

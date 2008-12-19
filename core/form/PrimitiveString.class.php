@@ -8,6 +8,9 @@
 	*/
 	class PrimitiveString extends BasePrimitive
 	{
+		/**
+		 * @return PrimitiveString
+		 */
 		public static function create()
 		{
 			return new self;
