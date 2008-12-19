@@ -44,5 +44,13 @@
 		{
 			return in_array($contentType, array(self::TEXT_CSS));
 		}
+		
+		public static function getLayoutMimeTypes()
+		{
+			return array(
+				self::TEXT_XSLT,
+				self::APPLICATION_PHP
+			);
+		}
 	}
 ?>
