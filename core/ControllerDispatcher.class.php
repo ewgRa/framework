@@ -129,7 +129,7 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel()
+		public function getModel(HttpRequest $request)
 		{
 			$result = Model::create();
 			
@@ -137,7 +137,8 @@
 			{
 				$result->append(
 					array(
-						'data' => $controller['instance']->getRenderedModel(),
+						'data' =>
+							$controller['instance']->getRenderedModel($request),
 						'section' => $controller['section'],
 						'position' => $controller['position']
 					)

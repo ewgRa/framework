@@ -28,5 +28,10 @@
 			
 			return Spyc::YAMLLoad($file);
 		}
+
+		public static function loadString($string)
+		{
+			return Spyc::YAMLLoad($string);
+		}
 	}
 ?>

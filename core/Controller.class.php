@@ -21,7 +21,7 @@
 		/**
 		 * @return Model
 		 */
-		abstract public function getModel();
+		abstract public function getModel(HttpRequest $request);
 
 		public function hasCacheTicket()
 		{
@@ -70,7 +70,7 @@
 			return $this;
 		}
 		
-		public function getRenderedModel()
+		public function getRenderedModel(HttpRequest $request)
 		{
 			$renderedModel = null;
 			
@@ -80,7 +80,7 @@
 				
 				if($this->getCacheTicket()->isExpired())
 				{
-					$renderedModel = $this->renderModel();
+					$renderedModel = $this->renderModel($request);
 					
 					$this->getCacheTicket()->
 						setData($renderedModel)->
@@ -91,15 +91,15 @@
 			}
 
 			if(is_null($renderedModel))
-				$renderedModel = $this->renderModel();
+				$renderedModel = $this->renderModel($request);
 			
 			return $renderedModel;
 		}
 		
-		private function renderModel()
+		private function renderModel(HttpRequest $request)
 		{
 			$view	= $this->getView();
-			$model	= $this->getModel();
+			$model	= $this->getModel($request);
 			
 			return $view
 				? ModelAndView::create()->

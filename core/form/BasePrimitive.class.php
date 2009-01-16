@@ -11,6 +11,7 @@
 		private $name 		= null;
 		private $scopeKey 	= null;
 		private $rawValue	= null;
+		private $value		= null;
 		
 		private $nullValues 		= array();
 		private $falseValueIsNull 	= false;
@@ -29,13 +30,22 @@
 			return $this->rawValue;
 		}
 
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setValue($value)
+		{
+			$this->value = $value;
+			return $this;
+		}
+
 		public function getValue()
 		{
 			return
-				in_array($this->getRawValue(), $this->getNullValues())
-				|| ($this->isFalseValueIsNull() && !$this->getRawValue())
+				in_array($this->value, $this->getNullValues())
+				|| ($this->isFalseValueIsNull() && !$this->value)
 					? null
-					: $this->getRawValue();
+					: $this->value;
 		}
 		
 		/**
@@ -109,6 +119,7 @@
 		public function import($value)
 		{
 			$this->setRawValue($value);
+			$this->setValue($value);
 			return $this;
 		}
 	}

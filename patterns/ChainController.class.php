@@ -72,11 +72,13 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function handleRequest(ModelAndView $mav)
-		{
+		public function handleRequest(
+			HttpRequest $request,
+			ModelAndView $mav
+		) {
 			return
 				$this->hasInner()
-					? $this->getInner()->handleRequest($mav)
+					? $this->getInner()->handleRequest($request, $mav)
 					: $mav;
 		}
 	}
