@@ -10,6 +10,7 @@
 	final class HttpRequest
 	{
 		private $post = array();
+		private $attached = array();
 		
 		/**
 		 * @return HttpRequest
@@ -52,6 +53,42 @@
 			return
 				$this->hasPost($key)
 					? $this->post[$key]
+					: null;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setAttachedArray(array $vars)
+		{
+			$this->attached = $vars;
+			return $this;
+		}
+		
+		public function hasAttachedArray()
+		{
+			return count($this->attached) !== 0;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setAttached($key, $value)
+		{
+			$this->attached[$key] = $value;
+			return $this;
+		}
+		
+		public function hasAttached($key)
+		{
+			return isset($this->attached[$key]);
+		}
+		
+		public function getAttached($key)
+		{
+			return
+				$this->hasAttached($key)
+					? $this->attached[$key]
 					: null;
 		}
 	}
