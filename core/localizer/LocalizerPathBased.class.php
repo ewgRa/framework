@@ -8,7 +8,6 @@
 	*/
 	final class LocalizerPathBased extends Localizer
 	{
-		protected $path = null;
 		protected $type = self::DETERMINANT_PATH_BASED;
 		
 		/**
@@ -19,25 +18,11 @@
 			return new self;
 		}
 		
-		public function getPath()
-		{
-			return $this->path;
-		}
-		
-		/**
-		 * @return LocalizerPathBased
-		 */
-		public function setPath($path)
-		{
-			$this->path = $path;
-			return $this;
-		}
-		
-		public function getDefinedLanguageAbbr()
+		protected function getLanguageAbbr(HttpUrl $url)
 		{
 			$result = null;
 			
-			$parts = explode('/', $this->getPath());
+			$parts = explode('/', $url->getPath());
 
 			if(count($parts) > 2)
 				$result = $parts[1];
@@ -45,23 +30,6 @@
 			return $result;
 		}
 		
-		public function cutLanguageAbbr()
-		{
-			$result = $this->getPath();
-			
-			if(
-				$this->getDefinedLanguageAbbr()
-					== $this->getRequestLanguage()->getAbbr()
-			) {
-				$result = substr(
-					$result,
-					strlen($this->getRequestLanguage()->getAbbr()) + 1
-				);
-			}
-			
-			return $result;
-		}
-
 		public function getBaseUrl()
 		{
 			$result = parent::getBaseUrl();
@@ -74,6 +42,37 @@
 			}
 			
 			return $result;
+		}
+
+		/**
+		 * @return HttpUrl
+		 */
+		public function removeLanguageFromUrl(HttpUrl $url)
+		{
+			return
+				$this->isLanguageInUrl()
+					? $this->cutLanguageAbbr($url)
+					: $url;
+		}
+
+		/**
+		 * @return HttpUrl
+		 */
+		private function cutLanguageAbbr(HttpUrl $url)
+		{
+			if(
+				$this->getLanguageAbbr($url)
+					== $this->getRequestLanguage()->getAbbr()
+			) {
+				$url->setPath(
+					substr(
+						$url->getPath(),
+						strlen($this->getRequestLanguage()->getAbbr()) + 1
+					)
+				);
+			}
+			
+			return $url;
 		}
 	}
 ?>

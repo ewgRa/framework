@@ -10,8 +10,29 @@
 	{
 		public static function create();
 		
-		public function getDefinedLanguageAbbr();
+		/**
+		 * @return Localizer
+		 */
+		public function selectDefaultLanguage($languageAbbr);
 		
-		public function cutLanguageAbbr();
+		/**
+		 * @return Localizer
+		 */
+		public function setCookieLanguage(Language $language);
+		
+		/**
+		 * @return Localizer
+		 */
+		public function defineLanguage(HttpUrl $url);
+
+		/**
+		 * @return Language
+		 */
+		public function getRequestLanguage();
+		
+		/**
+		 * @return HttpUrl
+		 */
+		public function removeLanguageFromUrl(HttpUrl $url);
 	}
 ?>

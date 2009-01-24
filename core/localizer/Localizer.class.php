@@ -27,7 +27,9 @@
 		 * @var LocalizerDA
 		 */
 		private $da = null;
-		
+
+		abstract protected function getLanguageAbbr(HttpUrl $url);
+				
 		/**
 		 * @return LocalizerDA
 		 */
@@ -38,7 +40,7 @@
 
 			return $this->da;
 		}
-				
+		
 		public function getType()
 		{
 			return $this->type;
@@ -98,7 +100,7 @@
 		/**
 		 * @return Localizer
 		 */
-		public function defineLanguage()
+		public function defineLanguage(HttpUrl $url)
 		{
 			if($this->cookieLanguage)
 			{
@@ -106,7 +108,7 @@
 				$this->setSource(self::SOURCE_LANGUAGE_COOKIE);
 			}
 
-			$probableLanguageAbbr = $this->getDefinedLanguageAbbr();
+			$probableLanguageAbbr = $this->getLanguageAbbr($url);
 
 			if($this->languages && in_array($probableLanguageAbbr, $this->languages))
 			{

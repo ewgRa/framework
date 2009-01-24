@@ -9,8 +9,9 @@
 	*/
 	final class HttpRequest
 	{
-		private $post = array();
-		private $attached = array();
+		private $url		= null;
+		private $post		= array();
+		private $attached	= array();
 		
 		/**
 		 * @return HttpRequest
@@ -90,6 +91,23 @@
 				$this->hasAttached($key)
 					? $this->attached[$key]
 					: null;
+		}
+
+		/**
+		 * @return HttpUrl
+		 */
+		public function getUrl()
+		{
+			return $this->url;
+		}
+
+		/**
+		 * @return HttpRequests
+		 */
+		public function setUrl(HttpUrl $url)
+		{
+			$this->url = $url;
+			return $this;
 		}
 	}
 ?>
