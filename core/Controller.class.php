@@ -65,7 +65,7 @@
 		/**
 		 * @return Controller
 		 */
-		public function importSettings($settings)
+		public function importSettings(HttpRequest $request, $settings)
 		{
 			return $this;
 		}

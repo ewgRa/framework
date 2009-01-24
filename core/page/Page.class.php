@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class Page extends Singleton
+	class Page
 	{
 		private $id				= null;
 		private $layoutFileId	= null;
@@ -23,9 +23,9 @@
 		/**
 		 * @return Page
 		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 
 		public function da()

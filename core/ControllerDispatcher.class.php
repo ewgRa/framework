@@ -57,10 +57,11 @@
 		/**
 		 * @return ControllerDispatcher
 		 */
-		public function loadControllers($pageId)
+		public function loadControllers(HttpRequest $request)
 		{
+			$page = $request->getAttached(AttachedAliases::PAGE);
 			$this->controllers = array();
-			$controllers = $this->getPageControllers($pageId);
+			$controllers = $this->getPageControllers($page);
 			
 			foreach($controllers as $controller)
 			{
@@ -81,7 +82,7 @@
 				}
 				
 				$controllerInstance->
-					importSettings($controller['controller_settings'])->
+					importSettings($request, $controller['controller_settings'])->
 					setView(
 						$controller['view_file_id']
 							? ViewFactory::createByFileId(
@@ -100,13 +101,13 @@
 			return $this;
 		}
 		
-		private function getPageControllers($pageId)
+		private function getPageControllers(Page $page)
 		{
 			$result = null;
 			
 			try {
 				$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
-					setKey($pageId)->
+					setKey($page->getId())->
 					restoreData();
 			}
 			catch(MissingArgumentException $e) {
@@ -115,7 +116,7 @@
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
-				$result = $this->da()->getPageControllers($pageId);
+				$result = $this->da()->getPageControllers($page->getId());
 				
 				if($cacheTicket)
 					$cacheTicket->setData($result)->storeData();
