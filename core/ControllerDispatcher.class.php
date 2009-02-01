@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class ControllerDispatcher extends Singleton
+	final class ControllerDispatcher extends Singleton
 	{
 		/**
 		 * @var ControllerDispatcherDA

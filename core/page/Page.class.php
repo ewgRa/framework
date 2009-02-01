@@ -7,13 +7,15 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class Page
+	final class Page
 	{
 		private $id				= null;
 		private $layoutFileId	= null;
 		private $preg			= null;
 		private $rights			= null;
 		private $path			= null;
+		
+		private $baseUrl		= null;
 		
 		/**
 		 * @var PageDA
@@ -28,6 +30,9 @@
 			return new self;
 		}
 
+		/**
+		 * @return PageDA
+		 */
 		public function da()
 		{
 			if(!$this->da)
@@ -64,6 +69,20 @@
 			return $this->layoutFileId;
 		}
 
+		/**
+		 * @return Page
+		 */
+		public function setBaseUrl(HttpUrl $url)
+		{
+			$this->baseUrl = $url;
+			return $this;
+		}
+
+		public function getBaseUrl()
+		{
+			return $this->baseUrl;
+		}
+		
 		/**
 		 * @return Page
 		 */

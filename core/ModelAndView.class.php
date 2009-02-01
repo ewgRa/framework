@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class ModelAndView
+	final class ModelAndView
 	{
 		/**
 		 * @var BaseView

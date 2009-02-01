@@ -7,10 +7,10 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class XsltView extends BaseView
+	final class XsltView extends BaseView
 	{
-		private $charset	 = 'utf8';
-		private $version	 = '1.0';
+		private $charset = 'utf8';
+		private $version = '1.0';
 		
 		/**
 		 * @var ExtendedDomDocument
@@ -56,24 +56,15 @@
 		/**
 		 * @return XsltView
 		 */
-		public function createLayout($filePath)
+		public function loadLayout($filePath, $fileId = null)
 		{
-			$this->xslDocument = $this->createDomDocument();
+			$this->createLayout($filePath);
 			
-			$this->xslDocument->loadXML(file_get_contents($filePath));
-			
-			return $this;
-		}
-		
-		/**
-		 * @return XsltView
-		 */
-		public function loadLayout($file)
-		{
-			$this->createLayout($file['path']);
-			
-			foreach($this->getLayoutIncludeFiles($file['id']) as $includeFile)
-				$this->xslDocument->importFile($includeFile['path']);
+			if($fileId)
+			{
+				foreach($this->getLayoutIncludeFiles($fileId) as $includeFile)
+					$this->xslDocument->importFile($includeFile['path']);
+			}
 			
 			return $this;
 		}
@@ -106,6 +97,18 @@
 				$this->getVersion(),
 				$this->getCharset()
 			);
+		}
+
+		/**
+		 * @return XsltView
+		 */
+		private function createLayout($filePath)
+		{
+			$this->xslDocument = $this->createDomDocument();
+			
+			$this->xslDocument->loadXML(file_get_contents($filePath));
+			
+			return $this;
 		}
 	}
 ?>

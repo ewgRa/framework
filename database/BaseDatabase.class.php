@@ -21,32 +21,6 @@
 		/**
 		 * @return BaseDatabase
 		 */
-		public static function me()
-		{
-			return parent::getInstance(__CLASS__);
-		}
-		
-		/**
-		 * @return BaseDatabase
-		 */
-		public static function factory($realization)
-		{
-			return
-				self::setInstance('Database', new $realization);
-		}
-		
-		/**
-		 * @return BaseDatabase
-		 */
-		public function connected()
-		{
-			$this->connected = true;
-			return $this;
-		}
-		
-		/**
-		 * @return BaseDatabase
-		 */
 		public function setHost($host)
 		{
 			$this->host = $host;
@@ -95,9 +69,9 @@
 			return $this;
 		}
 		
-		public function getDatabaseName()
+		public function getCharset()
 		{
-			return $this->databaseName;
+			return $this->charset;
 		}
 		
 		/**
@@ -109,13 +83,9 @@
 			return $this;
 		}
 		
-		/**
-		 * @return BaseDatabase
-		 */
-		public function setLastQuery($query)
+		public function getDatabaseName()
 		{
-			$this->lastQuery = $query;
-			return $this;
+			return $this->databaseName;
 		}
 		
 		public function getLastQuery()
@@ -160,7 +130,8 @@
 		{
 			$result = null;
 			
-			if(isset($this->tables[$alias])) $result = $this->tables[$alias];
+			if(isset($this->tables[$alias]))
+				$result = $this->tables[$alias];
 			else
 				throw ExceptionsMapper::me()->createException(
 					'Database',
@@ -188,6 +159,21 @@
 			return $query;
 		}
 
+		public function __destruct()
+		{
+			if($this->isConnected())
+				$this->disconnect();
+		}
+
+		/**
+		 * @return BaseDatabase
+		 */
+		protected function setLastQuery($query)
+		{
+			$this->lastQuery = $query;
+			return $this;
+		}
+		
 		protected function prepareQuery($query, array $values)
 		{
 			if(!$this->isConnected())
@@ -238,26 +224,27 @@
 			return join('', $queryParts);
 		}
 		
-		public function debugQuery($query, $started, $ended)
-		{
-			$debugItem = DebugItem::create()->
-				setType(DebugItem::DATABASE)->
-				setData($query)->
-				setTrace(debug_backtrace())->
-				setStartTime($started)->
-				setEndTime($ended);
-			
-			Debug::me()->addItem($debugItem);
-			
-			return $this;
-		}
-		
-		public function queryError()
+		protected function queryError()
 		{
 			throw
 				ExceptionsMapper::me()->createException('Database')->
 					setCode(DatabaseException::SQL_QUERY_ERROR)->
 					setPool($this);
+		}
+		
+		protected function debugQuery($query, $started, $ended)
+		{
+			$debugItem =
+				DebugItem::create()->
+					setType(DebugItem::DATABASE)->
+					setData($query)->
+					setTrace(debug_backtrace())->
+					setStartTime($started)->
+					setEndTime($ended);
+			
+			Debug::me()->addItem($debugItem);
+			
+			return $this;
 		}
 		
 		/**
@@ -274,10 +261,13 @@
 			return $this->linkIdentifier;
 		}
 		
-		public function __destruct()
+		/**
+		 * @return BaseDatabase
+		 */
+		protected function connected()
 		{
-			if($this->isConnected())
-				$this->disconnect();
+			$this->connected = true;
+			return $this;
 		}
 	}
 ?>

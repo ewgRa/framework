@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class BadRequestException extends DefaultException
+	final class BadRequestException extends DefaultException
 	{
 	}
 ?>

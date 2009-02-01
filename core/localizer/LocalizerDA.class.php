@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class LocalizerDA extends DatabaseRequester
+	final class LocalizerDA extends DatabaseRequester
 	{
 		/**
 		 * @return LocalizerDA

@@ -184,10 +184,5 @@
 					)
 				);
 		}
-		
-		public function getBaseUrl()
-		{
-			return '';
-		}
 	}
 ?>

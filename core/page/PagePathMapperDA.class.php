@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class PagePathMapperDA extends DatabaseRequester
+	final class PagePathMapperDA extends DatabaseRequester
 	{
 		/**
 		 * @return PagePathMapperDA

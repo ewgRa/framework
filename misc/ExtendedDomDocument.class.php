@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME:tested?
 	*/
-	class ExtendedDomDocument extends DOMDocument
+	final class ExtendedDomDocument extends DOMDocument
 	{
 		const NODE_PREFIX 				= 'item';
 		const NUMERIC_NODE_ATTRIBUTE 	= 'key';

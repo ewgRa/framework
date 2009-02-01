@@ -10,14 +10,6 @@
 	{
 		protected $isStarted = false;
 
-		/**
-		 * @return BaseSession
-		 */
-		public static function me()
-		{
-			return parent::getInstance(__CLASS__);
-		}
-
 		public function getCookie($alias)
 		{
 			return

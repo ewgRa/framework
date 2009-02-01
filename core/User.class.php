@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class User extends Singleton
+	final class User extends Singleton
 	{
 		const WRONG_PASSWORD	= 1;
 		const WRONG_LOGIN		= 2;

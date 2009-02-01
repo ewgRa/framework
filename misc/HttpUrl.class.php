@@ -13,6 +13,9 @@
 		private $host	= null;
 		private $path	= null;
 
+		/**
+		 * @return HttpUrl
+		 */
 		public static function create()
 		{
 			return new self;

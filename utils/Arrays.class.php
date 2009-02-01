@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Arrays
+	final class Arrays
 	{
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663

@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class ViewDA extends DatabaseRequester
+	final class ViewDA extends DatabaseRequester
 	{
 		/**
 		 * @return ViewDA
@@ -19,19 +19,19 @@
 		
 		public function getLayouIncludeFiles($fileId)
 		{
-			$dbQuery = "
+			$dbQuery = '
 				SELECT t2.path
-				FROM " . $this->db()->getTable('ViewFilesIncludes') . " t1
-				INNER JOIN " . $this->db()->getTable('ViewFiles') . " t2
+				FROM ' . $this->db()->getTable('ViewFilesIncludes') . ' t1
+				INNER JOIN ' . $this->db()->getTable('ViewFiles') . ' t2
 					ON(t2.id = t1.include_file_id)
 				WHERE
 					t1.file_id = ? AND
 					t2.`content-type` = (
 						SELECT `content-type`
-						FROM " . $this->db()->getTable('ViewFiles') . "
+						FROM ' . $this->db()->getTable('ViewFiles') . '
 						WHERE id = ?
 					)
-			";
+			';
 			
 			$dbResult = $this->db()->query(
 				$dbQuery,
@@ -43,8 +43,8 @@
 		
 		public function getFile($fileId)
 		{
-			$dbQuery = "
-				SELECT * FROM " . $this->db()->getTable('ViewFiles') . '
+			$dbQuery = '
+				SELECT * FROM ' . $this->db()->getTable('ViewFiles') . '
 				WHERE id = ?
 			';
 			

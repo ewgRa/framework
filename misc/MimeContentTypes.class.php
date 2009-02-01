@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class MimeContentTypes
+	final class MimeContentTypes
 	{
 		const APPLICATION_PHP 	= 'application/php';
 		const TEXT_XSLT 		= 'text/xslt';

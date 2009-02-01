@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class MysqlDatabase extends BaseDatabase
+	final class MysqlDatabase extends BaseDatabase
 	{
 		/**
 		 * @return MysqlDatabase
@@ -21,7 +21,12 @@
 		 */
 		public function connect()
 		{
-			$db = @mysql_connect($this->getHost(), $this->getUser(), $this->getPassword(), true);
+			$db = @mysql_connect(
+				$this->getHost(),
+				$this->getUser(),
+				$this->getPassword(),
+				true
+			);
 			
 			if(!$db)
 			{
@@ -64,8 +69,12 @@
 			else
 				$databaseName = $this->getDatabaseName();
 			
-			if(!mysql_select_db($this->getDatabaseName(), $this->getLinkIdentifier()))
-			{
+			if(
+				!mysql_select_db(
+					$this->getDatabaseName(),
+					$this->getLinkIdentifier()
+				)
+			) {
 				throw
 					ExceptionsMapper::me()->createException('Database')->
 						setCode(DatabaseException::SELECT_DATABASE)->

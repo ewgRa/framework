@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class SiteDA extends DatabaseRequester
+	final class SiteDA extends DatabaseRequester
 	{
 		/**
 		 * @return SiteDA
@@ -21,12 +21,12 @@
 		{
 			$result = null;
 			
-			$dbQuery = "
-				SELECT t1.id FROM " . $this->db()->getTable('Site') . " t1
-				INNER JOIN " . $this->db()->getTable('SiteHosts') . " t2
+			$dbQuery = '
+				SELECT t1.id FROM ' . $this->db()->getTable('Site') . ' t1
+				INNER JOIN ' . $this->db()->getTable('SiteHosts') . ' t2
 					ON(t2.host = ? AND t2.site_id = t1.id)
 				GROUP BY t1.id
-			";
+			';
 
 			$dbResult = $this->db()->query($dbQuery, array($host));
 

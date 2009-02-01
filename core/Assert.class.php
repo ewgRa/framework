@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Assert
+	final class Assert
 	{
 		public static function isArray($array, $message = 'Variable is not array!')
 		{

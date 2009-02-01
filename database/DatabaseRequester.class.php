@@ -6,14 +6,9 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class DatabaseRequester
+	abstract class DatabaseRequester
 	{
 		protected $poolAlias = null;
-		
-		public static function create()
-		{
-			return new self;
-		}
 		
 		/**
 		 * @return DatabaseRequester

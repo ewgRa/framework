@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class DebugItem
+	final class DebugItem
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;

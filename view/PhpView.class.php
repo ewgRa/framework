@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class PhpView extends BaseView
+	final class PhpView extends BaseView
 	{
 		private $layoutFile 	= null;
 		private $includeFiles 	= null;
@@ -23,20 +23,12 @@
 		/**
 		 * @return PhpView
 		 */
-		public function loadLayout($file)
+		public function loadLayout($filePath, $fileId = null)
 		{
-			$this->loadLayoutByPath($file['path']);
-			$this->includeFiles = $this->getLayoutIncludeFiles($file['id']);
+			$this->createLayout($filePath);
 			
-			return $this;
-		}
-		
-		/**
-		 * @return PhpView
-		 */
-		public function loadLayoutByPath($path)
-		{
-			$this->layoutFile = $path;
+			if($fileId)
+				$this->includeFiles = $this->getLayoutIncludeFiles($fileId);
 			
 			return $this;
 		}
@@ -59,6 +51,16 @@
 		public function toString()
 		{
 			return __FILE__ . '@' . __LINE__;
+		}
+
+		/**
+		 * @return PhpView
+		 */
+		private function createLayout($filePath)
+		{
+			$this->layoutFile = $filePath;
+			
+			return $this;
 		}
 	}
 ?>

@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class PagePathMapper
+	final class PagePathMapper
 	{
 		const NON_PREG	= 0;
 		const PREG		= 1;

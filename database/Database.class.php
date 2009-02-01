@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Database extends Singleton
+	final class Database extends Singleton
 	{
 		private $pools = array();
 		
@@ -29,6 +29,9 @@
 			return isset($this->pools[$poolAlias]);
 		}
 		
+		/**
+		 * @return BaseDatabase
+		 */
 		public function getPool($poolAlias = null)
 		{
 			if($this->hasPool($poolAlias))

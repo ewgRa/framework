@@ -11,7 +11,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Yaml
+	final class Yaml
 	{
 		/**
 		 * @example ../tests/utils/YamlTest.class.php

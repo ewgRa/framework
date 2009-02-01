@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class PageHeader extends Singleton
+	final class PageHeader extends Singleton
 	{
 		private $headers = array();
 		

@@ -29,20 +29,6 @@
 			
 			return $result;
 		}
-		
-		public function getBaseUrl()
-		{
-			$result = parent::getBaseUrl();
-
-			if(
-				$this->isLanguageInUrl()
-				&& $this->getSource() != Localizer::SOURCE_LANGUAGE_URL_AND_COOKIE
-			) {
-				$result = '/' . $this->getRequestLanguage()->getAbbr() . $result;
-			}
-			
-			return $result;
-		}
 
 		/**
 		 * @return HttpUrl

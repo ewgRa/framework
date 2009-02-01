@@ -10,7 +10,7 @@
 	{
 		public static function create();
 
-		public function loadLayout($file);
+		public function loadLayout($filePath, $fileId = null);
 		
 		public function transform(Model $model);
 		

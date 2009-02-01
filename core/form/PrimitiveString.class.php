@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class PrimitiveString extends BasePrimitive
+	final class PrimitiveString extends BasePrimitive
 	{
 		/**
 		 * @return PrimitiveString

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class PrimitiveYaml extends BasePrimitive
+	final class PrimitiveYaml extends BasePrimitive
 	{
 		/**
 		 * @return PrimitiveYaml
@@ -15,7 +15,10 @@
 		{
 			return new self;
 		}
-
+		
+		/**
+		 * @return PrimitiveYaml
+		 */
 		public function import($value)
 		{
 			parent::import($value);

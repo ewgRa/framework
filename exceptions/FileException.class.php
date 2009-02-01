@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class FileException extends DefaultException
+	final class FileException extends DefaultException
 	{
 		const FILE_NOT_EXISTS 	= 2001;
 		

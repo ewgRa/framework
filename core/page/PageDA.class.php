@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	class PageDA extends DatabaseRequester
+	final class PageDA extends DatabaseRequester
 	{
 		/**
 		 * @return PageDA

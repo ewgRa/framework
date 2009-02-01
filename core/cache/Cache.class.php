@@ -16,7 +16,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Cache extends SingletonFactory
+	final class Cache extends SingletonFactory
 	{
 		/**
 		 * @return BaseCache

@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class DatabaseException extends DefaultException
+	final class DatabaseException extends DefaultException
 	{
 		const CONNECT			= 1001;
 		const SELECT_DATABASE	= 1002;

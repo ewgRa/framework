@@ -46,14 +46,19 @@
 					switch($file['content-type'])
 					{
 						case MimeContentTypes::TEXT_XSLT:
-							$result = XsltView::create()->loadLayout($file);
+							$result = XsltView::create()->loadLayout(
+								$file['path'], $file['id']
+							);
+							
 							$projectConfig = Config::me()->getOption('project');
 							
 							if(isset($projectConfig['charset']))
 								$result->setCharset($projectConfig['charset']);
 						break;
 						case MimeContentTypes::APPLICATION_PHP:
-							$result = PhpView::create()->loadLayout($file);
+							$result = PhpView::create()->loadLayout(
+								$file['path'], $file['id']
+							);
 						break;
 					}
 				}

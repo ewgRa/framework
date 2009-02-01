@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class Site extends Singleton
+	final class Site extends Singleton
 	{
 		private $id = null;
 		private $host = null;

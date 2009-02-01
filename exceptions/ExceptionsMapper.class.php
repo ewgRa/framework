@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class ExceptionsMapper extends Singleton
+	final class ExceptionsMapper extends Singleton
 	{
 		private $map = array(
 			'Exception'			=> 'Exception',

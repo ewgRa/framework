@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	class PageException extends DefaultException
+	final class PageException extends DefaultException
 	{
 		const PAGE_NOT_FOUND		= 1001;
 		const NO_RIGHTS_TO_ACCESS	= 1002;
