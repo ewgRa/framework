@@ -7,16 +7,16 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	final class PageHeader extends Singleton
+	final class PageHeader
 	{
 		private $headers = array();
 		
 		/**
 		 * @return PageHeader
 		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 		
 		public function getHeaders()

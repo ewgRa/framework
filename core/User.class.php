@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class User extends Singleton
+	final class User
 	{
 		const WRONG_PASSWORD	= 1;
 		const WRONG_LOGIN		= 2;
@@ -20,13 +20,14 @@
 		private $id		= null;
 		private $login	= null;
 		private $rights	= array();
+		private $session = null;
 
 		/**
 		 * @return User
 		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 
 		/**
@@ -65,6 +66,20 @@
 		private function setLogin($login)
 		{
 			$this->login = $login;
+			return $this;
+		}
+		
+		public function getSession()
+		{
+			return $this->session;
+		}
+		
+		/**
+		 * @return BaseSession
+		 */
+		private function setSession(BaseSession $session)
+		{
+			$this->session = $session;
 			return $this;
 		}
 		
@@ -138,6 +153,7 @@
 			else return self::WRONG_LOGIN;
 		}
 
+		
 		// FIXME: move this method to anywhere :)
 		public function onSessionStarted()
 		{

@@ -32,6 +32,8 @@
 
 			if($this->db()->recordCount($dbResult))
 				$result = $this->db()->fetchArray($dbResult);
+			else
+				throw ExceptionsMapper::me()->createException('NotFound');
 			
 			return $result;
 		}

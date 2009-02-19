@@ -17,6 +17,8 @@
 		
 		private $baseUrl		= null;
 		
+		private $header			= null;
+		
 		/**
 		 * @var PageDA
 		 */
@@ -28,6 +30,11 @@
 		public static function create()
 		{
 			return new self;
+		}
+		
+		public function __construct()
+		{
+			$this->header = PageHeader::create();
 		}
 
 		/**
@@ -146,12 +153,12 @@
 		/**
 		 * @return Page
 		 */
-		public function checkAccessPage($rights)
+		public function checkAccessPage(User $user)
 		{
 			if($this->getRights())
 			{
 				$intersectRights = array_intersect(
-					array_keys($this->getRights()), array_keys($rights)
+					array_keys($this->getRights()), array_keys($user->getRights())
 				);
 
 				if(!count($intersectRights))
@@ -176,7 +183,7 @@
 		 */
 		public function getHeader()
 		{
-			return PageHeader::me();
+			return $this->header;
 		}
 		
 		/**

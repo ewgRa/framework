@@ -7,7 +7,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	final class ControllerDispatcher extends Singleton
+	final class ControllerDispatcher
 	{
 		/**
 		 * @var ControllerDispatcherDA
@@ -19,9 +19,9 @@
 		/**
 		 * @return ControllerDispatchers
 		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 
 		/**

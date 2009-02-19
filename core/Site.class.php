@@ -6,7 +6,7 @@
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
-	final class Site extends Singleton
+	final class Site
 	{
 		private $id = null;
 		private $host = null;
@@ -19,9 +19,9 @@
 		/**
 		 * @return Site
 		 */
-		public static function me()
+		public static function create()
 		{
-			return parent::getInstance(__CLASS__);
+			return new self;
 		}
 		
 		/**
