@@ -32,6 +32,7 @@
 
 		/**
 		 * @return CacheTicket
+		 * FIXME: move to Cache class
 		 */
 		public function createTicket($ticketAlias = null)
 		{
@@ -47,6 +48,7 @@
 		
 		/**
 		 * @return BaseCache
+		 * FIXME: move to Cache class
 		 */
 		public function loadConfig($yamlFile)
 		{
@@ -76,11 +78,17 @@
 			return $this->config;
 		}
 		
+		/**
+		 * FIXME: move to Cache class
+		 */
 		public function hasTicketParams($ticketAlias)
 		{
 			return isset($this->config[$ticketAlias]);
 		}
 		
+		/**
+		 * FIXME: move to Cache class
+		 */
 		public function getTicketParams($ticketAlias)
 		{
 			return $this->hasTicketParams($ticketAlias)

@@ -30,9 +30,9 @@
 			$result 		= null;
 			$cacheTicket 	= null;
 			
-			if(Cache::me()->hasTicketParams('view'))
+			if(Cache::me()->getPool()->hasTicketParams('view'))
 			{
-				$cacheTicket = Cache::me()->createTicket('view')->
+				$cacheTicket = Cache::me()->getPool()->createTicket('view')->
 					setKey($fileId)->
 					restoreData();
 			}

@@ -106,7 +106,7 @@
 			$result = null;
 			
 			try {
-				$cacheTicket = Cache::me()->createTicket('controllerDispatcher')->
+				$cacheTicket = Cache::me()->getPool()->createTicket('controllerDispatcher')->
 					setKey($page->getId())->
 					restoreData();
 			}

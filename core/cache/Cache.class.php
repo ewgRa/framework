@@ -4,11 +4,11 @@
 	$file = join(
 		DIRECTORY_SEPARATOR,
 		array(
-			dirname(__FILE__), '..' , '..' , 'patterns' , 'SingletonFactory.class.php'
+			dirname(__FILE__), '..' , '..' , 'patterns' , 'Singleton.class.php'
 		)
 	);
 	
-	if(!class_exists('SingletonFactory', false) && file_exists($file))
+	if(!class_exists('Singleton', false) && file_exists($file))
 		require_once($file);
 	
 	/**
@@ -17,7 +17,7 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: organize pools for cache
 	*/
-	final class Cache extends SingletonFactory
+	final class Cache extends Singleton
 	{
 		/**
 		 * @return BaseCache
@@ -27,15 +27,28 @@
 			return parent::getInstance(__CLASS__);
 		}
 		
+		public function addPool(BaseCache $pool, $poolAlias = null)
+		{
+			$this->pools[$poolAlias] = $pool;
+			return $this;
+		}
+		
+		public function hasPool($poolAlias)
+		{
+			return isset($this->pools[$poolAlias]);
+		}
+		
 		/**
 		 * @return BaseCache
 		 */
-		public static function factory($realization)
+		public function getPool($poolAlias = null)
 		{
-			$method = new ReflectionMethod($realization, 'create');
-			
-			return
-				self::setInstance(__CLASS__, $method->invoke(null));
+			if($this->hasPool($poolAlias))
+				return $this->pools[$poolAlias];
+			else
+				throw
+					ExceptionsMapper::me()->createException('MissingArgument')->
+						setMessage('Known nothing about pool ' . $poolAlias);
 		}
 	}
 ?>
