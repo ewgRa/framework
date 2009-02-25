@@ -1,5 +1,12 @@
 $Id$
 
+2009-02-25
+	* 1.13 released
+	
+	* add HttpRequest
+	
+	* cache layer
+
 2008-12-13
 	* 1.12.1 released
 	
