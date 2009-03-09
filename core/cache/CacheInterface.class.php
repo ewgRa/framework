@@ -14,18 +14,10 @@
 		
 		public function set(CacheTicket $ticket);
 		
-		public function createTicket();
-
 		public function disable();
 		
 		public function enable();
 
 		public function isDisabled();
-
-		public function hasTicketParams($ticketAlias);
-		
-		public function getTicketParams($ticketAlias);
-		
-		public function loadConfig($yamlFile);
 	}
 ?>

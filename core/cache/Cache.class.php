@@ -15,18 +15,22 @@
 	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * // FIXME: organize pools for cache
 	*/
 	final class Cache extends Singleton
 	{
+		private $config		= null;
+
 		/**
-		 * @return BaseCache
+		 * @return Cache
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
 		}
 		
+		/**
+		 * @return Cache
+		 */
 		public function addPool(BaseCache $pool, $poolAlias = null)
 		{
 			$this->pools[$poolAlias] = $pool;
@@ -49,6 +53,73 @@
 				throw
 					ExceptionsMapper::me()->createException('MissingArgument')->
 						setMessage('Known nothing about pool ' . $poolAlias);
+		}
+
+		/**
+		 * @return CacheTicket
+		 */
+		public function createTicket($ticketAlias = null, $pool = null)
+		{
+			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
+				throw ExceptionsMapper::me()->createException('MissingArgument');
+			
+			if(!is_null($pool) && !$this->hasPool($pool))
+				throw ExceptionsMapper::me()->createException('MissingArgument');
+			
+			$ticketParams = $this->getTicketParams($ticketAlias);
+			
+			if(!$pool && isset($ticketParams['pool']))
+				$pool = $ticketParams['pool'];
+			
+			$result =
+				CacheTicket::create()->
+					setCacheInstance($this->getPool($pool))->
+					fillParams($ticketParams);
+				
+			return $result;
+		}
+		
+		/**
+		 * @return Cache
+		 */
+		public function loadConfig($yamlFile)
+		{
+			$cacheTicket = $this->createTicket()->
+				setPrefix('config')->
+				setKey($yamlFile)->
+				setActualTime(filemtime($yamlFile))->
+				restoreData();
+
+			if($cacheTicket->isExpired())
+			{
+				$this->config = Yaml::load($yamlFile);
+				
+				$cacheTicket->
+					setData($this->config)->
+					setLifeTime(filemtime($yamlFile))->
+					storeData();
+			}
+			else
+				$this->config = $cacheTicket->getData();
+				
+			return $this;
+		}
+		
+		public function getConfig()
+		{
+			return $this->config;
+		}
+		
+		public function hasTicketParams($ticketAlias)
+		{
+			return isset($this->config[$ticketAlias]);
+		}
+		
+		public function getTicketParams($ticketAlias)
+		{
+			return $this->hasTicketParams($ticketAlias)
+				? $this->config[$ticketAlias]
+				: null;
 		}
 	}
 ?>

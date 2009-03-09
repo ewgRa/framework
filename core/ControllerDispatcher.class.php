@@ -7,12 +7,17 @@
 	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	 * // FIXME: tested?
 	*/
-	final class ControllerDispatcher
+	final class ControllerDispatcher extends Controller
 	{
 		/**
 		 * @var ControllerDispatcherDA
 		 */
 		private $da = null;
+		
+		/**
+		 * @var ControllerDispatcherCacheWorker
+		 */
+		private $cacheWorker = null;
 		
 		private $controllers = array();
 		
@@ -23,7 +28,7 @@
 		{
 			return new self;
 		}
-
+		
 		/**
 		 * @return ControllerDispatcherDA
 		 */
@@ -33,6 +38,18 @@
 				$this->da = ControllerDispatcherDA::create();
 			
 			return $this->da;
+		}
+		
+		/**
+		 * @return ControllerDispatcherCacheWorker
+		 */
+		public function cacheWorker()
+		{
+			if(!$this->cacheWorker)
+				$this->cacheWorker = ControllerDispatcherCacheWorker::create()->
+					setController($this);
+
+			return $this->cacheWorker;
 		}
 		
 		public function getControllers()
@@ -57,15 +74,16 @@
 		/**
 		 * @return ControllerDispatcher
 		 */
-		public function loadControllers(HttpRequest $request)
+		public function loadControllers()
 		{
-			$page = $request->getAttached(AttachedAliases::PAGE);
+			$page = $this->getRequest()->getAttached(AttachedAliases::PAGE);
 			$this->controllers = array();
 			$controllers = $this->getPageControllers($page);
 			
 			foreach($controllers as $controller)
 			{
 				$controllerInstance = new $controller['name'];
+				$controllerInstance->setRequest($this->getRequest());
 				
 				$controller['controller_settings'] =
 					is_null($controller['controller_settings'])
@@ -82,7 +100,7 @@
 				}
 				
 				$controllerInstance->
-					importSettings($request, $controller['controller_settings'])->
+					importSettings($controller['controller_settings'])->
 					setView(
 						$controller['view_file_id']
 							? ViewFactory::createByFileId(
@@ -105,14 +123,8 @@
 		{
 			$result = null;
 			
-			try {
-				$cacheTicket = Cache::me()->getPool()->createTicket('controllerDispatcher')->
-					setKey($page->getId())->
-					restoreData();
-			}
-			catch(MissingArgumentException $e) {
-				$cacheTicket = null;
-			}
+			if($cacheTicket = $this->cacheWorker()->createTicket())
+				$cacheTicket->restoreData();
 			
 			if(!$cacheTicket || $cacheTicket->isExpired())
 			{
@@ -130,7 +142,7 @@
 		/**
 		 * @return Model
 		 */
-		public function getModel(HttpRequest $request)
+		public function getModel()
 		{
 			$result = Model::create();
 			
@@ -139,7 +151,7 @@
 				$result->append(
 					array(
 						'data' =>
-							$controller['instance']->getRenderedModel($request),
+							$controller['instance']->getRenderedModel(),
 						'section' => $controller['section'],
 						'position' => $controller['position']
 					)

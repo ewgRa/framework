@@ -8,36 +8,25 @@
 	*/
 	abstract class CacheWorker
 	{
-		protected $poolAlias = null;
+		abstract protected function getAlias();
+		abstract protected function getKey();
 		
 		/**
-		 * @return CacheWorker
+		 * @return CacheTicket
 		 */
-		public function setPoolAlias($alias)
+		public function createTicket()
 		{
-			$this->poolAlias = $alias;
-			return $this;
+			$result = null;
+			
+			if(Cache::me()->hasTicketParams($this->getAlias()))
+			{
+				$result =
+					Cache::me()->createTicket($this->getAlias())->
+						setKey($this->getKey());
+			}
+			
+			return $result;
 		}
 		
-		public function getPoolAlias()
-		{
-			return $this->poolAlias;
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		public function getPool()
-		{
-			return Cache::me();
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		public function cache()
-		{
-			return $this->getPool();
-		}
 	}
 ?>

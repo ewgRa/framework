@@ -28,74 +28,7 @@
 		
 		private $isDisabled	= false;
 		private $isExpired 	= true;
-		private $config		= null;
 
-		/**
-		 * @return CacheTicket
-		 * FIXME: move to Cache class
-		 */
-		public function createTicket($ticketAlias = null)
-		{
-			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
-				throw ExceptionsMapper::me()->createException('MissingArgument');
-			
-			$result = CacheTicket::create()->
-				setCacheInstance($this)->
-				fillParams($this->getTicketParams($ticketAlias));
-				
-			return $result;
-		}
-		
-		/**
-		 * @return BaseCache
-		 * FIXME: move to Cache class
-		 */
-		public function loadConfig($yamlFile)
-		{
-			$cacheTicket = $this->createTicket()->
-				setPrefix('config')->
-				setKey($yamlFile)->
-				setActualTime(filemtime($yamlFile))->
-				restoreData();
-
-			if($cacheTicket->isExpired())
-			{
-				$this->config = Yaml::load($yamlFile);
-				
-				$cacheTicket->
-					setData($this->config)->
-					setLifeTime(filemtime($yamlFile))->
-					storeData();
-			}
-			else
-				$this->config = $cacheTicket->getData();
-				
-			return $this;
-		}
-		
-		public function getConfig()
-		{
-			return $this->config;
-		}
-		
-		/**
-		 * FIXME: move to Cache class
-		 */
-		public function hasTicketParams($ticketAlias)
-		{
-			return isset($this->config[$ticketAlias]);
-		}
-		
-		/**
-		 * FIXME: move to Cache class
-		 */
-		public function getTicketParams($ticketAlias)
-		{
-			return $this->hasTicketParams($ticketAlias)
-				? $this->config[$ticketAlias]
-				: null;
-		}
-		
 		/**
 		 * @return BaseCache
 		 */

@@ -19,9 +19,14 @@
 		private $view		 = null;
 		
 		/**
+		 * @var HttpRequest
+		 */
+		private $request	 = null;
+		
+		/**
 		 * @return Model
 		 */
-		abstract public function getModel(HttpRequest $request);
+		abstract public function getModel();
 
 		public function hasCacheTicket()
 		{
@@ -46,6 +51,23 @@
 		}
 		
 		/**
+		 * @return HttpRequest
+		 */
+		public function getRequest()
+		{
+			return $this->request;
+		}
+		
+		/**
+		 * @return Controller
+		 */
+		public function setRequest(HttpRequest $request)
+		{
+			$this->request = $request;
+			return $this;
+		}
+		
+		/**
 		 * @return Controller
 		 */
 		public function setView(BaseView $view = null)
@@ -65,12 +87,12 @@
 		/**
 		 * @return Controller
 		 */
-		public function importSettings(HttpRequest $request, $settings)
+		public function importSettings($settings)
 		{
 			return $this;
 		}
 		
-		public function getRenderedModel(HttpRequest $request)
+		public function getRenderedModel()
 		{
 			$renderedModel = null;
 			
@@ -80,7 +102,7 @@
 				
 				if($this->getCacheTicket()->isExpired())
 				{
-					$renderedModel = $this->renderModel($request);
+					$renderedModel = $this->renderModel();
 					
 					$this->getCacheTicket()->
 						setData($renderedModel)->
@@ -91,15 +113,15 @@
 			}
 
 			if(is_null($renderedModel))
-				$renderedModel = $this->renderModel($request);
+				$renderedModel = $this->renderModel();
 			
 			return $renderedModel;
 		}
 		
-		private function renderModel(HttpRequest $request)
+		private function renderModel()
 		{
 			$view	= $this->getView();
-			$model	= $this->getModel($request);
+			$model	= $this->getModel();
 			
 			return $view
 				? ModelAndView::create()->
