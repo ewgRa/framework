@@ -17,15 +17,11 @@
 		require_once($file);
 		
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
-		const FILE_PERMISSIONS = 0775;
-		const DIR_PERMISSIONS = 0775;
-		
 		private $isDisabled	= false;
 		private $isExpired 	= true;
 

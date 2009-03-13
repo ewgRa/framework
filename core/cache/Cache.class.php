@@ -12,9 +12,8 @@
 		require_once($file);
 	
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
 	*/
 	final class Cache extends Singleton
 	{

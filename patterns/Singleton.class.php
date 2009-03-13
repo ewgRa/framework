@@ -10,11 +10,9 @@
 		require_once($file);
 
 	/**
-	 * @license http://opensource.org/licenses/gpl-3.0.html GPLv3
+	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * @copyright Copyright (c) 2008, Evgeniy Sokolov
-	 * @example ../tests/patterns/SingletonTest.class.php
- 	 */
+	*/
 	abstract class Singleton implements SingletonInterface
 	{
 		private static $instances = array();
