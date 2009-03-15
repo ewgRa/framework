@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class Controller
+	abstract class Module
 	{
 		/**
 		 * @var CacheTicket
@@ -41,7 +41,7 @@
 		}
 		
 		/**
-		 * @return Controller
+		 * @return Module
 		 */
 		protected function setCacheTicket(CacheTicket $cacheTicket)
 		{
@@ -58,7 +58,7 @@
 		}
 		
 		/**
-		 * @return Controller
+		 * @return Module
 		 */
 		public function setRequest(HttpRequest $request)
 		{
@@ -67,7 +67,7 @@
 		}
 		
 		/**
-		 * @return Controller
+		 * @return Module
 		 */
 		public function setView(BaseView $view = null)
 		{
@@ -84,7 +84,7 @@
 		}
 		
 		/**
-		 * @return Controller
+		 * @return Module
 		 */
 		public function importSettings($settings)
 		{

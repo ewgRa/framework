@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class ControllerDispatcherCacheWorker extends ControllerCacheWorker
+	class ModuleDispatcherCacheWorker extends ModuleCacheWorker
 	{
 		/**
 		 * @return ContentCacheWorker
@@ -23,7 +23,7 @@
 		protected function getKey()
 		{
 			$page =
-				$this->getController()->
+				$this->getModule()->
 					getRequest()->
 					getAttached(AttachedAliases::PAGE);
 				

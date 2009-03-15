@@ -1,5 +1,14 @@
 $Id$
 
+2009-03-15
+	* 1.15 released
+	
+	* add MemcachedBasedCache
+	
+	* move to BSD license
+	
+	* change Controller to Module naming
+
 2009-03-10
 	* 1.14 released
 	
