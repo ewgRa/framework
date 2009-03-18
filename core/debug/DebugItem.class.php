@@ -11,6 +11,7 @@
 		const DATABASE		= 2;
 		const PAGE			= 3;
 		const REQUEST		= 4;
+		const CACHE			= 5;
 		
 		private $trace 		= null;
 		private $type  		= null;

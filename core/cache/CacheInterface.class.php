@@ -13,6 +13,8 @@
 		
 		public function set(CacheTicket $ticket);
 		
+		public function compileKey(CacheTicket $ticket);
+		
 		public function disable();
 		
 		public function enable();

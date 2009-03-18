@@ -82,9 +82,7 @@
 			
 			$result = null;
 			
-			$key = $this->compileKey(
-				$ticket->getKey(), $ticket->getPrefix()
-			);
+			$key = $this->compileKey($ticket);
 			
 			if($data = $this->getMemcache()->get($key))
 			{
@@ -100,6 +98,9 @@
 				}
 			}
 
+			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+				$this->debug($ticket);
+		
 			return $result;
 		}
 
@@ -111,9 +112,7 @@
 			if($this->isDisabled())
 				return null;
 
-			$key = $this->compileKey(
-				$ticket->getKey(), $ticket->getPrefix()
-			);
+			$key = $this->compileKey($ticket);
 				
 			if(!$key)
 				throw ExceptionsMapper::me()->createException('DefaultException')->
@@ -134,9 +133,9 @@
 			return $this;
 		}
 
-		private function compileKey($key, $prefix)
+		public function compileKey(CacheTicket $ticket)
 		{
-			return $prefix . '-' . md5(serialize($key));
+			return $ticket->getPrefix() . '-' . md5(serialize($ticket->getKey()));
 		}
 	}
 ?>

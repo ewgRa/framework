@@ -54,9 +54,7 @@
 			
 			$result = null;
 			
-			$fileName = $this->compileFileName(
-				$ticket->getKey(), $ticket->getPrefix()
-			);
+			$fileName = $this->compileKey($ticket);
 			
 			if(!file_exists($fileName))
 				$ticket->expired();
@@ -71,6 +69,9 @@
 				$result = unserialize(file_get_contents($fileName));
 			}
 
+			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+				$this->debug($ticket);
+		
 			return $result;
 		}
 
@@ -82,9 +83,7 @@
 			if($this->isDisabled())
 				return null;
 
-			$fileName = $this->compileFileName(
-				$ticket->getKey(), $ticket->getPrefix()
-			);
+			$fileName = $this->compileKey($ticket);
 				
 			if(!$fileName)
 				throw ExceptionsMapper::me()->createException('DefaultException')->
@@ -99,15 +98,15 @@
 			return $this;
 		}
 
-		private function compileFileName($key, $prefix)
+		public function compileKey(CacheTicket $ticket)
 		{
-			$fileName = md5(serialize($key));
+			$fileName = md5(serialize($ticket->getKey()));
 			
 			$resultArray = array();
 			$resultArray[] = $this->getCacheDir();
 			
-			if($prefix)
-				$resultArray[] = $prefix;
+			if($ticket->getPrefix())
+				$resultArray[] = $ticket->getPrefix();
 				
 			$resultArray[] = $this->compilePreDirs($fileName);
 			$resultArray[] = $fileName;

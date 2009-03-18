@@ -23,7 +23,6 @@
 	abstract class BaseCache implements CacheInterface
 	{
 		private $isDisabled	= false;
-		private $isExpired 	= true;
 
 		/**
 		 * @return BaseCache
@@ -46,6 +45,18 @@
 		public function isDisabled()
 		{
 			return $this->isDisabled;
+		}
+		
+		protected function debug(CacheTicket $ticket)
+		{
+			$debugItem =
+				DebugItem::create()->
+					setType(DebugItem::CACHE)->
+					setData(clone $ticket);
+			
+			Debug::me()->addItem($debugItem);
+			
+			return $this;
 		}
 	}
 ?>
