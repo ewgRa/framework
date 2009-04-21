@@ -8,12 +8,12 @@
 	final class Site
 	{
 		private $id = null;
-		private $host = null;
+		private $alias = null;
 		
 		/**
 		 * @var SiteDA
 		 */
-		private $da = null;
+		private static $da = null;
 		
 		/**
 		 * @return Site
@@ -21,6 +21,17 @@
 		public static function create()
 		{
 			return new self;
+		}
+		
+		/**
+		 * @return SiteDA
+		 */
+		public static function da()
+		{
+			if(!self::$da)
+				self::$da = SiteDA::create();
+
+			return self::$da;
 		}
 		
 		/**
@@ -40,36 +51,15 @@
 		/**
 		 * @return Site
 		 */
-		public function setHost($host)
+		public function setAlias($alias)
 		{
-			$this->host= $host;
+			$this->alias = $alias;
 			return $this;
 		}
 		
-		public function getHost()
+		public function getAlias()
 		{
-			return $this->host;
-		}
-		
-		/**
-		 * @return SiteDA
-		 */
-		public function da()
-		{
-			if(!$this->da)
-				$this->da = SiteDA::create();
-
-			return $this->da;
-		}
-		
-		public function define()
-		{
-			$site = $this->da()->getSiteByHost($this->getHost());
-			
-			if($site)
-				$this->setId($site['id']);
-			
-			return $this;
+			return $this->alias;
 		}
 	}
 ?>

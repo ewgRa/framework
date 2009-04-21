@@ -16,25 +16,27 @@
 			return new self;
 		}
 		
-		public function getSiteByHost($host)
+		public function getSiteByAlias($alias)
 		{
 			$result = null;
 			
 			$dbQuery = '
-				SELECT t1.id FROM ' . $this->db()->getTable('Site') . ' t1
-				INNER JOIN ' . $this->db()->getTable('SiteHosts') . ' t2
-					ON(t2.host = ? AND t2.site_id = t1.id)
-				GROUP BY t1.id
+				SELECT id
+				FROM ' . $this->db()->getTable('Site') . '
+				WHERE alias = ?
 			';
 
-			$dbResult = $this->db()->query($dbQuery, array($host));
+			$dbResult = $this->db()->query($dbQuery, array($alias));
 
 			if($this->db()->recordCount($dbResult))
 				$result = $this->db()->fetchArray($dbResult);
 			else
 				throw ExceptionsMapper::me()->createException('NotFound');
 			
-			return $result;
+			return
+				Site::create()->
+					setAlias($alias)->
+					setId($result['id']);
 		}
 	}
 ?>
