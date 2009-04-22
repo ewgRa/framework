@@ -30,8 +30,7 @@
 			if(!$db)
 			{
 				throw
-					ExceptionsMapper::me()->createException('Database')->
-						setCode(DatabaseException::CONNECT)->
+					DatabaseException::create(DatabaseException::CONNECT)->
 						setPool($this);
 			}
 			
@@ -75,8 +74,7 @@
 				)
 			) {
 				throw
-					ExceptionsMapper::me()->createException('Database')->
-						setCode(DatabaseException::SELECT_DATABASE)->
+					DatabaseException::create(DatabaseException::SELECT_DATABASE)->
 						setPool($this);
 			}
 			

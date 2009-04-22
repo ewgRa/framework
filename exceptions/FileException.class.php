@@ -14,6 +14,14 @@
 		/**
 		 * @return FileException
 		 */
+		public static function create($code = null, $message = null)
+		{
+			return new self($message, $code);
+		}
+				
+		/**
+		 * @return FileException
+		 */
 		public function setFilePath($filePath)
 		{
 			$this->filePath = $filePath;

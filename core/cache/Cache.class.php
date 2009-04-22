@@ -50,7 +50,7 @@
 				return $this->pools[$poolAlias];
 			else
 				throw
-					ExceptionsMapper::me()->createException('MissingArgument')->
+					MissingArgumentException::create()->
 						setMessage('Known nothing about pool ' . $poolAlias);
 		}
 
@@ -60,10 +60,10 @@
 		public function createTicket($ticketAlias = null, $pool = null)
 		{
 			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
-				throw ExceptionsMapper::me()->createException('MissingArgument');
+				throw MissingArgumentException::create();
 			
 			if(!is_null($pool) && !$this->hasPool($pool))
-				throw ExceptionsMapper::me()->createException('MissingArgument');
+				throw MissingArgumentException::create();
 			
 			$ticketParams = $this->getTicketParams($ticketAlias);
 			

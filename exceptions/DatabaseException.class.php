@@ -21,6 +21,14 @@
 		/**
 		 * @return DatabaseException
 		 */
+		public static function create($code = null, $message = null)
+		{
+			return new self($message, $code);
+		}
+				
+		/**
+		 * @return DatabaseException
+		 */
 		public function setPool(BaseDatabase $pool)
 		{
 			$this->pool = $pool;

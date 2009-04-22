@@ -10,6 +10,14 @@
 		/**
 		 * @return DefaultException
 		 */
+		public static function create($code = null, $message = null)
+		{
+			return new self($message, $code);
+		}
+		
+		/**
+		 * @return DefaultException
+		 */
 		public function setCode($code)
 		{
 			$this->code = $code;

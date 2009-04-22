@@ -86,7 +86,7 @@
 			$fileName = $this->compileKey($ticket);
 				
 			if(!$fileName)
-				throw ExceptionsMapper::me()->createException('DefaultException')->
+				throw DefaultException::create()->
 						setMessage('no key');
 			
 			$this->createPreDirs($fileName);

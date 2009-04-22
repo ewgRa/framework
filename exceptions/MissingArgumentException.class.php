@@ -7,5 +7,12 @@
 	*/
 	final class MissingArgumentException extends DefaultException
 	{
+		/**
+		 * @return MissingArgumentException
+		 */
+		public static function create($code = null, $message = null)
+		{
+			return new self($message, $code);
+		}
 	}
 ?>

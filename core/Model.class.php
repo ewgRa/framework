@@ -49,7 +49,7 @@
 		public function get($key)
 		{
 			if(!$this->has($key))
-				throw ExceptionsMapper::me()->createException('MissingArgument')->
+				throw MissingArgumentException::create()->
 					setMessage('known nothing about key "' . $key . '"');
 				
 			return $this->data[$key];

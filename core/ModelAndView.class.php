@@ -63,7 +63,7 @@
 		public function render()
 		{
 			if(!$this->hasView())
-				throw ExceptionsMapper::me()->createException('DefaultException')->
+				throw DefaultException::create()->
 					setMessage('no view for render');
 
 			return $this->view->transform($this->getModel());

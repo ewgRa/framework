@@ -5,13 +5,12 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DebugItem
+	class DebugItem
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;
-		const PAGE			= 3;
-		const REQUEST		= 4;
-		const CACHE			= 5;
+		const REQUEST		= 3;
+		const CACHE			= 4;
 		
 		private $trace 		= null;
 		private $type  		= null;

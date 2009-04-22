@@ -132,11 +132,9 @@
 			if(isset($this->tables[$alias]))
 				$result = $this->tables[$alias];
 			else
-				throw ExceptionsMapper::me()->createException(
-					'Database',
-					DatabaseException::UNDEFINED_TABLE
-				)->
-				setTableAlias($alias);
+				throw
+					DatabaseException::create(DatabaseException::UNDEFINED_TABLE)->
+					setTableAlias($alias);
 				
 			return $result;
 		}
@@ -226,8 +224,7 @@
 		protected function queryError()
 		{
 			throw
-				ExceptionsMapper::me()->createException('Database')->
-					setCode(DatabaseException::SQL_QUERY_ERROR)->
+				DatabaseException::create(DatabaseException::SQL_QUERY_ERROR)->
 					setPool($this);
 		}
 		

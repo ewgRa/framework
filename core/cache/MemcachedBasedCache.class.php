@@ -115,7 +115,7 @@
 			$key = $this->compileKey($ticket);
 				
 			if(!$key)
-				throw ExceptionsMapper::me()->createException('DefaultException')->
+				throw DefaultException::create()->
 						setMessage('no key');
 			
 			$data = array(

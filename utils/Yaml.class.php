@@ -20,8 +20,7 @@
 			if(!file_exists($file))
 			{
 				throw
-					ExceptionsMapper::me()->createException('File')->
-						setCode(FileException::FILE_NOT_EXISTS)->
+					FileException::create(FileException::FILE_NOT_EXISTS)->
 						setFilePath($file);
 			}
 			
