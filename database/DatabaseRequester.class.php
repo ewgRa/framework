@@ -7,7 +7,7 @@
 	*/
 	abstract class DatabaseRequester
 	{
-		protected $poolAlias = null;
+		protected $poolAlias = 'framework';
 		
 		/**
 		 * @return DatabaseRequester

@@ -23,6 +23,7 @@
 	abstract class BaseCache implements CacheInterface
 	{
 		private $isDisabled	= false;
+		private $ticketAliases = array();
 
 		/**
 		 * @return BaseCache
@@ -45,6 +46,73 @@
 		public function isDisabled()
 		{
 			return $this->isDisabled;
+		}
+		
+		public function hasTicketParams($ticketAlias)
+		{
+			return isset($this->ticketAliases[$ticketAlias]);
+		}
+		
+		public function getTicketParams($ticketAlias)
+		{
+			return $this->hasTicketParams($ticketAlias)
+				? $this->ticketAliases[$ticketAlias]
+				: null;
+		}
+		
+		/**
+		 * @return BaseCache
+		 */
+		public function loadConfig($yamlFile)
+		{
+			$cacheTicket = $this->createTicket()->
+				setPrefix('config')->
+				setKey($yamlFile)->
+				setActualTime(filemtime($yamlFile))->
+				restoreData();
+
+			if($cacheTicket->isExpired())
+			{
+				$yamlConfig = Yaml::load($yamlFile);
+				
+				if(isset($yamlConfig['ticketAliases']))
+				{
+					foreach($yamlConfig['ticketAliases'] as $alias => $settings)
+						$this->ticketAliases[$alias] = $settings;
+				}
+				
+				$cacheTicket->
+					setData(
+						array('ticketAliases' => $this->ticketAliases)
+					)->
+					setLifeTime(filemtime($yamlFile))->
+					storeData();
+			}
+			else
+			{
+				$data = $cacheTicket->getData();
+				$this->ticketAliases = $data['ticketAliases'];
+			}
+				
+			return $this;
+		}
+		
+		/**
+		 * @return CacheTicket
+		 */
+		public function createTicket($ticketAlias = null)
+		{
+			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
+				throw MissingArgumentException::create();
+			
+			$ticketParams = $this->getTicketParams($ticketAlias);
+			
+			$result =
+				CacheTicket::create()->
+					setCacheInstance($this)->
+					fillParams($ticketParams);
+				
+			return $result;
 		}
 		
 		protected function debug(CacheTicket $ticket)

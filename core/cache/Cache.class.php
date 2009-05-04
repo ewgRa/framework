@@ -17,8 +17,6 @@
 	*/
 	final class Cache extends Singleton
 	{
-		private $config		= null;
-
 		/**
 		 * @return Cache
 		 */
@@ -52,73 +50,6 @@
 				throw
 					MissingArgumentException::create()->
 						setMessage('Known nothing about pool ' . $poolAlias);
-		}
-
-		/**
-		 * @return CacheTicket
-		 */
-		public function createTicket($ticketAlias = null, $pool = null)
-		{
-			if(!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
-				throw MissingArgumentException::create();
-			
-			if(!is_null($pool) && !$this->hasPool($pool))
-				throw MissingArgumentException::create();
-			
-			$ticketParams = $this->getTicketParams($ticketAlias);
-			
-			if(!$pool && isset($ticketParams['pool']))
-				$pool = $ticketParams['pool'];
-			
-			$result =
-				CacheTicket::create()->
-					setCacheInstance($this->getPool($pool))->
-					fillParams($ticketParams);
-				
-			return $result;
-		}
-		
-		/**
-		 * @return Cache
-		 */
-		public function loadConfig($yamlFile)
-		{
-			$cacheTicket = $this->createTicket()->
-				setPrefix('config')->
-				setKey($yamlFile)->
-				setActualTime(filemtime($yamlFile))->
-				restoreData();
-
-			if($cacheTicket->isExpired())
-			{
-				$this->config = Yaml::load($yamlFile);
-				
-				$cacheTicket->
-					setData($this->config)->
-					setLifeTime(filemtime($yamlFile))->
-					storeData();
-			}
-			else
-				$this->config = $cacheTicket->getData();
-				
-			return $this;
-		}
-		
-		public function getConfig()
-		{
-			return $this->config;
-		}
-		
-		public function hasTicketParams($ticketAlias)
-		{
-			return isset($this->config[$ticketAlias]);
-		}
-		
-		public function getTicketParams($ticketAlias)
-		{
-			return $this->hasTicketParams($ticketAlias)
-				? $this->config[$ticketAlias]
-				: null;
 		}
 	}
 ?>

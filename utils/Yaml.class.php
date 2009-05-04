@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	if(!class_exists('Spyc') && defined('LIB_DIR'))
+	if(!class_exists('Spyc', false) && defined('LIB_DIR'))
 		require_once(
 			join(DIRECTORY_SEPARATOR, array(LIB_DIR, 'php', 'spyc', 'spyc.php'))
 		);
