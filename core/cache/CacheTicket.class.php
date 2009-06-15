@@ -98,6 +98,15 @@
 			return $this;
 		}
 		
+		/**
+		 * @return CacheTicket
+		 */
+		public function addKey()
+		{
+			$this->key = array($this->key, func_get_args());
+			return $this;
+		}
+		
 		public function getActualTime()
 		{
 			return $this->actualTime;

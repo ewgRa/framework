@@ -1,5 +1,14 @@
 $Id$
 
+2009-06-15
+	* 1.17.1 released
+	
+	* move ViewFactory to CMS
+	
+	* move CacheWorker to CMS
+	
+	* add addKey method to CacheTicket
+
 2009-05-04
 	* 1.17 released
 	
