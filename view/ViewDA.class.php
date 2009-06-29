@@ -15,7 +15,7 @@
 			return new self;
 		}
 		
-		public function getLayouIncludeFiles($fileId)
+		public function getLayoutIncludeFiles($fileId)
 		{
 			$dbQuery = '
 				SELECT t2.path

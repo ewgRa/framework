@@ -34,6 +34,15 @@
 			return true;
 		}
 		
+		public static function isEqual($one, $two)
+		{
+			if($one !== $two)
+				throw DefaultException::create()->
+					setMessage($message);
+							
+			return true;
+		}
+		
 		public static function fileExists($filePath)
 		{
 			if(!file_exists($filePath))

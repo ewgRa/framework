@@ -12,7 +12,7 @@
 	*/
 	final class FileBasedCache extends BaseCache
 	{
-		const FILE_PERMISSIONS = 0775;
+		const FILE_PERMISSIONS = 0664;
 		const DIR_PERMISSIONS = 0775;
 		
 		private $cacheDir = null;

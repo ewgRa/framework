@@ -24,7 +24,7 @@
 		{
 			$result = array();
 				
-			foreach($this->da()->getLayouIncludeFiles($fileId) as $file)
+			foreach($this->da()->getLayoutIncludeFiles($fileId) as $file)
 			{
 				$result[] = str_replace(
 					'\\',
