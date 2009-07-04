@@ -36,7 +36,7 @@
 				array($fileId, $fileId)
 			);
 			
-			return $this->db()->resourceToArray($dbResult);
+			return $dbResult->fetchList();
 		}
 		
 		public function getFile($fileId)
@@ -48,8 +48,8 @@
 			
 			$dbResult = $this->db()->query($dbQuery, array($fileId));
 
-			return $this->db()->recordCount($dbResult)
-				? $this->db()->fetchArray($dbResult)
+			return $dbResult->recordCount()
+				? $dbResult->fetchArray()
 				: null;
 		}
 	}

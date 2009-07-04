@@ -113,52 +113,11 @@
 			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debugQuery($query, $startTime, $endTime);
 			
-			return $resource;
+			return
+				MysqlDatabaseResult::create()->
+					setResource($resource);
 		}
 
-		public function recordCount($resource)
-		{
-			return mysql_numrows($resource);
-		}
-
-		public function fetchArray($resource)
-		{
-			return mysql_fetch_assoc($resource);
-		}
-
-		/**
-		 * @return MysqlDatabase
-		 */
-		public function dataSeek($resource, $row)
-		{
-			mysql_data_seek($resource, $row - 1);
-			return $this;
-		}
-
-		public function resourceToArray($resource, $field = null, $key = null)
-		{
-			$result = array();
-			
-			if( $resource && $this->recordCount($resource))
-			{
-				$this->dataSeek($resource, 1);
-				
-				$row = $this->fetchArray($resource);
-				
-				while($row)
-				{
-					if($key && isset($row[$key]))
-						$result[$row[$key]] = is_null($field) ? $row : $row[$field];
-					else
-						$result[] = is_null($field) ? $row : $row[$field];
-					
-					$row = $this->fetchArray($resource);
-				}
-			}
-			
-			return $result;
-		}
-		
 		public function getLimit($count = null, $from = null)
 		{
 			$limit = array();

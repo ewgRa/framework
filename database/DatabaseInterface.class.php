@@ -19,22 +19,14 @@
 		
 		public function query($query, array $values = array());
 
-		public function recordCount($resource);
-
-		public function fetchArray($resource);
-		
-		public function dataSeek($resource, $row);
-		
-		public function resourceToArray($resource, $field = null);
-		
 		public function getLimit($count = null, $from = null);
-		
-		public function getInsertedId();
 		
 		public function escape($variable);
 
-		public function getError();
-
 		public function getLastQuery();
+	
+		public function getError();
+	
+		public function getInsertedId();
 	}
 ?>
