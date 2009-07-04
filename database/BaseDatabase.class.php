@@ -225,7 +225,9 @@
 		{
 			throw
 				DatabaseException::create(DatabaseException::SQL_QUERY_ERROR)->
-					setPool($this);
+					setPool($this)->
+					setPoolLastQuery($this->getLastQuery())->
+					setPoolError($this->getError());
 		}
 		
 		protected function debugQuery($query, $started, $ended)

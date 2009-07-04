@@ -32,8 +32,6 @@
 		public function setPool(BaseDatabase $pool)
 		{
 			$this->pool = $pool;
-			$this->poolError = $pool->getError();
-			$this->poolLastQuery = $pool->getLastQuery();
 			return $this;
 		}
 		
@@ -43,6 +41,24 @@
 		public function getPool()
 		{
 			return $this->pool;
+		}
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public function setPoolLastQuery($query)
+		{
+			$this->poolLastQuery = $query;
+			return $this;
+		}
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public function setPoolError($error)
+		{
+			$this->poolError = $error;
+			return $this;
 		}
 		
 		/**
