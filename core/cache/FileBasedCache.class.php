@@ -60,7 +60,7 @@
 				$ticket->expired();
 			elseif(filemtime($fileName) < $actualTime)
 			{
-				unlink($fileName);
+				@unlink($fileName);
 				$ticket->expired();
 			}
 			else
