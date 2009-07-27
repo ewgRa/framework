@@ -5,10 +5,9 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PhpView extends BaseView
+	final class PhpView implements ViewInterface
 	{
 		private $layoutFile 	= null;
-		private $includeFiles 	= null;
 		
 		/**
 		 * @return PhpView
@@ -17,30 +16,25 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return PhpView
 		 */
-		public function loadLayout($filePath, $fileId = null)
+		public function loadLayout(File $layout)
 		{
-			$this->createLayout($filePath);
+			Assert::notNull($layout->getPath());
 			
-			if($fileId)
-				$this->includeFiles = $this->getLayoutIncludeFiles($fileId);
+			$this->layoutFile = $layout->getPath();
 			
 			return $this;
 		}
 		
 		public function transform(Model $model)
 		{
-			ob_start();
+			Assert::notNull($this->layoutFile);
 			
-			if($this->includeFiles)
-			{
-				foreach($this->includeFiles as $file)
-					require($file);
-			}
-				
+			ob_start();
+
 			require($this->layoutFile);
 
 			return ob_get_clean();
@@ -49,16 +43,6 @@
 		public function toString()
 		{
 			return __FILE__ . '@' . __LINE__;
-		}
-
-		/**
-		 * @return PhpView
-		 */
-		private function createLayout($filePath)
-		{
-			$this->layoutFile = $filePath;
-			
-			return $this;
 		}
 	}
 ?>

@@ -33,20 +33,5 @@
 				)
 			);
 		}
-		
-		public function testRecursiveMergeByArrayKeys()
-		{
-			$this->assertEqual(
-				Arrays::recursiveMergeByArrayKeys(
-					$this->array,
-					array('all', 'section')
-				),
-				array(
-					'test' => $this->array['all']['test'],
-					'test2' => $this->array['section']['test2'],
-					'test3' => $this->array['section']['test3']
-				)
-			);
-		}
 	}
 ?>

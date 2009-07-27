@@ -34,7 +34,7 @@
 			return true;
 		}
 		
-		public static function isEqual($one, $two)
+		public static function isEqual($one, $two, $message = 'one and two not equal')
 		{
 			if($one !== $two)
 				throw DefaultException::create()->
@@ -56,6 +56,15 @@
 					setLine($trace['line']);
 			}
 			
+			return true;
+		}
+
+		public static function isImplement($object, $interface, $message = 'object has not implement interface')
+		{
+			if(!in_array($interface, class_implements(get_class($object))))
+				throw DefaultException::create()->
+					setMessage($message);
+									
 			return true;
 		}
 	}

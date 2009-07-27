@@ -10,32 +10,31 @@
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663
 		 * @example ../tests/utils/ArraysTest.class.php
+		 * @param $arr1, $arr2, ..., $arrN
 		 */
-		public static function recursiveMerge($arr1, $arr2)
+		public static function recursiveMerge(array $arr1, array $arr2)
 		{
-			if(!is_array($arr1) || !is_array($arr2))
-				return $arr2;
+			$arrays = func_get_args();
 			
-			foreach($arr2 as $key => $value)
-				$arr1[$key] = self::recursiveMerge(@$arr1[$key], $value);
+			$result = array_shift($arrays);
 			
-			return $arr1;
-		}
-		
-		/**
-		 * @example ../tests/utils/ArraysTest.class.php
-		 */
-		public static function recursiveMergeByArrayKeys($array, array $keys)
-		{
-			$result = array();
-			
-			foreach($keys as $key)
-			{
-				if(isset($array[$key]))
-					$result = self::recursiveMerge($result, $array[$key]);
-			}
+			foreach($arrays as $array)
+				$result = self::merge($result, $array);
 			
 			return $result;
+		}
+
+		private static function merge($one, $two)
+		{
+			if(!is_array($one) || !is_array($two))
+				return $two;
+			
+			$function = __FUNCTION__;
+			
+			foreach($two as $key => $value)
+				$one[$key] = self::$function(@$one[$key], $value);
+			
+			return $one;
 		}
 	}
 ?>

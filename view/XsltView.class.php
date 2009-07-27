@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class XsltView extends BaseView
+	final class XsltView implements ViewInterface
 	{
 		private $charset = 'utf8';
 		private $version = '1.0';
@@ -54,21 +54,20 @@
 		/**
 		 * @return XsltView
 		 */
-		public function loadLayout($filePath, $fileId = null)
+		public function loadLayout(File $layout)
 		{
-			$this->createLayout($filePath);
+			Assert::notNull($layout->getPath());
 			
-			if($fileId)
-			{
-				foreach($this->getLayoutIncludeFiles($fileId) as $includeFile)
-					$this->xslDocument->importFile($includeFile['path']);
-			}
+			$this->xslDocument = $this->createDomDocument();
+			$this->xslDocument->loadXML($layout->getContent());
 			
 			return $this;
 		}
 		
 		public function transform(Model $model)
 		{
+			Assert::notNull($this->xslDocument);
+			
 			$domModel = $this->createDomDocument();
 
 			$root = $domModel->createNodeFromVar($model->getData(), 'document');
@@ -95,18 +94,6 @@
 				$this->getVersion(),
 				$this->getCharset()
 			);
-		}
-
-		/**
-		 * @return XsltView
-		 */
-		private function createLayout($filePath)
-		{
-			$this->xslDocument = $this->createDomDocument();
-			
-			$this->xslDocument->loadXML(file_get_contents($filePath));
-			
-			return $this;
 		}
 	}
 ?>

@@ -22,13 +22,13 @@
 		/**
 		 * @return HttpRequest
 		 */
-		public function setPostArray(array $vars)
+		public function setPost(array $vars)
 		{
 			$this->post = $vars;
 			return $this;
 		}
 		
-		public function hasPostArray()
+		public function hasPost()
 		{
 			return count($this->post) !== 0;
 		}
@@ -36,21 +36,21 @@
 		/**
 		 * @return HttpRequest
 		 */
-		public function setPost($key, $value)
+		public function setPostVar($key, $value)
 		{
 			$this->post[$key] = $value;
 			return $this;
 		}
 		
-		public function hasPost($key)
+		public function hasPostVar($key)
 		{
 			return isset($this->post[$key]);
 		}
 		
-		public function getPost($key)
+		public function getPostVar($key)
 		{
 			return
-				$this->hasPost($key)
+				$this->hasPostVar($key)
 					? $this->post[$key]
 					: null;
 		}
@@ -58,13 +58,13 @@
 		/**
 		 * @return HttpRequest
 		 */
-		public function setAttachedArray(array $vars)
+		public function setAttached(array $vars)
 		{
 			$this->attached = $vars;
 			return $this;
 		}
 		
-		public function hasAttachedArray()
+		public function hasAttached()
 		{
 			return count($this->attached) !== 0;
 		}
@@ -72,21 +72,21 @@
 		/**
 		 * @return HttpRequest
 		 */
-		public function setAttached($key, $value)
+		public function setAttachedVar($key, $value)
 		{
 			$this->attached[$key] = $value;
 			return $this;
 		}
 		
-		public function hasAttached($key)
+		public function hasAttachedVar($key)
 		{
 			return isset($this->attached[$key]);
 		}
 		
-		public function getAttached($key)
+		public function getAttachedVar($key)
 		{
 			return
-				$this->hasAttached($key)
+				$this->hasAttachedVar($key)
 					? $this->attached[$key]
 					: null;
 		}

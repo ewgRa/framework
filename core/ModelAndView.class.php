@@ -9,7 +9,7 @@
 	final class ModelAndView
 	{
 		/**
-		 * @var BaseView
+		 * @var ViewInterface
 		 */
 		private $view = null;
 		
@@ -29,9 +29,12 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function setView(BaseView $view)
+		public function setView($view)
 		{
+			Assert::isImplement($view, 'ViewInterface');
+			
 			$this->view = $view;
+			
 			return $this;
 		}
 		
