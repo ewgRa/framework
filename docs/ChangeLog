@@ -6,6 +6,10 @@ $Id$
 	
 	* dbResult class
 
+	* refactoring: add Enumeration for MimeContentType, exceptions, etc
+	
+	* move database requester to cms, and DatabaseDebug 
+
 2009-06-29
 	* 1.17.2 released
 	
