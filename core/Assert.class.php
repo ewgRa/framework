@@ -23,7 +23,7 @@
 			return true;
 		}
 		
-		public static function notNull($variable, $message = 'Variable is null!')
+		public static function isNotNull($variable, $message = 'Variable is null!')
 		{
 			if(is_null($variable))
 				throw DefaultException::create($message);
@@ -39,7 +39,7 @@
 			return true;
 		}
 		
-		public static function fileExists($filePath)
+		public static function isFileExists($filePath)
 		{
 			if(!file_exists($filePath))
 			{

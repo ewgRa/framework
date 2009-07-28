@@ -22,7 +22,7 @@
 		 */
 		public function loadLayout(File $layout)
 		{
-			Assert::notNull($layout->getPath());
+			Assert::isNotNull($layout->getPath());
 			
 			$this->layoutFile = $layout->getPath();
 			
@@ -31,7 +31,7 @@
 		
 		public function transform(Model $model)
 		{
-			Assert::notNull($this->layoutFile);
+			Assert::isNotNull($this->layoutFile);
 			
 			ob_start();
 

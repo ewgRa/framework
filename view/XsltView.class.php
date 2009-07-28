@@ -56,7 +56,7 @@
 		 */
 		public function loadLayout(File $layout)
 		{
-			Assert::notNull($layout->getPath());
+			Assert::isNotNull($layout->getPath());
 			
 			$this->xslDocument = $this->createDomDocument();
 			$this->xslDocument->loadXML($layout->getContent());
@@ -66,7 +66,7 @@
 		
 		public function transform(Model $model)
 		{
-			Assert::notNull($this->xslDocument);
+			Assert::isNotNull($this->xslDocument);
 			
 			$domModel = $this->createDomDocument();
 
