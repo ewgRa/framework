@@ -18,11 +18,7 @@
 		public static function load($file)
 		{
 			if(!file_exists($file))
-			{
-				throw
-					FileException::create(FileException::FILE_NOT_EXISTS)->
-						setFilePath($file);
-			}
+				throw FileException::fileNotExists()->setFilePath($file);
 			
 			return Spyc::YAMLLoad($file);
 		}

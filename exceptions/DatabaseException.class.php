@@ -11,7 +11,6 @@
 		const SELECT_DATABASE	= 1002;
 		const SQL_QUERY_ERROR	= 1003;
 		const UNDEFINED_TABLE	= 1004;
-		const NO_RESULT			= 1005;
 		
 		private $pool			= null;
 		private $poolError		= null;
@@ -21,11 +20,43 @@
 		/**
 		 * @return DatabaseException
 		 */
-		public static function create($code = null, $message = null)
+		public static function create($message = null, $code = null)
 		{
 			return new self($message, $code);
 		}
-				
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public static function connect($message = null)
+		{
+			return self::create($message, self::CONNECT);
+		}
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public static function selectDatabase($message = null)
+		{
+			return self::create($message, self::SELECT_DATABASE);
+		}
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public static function sqlQueryError($message = null)
+		{
+			return self::create($message, self::SQL_QUERY_ERROR);
+		}
+		
+		/**
+		 * @return DatabaseException
+		 */
+		public static function undefinedTable($message = null)
+		{
+			return self::create($message, self::UNDEFINED_TABLE);
+		}
+		
 		/**
 		 * @return DatabaseException
 		 */

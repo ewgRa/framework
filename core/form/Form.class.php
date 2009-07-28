@@ -25,8 +25,7 @@
 		public function getPrimitive($name)
 		{
 			if(!isset($this->primitives[$name]))
-				throw DefaultException::create()->
-					setMessage('known nothing about ' . $name);
+				throw DefaultException::create('known nothing about ' . $name);
 			
 			return $this->primitives[$name];
 		}

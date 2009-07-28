@@ -133,8 +133,8 @@
 				$result = $this->tables[$alias];
 			else
 				throw
-					DatabaseException::create(DatabaseException::UNDEFINED_TABLE)->
-					setTableAlias($alias);
+					DatabaseException::undefinedTable()->
+						setTableAlias($alias);
 				
 			return $result;
 		}
@@ -224,7 +224,7 @@
 		protected function queryError()
 		{
 			throw
-				DatabaseException::create(DatabaseException::SQL_QUERY_ERROR)->
+				DatabaseException::sqlQueryError()->
 					setPool($this)->
 					setPoolLastQuery($this->getLastQuery())->
 					setPoolError($this->getError());

@@ -10,7 +10,7 @@
 		/**
 		 * @return MissingArgumentException
 		 */
-		public static function create($code = null, $message = null)
+		public static function create($message = null, $code = null)
 		{
 			return new self($message, $code);
 		}

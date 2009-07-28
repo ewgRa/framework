@@ -18,8 +18,9 @@
 		{
 			if(!isset($this->names[$id]))
 			{
-				throw MissingArgumentException::create()->
-						setMessage('known nothing about id='.$id);
+				throw MissingArgumentException::create(
+					'known nothing about id='.$id
+				);
 			}
 			
 			$this->id = $id;

@@ -37,8 +37,9 @@
 				return $this->pools[$poolAlias];
 			else
 				throw
-					MissingArgumentException::create()->
-						setMessage('Known nothing about pool ' . $poolAlias);
+					MissingArgumentException::create(
+						'Known nothing about pool ' . $poolAlias
+					);
 		}
 	}
 ?>

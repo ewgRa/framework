@@ -10,8 +10,7 @@
 		public static function isArray($array, $message = 'Variable is not array!')
 		{
 			if(!is_array($array))
-				throw DefaultException::create()->
-					setMessage($message);
+				throw DefaultException::create($message);
 				
 			return true;
 		}
@@ -19,8 +18,7 @@
 		public static function isTrue($variable, $message = 'Variable is not true!')
 		{
 			if($variable !== true)
-				throw DefaultException::create()->
-					setMessage($message);
+				throw DefaultException::create($message);
 							
 			return true;
 		}
@@ -28,18 +26,16 @@
 		public static function notNull($variable, $message = 'Variable is null!')
 		{
 			if(is_null($variable))
-				throw DefaultException::create()->
-					setMessage($message);
-							
+				throw DefaultException::create($message);
+										
 			return true;
 		}
 		
 		public static function isEqual($one, $two, $message = 'one and two not equal')
 		{
 			if($one !== $two)
-				throw DefaultException::create()->
-					setMessage($message);
-							
+				throw DefaultException::create($message);
+										
 			return true;
 		}
 		
@@ -50,10 +46,10 @@
 				$trace = array_shift(debug_backtrace());
 
 				throw
-					FileException::create(FileException::FILE_NOT_EXISTS)->
-					setFilePath($filePath)->
-					setFile($trace['file'])->
-					setLine($trace['line']);
+					FileException::fileNotExists()->
+						setFilePath($filePath)->
+						setFile($trace['file'])->
+						setLine($trace['line']);
 			}
 			
 			return true;
@@ -62,9 +58,8 @@
 		public static function isImplement($object, $interface, $message = 'object has not implement interface')
 		{
 			if(!in_array($interface, class_implements(get_class($object))))
-				throw DefaultException::create()->
-					setMessage($message);
-									
+				throw DefaultException::create($message);
+												
 			return true;
 		}
 	}

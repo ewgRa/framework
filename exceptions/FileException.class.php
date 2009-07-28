@@ -14,11 +14,19 @@
 		/**
 		 * @return FileException
 		 */
-		public static function create($code = null, $message = null)
+		public static function create($message = null, $code = null)
 		{
 			return new self($message, $code);
 		}
 				
+		/**
+		 * @return FileException
+		 */
+		public static function fileNotExists($message = null)
+		{
+			return self::create($message, self::FILE_NOT_EXISTS);
+		}
+		
 		/**
 		 * @return FileException
 		 */

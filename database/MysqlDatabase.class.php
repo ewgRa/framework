@@ -28,11 +28,7 @@
 			);
 			
 			if(!$db)
-			{
-				throw
-					DatabaseException::create(DatabaseException::CONNECT)->
-						setPool($this);
-			}
+				throw DatabaseException::connect()->setPool($this);
 			
 			$this->setLinkIdentifier($db)->connected();
 
@@ -73,9 +69,7 @@
 					$this->getLinkIdentifier()
 				)
 			) {
-				throw
-					DatabaseException::create(DatabaseException::SELECT_DATABASE)->
-						setPool($this);
+				throw DatabaseException::selectDatabase()->setPool($this);
 			}
 			
 			return $this;
