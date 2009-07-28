@@ -4,7 +4,6 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * // FIXME: tested?
 	*/
 	final class ModelAndView
 	{
@@ -29,10 +28,8 @@
 		/**
 		 * @return ModelAndView
 		 */
-		public function setView($view)
+		public function setView(ViewInterface $view)
 		{
-			Assert::isImplement($view, 'ViewInterface');
-			
 			$this->view = $view;
 			
 			return $this;
