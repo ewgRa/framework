@@ -11,6 +11,7 @@
 
 		protected $isStarted = false;
 
+		// FIXME: move to CookieManager
 		public function setCookie($alias, $value, $expire = null, $path = '/')
 		{
 			setcookie($alias, $value, $expire, $path);

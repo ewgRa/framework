@@ -4,13 +4,12 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * // FIXME: rename to ArrayUtils
 	*/
-	final class Arrays
+	final class ArrayUtils
 	{
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663
-		 * @example ../tests/utils/ArraysTest.class.php
+		 * @example ../tests/utils/ArrayUtilsTest.class.php
 		 * @param $arr1, $arr2, ..., $arrN
 		 */
 		public static function recursiveMerge(array $arr1, array $arr2)

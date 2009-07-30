@@ -1,7 +1,7 @@
 <?php
 	/* $Id$ */
 
-	class ArraysTest extends UnitTestCase
+	class ArrayUtilsTest extends UnitTestCase
 	{
 		private $array = null;
 		
@@ -22,7 +22,7 @@
 		public function testRecursiveMerge()
 		{
 			$this->assertEqual(
-				Arrays::recursiveMerge(
+				ArrayUtils::recursiveMerge(
 					$this->array['all'],
 					$this->array['section']
 				),
