@@ -3,52 +3,52 @@
 
 	define( 'TEST_CONST', 'value' );
 	
-	class VariablesTest extends UnitTestCase
+	class VariableUtilsTest extends UnitTestCase
 	{
 		public function testGetValueByString()
 		{
 			$this->assertEqual(
-				Variables::getValueByString('TEST_CONST'), TEST_CONST
+				VariableUtils::getValueByString('TEST_CONST'), TEST_CONST
 			);
 
 			$this->assertEqual(
-				Variables::getValueByString('UNDEFINED_CONST'), null
+				VariableUtils::getValueByString('UNDEFINED_CONST'), null
 			);
 			
 			$this->assertEqual(
-				Variables::getValueByString('$_SERVER'), $_SERVER
+				VariableUtils::getValueByString('$_SERVER'), $_SERVER
 			);
 
 			if(!isset($_SERVER['REMOTE_ADDR']))
 				$_SERVER['REMOTE_ADDR'] = rand();
 			
 			$this->assertEqual(
-				Variables::getValueByString('$_SERVER[REMOTE_ADDR]'),
+				VariableUtils::getValueByString('$_SERVER[REMOTE_ADDR]'),
 				$_SERVER['REMOTE_ADDR']
 			);
 
 			$this->assertEqual(
-				Variables::getValueByString('$_SERVER[\'REMOTE_ADDR\']'),
+				VariableUtils::getValueByString('$_SERVER[\'REMOTE_ADDR\']'),
 				$_SERVER['REMOTE_ADDR']
 			);
 			
 			$this->assertEqual(
-				Variables::getValueByString('$_SERVER["REMOTE_ADDR"]'),
+				VariableUtils::getValueByString('$_SERVER["REMOTE_ADDR"]'),
 				$_SERVER['REMOTE_ADDR']
 			);
 			
 			$this->assertEqual(
-				Variables::getValueByString('_SERVER["REMOTE_ADDR"]'),
+				VariableUtils::getValueByString('_SERVER["REMOTE_ADDR"]'),
 				null
 			);
 			
 			$this->assertEqual(
-				Variables::getValueByString('$_SERVER[unlink(aaaaa)]'),
+				VariableUtils::getValueByString('$_SERVER[unlink(aaaaa)]'),
 				null
 			);
 			
 			$this->assertEqual(
-				Variables::getValueByString('$undefined'),
+				VariableUtils::getValueByString('$undefined'),
 				null
 			);
 		}
@@ -57,7 +57,7 @@
 		{
 			$constantValue = rand();
 			
-			Variables::registerAsConstants(
+			VariableUtils::registerAsConstants(
 				array('testConstant' => $constantValue)
 			);
 			

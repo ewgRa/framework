@@ -4,12 +4,11 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * // FIXME: rename to VariableUtils
 	*/
-	final class Variables
+	final class VariableUtils
 	{
 		/**
-		 * @example ../tests/utils/VariablesTest.class.php
+		 * @example ../tests/utils/VariableUtilsTest.class.php
 		 */
 		public static function getValueByString($variableName)
 		{
@@ -60,7 +59,7 @@
 		}
 		
 		/**
-		 * @example utils/VariablesTest.class.php
+		 * @example utils/VariableUtilsTest.class.php
 		 */
 		public static function registerAsConstants(array $variables)
 		{
