@@ -11,13 +11,6 @@
 
 		protected $isStarted = false;
 
-		// FIXME: move to CookieManager
-		public function setCookie($alias, $value, $expire = null, $path = '/')
-		{
-			setcookie($alias, $value, $expire, $path);
-			return $this;
-		}
-		
 		public function has($alias)
 		{
 			return isset($this->data[$alias]);
