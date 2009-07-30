@@ -8,7 +8,9 @@
 	final class HttpRequest
 	{
 		private $url		= null;
+		private $get		= array();
 		private $post		= array();
+		private $cookie		= array();
 		private $attached	= array();
 		
 		/**
@@ -22,10 +24,62 @@
 		/**
 		 * @return HttpRequest
 		 */
+		public function setGet(array $vars)
+		{
+			$this->get = $vars;
+			return $this;
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getGet()
+		{
+			return $this->get;
+		}
+		
+		public function hasGet()
+		{
+			return count($this->get) !== 0;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setGetVar($key, $value)
+		{
+			$this->get[$key] = $value;
+			return $this;
+		}
+		
+		public function hasGetVar($key)
+		{
+			return isset($this->get[$key]);
+		}
+		
+		public function getGetVar($key)
+		{
+			return
+				$this->hasGetVar($key)
+					? $this->get[$key]
+					: null;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
 		public function setPost(array $vars)
 		{
 			$this->post = $vars;
 			return $this;
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getPost()
+		{
+			return $this->post;
 		}
 		
 		public function hasPost()
@@ -64,6 +118,14 @@
 			return $this;
 		}
 		
+		/**
+		 * @return array
+		 */
+		public function getAttached()
+		{
+			return $this->attached;
+		}
+		
 		public function hasAttached()
 		{
 			return count($this->attached) !== 0;
@@ -91,6 +153,50 @@
 					: null;
 		}
 
+		/**
+		 * @return HttpRequest
+		 */
+		public function setCookie(array $vars)
+		{
+			$this->cookie = $vars;
+			return $this;
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getCookie()
+		{
+			return $this->cookie;
+		}
+		
+		public function hasCookie()
+		{
+			return count($this->cookie) !== 0;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setCookieVar($key, $value)
+		{
+			$this->cookie[$key] = $value;
+			return $this;
+		}
+		
+		public function hasCookieVar($key)
+		{
+			return isset($this->cookie[$key]);
+		}
+		
+		public function getCookieVar($key)
+		{
+			return
+				$this->hasCookieVar($key)
+					? $this->cookie[$key]
+					: null;
+		}
+		
 		/**
 		 * @return HttpUrl
 		 */

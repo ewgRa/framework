@@ -7,8 +7,6 @@
 	*/
 	final class FileBasedSession extends BaseSession
 	{
-		private $data = array();
-
 		/**
 		 * @return FileBasedSession
 		 */
@@ -37,7 +35,7 @@
 			{
 				$this->isStarted = true;
 				session_start();
-				$this->data = $_SESSION;
+				$this->setData($_SESSION);
 			}
 			
 			return $this;
@@ -54,7 +52,7 @@
 					session_unregister($k);
 			}
 			
-			foreach($this->data as $k => $v)
+			foreach($this->getData() as $k => $v)
 			{
 				session_register($k);
 				$_SESSION[$k] = $v;
@@ -68,39 +66,6 @@
 			return $this->isStarted()
 				? session_id()
 				: null;
-		}
-		
-		public function has($alias)
-		{
-			return isset($this->data[$alias]);
-		}
-		
-		public function get($alias)
-		{
-			$result = null;
-			
-			if(isset($this->data[$alias]))
-				$result = $this->data[$alias];
-
-			return $result;
-		}
-		
-		/**
-		 * @return FileBasedSession
-		 */
-		public function set($alias, $value)
-		{
-			$this->data[$alias] = $value;
-			return $this;
-		}
-
-		/**
-		 * @return FileBasedSession
-		 */
-		public function drop($alias)
-		{
-			unset($this->data[$alias]);
-			return $this;
 		}
 	}
 ?>
