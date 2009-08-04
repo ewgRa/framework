@@ -22,30 +22,30 @@
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
-		private $isDisabled	= false;
+		private $enabled	= false;
 		private $ticketAliases = array();
 
 		/**
 		 * @return BaseCache
 		 */
-		public function disable()
+		public function enable()
 		{
-			$this->isDisabled = true;
+			$this->enabled = true;
 			return $this;
 		}
 		
 		/**
 		 * @return BaseCache
 		 */
-		public function enable()
+		public function disable()
 		{
-			$this->isDisabled = false;
+			$this->enabled = false;
 			return $this;
 		}
-		
+				
 		public function isDisabled()
 		{
-			return $this->isDisabled;
+			return !$this->enabled;
 		}
 		
 		public function hasTicketParams($ticketAlias)

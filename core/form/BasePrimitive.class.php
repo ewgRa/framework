@@ -8,13 +8,16 @@
 	abstract class BasePrimitive
 	{
 		private $name 		= null;
-		private $scopeKey 	= null;
+		private $scopeKey	= null;
 		private $rawValue	= null;
 		private $value		= null;
-		
-		private $nullValues 		= array();
-		private $falseValueIsNull 	= false;
-		
+
+		protected function __construct($name)
+		{
+			$this->setName($name);
+			$this->setScopeKey($name);
+		}
+			
 		/**
 		 * @return BasePrimitive
 		 */
@@ -32,6 +35,20 @@
 		/**
 		 * @return BasePrimitive
 		 */
+		public function setScopeKey($key)
+		{
+			$this->scopeKey = $key;
+			return $this;
+		}
+		
+		public function getScopeKey()
+		{
+			return $this->scopeKey;
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
 		public function setValue($value)
 		{
 			$this->value = $value;
@@ -40,11 +57,7 @@
 
 		public function getValue()
 		{
-			return
-				in_array($this->value, $this->getNullValues())
-				|| ($this->isFalseValueIsNull() && !$this->value)
-					? null
-					: $this->value;
+			return $this->value;
 		}
 		
 		/**
@@ -64,61 +77,11 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function setNullValues(array $values)
-		{
-			$this->nullValues = $values;
-			return $this;
-		}
-		
-		/**
-		 * @return BasePrimitive
-		 */
-		public function addNullValue($value)
-		{
-			$this->nullValues[] = $value;
-			return $this;
-		}
-		
-		public function getNullValues()
-		{
-			return $this->nullValues;
-		}
-		
-		/**
-		 * @return BasePrimitive
-		 */
-		public function falseValueIsNull()
-		{
-			$this->falseValueIsNull = true;
-			return $this;
-		}
-		
-		public function isFalseValueIsNull()
-		{
-			return $this->falseValueIsNull;
-		}
-		
-		/**
-		 * @return BasePrimitive
-		 */
-		public function setScopeKey($key)
-		{
-			$this->scopeKey = $key;
-			return $this;
-		}
-		
-		public function getScopeKey()
-		{
-			return $this->scopeKey ? $this->scopeKey : $this->getName();
-		}
-		
-		/**
-		 * @return BasePrimitive
-		 */
 		public function import($value)
 		{
 			$this->setRawValue($value);
 			$this->setValue($value);
+
 			return $this;
 		}
 	}

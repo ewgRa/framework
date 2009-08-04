@@ -16,7 +16,7 @@
 		private $prefix 	= null;
 		private $key 		= null;
 		private $actualTime = null;
-		private $isExpired	= true;
+		private $expired	= true;
 		private $lifeTime 	= null;
 		
 		/**
@@ -123,7 +123,7 @@
 		
 		public function isExpired()
 		{
-			return $this->isExpired;
+			return $this->expired;
 		}
 
 		public function getLifeTime()
@@ -145,7 +145,7 @@
 		 */
 		public function expired()
 		{
-			$this->isExpired = true;
+			$this->expired = true;
 			return $this;
 		}
 		
@@ -154,7 +154,7 @@
 		 */
 		public function actual()
 		{
-			$this->isExpired = false;
+			$this->expired = false;
 			return $this;
 		}
 		

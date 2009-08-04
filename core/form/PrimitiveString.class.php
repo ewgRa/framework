@@ -10,9 +10,9 @@
 		/**
 		 * @return PrimitiveString
 		 */
-		public static function create()
+		public static function create($name)
 		{
-			return new self;
+			return new self($name);
 		}
 	}
 ?>

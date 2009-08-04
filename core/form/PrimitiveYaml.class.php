@@ -10,9 +10,9 @@
 		/**
 		 * @return PrimitiveYaml
 		 */
-		public static function create()
+		public static function create($name)
 		{
-			return new self;
+			return new self($name);
 		}
 		
 		/**
@@ -22,6 +22,7 @@
 		{
 			parent::import($value);
 			$this->setValue(Yaml::loadString($this->getRawValue()));
+
 			return $this;
 		}
 	}
