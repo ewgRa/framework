@@ -1,13 +1,13 @@
 $Id$
 
-2009-08-xx
+2009-08-22
 
-	* 1.17.3 released
+	* 1.18 released
 	
 	* coding style changed
 	
 	* dbResult class
-
+	
 	* refactoring: add Enumeration for MimeContentType, exceptions, etc
 	
 	* move database requester to cms, and DatabaseDebug 
