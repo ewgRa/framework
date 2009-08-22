@@ -7,7 +7,7 @@
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
-		private $enabled		= false;
+		private $enabled		= true;
 		private $ticketAliases 	= array();
 
 		/**
