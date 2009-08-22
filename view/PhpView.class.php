@@ -7,7 +7,7 @@
 	*/
 	final class PhpView implements ViewInterface
 	{
-		private $layoutFile 	= null;
+		private $layoutFile = null;
 		
 		/**
 		 * @return PhpView

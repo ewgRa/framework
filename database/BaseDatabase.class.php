@@ -104,22 +104,22 @@
 		{
 			$settings = Yaml::load($yamlFile);
 
-			if(isset($settings['host']))
+			if (isset($settings['host']))
 				$this->setHost($settings['host']);
 			
-			if(isset($settings['user']))
+			if (isset($settings['user']))
 				$this->setUser($settings['user']);
 
-			if(isset($settings['password']))
+			if (isset($settings['password']))
 				$this->setPassword($settings['password']);
 
-			if(isset($settings['database']))
+			if (isset($settings['database']))
 				$this->setDatabaseName($settings['database']);
 
-			if(isset($settings['charset']))
+			if (isset($settings['charset']))
 				$this->setCharset($settings['charset']);
 
-			if(isset($settings['tableAliases']))
+			if (isset($settings['tableAliases']))
 				$this->setTables($settings['tableAliases']);
 				
 			return $this;
@@ -129,12 +129,12 @@
 		{
 			$result = null;
 			
-			if(isset($this->tables[$alias]))
+			if (isset($this->tables[$alias]))
 				$result = $this->tables[$alias];
 			else
 				throw
 					DatabaseException::undefinedTable()->
-						setTableAlias($alias);
+					setTableAlias($alias);
 				
 			return $result;
 		}
@@ -150,7 +150,7 @@
 		
 		public function queryString($query, array $values = array())
 		{
-			if(count($values))
+			if (count($values))
 				$query = $this->processQuery($query, $values);
 				
 			return $query;
@@ -158,7 +158,7 @@
 
 		public function __destruct()
 		{
-			if($this->isConnected())
+			if ($this->isConnected())
 				$this->disconnect();
 		}
 
@@ -173,10 +173,10 @@
 		
 		protected function prepareQuery($query, array $values)
 		{
-			if(!$this->isConnected())
+			if (!$this->isConnected())
 				$this->connect()->selectDatabase()->selectCharset();
 			
-			if(count($values))
+			if (count($values))
 				$query = $this->processQuery($query, $values);
 						
 			return $query;
@@ -188,24 +188,20 @@
 			$queryParts = explode('?', $query);
 			$partsCounter = 0;
 			
-			foreach($queryParts as $partKey => $part)
-			{
-				if($partsCounter%2)
-				{
-					if(!is_null(key($values)))
-					{
+			foreach ($queryParts as $partKey => $part) {
+				if ($partsCounter % 2) {
+					if (!is_null(key($values))) {
 						$value = $values[key($values)];
 						
-						if(is_null($value))
+						if (is_null($value))
 							$part = "NULL";
-						else
-						{
+						else {
 							$value = $this->escape($value);
 							
-							if(is_array($value))
-								$part = "'" . join("', '", $value) . "'";
-							else
-								$part = "'" . $value . "'";
+							$part =
+								is_array($value)
+									? "'" . join("', '", $value) . "'"
+									: "'" . $value . "'";
 						}
 
 						next($values);
@@ -225,20 +221,20 @@
 		{
 			throw
 				DatabaseException::sqlQueryError()->
-					setPool($this)->
-					setPoolLastQuery($this->getLastQuery())->
-					setPoolError($this->getError());
+				setPool($this)->
+				setPoolLastQuery($this->getLastQuery())->
+				setPoolError($this->getError());
 		}
 		
 		protected function debugQuery($query, $started, $ended)
 		{
 			$debugItem =
 				DebugItem::create()->
-					setType(DebugItem::DATABASE)->
-					setData($query)->
-					setTrace(debug_backtrace())->
-					setStartTime($started)->
-					setEndTime($ended);
+				setType(DebugItem::DATABASE)->
+				setData($query)->
+				setTrace(debug_backtrace())->
+				setStartTime($started)->
+				setEndTime($ended);
 			
 			Debug::me()->addItem($debugItem);
 			

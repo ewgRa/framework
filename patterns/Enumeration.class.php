@@ -16,11 +16,11 @@
 		 */
 		protected function __construct($id)
 		{
-			if(!isset($this->names[$id]))
-			{
-				throw MissingArgumentException::create(
-					'known nothing about id='.$id
-				);
+			if (!isset($this->names[$id])) {
+				throw
+					MissingArgumentException::create(
+						'known nothing about id='.$id
+					);
 			}
 			
 			$this->id = $id;

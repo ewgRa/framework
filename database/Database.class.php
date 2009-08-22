@@ -30,16 +30,18 @@
 		
 		/**
 		 * @return BaseDatabase
+		 * @throws MissingArgumentException
 		 */
 		public function getPool($poolAlias = null)
 		{
-			if($this->hasPool($poolAlias))
-				return $this->pools[$poolAlias];
-			else
+			if (!$this->hasPool($poolAlias)) {
 				throw
 					MissingArgumentException::create(
 						'Known nothing about pool ' . $poolAlias
 					);
+			}
+					
+			return $this->pools[$poolAlias];
 		}
 	}
 ?>

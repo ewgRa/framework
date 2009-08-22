@@ -34,7 +34,7 @@
 		{
 			$result = null;
 			
-			if(isset($this->data[$alias]))
+			if (isset($this->data[$alias]))
 				$result = $this->data[$alias];
 
 			return $result;

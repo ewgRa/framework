@@ -24,7 +24,7 @@
 		
 		public function getPrimitive($name)
 		{
-			if(!isset($this->primitives[$name]))
+			if (!isset($this->primitives[$name]))
 				throw DefaultException::create('known nothing about ' . $name);
 			
 			return $this->primitives[$name];
@@ -44,9 +44,8 @@
 		 */
 		public function import(array $scope)
 		{
-			foreach ($this->getPrimitives() as $primitive)
-			{
-				if(isset($scope[$primitive->getScopeKey()]))
+			foreach ($this->getPrimitives() as $primitive) {
+				if (isset($scope[$primitive->getScopeKey()]))
 					$primitive->import($scope[$primitive->getScopeKey()]);
 			}
 			

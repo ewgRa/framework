@@ -14,13 +14,12 @@
 		{
 			$result = null;
 			
-			if(defined($variableName))
+			if (defined($variableName))
 				$result = constant($variableName);
-			else
-			{
+			else {
 				$variableMatches = null;
 				
-				if(
+				if (
 					preg_match(
 						'/^(\$?\w+)(?:\[(?:\'|")?(\w+?)(?:\'|")?\])?/',
 						$variableName,
@@ -29,27 +28,24 @@
 				) {
 					$varName = $variableMatches[1];
 
-					if(isset($variableMatches[2]))
-					{
-						if(substr($varName, 0, 1) == '$')
+					if (isset($variableMatches[2])) {
+						if (substr($varName, 0, 1) == '$')
 							$varName .= "['" . $variableMatches[2] . "']";
 						else
 							$varName = null;
-					}
-					elseif($varName != $variableName)
+					
+					} elseif ($varName != $variableName)
 						$varName = null;
 
-					if($varName)
-					{
-						if(substr($varName, 0, 1) == '$')
-						{
+					if ($varName) {
+						if (substr($varName, 0, 1) == '$') {
 							eval(
 								'$result = isset('
 								. $varName. ') ? '
 								. $varName. ' : null;'
 							);
-						}
-						elseif(defined($varName))
+						
+						} elseif (defined($varName))
 							$result = constant($varName);
 					}
 				}
@@ -63,9 +59,8 @@
 		 */
 		public static function registerAsConstants(array $variables)
 		{
-			foreach($variables as $constName => $constValue)
-			{
-				if(!defined($constName))
+			foreach ($variables as $constName => $constValue) {
+				if (!defined($constName))
 					define($constName, $constValue);
 			}
 			

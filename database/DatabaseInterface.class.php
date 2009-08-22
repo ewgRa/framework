@@ -19,6 +19,8 @@
 		
 		public function query($query, array $values = array());
 
+		public function queryNull($query, array $values = array());
+		
 		public function getLimit($count = null, $from = null);
 		
 		public function escape($variable);

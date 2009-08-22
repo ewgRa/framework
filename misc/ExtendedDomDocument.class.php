@@ -11,31 +11,35 @@
 		const NUMERIC_NODE_ATTRIBUTE 	= 'key';
 		
 		/**
+		 * @return ExtendedDomDocument
+		 */
+		public static function create($version, $encoding)
+		{
+			return new self($version, $encoding);
+		}
+		
+		/**
 		 * @return DomNode
 		 */
 		public function createNodeFromVar(
 			$var,
 			$nodeName,
 			array $attributes = array()
-		)
-		{
-			if(is_numeric($nodeName))
-			{
+		) {
+			if (is_numeric($nodeName)) {
 				$attributes[self::NUMERIC_NODE_ATTRIBUTE] = $nodeName;
 				$nodeName = self::NODE_PREFIX;
 			}
 			
 			$node = $this->createElement($nodeName);
 
-			foreach($attributes as $k => $v)
+			foreach ($attributes as $k => $v)
 				$node->setAttribute($k, $v);
 
-			if(is_array($var))
-			{
-				foreach($var as $k => $v)
+			if (is_array($var)) {
+				foreach ($var as $k => $v)
 					$node->appendChild($this->{__FUNCTION__}($v, $k));
-			}
-			else
+			} else
 				$node->appendChild($this->createCDATASection($var));
 			
 			return $node;
@@ -46,17 +50,19 @@
 		 */
 		public function importFile($filePath)
 		{
-			$importNode = $this->createElementNS(
-				$this->documentElement->namespaceURI,
-				'xsl:import'
-			);
+			$importNode =
+				$this->createElementNS(
+					$this->documentElement->namespaceURI,
+					'xsl:import'
+				);
 			
 			$importNode->setAttribute('href', $filePath);
 			
-			$this->documentElement->insertBefore(
-				$importNode,
-				$this->documentElement->firstChild->nextSibling
-			);
+			$this->documentElement->
+				insertBefore(
+					$importNode,
+					$this->documentElement->firstChild->nextSibling
+				);
 			
 			return $this;
 		}

@@ -90,10 +90,11 @@
 		 */
 		private function createDomDocument()
 		{
-			return new ExtendedDomDocument(
-				$this->getVersion(),
-				$this->getCharset()
-			);
+			return
+				ExtendedDomDocument::create(
+					$this->getVersion(),
+					$this->getCharset()
+				);
 		}
 	}
 ?>

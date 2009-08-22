@@ -33,6 +33,11 @@
 			return $this;
 		}
 		
+		public function toHtmlString()
+		{
+			return '<pre>' . $this->__toString() . '</pre>';
+		}
+		
 		/**
 		 * @return Trace
 		 */
@@ -41,17 +46,13 @@
 			$trace = $this->getTrace();
 			$singleTrace = $trace[$index];
 			
-			$trace = Trace::create()->
+			$trace =
+				Trace::create()->
 				setLine($singleTrace['line'])->
 				setFile($singleTrace['file']);
 			
 			
 			return $trace;
-		}
-		
-		public function toHtmlString()
-		{
-			return '<pre>' . $this->__toString() .'</pre>';
 		}
 	}
 ?>

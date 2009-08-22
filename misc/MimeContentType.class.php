@@ -26,16 +26,25 @@
 			self::TEXT_JAVASCRIPT 	=> 'js'
 		);
 		
+		/**
+		 * @return MimeContentType
+		 */
 		public static function create($id)
 		{
 			return new self($id);
 		}
 		
+		/**
+		 * @return MimeContentType
+		 */
 		public static function any()
 		{
 			return new self(self::APPLICATION_PHP);
 		}
 		
+		/**
+		 * @return MimeContentType
+		 */
 		public static function createByName($name)
 		{
 			$any = self::any();
@@ -46,6 +55,9 @@
 			return self::create($names[$name]);
 		}
 		
+		/**
+		 * @return MimeContentType
+		 */
 		public static function createByExtension($extension)
 		{
 			$any = self::any();

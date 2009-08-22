@@ -47,8 +47,7 @@
 		
 		public function get($key)
 		{
-			if(!$this->has($key))
-			{
+			if (!$this->has($key)) {
 				throw MissingArgumentException::create(
 					'known nothing about key "' . $key . '"'
 				);

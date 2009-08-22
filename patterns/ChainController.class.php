@@ -15,8 +15,7 @@
 		 */
 		public function __construct(ChainController $controller = null)
 		{
-			if($controller)
-			{
+			if ($controller) {
 				$this->setInner($controller);
 				$controller->setOuter($this);
 			}

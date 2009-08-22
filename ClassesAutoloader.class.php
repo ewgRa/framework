@@ -1,14 +1,6 @@
 <?php
 	/* $Id$ */
 
-	$file = join(
-		DIRECTORY_SEPARATOR,
-		array(dirname(__FILE__), 'patterns', 'Singleton.class.php')
-	);
-	
-	if(!class_exists('Singleton', false) && file_exists($file))
-		require_once($file);
-	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -70,10 +62,8 @@
 		 */
 		public function addSearchDirectories(array $searchDirectories)
 		{
-			$this->searchDirectories = array_merge(
-				$this->searchDirectories,
-				$searchDirectories
-			);
+			$this->searchDirectories =
+				array_merge($this->searchDirectories, $searchDirectories);
 			
 			return $this;
 		}
@@ -83,23 +73,25 @@
 		 */
 		public function load($className)
 		{
-			if(class_exists($className) || interface_exists($className))
+			if (class_exists($className) || interface_exists($className))
 				return $this;
 			
 			$classFile = $this->getFoundClassFile($className);
 			
-			if(!file_exists($this->getFoundClassFile($className)))
-			{
+			if (!file_exists($this->getFoundClassFile($className))) {
 				$classFile = $this->findClassFile($className);
 				
-				if($classFile)
+				if ($classFile)
 					$this->setClassFile($className, $classFile)->saveCache();
 			}
 
-			if($classFile)
+			if ($classFile)
 				require_once($classFile);
 
-			if((!class_exists($className) && !interface_exists($className)) || !$classFile)
+			if (
+				(!class_exists($className) && !interface_exists($className))
+				|| !$classFile
+			)
 				$this->dropFound($className)->saveCache();
 			
 			return $this;
@@ -110,7 +102,7 @@
 		 */
 		public function loadCache()
 		{
-			if(
+			if (
 				$this->hasCacheTicket()
 				&& $foundClasses = $this->getCacheTicket()->restoreData()->getData()
 			) {
@@ -120,25 +112,26 @@
 			return $this;
 		}
 
-		private function findClassFile($className, array $searchDirectories = null)
-		{
+		private function findClassFile(
+			$className,
+			array $searchDirectories = null
+		) {
 			$result = null;
 			
-			if(!$searchDirectories)
+			if (!$searchDirectories)
 				$searchDirectories = $this->getSearchDirectories();
 			
-			foreach($searchDirectories as $directory)
-			{
-				foreach(glob($directory . DIRECTORY_SEPARATOR . '*') as $fileName)
-				{
-					if(is_dir($fileName))
-					{
-						$result = $this->findClassFile($className, array($fileName));
+			foreach ($searchDirectories as $directory) {
+				foreach (
+					glob($directory . DIRECTORY_SEPARATOR . '*') as $fileName
+				) {
+					if (is_dir($fileName)) {
+						$result =
+							$this->findClassFile($className, array($fileName));
 						
-						if($result)
+						if ($result)
 							break 2;
-					}
-					elseif(
+					} elseif (
 						is_file($fileName)
 						&& basename($fileName)
 							== $className . self::CLASS_FILE_EXTENSION
@@ -175,8 +168,7 @@
 		 */
 		private function saveCache()
 		{
-			if($this->hasCacheTicket())
-			{
+			if ($this->hasCacheTicket()) {
 				$this->getCacheTicket()->
 					setData($this->getFoundClasses())->
 					storeData();
@@ -206,9 +198,10 @@
 		
 		private function getFoundClassFile($className)
 		{
-			return $this->isFound($className)
-				? $this->foundClasses[$className]
-				: null;
+			return
+				$this->isFound($className)
+					? $this->foundClasses[$className]
+					: null;
 		}
 	}
 ?>

@@ -1,11 +1,6 @@
 <?php
 	/* $Id$ */
 	
-	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseCache.class.php';
-	
-	if(!class_exists('BaseCache',false) && file_exists($file))
-		require_once($file);
-		
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -58,8 +53,7 @@
 		 */
 		public function getMemcache()
 		{
-			if(!$this->memcache)
-			{
+			if (!$this->memcache) {
 				$this->memcache = new Memcache();
 				$this->memcache->addServer($this->getHost(), $this->getPort());
 			}
@@ -69,36 +63,31 @@
 		
 		public function get(CacheTicket $ticket)
 		{
-			if($this->isDisabled())
-			{
+			if ($this->isDisabled()) {
 				$ticket->expired();
 				return null;
 			}
 			
 			$actualTime = $ticket->getActualTime();
 
-			if(!$actualTime)
+			if (!$actualTime)
 				$actualTime = time();
 			
 			$result = null;
 			
 			$key = $this->compileKey($ticket);
 			
-			if($data = $this->getMemcache()->get($key))
-			{
-				if($data['lifeTime'] && $data['lifeTime'] < $actualTime)
-				{
+			if ($data = $this->getMemcache()->get($key)) {
+				if ($data['lifeTime'] && $data['lifeTime'] < $actualTime) {
 					$this->getMemcache()->delete($key);
 					$ticket->expired();
-				}
-				else
-				{
+				} else {
 					$ticket->actual();
 					$result = $data['data'];
 				}
 			}
 
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debug($ticket);
 		
 			return $result;
@@ -109,12 +98,12 @@
 		 */
 		public function set(CacheTicket $ticket)
 		{
-			if($this->isDisabled())
+			if ($this->isDisabled())
 				return null;
 
 			$key = $this->compileKey($ticket);
 				
-			if(!$key)
+			if (!$key)
 				throw DefaultException::create('no key');
 			
 			$data = array(
@@ -124,7 +113,7 @@
 			
 			$lifeTime = $ticket->getLifeTime();
 			
-			if($lifeTime <= time())
+			if ($lifeTime <= time())
 				$lifeTime = null;
 			
 			$this->getMemcache()->set($key, $data, $lifeTime);

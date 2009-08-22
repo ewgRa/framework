@@ -24,16 +24,22 @@
 		{
 			$result = array();
 			
-			if($this->getResource() && $this->recordCount($this->getResource()))
-			{
+			if (
+				$this->getResource()
+				&& $this->recordCount($this->getResource())
+			) {
 				$this->dataSeek(1);
 				
-				while($row = $this->fetchArray())
-				{
-					if($keyField && isset($row[$keyField]))
-						$result[$row[$keyField]] = is_null($field) ? $row : $row[$field];
+				while ($row = $this->fetchArray()) {
+					$resultValue =
+						is_null($field)
+							? $row
+							: $row[$field];
+					
+					if ($keyField && isset($row[$keyField]))
+						$result[$row[$keyField]] = $resultValue;
 					else
-						$result[] = is_null($field) ? $row : $row[$field];
+						$result[] = $resultValue;
 				}
 			}
 			

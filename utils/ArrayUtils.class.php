@@ -18,7 +18,7 @@
 			
 			$result = array_shift($arrays);
 			
-			foreach($arrays as $array)
+			foreach ($arrays as $array)
 				$result = self::merge($result, $array);
 			
 			return $result;
@@ -26,12 +26,12 @@
 
 		private static function merge($one, $two)
 		{
-			if(!is_array($one) || !is_array($two))
+			if (!is_array($one) || !is_array($two))
 				return $two;
 			
 			$function = __FUNCTION__;
 			
-			foreach($two as $key => $value)
+			foreach ($two as $key => $value)
 				$one[$key] = self::$function(@$one[$key], $value);
 			
 			return $one;

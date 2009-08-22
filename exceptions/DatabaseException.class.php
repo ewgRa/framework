@@ -105,10 +105,9 @@
 		{
 			$resultString = array(parent::__toString());
 			
-			switch($this->code)
-			{
+			switch ($this->code) {
 				case self::CONNECT:
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('Could not connect to database');
 					
 					$resultString = array(
@@ -116,10 +115,11 @@
 						$this->message,
 						"Host: {$this->getPool()->getHost()}"
 					);
-				break;
+					
+					break;
 
 				case self::SELECT_DATABASE :
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('Could not select database');
 					
 					$resultString = array(
@@ -128,10 +128,11 @@
 						"Host: {$this->getPool()->getHost()}",
 						"Database: {$this->getPool()->getDatabaseName()}"
 					);
-				break;
+					
+					break;
 
 				case self::SQL_QUERY_ERROR:
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('SQL query has error');
 
 					$trace = $this->getSingleTrace(2);
@@ -144,12 +145,13 @@
 						"Query: {$this->poolLastQuery}",
 						"Error: {$this->poolError}",
 						"Query executed from: {$trace->getFile()}"
-							. " at line {$trace->getLine()}"
+						. " at line {$trace->getLine()}"
 					);
-				break;
+					
+					break;
 
 				case self::UNDEFINED_TABLE:
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('Known nothing about DB table alias');
 					
 					$trace = $this->getSingleTrace(2);
@@ -159,9 +161,10 @@
 						$this->message,
 						"Table alias: {$this->tableAlias}",
 						"Get table from: {$trace->getFile()}"
-							. " at line {$trace->getLine()}"
+						. " at line {$trace->getLine()}"
 					);
-				break;
+					
+					break;
 			}
 			
 			$resultString[] = '';

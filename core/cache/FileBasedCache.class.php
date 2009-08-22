@@ -1,11 +1,6 @@
 <?php
 	/* $Id$ */
 	
-	$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseCache.class.php';
-	
-	if(!class_exists('BaseCache',false) && file_exists($file))
-		require_once($file);
-		
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -41,35 +36,31 @@
 		
 		public function get(CacheTicket $ticket)
 		{
-			if($this->isDisabled())
-			{
+			if ($this->isDisabled()) {
 				$ticket->expired();
 				return null;
 			}
 			
 			$actualTime = $ticket->getActualTime();
 
-			if(!$actualTime)
+			if (!$actualTime)
 				$actualTime = time();
 			
 			$result = null;
 			
 			$fileName = $this->compileKey($ticket);
 			
-			if(!file_exists($fileName))
+			if (!file_exists($fileName)) {
 				$ticket->expired();
-			elseif(filemtime($fileName) < $actualTime)
-			{
+			} elseif (filemtime($fileName) < $actualTime) {
 				@unlink($fileName);
 				$ticket->expired();
-			}
-			else
-			{
+			} else {
 				$ticket->actual();
 				$result = unserialize(file_get_contents($fileName));
 			}
 
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debug($ticket);
 		
 			return $result;
@@ -80,12 +71,12 @@
 		 */
 		public function set(CacheTicket $ticket)
 		{
-			if($this->isDisabled())
+			if ($this->isDisabled())
 				return null;
 
 			$fileName = $this->compileKey($ticket);
 				
-			if(!$fileName)
+			if (!$fileName)
 				throw DefaultException::create('no key');
 			
 			$this->createPreDirs($fileName);
@@ -104,7 +95,7 @@
 			$resultArray = array();
 			$resultArray[] = $this->getCacheDir();
 			
-			if($ticket->getPrefix())
+			if ($ticket->getPrefix())
 				$resultArray[] = $ticket->getPrefix();
 				
 			$resultArray[] = $this->compilePreDirs($fileName);
@@ -117,12 +108,10 @@
 			$fileName,
 			$directoryCount = 2,
 			$symbolCount = 2
-		)
-		{
+		) {
 			$resultArray = array();
 			
-			for($i=0; $i < $directoryCount; $i++ )
-			{
+			for ($i=0; $i < $directoryCount; $i++ ) {
 				$resultArray[] = substr(
 					$fileName,
 					$i * $symbolCount,
@@ -142,7 +131,7 @@
 
 			$umask = umask(0);
 			
-			if(!file_exists($directory))
+			if (!file_exists($directory))
 				mkdir($directory, self::DIR_PERMISSIONS, true);
 							
 			umask($umask);

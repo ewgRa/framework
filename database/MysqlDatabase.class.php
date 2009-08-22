@@ -17,17 +17,19 @@
 		
 		/**
 		 * @return MysqlDatabase
+		 * @throws DatabaseException::CONNECT
 		 */
 		public function connect()
 		{
-			$db = @mysql_connect(
-				$this->getHost(),
-				$this->getUser(),
-				$this->getPassword(),
-				true
-			);
+			$db =
+				@mysql_connect(
+					$this->getHost(),
+					$this->getUser(),
+					$this->getPassword(),
+					true
+				);
 			
-			if(!$db)
+			if (!$db)
 				throw DatabaseException::connect()->setPool($this);
 			
 			$this->setLinkIdentifier($db)->connected();
@@ -42,19 +44,20 @@
 		{
 			$this->setCharset($charset);
 			
-			$this->query('SET NAMES ?', array($charset));
-			$this->query('SET CHARACTER SET ?', array($charset));
-			
-			$this->query(
-				'SET collation_connection = ?',
-				array($charset . '_general_ci')
-			);
+			$this->
+				queryNull('SET NAMES ?', array($charset))->
+				queryNull('SET CHARACTER SET ?', array($charset))->
+				queryNull(
+					'SET collation_connection = ?',
+					array($charset . '_general_ci')
+				);
 			
 			return $this;
 		}
 
 		/**
 		 * @return MysqlDatabase
+		 * @throws DatabaseException::SELECT_DATABASE
 		 */
 		public function selectDatabase($databaseName = null)
 		{
@@ -68,9 +71,8 @@
 					$this->getDatabaseName(),
 					$this->getLinkIdentifier()
 				)
-			) {
+			)
 				throw DatabaseException::selectDatabase()->setPool($this);
-			}
 			
 			return $this;
 		}
@@ -99,35 +101,45 @@
 			
 			$this->setLastQuery($query);
 			
-			if($this->getError())
+			if ($this->getError())
 				$this->queryError();
 
 			$endTime = microtime(true);
 				
-			if(Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
+			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debugQuery($query, $startTime, $endTime);
 			
 			return
 				MysqlDatabaseResult::create()->
-					setResource($resource);
+				setResource($resource);
 		}
 
+		public function queryNull($query, array $values = array())
+		{
+			$this->query($query, $values);
+			return $this;
+		}
+		
 		public function getLimit($count = null, $from = null)
 		{
-			$limit = array();
-			
-			if($from < 0)
+			if (!is_null($from) && $from < 0)
 				$from = 0;
 			
-			if($count < 0)
+			if (!is_null($count) && $count < 0)
 				$count = 0;
 			
-			if(!is_null($from))
+			$limit = array();
+			
+			if (!is_null($from))
 				$limit[] = (int)$from;
 			
-			if(!is_null($count)) $limit[] = (int)$count;
+			if (!is_null($count))
+				$limit[] = (int)$count;
 			
-			return count($limit) ? ' LIMIT ' . join(', ', $limit) : '';
+			return
+				count($limit)
+					? ' LIMIT ' . join(', ', $limit)
+					: '';
 		}
 
 		public function getInsertedId()
@@ -137,12 +149,10 @@
 
 		public function escape($variable)
 		{
-			if(is_array($variable))
-			{
-				foreach($variable as &$value)
+			if (is_array($variable)) {
+				foreach ($variable as &$value)
 					$value = $this->{__FUNCTION__}($value);
-			}
-			else
+			} else
 				$variable = mysql_escape_string($variable);
 			
 			return $variable;

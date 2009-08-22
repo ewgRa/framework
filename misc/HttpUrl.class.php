@@ -68,13 +68,13 @@
 		{
 			$parsed = parse_url($url);
 
-			if(isset($parsed['scheme']))
+			if (isset($parsed['scheme']))
 				$this->setScheme($parsed['scheme']);
 
-			if(isset($parsed['host']))
+			if (isset($parsed['host']))
 				$this->setHost($parsed['host']);
 			
-			if(isset($parsed['path']))
+			if (isset($parsed['path']))
 				$this->setPath($parsed['path']);
 			
 			return $this;

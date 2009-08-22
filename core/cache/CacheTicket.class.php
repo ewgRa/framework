@@ -58,12 +58,11 @@
 		 */
 		public function fillParams(array $params = null)
 		{
-			if($params)
-			{
-				if(isset($params['prefix']))
+			if ($params) {
+				if (isset($params['prefix']))
 					$this->setPrefix($params['prefix']);
 
-				if(isset($params['lifeTime']))
+				if (isset($params['lifeTime']))
 					$this->setLifeTime(time() + $params['lifeTime']);
 			}
 			

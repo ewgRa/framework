@@ -54,7 +54,7 @@
 		 */
 		public function getModel()
 		{
-			if(!$this->model)
+			if (!$this->model)
 				$this->model = Model::create();
 				
 			return $this->model;
@@ -62,7 +62,7 @@
 		
 		public function render()
 		{
-			if(!$this->hasView())
+			if (!$this->hasView())
 				throw DefaultException::create('no view for render');
 
 			return $this->view->transform($this->getModel());

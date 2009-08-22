@@ -20,7 +20,7 @@
 		 */
 		public function relativeStart()
 		{
-			if(isset($_REQUEST[session_name()]) && !$this->isStarted())
+			if (isset($_REQUEST[session_name()]) && !$this->isStarted())
 				$this->start();
 
 			return $this;
@@ -31,8 +31,7 @@
 		 */
 		public function start()
 		{
-			if(!$this->isStarted)
-			{
+			if (!$this->isStarted) {
 				$this->isStarted = true;
 				session_start();
 				$this->setData($_SESSION);
@@ -46,14 +45,12 @@
 		 */
 		public function save()
 		{
-			if(isset($_SESSION))
-			{
-				foreach($_SESSION as $k => $v)
+			if (isset($_SESSION)) {
+				foreach ($_SESSION as $k => $v)
 					session_unregister($k);
 			}
 			
-			foreach($this->getData() as $k => $v)
-			{
+			foreach ($this->getData() as $k => $v) {
 				session_register($k);
 				$_SESSION[$k] = $v;
 			}
@@ -63,9 +60,10 @@
 
 		public function getId()
 		{
-			return $this->isStarted()
-				? session_id()
-				: null;
+			return
+				$this->isStarted()
+					? session_id()
+					: null;
 		}
 	}
 ?>

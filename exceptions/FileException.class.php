@@ -40,11 +40,9 @@
 		{
 			$resultString = array(parent::__toString());
 			
-			switch($this->code)
-			{
+			switch ($this->code) {
 				case self::FILE_NOT_EXISTS:
-
-					if(!$this->message)
+					if (!$this->message)
 						$this->setMessage('File doesn\'t exists');
 					
 					$resultString = array(
@@ -53,7 +51,8 @@
 						"Filepath: {$this->filePath}",
 						"Current directory: " . getcwd()
 					);
-				break;
+					
+					break;
 			}
 			
 			$resultString[] = '';
