@@ -104,7 +104,8 @@
 		{
 			if (
 				$this->hasCacheTicket()
-				&& $foundClasses = $this->getCacheTicket()->restoreData()->getData()
+				&& $foundClasses
+					= $this->getCacheTicket()->restoreData()->getData()
 			) {
 				$this->setFoundClasses($foundClasses);
 			}
@@ -127,7 +128,7 @@
 				) {
 					if (is_dir($fileName)) {
 						$result =
-							$this->findClassFile($className, array($fileName));
+							$this->{__FUNCTION__}($className, array($fileName));
 						
 						if ($result)
 							break 2;
