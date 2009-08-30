@@ -27,6 +27,24 @@
 		/**
 		 * @return DefaultException
 		 */
+		public function setLine($line)
+		{
+			$this->line = $line;
+			return $this;
+		}
+
+		/**
+		 * @return DefaultException
+		 */
+		public function setFile($file)
+		{
+			$this->file = $file;
+			return $this;
+		}
+
+		/**
+		 * @return DefaultException
+		 */
 		public function setMessage($message)
 		{
 			$this->message = $message;
