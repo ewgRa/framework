@@ -61,19 +61,15 @@
 			if ($cacheTicket->isExpired()) {
 				$yamlConfig = Yaml::load($yamlFile);
 				
-				if (isset($yamlConfig['ticketAliases'])) {
-					foreach ($yamlConfig['ticketAliases'] as $alias => $settings)
-						$this->ticketAliases[$alias] = $settings;
-				}
+				if (isset($yamlConfig['ticketAliases']))
+					$this->ticketAliases = $yamlConfig['ticketAliases'];
 				
 				$cacheTicket->
-					setData(array('ticketAliases' => $this->ticketAliases))->
+					setData($this->ticketAliases)->
 					setLifeTime(filemtime($yamlFile))->
 					storeData();
-			} else {
-				$data = $cacheTicket->getData();
-				$this->ticketAliases = $data['ticketAliases'];
-			}
+			} else
+				$this->ticketAliases = $cacheTicket->getData();
 				
 			return $this;
 		}

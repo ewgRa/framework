@@ -16,8 +16,10 @@
 		private $prefix 	= null;
 		private $key 		= null;
 		private $actualTime = null;
-		private $expired	= true;
 		private $lifeTime 	= null;
+		private $expired	= true;
+		
+		private $expiredTime = null;
 		
 		/**
 		 * @return CacheTicket
@@ -117,6 +119,20 @@
 		public function setActualTime($actualTime)
 		{
 			$this->actualTime = $actualTime;
+			return $this;
+		}
+		
+		public function getExpiredTime()
+		{
+			return $this->expiredTime;
+		}
+		
+		/**
+		 * @return CacheTicket
+		 */
+		public function setExpiredTime($expiredTime)
+		{
+			$this->expiredTime = $expiredTime;
 			return $this;
 		}
 		

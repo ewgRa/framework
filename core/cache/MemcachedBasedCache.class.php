@@ -78,6 +78,8 @@
 			$key = $this->compileKey($ticket);
 			
 			if ($data = $this->getMemcache()->get($key)) {
+				$ticket->setExpiredTime($data['lifeTime']);
+				
 				if ($data['lifeTime'] && $data['lifeTime'] < $actualTime) {
 					$this->getMemcache()->delete($key);
 					$ticket->expired();
@@ -85,7 +87,8 @@
 					$ticket->actual();
 					$result = $data['data'];
 				}
-			}
+			} else
+				$ticket->setExpiredTime(null);
 
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debug($ticket);
@@ -103,15 +106,13 @@
 
 			$key = $this->compileKey($ticket);
 				
-			if (!$key)
-				throw DefaultException::create('no key');
-			
 			$data = array(
 				'data' 		=> $ticket->getData(),
 				'lifeTime' 	=> $ticket->getLifeTime()
 			);
 			
 			$lifeTime = $ticket->getLifeTime();
+			$ticket->setExpiredTime($lifeTime);
 			
 			if ($lifeTime <= time())
 				$lifeTime = null;

@@ -17,12 +17,12 @@
 		
 		public function getId();
 		
-		public function has($alias);
+		public function has($key);
 		
-		public function get($alias);
+		public function get($key);
 		
-		public function set($alias, $value);
+		public function set($key, $value);
 		
-		public function drop($alias);
+		public function drop($key);
 	}
 ?>

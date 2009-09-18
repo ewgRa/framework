@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class Model
+	class Model
 	{
 		private $data = array();
 
@@ -54,6 +54,14 @@
 			}
 				
 			return $this->data[$key];
+		}
+		
+		public function drop($key)
+		{
+			if ($this->has($key))
+				unset($this->data[$key]);
+				
+			return $this;
 		}
 		
 		/**

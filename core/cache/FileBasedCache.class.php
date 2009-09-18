@@ -54,8 +54,10 @@
 				$ticket->expired();
 			} elseif (filemtime($fileName) < $actualTime) {
 				@unlink($fileName);
+				$ticket->setExpiredTime(filemtime($fileName));
 				$ticket->expired();
 			} else {
+				$ticket->setExpiredTime(filemtime($fileName));
 				$ticket->actual();
 				$result = unserialize(file_get_contents($fileName));
 			}
@@ -84,6 +86,7 @@
 			file_put_contents($fileName, serialize($ticket->getData()));
 			chmod($fileName, self::FILE_PERMISSIONS);
 			touch($fileName, $ticket->getLifeTime());
+			$ticket->setExpiredTime($ticket->getLifeTime());
 			
 			return $this;
 		}
