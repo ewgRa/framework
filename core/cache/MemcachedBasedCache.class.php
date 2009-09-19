@@ -7,8 +7,8 @@
 	*/
 	final class MemcachedBasedCache extends BaseCache
 	{
-		private $host = null;
-		private $port = null;
+		private $host = 'localhost';
+		private $port = 11211;
 
 		private $memcache = null;
 		
