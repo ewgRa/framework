@@ -13,7 +13,7 @@
 		/**
 		 * @return ExtendedDomDocument
 		 */
-		public static function create($version, $encoding)
+		public static function create($version = '1.0', $encoding = 'utf8')
 		{
 			return new self($version, $encoding);
 		}
