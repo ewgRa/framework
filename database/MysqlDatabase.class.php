@@ -152,8 +152,12 @@
 			if (is_array($variable)) {
 				foreach ($variable as &$value)
 					$value = $this->{__FUNCTION__}($value);
-			} else
+			} else {
+				if (!$this->isConnected())
+					$this->connect();
+				
 				$variable = mysql_escape_string($variable);
+			}
 			
 			return $variable;
 		}
