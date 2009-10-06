@@ -156,7 +156,11 @@
 				if (!$this->isConnected())
 					$this->connect();
 				
-				$variable = mysql_escape_string($variable);
+				$variable =
+					mysql_real_escape_string(
+						$variable,
+						$this->getLinkIdentifier()
+					);
 			}
 			
 			return $variable;
