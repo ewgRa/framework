@@ -101,6 +101,15 @@
 			return $this->foundClasses;
 		}
 		
+		
+		public function getFoundClassFile($className)
+		{
+			return
+				$this->isFound($className)
+					? $this->foundClasses[$className]
+					: null;
+		}
+		
 		private function findClassFile(
 			$className,
 			array $searchDirectories = null
@@ -155,14 +164,6 @@
 		private function isFound($className)
 		{
 			return isset($this->foundClasses[$className]);
-		}
-		
-		private function getFoundClassFile($className)
-		{
-			return
-				$this->isFound($className)
-					? $this->foundClasses[$className]
-					: null;
 		}
 	}
 ?>
