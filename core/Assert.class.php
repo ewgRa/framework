@@ -51,7 +51,8 @@
 		public static function isFileExists($filePath)
 		{
 			if (!file_exists($filePath)) {
-				$trace = array_shift(debug_backtrace());
+				$trace = debug_backtrace();
+				$trace = array_shift($trace);
 
 				throw
 					FileException::fileNotExists()->

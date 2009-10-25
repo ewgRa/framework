@@ -57,20 +57,20 @@
 		}
 		
 		/**
-		 * @return Trace
+		 * @return SingleTrace
 		 */
 		protected function getSingleTrace($index)
 		{
 			$trace = $this->getTrace();
-			$singleTrace = $trace[$index];
+			$singleRawTrace = $trace[$index];
 			
-			$trace =
-				Trace::create()->
-				setLine($singleTrace['line'])->
-				setFile($singleTrace['file']);
+			$singleTrace =
+				SingleTrace::create()->
+				setLine($singleRawTrace['line'])->
+				setFile($singleRawTrace['file']);
 			
 			
-			return $trace;
+			return $singleTrace;
 		}
 	}
 ?>

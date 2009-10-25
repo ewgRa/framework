@@ -6,10 +6,14 @@
 	
 	define('PROJECT', 'ewgraFrameworkTests');
 	define('FRAMEWORK_DIR', dirname(__FILE__) . '/..');
-
+	
+	define('EWGRA_PROJECTS_DIR', '/home/www/ewgraProjects');
+	define('LIB_DIR', EWGRA_PROJECTS_DIR . '/lib-trunk/lib');
+		
 	define('CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
 	define('CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
+	define('MEMCACHED_TEST_POOL_ALIAS', 'memcachedTestPool');
 	
 	if(!file_exists(TMP_DIR))
 		mkdir(TMP_DIR, 0777, true);
@@ -38,8 +42,14 @@
 				? unserialize($foundClasses)
 				: array()
 		);
-		
+
 		register_shutdown_function('storeAutoloaderMap', $key);
+	}
+	
+	function cacheInit()
+	{
+		Cache::me()->
+			addPool(MemcachedBasedCache::create(), MEMCACHED_TEST_POOL_ALIAS);
 	}
 	
 	function storeAutoloaderMap($key)

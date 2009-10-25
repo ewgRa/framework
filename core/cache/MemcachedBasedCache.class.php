@@ -126,5 +126,11 @@
 		{
 			return $ticket->getPrefix() . '-' . md5(serialize($ticket->getKey()));
 		}
+		
+		public function clean()
+		{
+			$this->getMemcache()->flush();
+			return $this;
+		}
 	}
 ?>

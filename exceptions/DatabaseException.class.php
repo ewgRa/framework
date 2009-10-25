@@ -135,7 +135,7 @@
 					if (!$this->message)
 						$this->setMessage('SQL query has error');
 
-					$trace = $this->getSingleTrace(2);
+					$singleTrace = $this->getSingleTrace(2);
 
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
@@ -144,8 +144,8 @@
 						"Database: {$this->getPool()->getDatabaseName()}",
 						"Query: {$this->poolLastQuery}",
 						"Error: {$this->poolError}",
-						"Query executed from: {$trace->getFile()}"
-						. " at line {$trace->getLine()}"
+						"Query executed from: {$singleTrace->getFile()}"
+						. " at line {$singleTrace->getLine()}"
 					);
 					
 					break;
@@ -154,14 +154,14 @@
 					if (!$this->message)
 						$this->setMessage('Known nothing about DB table alias');
 					
-					$trace = $this->getSingleTrace(2);
+					$singleTrace = $this->getSingleTrace(2);
 						
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
 						$this->message,
 						"Table alias: {$this->tableAlias}",
-						"Get table from: {$trace->getFile()}"
-						. " at line {$trace->getLine()}"
+						"Get table from: {$singleTrace->getFile()}"
+						. " at line {$singleTrace->getLine()}"
 					);
 					
 					break;

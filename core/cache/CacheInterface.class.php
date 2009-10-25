@@ -19,6 +19,8 @@
 		
 		public function enable();
 
+		public function clean();
+		
 		public function isDisabled();
 	}
 ?>

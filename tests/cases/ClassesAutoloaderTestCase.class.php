@@ -18,7 +18,7 @@
 		public function tearDown()
 		{
 			Singleton::setInstance(
-				get_class($this->savedClassesAutoloader),
+				'ClassesAutoloader',
 				unserialize($this->savedClassesAutoloader)
 			);
 		}
@@ -28,7 +28,7 @@
 			$this->assertTrue(ClassesAutoloader::me() instanceof Singleton);
 		}
 		
-		public function testLoadClass()
+		public function testNormalLoadClass()
 		{
 			$className = __FUNCTION__ . rand();
 			
@@ -49,7 +49,7 @@
 			$this->assertTrue(class_exists($className, false));
 		}
 		
-		public function testLoadInterface()
+		public function testNormalLoadInterface()
 		{
 			$interfaceName = __FUNCTION__ . rand();
 			

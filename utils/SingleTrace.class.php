@@ -4,15 +4,14 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * FIXME: rename to single trace
 	*/
-	final class Trace
+	final class SingleTrace
 	{
 		private $line = null;
 		private $file = null;
 		
 		/**
-		 * @return Trace
+		 * @return SingleTrace
 		 */
 		public static function create()
 		{
@@ -20,7 +19,7 @@
 		}
 		
 		/**
-		 * @return Trace
+		 * @return SingleTrace
 		 */
 		public function setLine($line)
 		{
@@ -34,7 +33,7 @@
 		}
 		
 		/**
-		 * @return Trace
+		 * @return SingleTrace
 		 */
 		public function setFile($file)
 		{

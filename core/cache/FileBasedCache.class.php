@@ -50,16 +50,19 @@
 			
 			$fileName = $this->compileKey($ticket);
 			
-			if (!file_exists($fileName)) {
+			if (!file_exists($fileName))
 				$ticket->expired();
-			} elseif (filemtime($fileName) < $actualTime) {
-				@unlink($fileName);
-				$ticket->setExpiredTime(filemtime($fileName));
-				$ticket->expired();
-			} else {
-				$ticket->setExpiredTime(filemtime($fileName));
-				$ticket->actual();
-				$result = unserialize(file_get_contents($fileName));
+			else {
+				$fileModifiedTime = filemtime($fileName);
+				$ticket->setExpiredTime($fileModifiedTime);
+				
+				if ($fileModifiedTime < $actualTime) {
+					@unlink($fileName);
+					$ticket->expired();
+				} else {
+					$ticket->actual();
+					$result = unserialize(file_get_contents($fileName));
+				}
 			}
 
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
@@ -105,6 +108,14 @@
 			$resultArray[] = $fileName;
 			
 			return join(DIRECTORY_SEPARATOR, $resultArray);
+		}
+		
+		public function clean()
+		{
+			if(file_exists($this->getCacheDir()))
+				Dir::create()->setPath($this->getCacheDir())->delete();
+
+			return $this;
 		}
 
 		private function compilePreDirs(

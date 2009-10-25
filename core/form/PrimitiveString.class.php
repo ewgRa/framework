@@ -14,5 +14,16 @@
 		{
 			return new self($name);
 		}
+
+		/**
+		 * @return BasePrimitive
+		 */
+		public function import($value)
+		{
+			$result = parent::import($value);
+			
+			$this->setValue((string)$this->getValue());
+			return $result;
+		}
 	}
 ?>

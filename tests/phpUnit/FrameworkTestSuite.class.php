@@ -59,11 +59,11 @@
 				foreach (glob($dir.'/*TestSuite.class.php') as $file) {
 					$childSuiteClass = str_replace('.class.php', '', basename($file));
 					$childSuite = new $childSuiteClass;
-					
+
 					$childSuite->
 						setSelfDir($dir)->
 						setCasesDir($this->getCasesDir().'/'.basename($dir));
-					
+
 					$this->addTestSuite($childSuite);
 				}
 			}
