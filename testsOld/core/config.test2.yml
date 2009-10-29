@@ -1,9 +1,0 @@
-all:
-  testArray:
-    arrayKey1: arrayValue1
-    arrayKey2: arrayValue2_new
-    
-
-testSection:
-  testArray:
-    arrayKey2: arrayValue2_testSection_new
