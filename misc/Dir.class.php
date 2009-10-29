@@ -10,7 +10,7 @@
 		private $path = null;
 		
 		/**
-		 * @return File
+		 * @return Dir
 		 */
 		public static function create()
 		{
@@ -18,7 +18,7 @@
 		}
 		
 		/**
-		 * @return File
+		 * @return Dir
 		 */
 		public function setPath($path)
 		{
@@ -33,17 +33,20 @@
 		
 		public function delete()
 		{
-			return self::deleteDir($this->getPath());
+			self::deleteDir($this->getPath());
+			return $this;
 		}
 		
 		public static function deleteDir($dir)
 		{
 			$files = glob($dir . DIRECTORY_SEPARATOR . '*');
 			
+			$function = __FUNCTION__;
+			
 			foreach ($files as $file) {
 				if(is_dir($file))
-					self::deleteDir($file);
-				elseif(is_file($file))
+					self::$function($file);
+				else
 					unlink($file);
 			}
 

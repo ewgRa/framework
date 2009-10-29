@@ -7,9 +7,6 @@
 	*/
 	final class VariableUtils
 	{
-		/**
-		 * @example ../tests/utils/VariableUtilsTest.class.php
-		 */
 		public static function getValueByString($variableName)
 		{
 			$result = null;
@@ -54,9 +51,6 @@
 			return $result;
 		}
 		
-		/**
-		 * @example utils/VariableUtilsTest.class.php
-		 */
 		public static function registerAsConstants(array $variables)
 		{
 			foreach ($variables as $constName => $constValue) {

@@ -206,7 +206,7 @@
 		}
 
 		/**
-		 * @return HttpRequests
+		 * @return HttpRequest
 		 */
 		public function setUrl(HttpUrl $url)
 		{

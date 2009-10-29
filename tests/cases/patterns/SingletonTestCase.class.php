@@ -7,43 +7,50 @@
 	*/
 	final class SingletonTestCase extends FrameworkTestCase
 	{
-		private $testVar = 'testVar';
+		public function setUp()
+		{
+			$this->dropInstances();
+		}
+		
+		public function tearDown()
+		{
+			$this->dropInstances();
+		}
 		
 		public function testIsRealySingleton()
 		{
+			$testVar = rand();
+			
 			$this->assertSame(
 				MySingletonTest::me()->getTestVariable(),
 				null
 			);
 			
-			MySingletonTest::me()->setTestVariable($this->testVar);
+			MySingletonTest::me()->setTestVariable($testVar);
 			
 			$this->assertSame(
 				MySingletonTest::me()->getTestVariable(),
-				$this->testVar
+				$testVar
 			);
 		}
 		
 		public function testExtendsFromSingleton()
 		{
-			MySingletonTest::me()->setTestVariable($this->testVar);
-			MySingletonTest2::me()->setTestVariable($this->testVar . rand());
+			$testVar = rand();
+			
+			MySingletonTest::me()->setTestVariable($testVar);
+			MySingletonTest2::me()->setTestVariable($testVar . rand());
 			
 			$this->assertNotSame(
 				MySingletonTest::me()->getTestVariable(),
 				MySingletonTest2::me()->getTestVariable()
 			);
 		}
-
-		public function testExtendsFromSingletonAsSame()
+		
+		private function dropInstances()
 		{
-			MySingletonTest::me()->setTestVariable($this->testVar);
-			MySingletonTest3::me()->setTestVariable($this->testVar . rand());
-			
-			$this->assertSame(
-				MySingletonTest::me()->getTestVariable(),
-				MySingletonTest3::me()->getTestVariable()
-			);
+			Singleton::dropInstance('MySingletonTest');
+			Singleton::dropInstance('MySingletonTest2');
 		}
 	}
 
@@ -75,7 +82,7 @@
 
 	}
 	
-	class MySingletonTest2 extends MySingletonTest
+	final class MySingletonTest2 extends MySingletonTest
 	{
 		/**
 		 * @return MySingletonTest2
@@ -83,17 +90,6 @@
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
-		}
-	}
-
-	class MySingletonTest3 extends MySingletonTest
-	{
-		/**
-		 * @return MySingletonTest3
-		 */
-		public static function me()
-		{
-			return parent::getInstance('MySingletonTest');
 		}
 	}
 ?>

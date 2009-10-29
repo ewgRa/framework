@@ -9,7 +9,6 @@
 	{
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663
-		 * @example ../tests/utils/ArrayUtilsTest.class.php
 		 * @param $arr1, $arr2, ..., $arrN
 		 */
 		public static function recursiveMerge(array $arr1, array $arr2)

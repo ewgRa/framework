@@ -1,8 +1,6 @@
 <?php
 	/* $Id$ */
 
-	define( 'TEST_CONST', 'value' );
-	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,6 +9,8 @@
 	{
 		public function testGetValueByString()
 		{
+			define( 'TEST_CONST', 'value' );
+	
 			$this->assertEquals(
 				VariableUtils::getValueByString('TEST_CONST'), TEST_CONST
 			);

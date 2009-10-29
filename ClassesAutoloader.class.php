@@ -80,8 +80,8 @@
 				(!class_exists($className) && !interface_exists($className))
 				|| !$classFile
 			) {
-				$this->classMapChanged = true;
 				$this->dropFound($className);
+				$this->classMapChanged = true;
 			}
 			
 			return $this;

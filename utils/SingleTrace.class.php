@@ -7,8 +7,8 @@
 	*/
 	final class SingleTrace
 	{
-		private $line = null;
 		private $file = null;
+		private $line = null;
 		
 		/**
 		 * @return SingleTrace
@@ -16,20 +16,6 @@
 		public static function create()
 		{
 			return new self;
-		}
-		
-		/**
-		 * @return SingleTrace
-		 */
-		public function setLine($line)
-		{
-			$this->line = $line;
-			return $this;
-		}
-
-		public function getLine()
-		{
-			return $this->line;
 		}
 		
 		/**
@@ -44,6 +30,20 @@
 		public function getFile()
 		{
 			return $this->file;
+		}
+
+		/**
+		 * @return SingleTrace
+		 */
+		public function setLine($line)
+		{
+			$this->line = $line;
+			return $this;
+		}
+
+		public function getLine()
+		{
+			return $this->line;
 		}
 	}
 ?>
