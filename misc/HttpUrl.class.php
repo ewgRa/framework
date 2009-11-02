@@ -22,6 +22,14 @@
 		/**
 		 * @return HttpUrl
 		 */
+		public static function createFromString($string)
+		{
+			return self::create()->parse($string);
+		}
+		
+		/**
+		 * @return HttpUrl
+		 */
 		public function setScheme($scheme)
 		{
 			$this->scheme = $scheme;

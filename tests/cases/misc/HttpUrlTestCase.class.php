@@ -9,7 +9,11 @@
 	{
 		public function testParse()
 		{
-			$this->fail();
+			$httpUrl = HttpUrl::createFromString('http://localhost.ru/path');
+			
+			$this->assertSame('http', $httpUrl->getScheme());
+			$this->assertSame('localhost.ru', $httpUrl->getHost());
+			$this->assertSame('/path', $httpUrl->getPath());
 		}
 	}
 ?>

@@ -27,6 +27,16 @@
 			return true;
 		}
 		
+		public static function isFalse(
+			$variable,
+			$message = 'Variable is not false!'
+		) {
+			if ($variable !== false)
+				throw DefaultException::create($message);
+							
+			return true;
+		}
+		
 		public static function isNotNull(
 			$variable,
 			$message = 'Variable is null!'
