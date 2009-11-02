@@ -7,14 +7,33 @@
 	*/
 	class YamlTestCase extends FrameworkTestCase
 	{
-		public function testLoad()
+		public function testSaveLoad()
 		{
-			$this->fail();
-		}
-
-		public function testLoadString()
-		{
-			$this->fail();
+			$data =
+ 				array(
+					'test' => 'testValue',
+					'testArray' => array(
+						0 => array('key' => 'value')
+					),
+					'testArray2' => array(
+						'key' => 'value'
+					)
+				);
+			
+			$yamlFile = TMP_DIR.'/test.yml';
+			
+			Yaml::save($yamlFile, $data);
+			
+			$yamlResult = Yaml::load($yamlFile);
+			
+			$this->assertSame($yamlResult, $data);
+			
+			$this->assertSame(
+				Yaml::loadString(file_get_contents($yamlFile)),
+				$data
+			);
+			
+			unlink($yamlFile);
 		}
 	}
 ?>

@@ -9,7 +9,7 @@
 	{
 		public function testDeleteDir()
 		{
-			$dirName = CACHE_DIR . DIRECTORY_SEPARATOR . __CLASS__;
+			$dirName = TMP_DIR . DIRECTORY_SEPARATOR . __CLASS__;
 			
 			if (!file_exists($dirName))
 				mkdir($dirName);

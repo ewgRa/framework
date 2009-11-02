@@ -11,7 +11,7 @@
 		{
 			return
 				FileBasedCache::create()->setCacheDir(
-					CACHE_DIR . DIRECTORY_SEPARATOR . 'cacheData' . __CLASS__
+					TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData' . __CLASS__
 				);
 		}
 	}

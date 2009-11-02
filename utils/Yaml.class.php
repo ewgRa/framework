@@ -24,6 +24,14 @@
 			return Spyc::YAMLLoad($string);
 		}
 		
+		public static function save($file,$data)
+		{
+			self::checkInclude();
+			$spyc = new Spyc;
+			
+			return file_put_contents($file, $spyc->dump($data));
+		}
+		
 		private static function checkInclude()
 		{
 			if (!class_exists('Spyc') && defined('LIB_DIR'))
