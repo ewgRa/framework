@@ -9,7 +9,15 @@
 	{
 		public function testTransform()
 		{
-			$this->fail();
+			$viewResult =
+				XsltView::create()->
+				loadLayout(
+					File::create()->
+					setPath(dirname(__FILE__).'/renderXsltView.xsl')
+				)->
+				transform(Model::create()->set('data', 'testData'));
+			
+			$this->assertSame($viewResult, 'testData');
 		}
 	}
 ?>

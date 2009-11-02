@@ -9,7 +9,15 @@
 	{
 		public function testTransform()
 		{
-			$this->fail();
+			$viewResult =
+				PhpView::create()->
+				loadLayout(
+					File::create()->
+					setPath(dirname(__FILE__).'/renderPhpView.php')
+				)->
+				transform(Model::create()->set('data', 'testData'));
+			
+			$this->assertSame($viewResult, 'testData');
 		}
 	}
 ?>
