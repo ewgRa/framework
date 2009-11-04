@@ -50,12 +50,22 @@
 		 */
 		public function importFile($filePath)
 		{
-			$importNode =
-				$this->createElementNS(
-					$this->documentElement->namespaceURI,
-					'xsl:import'
-				);
+			Assert::isNotNull(
+				$this->documentElement,
+				'are you realy want import file without root node?'
+			);
 			
+			$importNode = null;
+			
+			if ($this->documentElement->namespaceURI) {
+				$importNode =
+					$this->createElementNS(
+						$this->documentElement->namespaceURI,
+						'xsl:import'
+					);
+			} else
+				$importNode = $this->createElement('xsl:import');
+
 			$importNode->setAttribute('href', $filePath);
 			
 			$this->documentElement->

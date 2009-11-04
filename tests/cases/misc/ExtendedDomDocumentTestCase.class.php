@@ -9,12 +9,31 @@
 	{
 		public function testImportFile()
 		{
-			$this->fail();
+			$document = ExtendedDomDocument::create();
+				
+			$document->load(dirname(__FILE__).'/test.xsl');
+			
+			$document->importFile('testFile');
+			
+			$this->assertTrue(
+				strpos($document->saveXml(), '<xsl:import href="testFile"/>') > 0
+			);
 		}
 
 		public function testCreateNodeFromVar()
 		{
-			$this->fail();
+			$document = ExtendedDomDocument::create();
+			
+			$node = $document->createNodeFromVar(
+				array('var' => 'value'),
+				'nodeName',
+				array('attr' => 'attrValue')
+			);
+				
+			$this->assertSame(
+				$document->saveXml($node),
+				'<nodeName attr="attrValue"><var><![CDATA[value]]></var></nodeName>'
+			);
 		}
 	}
 ?>
