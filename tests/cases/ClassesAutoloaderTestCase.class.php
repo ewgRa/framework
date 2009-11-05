@@ -12,7 +12,7 @@
 		public function setUp()
 		{
 			$this->savedClassesAutoloader = serialize(ClassesAutoloader::me());
-			Singleton::dropInstance(get_class($this->savedClassesAutoloader));
+			Singleton::dropInstance('ClassesAutoloader');
 		}
 		
 		public function tearDown()
@@ -28,7 +28,7 @@
 			$this->assertTrue(ClassesAutoloader::me() instanceof Singleton);
 		}
 		
-		public function testNormalLoadClass()
+		public function testLoadClass()
 		{
 			$className = __FUNCTION__ . rand();
 			
@@ -49,7 +49,7 @@
 			$this->assertTrue(class_exists($className, false));
 		}
 		
-		public function testNormalLoadInterface()
+		public function testLoadInterface()
 		{
 			$interfaceName = __FUNCTION__ . rand();
 			
