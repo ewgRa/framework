@@ -8,7 +8,7 @@
 	define('FRAMEWORK_DIR', dirname(__FILE__) . '/..');
 	
 	define('EWGRA_PROJECTS_DIR', '/home/www/ewgraProjects');
-	define('LIB_DIR', EWGRA_PROJECTS_DIR . '/lib-trunk/lib');
+	define('LIB_DIR', EWGRA_PROJECTS_DIR . '/lib');
 		
 	define('CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
