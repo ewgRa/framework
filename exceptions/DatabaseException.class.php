@@ -135,7 +135,7 @@
 					if (!$this->message)
 						$this->setMessage('SQL query has error');
 
-					$singleTrace = $this->getSingleTrace(2);
+					$singleTrace = $this->getSingleTrace(3);
 
 					$resultString = array(
 						__CLASS__ . ": [{$this->code}]:",
