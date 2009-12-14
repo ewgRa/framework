@@ -5,29 +5,32 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class MimeContentType extends Enumeration
+	final class ContentType extends Enumeration
 	{
 		const APPLICATION_PHP 	= 1;
 		const TEXT_XSLT 		= 2;
 		const TEXT_CSS 			= 3;
 		const TEXT_JAVASCRIPT 	= 4;
+		const TEXT_XML		 	= 5;
 		
 		protected $names = array(
 			self::APPLICATION_PHP 	=> 'application/php',
 			self::TEXT_XSLT 		=> 'text/xslt',
 			self::TEXT_CSS 			=> 'text/css',
-			self::TEXT_JAVASCRIPT 	=> 'text/javascript'
+			self::TEXT_JAVASCRIPT 	=> 'text/javascript',
+			self::TEXT_XML		 	=> 'text/xml'
 		);
 		
 		private $extensions = array(
 			self::APPLICATION_PHP 	=> 'php',
 			self::TEXT_XSLT 		=> 'xsl',
 			self::TEXT_CSS 			=> 'css',
-			self::TEXT_JAVASCRIPT 	=> 'js'
+			self::TEXT_JAVASCRIPT 	=> 'js',
+			self::TEXT_XML		 	=> 'xml'
 		);
 		
 		/**
-		 * @return MimeContentType
+		 * @return ContentType
 		 */
 		public static function create($id)
 		{
@@ -35,7 +38,7 @@
 		}
 		
 		/**
-		 * @return MimeContentType
+		 * @return ContentType
 		 */
 		public static function any()
 		{
@@ -43,7 +46,7 @@
 		}
 		
 		/**
-		 * @return MimeContentType
+		 * @return ContentType
 		 */
 		public static function createByName($name)
 		{
@@ -56,7 +59,7 @@
 		}
 		
 		/**
-		 * @return MimeContentType
+		 * @return ContentType
 		 */
 		public static function createByExtension($extension)
 		{
