@@ -37,6 +37,22 @@
 			return $this;
 		}
 		
+		public function isExists()
+		{
+			return file_exists($this->getPath());
+		}
+		
+		/**
+		 * @return Dir
+		 */
+		public function make()
+		{
+			$umask = umask(0);
+			mkdir($this->getPath(), FileBasedCache::DIR_PERMISSIONS, true);
+			umask($umask);
+			return $this;
+		}
+		
 		public static function deleteDir($dir)
 		{
 			$files = glob($dir . DIRECTORY_SEPARATOR . '*');

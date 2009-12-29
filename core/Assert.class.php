@@ -84,5 +84,10 @@
 												
 			return true;
 		}
+
+		public static function isUnreachable()
+		{
+			throw DefaultException::create('Unreachable code reached');
+		}
 	}
 ?>

@@ -11,6 +11,7 @@
 		private $get		= array();
 		private $post		= array();
 		private $cookie		= array();
+		private $server		= array();
 		private $attached	= array();
 		
 		/**
@@ -194,6 +195,50 @@
 			return
 				$this->hasCookieVar($key)
 					? $this->cookie[$key]
+					: null;
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getServer()
+		{
+			return $this->server;
+		}
+		
+		public function hasServer()
+		{
+			return count($this->server) !== 0;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setServer(array $server)
+		{
+			$this->server = $server;
+			return $this;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setServerVar($key, $value)
+		{
+			$this->server[$key] = $value;
+			return $this;
+		}
+		
+		public function hasServerVar($key)
+		{
+			return isset($this->server[$key]);
+		}
+		
+		public function getServerVar($key)
+		{
+			return
+				$this->hasServerVar($key)
+					? $this->server[$key]
 					: null;
 		}
 		
