@@ -26,21 +26,27 @@
 			$nodeName,
 			array $attributes = array()
 		) {
-			if (is_numeric($nodeName)) {
+			try {
+				$node = $this->createElement($nodeName);
+			} catch (DOMException $e) {
 				$attributes[self::NUMERIC_NODE_ATTRIBUTE] = $nodeName;
 				$nodeName = self::NODE_PREFIX;
+				$node = $this->createElement($nodeName);
 			}
-			
-			$node = $this->createElement($nodeName);
 
 			foreach ($attributes as $k => $v)
 				$node->setAttribute($k, $v);
 
+			if (is_object($var)) {
+				$var = (array)$var;
+			}
+			
 			if (is_array($var)) {
 				foreach ($var as $k => $v)
 					$node->appendChild($this->{__FUNCTION__}($v, $k));
-			} else
+			} else {
 				$node->appendChild($this->createCDATASection($var));
+			}
 			
 			return $node;
 		}

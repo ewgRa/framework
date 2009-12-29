@@ -25,14 +25,14 @@
 			$document = ExtendedDomDocument::create();
 			
 			$node = $document->createNodeFromVar(
-				array('var' => 'value'),
+				array('var' => 'value', 1 => 'testNumber', '1_1' => 'testInvalidNodeName'),
 				'nodeName',
 				array('attr' => 'attrValue')
 			);
 				
 			$this->assertSame(
 				$document->saveXml($node),
-				'<nodeName attr="attrValue"><var><![CDATA[value]]></var></nodeName>'
+				'<nodeName attr="attrValue"><var><![CDATA[value]]></var><item key="1"><![CDATA[testNumber]]></item><item key="1_1"><![CDATA[testInvalidNodeName]]></item></nodeName>'
 			);
 		}
 	}
