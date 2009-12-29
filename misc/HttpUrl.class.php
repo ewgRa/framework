@@ -87,5 +87,13 @@
 			
 			return $this;
 		}
+		
+		public function __toString()
+		{
+			return
+				($this->getScheme() ? $this->getScheme().'://' : null)
+				.($this->getHost() ? $this->getHost().'/' : null)
+				.$this->getPath();
+		}
 	}
 ?>
