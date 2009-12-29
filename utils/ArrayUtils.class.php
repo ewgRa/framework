@@ -7,6 +7,16 @@
 	*/
 	final class ArrayUtils
 	{
+		public static function getObjectIds(array $objects)
+		{
+			$result = array();
+
+			foreach ($objects as $object)
+				$result[] = $object->getId();
+			
+			return $result;
+		}
+		
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663
 		 * @param $arr1, $arr2, ..., $arrN
