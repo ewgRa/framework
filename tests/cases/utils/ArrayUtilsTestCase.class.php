@@ -37,5 +37,15 @@
 				)
 			);
 		}
+
+		public function testGetObjectIds()
+		{
+			$object = new ArrayUtilsTestObject();
+			
+			$this->assertEquals(
+				ArrayUtils::getObjectIds(array($object)),
+				array($object->getId())
+			);
+		}
 	}
 ?>
