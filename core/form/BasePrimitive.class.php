@@ -136,7 +136,7 @@
 			if ($value && $value !== '') {
 				$this->setRawValue($value);
 				$this->setValue($value);
-			} else
+			} else if($this->isRequired())
 				$this->errors[] = PrimitiveErrors::MISSING;
 
 			return $this;
