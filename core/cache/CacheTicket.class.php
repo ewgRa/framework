@@ -207,5 +207,10 @@
 			
 			return $this;
 		}
+		
+		public function drop()
+		{
+			$this->getCacheInstance()->drop($this);
+		}
 	}
 ?>

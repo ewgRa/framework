@@ -81,7 +81,7 @@
 				$ticket->setExpiredTime($data['lifeTime']);
 				
 				if ($data['lifeTime'] && $data['lifeTime'] < $actualTime) {
-					$this->getMemcache()->delete($key);
+					$this->dropByKey($key);
 					$ticket->expired();
 				} else {
 					$ticket->actual();
@@ -122,6 +122,15 @@
 			return $this;
 		}
 
+		/**
+		 * @return MemcachedBasedCache
+		 */
+		public function dropByKey($key)
+		{
+			$this->getMemcache()->delete($key);
+			return $this;
+		}
+		
 		public function compileKey(CacheTicket $ticket)
 		{
 			return

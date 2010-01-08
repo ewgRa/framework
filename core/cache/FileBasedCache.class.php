@@ -57,7 +57,7 @@
 				$ticket->setExpiredTime($fileModifiedTime);
 				
 				if ($fileModifiedTime < $actualTime) {
-					@unlink($fileName);
+					$this->dropByKey($fileName);
 					$ticket->expired();
 				} else {
 					$ticket->actual();
@@ -109,6 +109,15 @@
 			$resultArray[] = $fileName;
 			
 			return join(DIRECTORY_SEPARATOR, $resultArray);
+		}
+		
+		/**
+		 * @return FileBasedCache
+		 */
+		public function dropByKey($key)
+		{
+			@unlink($key);
+			return $this;
 		}
 		
 		public function clean()

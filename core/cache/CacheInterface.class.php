@@ -13,6 +13,10 @@
 		
 		public function set(CacheTicket $ticket);
 		
+		public function drop(CacheTicket $cacheTicket);
+		
+		public function dropByKey($key);
+		
 		public function compileKey(CacheTicket $ticket);
 		
 		public function disable();

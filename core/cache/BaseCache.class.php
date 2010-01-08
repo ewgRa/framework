@@ -107,6 +107,15 @@
 			return $result;
 		}
 		
+		/**
+		 * @return BaseCache
+		 */
+		public function drop(CacheTicket $cacheTicket)
+		{
+			$this->dropByKey($this->compileKey($cacheTicket));
+			return $this;
+		}
+		
 		protected function debug(CacheTicket $ticket)
 		{
 			$debugItem =
