@@ -60,10 +60,13 @@
 		
 		public function getGetVar($key)
 		{
-			return
-				$this->hasGetVar($key)
-					? $this->get[$key]
-					: null;
+			if (!$this->hasGetVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->get[$key];
 		}
 		
 		/**
@@ -104,10 +107,13 @@
 		
 		public function getPostVar($key)
 		{
-			return
-				$this->hasPostVar($key)
-					? $this->post[$key]
-					: null;
+			if (!$this->hasPostVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->post[$key];
 		}
 		
 		/**
@@ -148,10 +154,13 @@
 		
 		public function getAttachedVar($key)
 		{
-			return
-				$this->hasAttachedVar($key)
-					? $this->attached[$key]
-					: null;
+			if (!$this->hasAttachedVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->attached[$key];
 		}
 
 		/**
@@ -192,10 +201,13 @@
 		
 		public function getCookieVar($key)
 		{
-			return
-				$this->hasCookieVar($key)
-					? $this->cookie[$key]
-					: null;
+			if (!$this->hasCookieVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->cookie[$key];
 		}
 		
 		/**
@@ -236,10 +248,13 @@
 		
 		public function getServerVar($key)
 		{
-			return
-				$this->hasServerVar($key)
-					? $this->server[$key]
-					: null;
+			if (!$this->hasServerVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->server[$key];
 		}
 		
 		/**
