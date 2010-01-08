@@ -96,7 +96,8 @@
 
 		public function compileKey(CacheTicket $ticket)
 		{
-			$fileName = md5(serialize($ticket->getKey()));
+			$fileName =
+				md5(serialize($this->getNamespace().'-'.$ticket->getKey()));
 			
 			$resultArray = array();
 			$resultArray[] = $this->getCacheDir();
