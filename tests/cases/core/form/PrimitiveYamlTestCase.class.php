@@ -13,7 +13,7 @@
 			
 			$primitive =
 				PrimitiveYaml::create('testPrimitive')->
-				import($data);
+				import(array('testPrimitive' => $data));
 			
 			$this->assertSame(
 				$primitive->getValue(),

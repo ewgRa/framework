@@ -11,7 +11,10 @@
 		private $scopeKey	= null;
 		private $rawValue	= null;
 		private $value		= null;
-
+		private $errors		= array();
+		private $errorLabel = array();
+		private $required	= null;
+		
 		protected function __construct($name)
 		{
 			$this->setName($name);
@@ -77,10 +80,64 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function import($value)
+		public function setRequired($required = true)
 		{
-			$this->setRawValue($value);
-			$this->setValue($value);
+			$this->required = ($required === true);
+			return $this;
+		}
+		
+		public function getRequired()
+		{
+			return $this->required;
+		}
+		
+		public function isRequired()
+		{
+			return $this->required;
+		}
+		
+		public function getErrors()
+		{
+			return $this->errors;
+		}
+		
+		public function hasErrors()
+		{
+			return (count($this->getErrors()) > 0);
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setErrorLabel($errorCode, $text)
+		{
+			$this->errorLabel[$errorCode] = $text;
+			return $this;
+		}
+		
+		public function getErrorLabel($errorCode)
+		{
+			if (!isset($this->errorLabel[$errorCode]))
+				throw MissingArgumentException::create();
+			
+			return $this->errorLabel[$errorCode];
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function import($scope)
+		{
+			$value =
+				isset($scope[$this->getScopeKey()])
+					? $scope[$this->getScopeKey()]
+					: null;
+			
+			if ($value && $value !== '') {
+				$this->setRawValue($value);
+				$this->setValue($value);
+			} else
+				$this->errors[] = PrimitiveErrors::MISSING;
 
 			return $this;
 		}

@@ -13,7 +13,7 @@
 			
 			$primitive =
 				PrimitiveString::create('testPrimitive')->
-				import($data);
+				import(array('testPrimitive' => $data));
 			
 			$this->assertSame($data, $primitive->getRawValue());
 			$this->assertSame((string)$data, $primitive->getValue());
