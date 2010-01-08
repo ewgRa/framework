@@ -23,8 +23,8 @@
 
 	function classesAutoloaderInit($testClassesDir)
 	{
-		require_once(FRAMEWORK_DIR . '/patterns/SingletonInterface.class.php');
-		require_once(FRAMEWORK_DIR . '/patterns/Singleton.class.php');
+		require_once(FRAMEWORK_DIR . '/core/patterns/SingletonInterface.class.php');
+		require_once(FRAMEWORK_DIR . '/core/patterns/Singleton.class.php');
 		require_once(FRAMEWORK_DIR . '/ClassesAutoloader.class.php');
 
 		ClassesAutoloader::me()->
