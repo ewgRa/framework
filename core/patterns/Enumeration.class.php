@@ -41,6 +41,17 @@
 			return $this->names;
 		}
 		
+		public function getList()
+		{
+			$result = array();
+			
+			foreach ($this->names as $id => $name) {
+				$result[] = $this->create($id);
+			}
+			
+			return $result;
+		}
+		
 		public function __toString()
 		{
 			return (string)$this->getName();
