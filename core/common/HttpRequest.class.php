@@ -257,6 +257,11 @@
 			return $this->server[$key];
 		}
 		
+		public function hasHttpReferer()
+		{
+			return $this->hasServerVar('HTTP_REFERER');
+		}
+		
 		public function getHttpReferer()
 		{
 			return $this->getServerVar('HTTP_REFERER');
