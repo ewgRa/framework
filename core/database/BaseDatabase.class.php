@@ -8,7 +8,6 @@
 	abstract class BaseDatabase implements DatabaseInterface
 	{
 		private $linkIdentifier	= null;
-		private $tables 		= array();
 		private $connected		= false;
 		private $host			= null;
 		private $user			= null;
@@ -119,33 +118,12 @@
 			if (isset($settings['charset']))
 				$this->setCharset($settings['charset']);
 
-			if (isset($settings['tableAliases']))
-				$this->setTables($settings['tableAliases']);
-				
 			return $this;
 		}
 		
 		public function getTable($alias)
 		{
-			$result = null;
-			
-			if (isset($this->tables[$alias]))
-				$result = $this->tables[$alias];
-			else
-				throw
-					DatabaseException::undefinedTable()->
-					setTableAlias($alias);
-				
-			return $result;
-		}
-		
-		/**
-		 * @return BaseDatabase
-		 */
-		public function setTables(array $tables)
-		{
-			$this->tables = $tables;
-			return $this;
+			return '`'.$alias.'`';
 		}
 		
 		public function queryString($query, array $values = array())

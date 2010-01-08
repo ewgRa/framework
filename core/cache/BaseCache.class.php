@@ -7,6 +7,7 @@
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
+		private $namespace		= null;
 		private $enabled		= true;
 		private $ticketAliases 	= array();
 
@@ -31,6 +32,20 @@
 		public function isDisabled()
 		{
 			return !$this->enabled;
+		}
+		
+		/**
+		 * @return BaseCache
+		 */
+		public function setNamespace($namespace)
+		{
+			$this->namespace = $namespace;
+			return $this;
+		}
+		
+		public function getNamespace()
+		{
+			return $this->namespace;
 		}
 		
 		public function hasTicketParams($ticketAlias)
