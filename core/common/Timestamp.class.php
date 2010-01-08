@@ -14,6 +14,11 @@
 			return new self;
 		}
 		
+		public static function createNow()
+		{
+			return self::create()->setTime(time());
+		}
+		
 		public static function createFromString($string)
 		{
 			$timestamp = self::create();

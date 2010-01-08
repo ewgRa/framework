@@ -83,6 +83,14 @@
 			return $this;
 		}
 		
+		/**
+		 * @return DOMElement
+		 */
+		public function getDocumentElement()
+		{
+			return $this->documentElement;
+		}
+		
 		public function toString()
 		{
 			return $this->saveXML();

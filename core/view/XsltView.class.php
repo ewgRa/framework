@@ -66,14 +66,19 @@
 		
 		public function transform(Model $model)
 		{
-			Assert::isNotNull($this->xslDocument);
-			
 			$domModel = $this->createDomDocument();
 
 			$root = $domModel->createNodeFromVar($model->getData(), 'document');
 
 			$domModel->appendChild($root);
 		
+			return $this->transformXML($domModel);
+		}
+		
+		public function transformXML(ExtendedDomDocument $domModel)
+		{
+			Assert::isNotNull($this->xslDocument);
+			
 			$proc = new XsltProcessor();
 			$proc->importStylesheet($this->xslDocument);
 

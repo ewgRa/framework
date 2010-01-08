@@ -35,5 +35,24 @@
 		{
 			return file_get_contents($this->getPath());
 		}
+
+		public function setContent($content)
+		{
+			return file_put_contents($this->getPath(), $content);
+		}
+		
+		public function isExists()
+		{
+			return file_exists($this->getPath());
+		}
+		
+		/**
+		 * @return File
+		 */
+		public function delete()
+		{
+			unlink($this->getPath());
+			return $this;
+		}
 	}
 ?>
