@@ -14,5 +14,13 @@
 				'Test'
 			);
 		}
+
+		public function testSeparateByUpperKey()
+		{
+			$this->assertEquals(
+				StringUtils::separateByUpperKey('testString'),
+				'test_string'
+			);
+		}
 	}
 ?>
