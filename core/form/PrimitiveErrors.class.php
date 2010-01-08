@@ -7,6 +7,6 @@
 	*/
 	final class PrimitiveErrors
 	{
-		const MISSING = 'missing';
+		const MISSING	= 'missing';
 	}
 ?>
