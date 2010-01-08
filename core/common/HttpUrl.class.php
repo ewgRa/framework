@@ -10,7 +10,8 @@
 		private $scheme = null;
 		private $host	= null;
 		private $path	= null;
-
+		private $query	= null;
+		
 		/**
 		 * @return HttpUrl
 		 */
@@ -72,6 +73,20 @@
 		/**
 		 * @return HttpUrl
 		 */
+		public function setQuery($query)
+		{
+			$this->query = $query;
+			return $this;
+		}
+
+		public function getQuery()
+		{
+			return $this->query;
+		}
+		
+		/**
+		 * @return HttpUrl
+		 */
 		public function parse($url)
 		{
 			$parsed = parse_url($url);
@@ -85,6 +100,9 @@
 			if (isset($parsed['path']))
 				$this->setPath($parsed['path']);
 			
+			if (isset($parsed['query']))
+				$this->setQuery($parsed['query']);
+			
 			return $this;
 		}
 		
@@ -93,7 +111,8 @@
 			return
 				($this->getScheme() ? $this->getScheme().'://' : null)
 				.($this->getHost() ? $this->getHost() : null)
-				.$this->getPath();
+				.$this->getPath()
+				.($this->getQuery() ? '?'.$this->getQuery() : null);
 		}
 	}
 ?>
