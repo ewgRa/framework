@@ -17,6 +17,14 @@
 			return new self;
 		}
 
+		public static function includeFile($path, Model $model)
+		{
+			foreach ($model->getData() as $varName => $value)
+				$$varName = $value;
+
+			include $path;
+		}
+		
 		/**
 		 * @return PhpView
 		 */
