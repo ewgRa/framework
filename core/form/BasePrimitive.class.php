@@ -133,6 +133,11 @@
 					? $scope[$this->getScopeKey()]
 					: null;
 			
+			return $this->importValue($value);
+		}
+		
+		public function importValue($value)
+		{
 			if ($value && $value !== '') {
 				$this->setRawValue($value);
 				$this->setValue($value);

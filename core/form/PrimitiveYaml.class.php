@@ -18,9 +18,9 @@
 		/**
 		 * @return PrimitiveYaml
 		 */
-		public function import($value)
+		public function importValue($value)
 		{
-			parent::import($value);
+			parent::importValue($value);
 			$this->setValue(Yaml::loadString($this->getRawValue()));
 
 			return $this;

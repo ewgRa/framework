@@ -18,9 +18,9 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function import($value)
+		public function importValue($value)
 		{
-			$result = parent::import($value);
+			$result = parent::importValue($value);
 			
 			$this->setValue((string)$this->getValue());
 			return $result;

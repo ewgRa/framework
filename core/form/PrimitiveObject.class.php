@@ -29,11 +29,11 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function import($value)
+		public function importValue($value)
 		{
 			Assert::isNotNull($this->objectClass);
 			
-			$result = parent::import($value);
+			$result = parent::importValue($value);
 			
 			$classDA = call_user_func(array($this->objectClass,'da'));
 			
