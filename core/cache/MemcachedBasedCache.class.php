@@ -117,7 +117,7 @@
 			if ($lifeTime <= time())
 				$lifeTime = null;
 			
-			$this->getMemcache()->set($key, $data, $lifeTime);
+			$this->getMemcache()->set($key, $data, 0, $lifeTime);
 			
 			return $this;
 		}
