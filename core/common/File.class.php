@@ -54,5 +54,10 @@
 			unlink($this->getPath());
 			return $this;
 		}
+		
+		public function getBaseName()
+		{
+			return basename($this->getPath());
+		}
 	}
 ?>
