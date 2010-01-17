@@ -12,6 +12,7 @@
 		private $post		= array();
 		private $cookie		= array();
 		private $server		= array();
+		private $files		= array();
 		private $attached	= array();
 		
 		/**
@@ -255,6 +256,53 @@
 			}
 			
 			return $this->server[$key];
+		}
+		
+		/**
+		 * @return array
+		 */
+		public function getFiles()
+		{
+			return $this->files;
+		}
+		
+		public function hasFiles()
+		{
+			return count($this->files) !== 0;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setFiles(array $files)
+		{
+			$this->files = $files;
+			return $this;
+		}
+		
+		/**
+		 * @return HttpRequest
+		 */
+		public function setFilesVar($key, $value)
+		{
+			$this->files[$key] = $value;
+			return $this;
+		}
+		
+		public function hasFilesVar($key)
+		{
+			return isset($this->files[$key]);
+		}
+		
+		public function getFilesVar($key)
+		{
+			if (!$this->hasFilesVar($key)) {
+				throw MissingArgumentException::create(
+					'known nothing about key "' . $key . '"'
+				);
+			}
+			
+			return $this->files[$key];
 		}
 		
 		public function hasHttpReferer()
