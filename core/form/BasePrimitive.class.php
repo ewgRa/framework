@@ -96,6 +96,15 @@
 			return $this->required;
 		}
 		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function addError($errorCode)
+		{
+			$this->errors[] = $errorCode;
+			return $this;
+		}
+		
 		public function getErrors()
 		{
 			return $this->errors;

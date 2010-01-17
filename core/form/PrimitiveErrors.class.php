@@ -7,6 +7,7 @@
 	*/
 	final class PrimitiveErrors
 	{
-		const MISSING	= 'missing';
+		const MISSING		= 'missing';
+		const UPLOAD_ERROR	= 'uploadError';
 	}
 ?>
