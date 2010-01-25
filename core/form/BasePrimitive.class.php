@@ -151,8 +151,14 @@
 				$this->setRawValue($value);
 				$this->setValue($value);
 			} else if($this->isRequired())
-				$this->errors[] = PrimitiveErrors::MISSING;
+				$this->markMissing();
 
+			return $this;
+		}
+		
+		public function markMissing()
+		{
+			$this->errors[] = PrimitiveErrors::MISSING;
 			return $this;
 		}
 	}

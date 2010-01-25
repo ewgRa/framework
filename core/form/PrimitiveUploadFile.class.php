@@ -22,8 +22,10 @@
 		{
 			$result = $this;
 			
-			if ($value['error'])
+			if ($value['error'] && $value['tmp_name'])
 				$this->addError(PrimitiveErrors::UPLOAD_ERROR);
+			else if(!$value['tmp_name'] && $this->isRequired())
+				$this->markMissing();
 			else
 				$result = parent::importValue($value['name']);
 			
