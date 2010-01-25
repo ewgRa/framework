@@ -147,13 +147,18 @@
 		
 		public function importValue($value)
 		{
-			if ($value && $value !== '') {
+			if ($this->notEmpty($value)) {
 				$this->setRawValue($value);
 				$this->setValue($value);
 			} else if($this->isRequired())
 				$this->markMissing();
 
 			return $this;
+		}
+		
+		public function notEmpty($value)
+		{
+			return $value && $value !== '';
 		}
 		
 		public function markMissing()
