@@ -18,5 +18,10 @@
 			
 			return mb_strtolower($string);
 		}
+
+		public static function getLength($string)
+		{
+			return mb_strlen($string, 'utf8');
+		}
 	}
 ?>

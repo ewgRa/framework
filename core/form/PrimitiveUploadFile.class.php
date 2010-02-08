@@ -8,6 +8,11 @@
 	final class PrimitiveUploadFile extends BasePrimitive
 	{
 		/**
+		 * @var File
+		 */
+		private $file = null;
+		
+		/**
 		 * @return PrimitiveString
 		 */
 		public static function create($name)
@@ -15,6 +20,14 @@
 			return new self($name);
 		}
 
+		/**
+		 * @return File
+		 */
+		public function getFile()
+		{
+			return $this->file;
+		}
+		
 		/**
 		 * @return BasePrimitive
 		 */
@@ -26,8 +39,10 @@
 				$this->addError(PrimitiveErrors::UPLOAD_ERROR);
 			else if(!$value['tmp_name'] && $this->isRequired())
 				$this->markMissing();
-			else
+			else {
 				$result = parent::importValue($value['name']);
+				$this->file = File::create()->setPath($value['tmp_name']);
+			}
 			
 			return $result;
 		}
