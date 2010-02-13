@@ -55,6 +55,24 @@
 			return $this;
 		}
 		
+		/**
+		 * @return File
+		 */
+		public function moveTo(File $file)
+		{
+			rename($this->getPath(), $file->getPath());
+			return $this;
+		}
+		
+		/**
+		 * @return File
+		 */
+		public function copyTo(File $file)
+		{
+			copy($this->getPath(), $file->getPath());
+			return $this;
+		}
+		
 		public function getBaseName()
 		{
 			return basename($this->getPath());

@@ -23,5 +23,10 @@
 		{
 			return mb_strlen($string, 'utf8');
 		}
+
+		public static function toLower($string)
+		{
+			return mb_strtolower($string);
+		}
 	}
 ?>
