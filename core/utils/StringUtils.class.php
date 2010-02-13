@@ -26,7 +26,12 @@
 
 		public static function toLower($string)
 		{
-			return mb_strtolower($string);
+			return mb_strtolower($string, 'utf8');
+		}
+
+		public static function toUpper($string)
+		{
+			return mb_strtoupper($string, 'utf8');
 		}
 	}
 ?>
