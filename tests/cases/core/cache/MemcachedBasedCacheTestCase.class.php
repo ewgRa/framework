@@ -9,7 +9,10 @@
 	{
 		protected function getRealization()
 		{
-			return Cache::me()->getPool(MEMCACHED_TEST_POOL_ALIAS);
+			return
+				MemcachedBasedCache::create()->
+				setHost(MEMCACHED_TEST_HOST)->
+				setPort(MEMCACHED_TEST_PORT);
 		}
 	}
 ?>

@@ -45,5 +45,13 @@
 		{
 			return $this->line;
 		}
+		
+		public function __toString()
+		{
+			Assert::isNotNull($this->getFile());
+			Assert::isNotNull($this->getLine());
+			
+			return $this->getFile().'@'.$this->getLine();
+		}
 	}
 ?>

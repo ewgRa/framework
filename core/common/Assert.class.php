@@ -87,7 +87,7 @@
 
 		public static function isUnreachable()
 		{
-			throw DefaultException::create('Unreachable code reached');
+			throw UnreachableCodeReachedException::create();
 		}
 	}
 ?>

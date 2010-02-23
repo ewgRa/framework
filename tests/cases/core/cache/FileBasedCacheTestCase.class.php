@@ -10,7 +10,8 @@
 		protected function getRealization()
 		{
 			return
-				FileBasedCache::create()->setCacheDir(
+				FileBasedCache::create()->
+				setCacheDir(
 					TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData' . __CLASS__
 				);
 		}

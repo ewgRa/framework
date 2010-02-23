@@ -13,7 +13,8 @@
 	define('CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
 	define('CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
-	define('MEMCACHED_TEST_POOL_ALIAS', 'memcachedTestPool');
+	define('MEMCACHED_TEST_HOST', 'localhost');
+	define('MEMCACHED_TEST_PORT', '11211');
 	
 	if(!file_exists(TMP_DIR))
 		mkdir(TMP_DIR, 0777, true);
@@ -21,15 +22,12 @@
 	if(!file_exists(CACHE_DIR))
 		mkdir(CACHE_DIR, 0777, true);
 
-	function classesAutoloaderInit($testClassesDir)
+	function classesAutoloaderInit()
 	{
 		require_once(FRAMEWORK_DIR . '/core/patterns/SingletonInterface.class.php');
 		require_once(FRAMEWORK_DIR . '/core/patterns/Singleton.class.php');
 		require_once(FRAMEWORK_DIR . '/ClassesAutoloader.class.php');
 
-		ClassesAutoloader::me()->
-			addSearchDirectories(array($testClassesDir, FRAMEWORK_DIR));
-		
 		$key = CACHE_DIR.'/'.PROJECT.'-classesAutoloader-'.md5(__FILE__);
 		
 		$foundClasses =
@@ -43,13 +41,19 @@
 				: array()
 		);
 
+		foreach (glob(FRAMEWORK_DIR.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR) as $dir) {
+			if (realpath($dir) != realpath(dirname(__FILE__)))
+				ClassesAutoloader::me()->addSearchDirectories(array($dir));
+		}
+
+		ClassesAutoloader::me()->loadAllClasses();
+		ClassesAutoloader::me()->addSearchDirectories(array(dirname(__FILE__)));
+		
 		register_shutdown_function('storeAutoloaderMap', $key);
 	}
 	
 	function cacheInit()
 	{
-		Cache::me()->
-			addPool(MemcachedBasedCache::create(), MEMCACHED_TEST_POOL_ALIAS);
 	}
 	
 	function storeAutoloaderMap($key)

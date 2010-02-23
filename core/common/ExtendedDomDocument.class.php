@@ -53,6 +53,7 @@
 		
 		/**
 		 * @return ExtendedDomDocument
+		 * FIXME: this is ExtendedXslDocument function
 		 */
 		public function importFile($filePath)
 		{
@@ -69,8 +70,11 @@
 						$this->documentElement->namespaceURI,
 						'xsl:import'
 					);
-			} else
-				$importNode = $this->createElement('xsl:import');
+			} else {
+				Assert::isUnreachable(
+					'don\'tknow how import file in non-xsl document'
+				);
+			}
 
 			$importNode->setAttribute('href', $filePath);
 			

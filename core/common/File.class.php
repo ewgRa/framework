@@ -51,6 +51,7 @@
 		 */
 		public function delete()
 		{
+			Assert::isTrue($this->isExists());
 			unlink($this->getPath());
 			return $this;
 		}
@@ -60,6 +61,7 @@
 		 */
 		public function moveTo(File $file)
 		{
+			Assert::isTrue($this->isExists());
 			rename($this->getPath(), $file->getPath());
 			return $this;
 		}
@@ -69,6 +71,7 @@
 		 */
 		public function copyTo(File $file)
 		{
+			Assert::isTrue($this->isExists());
 			copy($this->getPath(), $file->getPath());
 			return $this;
 		}

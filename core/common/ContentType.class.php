@@ -29,6 +29,14 @@
 			self::TEXT_XML		 	=> 'xml'
 		);
 		
+		private $canBeJoined = array(
+			self::APPLICATION_PHP 	=> false,
+			self::TEXT_XSLT 		=> false,
+			self::TEXT_CSS 			=> true,
+			self::TEXT_JAVASCRIPT 	=> false,
+			self::TEXT_XML		 	=> false
+		);
+		
 		/**
 		 * @return ContentType
 		 */
@@ -83,7 +91,7 @@
 
 		public function canBeJoined()
 		{
-			return in_array($this->getId(), array(self::TEXT_CSS));
+			return $this->canBeJoined[$this->getId()];
 		}
 	}
 ?>

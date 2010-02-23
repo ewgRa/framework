@@ -11,15 +11,9 @@
 		
 		abstract protected function getRealization();
 		
-	    public function __construct($name = null, array $data = array(), $dataName = '')
-		{
-			parent::__construct($name, $data, $dataName);
-			$this->realization = $this->getRealization();
-		}
-		
 		public function setUp()
 		{
-			$this->realization->clean();
+			$this->realization = $this->getRealization();
 		}
 		
 		public function tearDown()
@@ -31,10 +25,18 @@
 		{
 			$data = $this->getData();
 			
+			$key1 = rand();
+			$key2 = rand();
+
 			$cacheTicket = $this->realization->createTicket()->
 				setPrefix($this->getPrefix())->
-				setKey(rand());
+				setKey($key1);
 				
+			$cacheTicket->addKey($key2);
+				
+			$this->assertSame($cacheTicket->getKey(), array(array($key1), array($key2)));
+			
+			
 			$clonedTicket = clone $cacheTicket;
 			
 			$cacheTicket->setData($data)->storeData();
@@ -42,6 +44,20 @@
 			$clonedTicket->restoreData();
 							
 			$this->assertSame($data, $clonedTicket->getData());
+			
+			$clonedTicket = clone $cacheTicket;
+			$this->realization->disable();
+			$clonedTicket->restoreData();
+			$this->assertTrue($clonedTicket->isExpired());
+			$this->realization->enable();
+			$clonedTicket = clone $cacheTicket;
+			$clonedTicket->restoreData();
+			$this->assertSame($data, $clonedTicket->getData());
+			
+			$clonedTicket->drop();
+			$clonedTicket = clone $cacheTicket;
+			$clonedTicket->restoreData();
+			$this->assertTrue($clonedTicket->isExpired());
 		}
 
 		public function testGetWithoutSet()
@@ -59,17 +75,23 @@
 		
 		public function testExpired()
 		{
+			$time = time()-1;
 			$cacheTicket = $this->realization->createTicket();
 
 			$cacheTicket->
-				setLifeTime(time()-1)->
-				setPrefix($this->getPrefix())->
+				fillParams(
+					array(
+						'lifeTime' => -1,
+						'prefix' => $this->getPrefix()
+					)
+				)->
 				setKey(rand())->
 				setData($this->getData())->
 				storeData()->
 				restoreData();
 
 			$this->assertTrue($cacheTicket->isExpired());
+			$this->assertSame($cacheTicket->getExpiredTime(), $time);
 		}
 		
 		public function testActualTime()
@@ -88,6 +110,31 @@
 				restoreData();
 
 			$this->assertFalse($cacheTicket->isExpired());
+		}
+		
+		public function testNamespace()
+		{
+			$data = $this->getData();
+			
+			$cacheTicket =
+				$this->realization->createTicket()->
+					setPrefix($this->getPrefix())->
+					setKey(rand());
+					
+			$cacheTicket2 = clone $cacheTicket;
+			$cacheTicket2->setCacheInstance($this->getRealization());
+			
+			$cacheTicket->getCacheInstance()->setNamespace('a');
+			$cacheTicket2->getCacheInstance()->setNamespace('b');
+			
+			$cacheTicket->setData($data)->storeData()->setData(null);
+			
+			$cacheTicket2->setData('asdasd')->storeData()->setData(null);
+			
+			$cacheTicket->restoreData();
+			$cacheTicket2->restoreData();
+			
+			$this->assertNotSame($cacheTicket->getData(), $cacheTicket2->getData());
 		}
 		
 		private function getPrefix()

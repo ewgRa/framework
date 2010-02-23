@@ -10,8 +10,13 @@
 		public function testImportFile()
 		{
 			$document = ExtendedDomDocument::create();
-				
+
 			$document->load(dirname(__FILE__).'/test.xsl');
+
+			$this->assertEquals(
+				$document->getDocumentElement()->nodeName,
+				'xsl:stylesheet'
+			);
 			
 			$document->importFile('testFile');
 			
@@ -20,19 +25,50 @@
 			);
 		}
 
+		public function testImportFileNonXslDocument()
+		{
+			$document = ExtendedDomDocument::create();
+	
+			$document->load(dirname(__FILE__).'/test.xml');
+
+			try {
+				$document->importFile('testFile');
+				$this->fail();
+			} catch (UnreachableCodeReachedException $e) {
+				
+			}
+		}
+		
 		public function testCreateNodeFromVar()
 		{
 			$document = ExtendedDomDocument::create();
 			
 			$node = $document->createNodeFromVar(
-				array('var' => 'value', 1 => 'testNumber', '1_1' => 'testInvalidNodeName'),
+				array(
+					'var' => 'value',
+					1 => 'testNumber',
+					'1_1' => 'testInvalidNodeName',
+					'object' => new DomDocumentTestObject()
+				),
 				'nodeName',
 				array('attr' => 'attrValue')
 			);
 				
 			$this->assertSame(
 				$document->saveXml($node),
-				'<nodeName attr="attrValue"><var><![CDATA[value]]></var><item key="1"><![CDATA[testNumber]]></item><item key="1_1"><![CDATA[testInvalidNodeName]]></item></nodeName>'
+				'<nodeName attr="attrValue"><var><![CDATA[value]]></var><item key="1"><![CDATA[testNumber]]></item><item key="1_1"><![CDATA[testInvalidNodeName]]></item><object><var><![CDATA[1]]></var></object></nodeName>'
+			);
+		}
+
+		public function testSleepAndWakeup()
+		{
+			$document = ExtendedDomDocument::create();
+				
+			$document->load(dirname(__FILE__).'/test.xsl');
+			
+			$this->assertEquals(
+				unserialize(serialize($document)),
+				$document
 			);
 		}
 	}
