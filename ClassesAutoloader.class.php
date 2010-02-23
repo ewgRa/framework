@@ -110,6 +110,25 @@
 					: null;
 		}
 		
+		public function loadAllClasses($searchDirs = array())
+		{
+			$searchDirectories =
+				$searchDirs
+					? $searchDirs
+					: $this->getSearchDirectories();
+			
+			foreach ($searchDirectories as $directory) {
+				foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $fileName) {
+					if (is_dir($fileName))
+						$this->{__FUNCTION__}(array($fileName));
+					elseif (strpos($fileName, self::CLASS_FILE_EXTENSION))
+						require_once($fileName);
+				}
+			}
+			
+			return $this;
+		}
+		
 		private function findClassFile(
 			$className,
 			array $searchDirectories = null

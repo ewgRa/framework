@@ -86,11 +86,6 @@
 			return $this;
 		}
 		
-		public function getRequired()
-		{
-			return $this->required;
-		}
-		
 		public function isRequired()
 		{
 			return $this->required;

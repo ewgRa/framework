@@ -13,7 +13,7 @@
 		private $file = null;
 		
 		/**
-		 * @return PrimitiveString
+		 * @return PrimitiveUploadFile
 		 */
 		public static function create($name)
 		{

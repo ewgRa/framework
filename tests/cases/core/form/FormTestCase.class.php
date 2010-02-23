@@ -39,7 +39,14 @@
 
 			$form->import(array('a' => 'b'));
 			
+			$this->assertFalse($form->hasErrors());
+			
 			$this->assertTrue($form->isImported());
+			
+			$form->getPrimitive('testPrimitive')->
+				addError(PrimitiveErrors::MISSING);
+
+			$this->assertTrue($form->hasErrors());
 		}
 
 		public function testErrors()
@@ -47,14 +54,23 @@
 			$form =
 				Form::create()->
 				addPrimitive(
-					PrimitiveString::create('testPrimitive')->setRequired()
+					PrimitiveString::create('testPrimitive')->setRequired()->
+					setErrorLabel(PrimitiveErrors::MISSING, 'missing primitive')
 				);
 				
 			$form->import(array('testPrimitive' => ''));
 			
+			$this->assertTrue($form->hasErrors());
+			
 			$this->assertSame(
 				$form->getErrors(),
-				array('testPrimitive' => array('missing'))
+				array('testPrimitive' => array(PrimitiveErrors::MISSING))
+			);
+			
+			$this->assertSame(
+				$form->getPrimitive('testPrimitive')->
+				getErrorLabel(PrimitiveErrors::MISSING),
+				'missing primitive'
 			);
 		}
 	}

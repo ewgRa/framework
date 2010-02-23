@@ -14,5 +14,12 @@
 			$timestamp = Timestamp::createFromString($date);
 			$this->assertSame($timestamp->__toString(), $date);
 		}
+
+		public function testCreateNow()
+		{
+			$timestamp = Timestamp::createNow();
+			
+			$this->assertSame($timestamp->getTime(), time());
+		}
 	}
 ?>

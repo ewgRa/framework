@@ -5,7 +5,7 @@
 	require_once(dirname(__FILE__).'/FrameworkTestCase.class.php');
 	require_once(dirname(__FILE__).'/FrameworkTestSuite.class.php');
 
-	classesAutoloaderInit(dirname(__FILE__));
+	classesAutoloaderInit();
 	cacheInit();
 	
 	$testSuite = $_SERVER['argv'][1];
@@ -21,5 +21,8 @@
 	if (!$diff)
 		$diff = null;
 
-	define('ROOT_SUITE_CASES_DIR', CASES_DIR.$diff);
+	define('ROOT_SUITE_CASES_DIR', realpath(CASES_DIR.$diff));
+	
+	echo PHP_EOL.'ROOT_SUITE_DIR: '.ROOT_SUITE_DIR.PHP_EOL;
+	echo 'ROOT_SUITE_CASES_DIR: '.ROOT_SUITE_CASES_DIR.PHP_EOL.PHP_EOL;
 ?>

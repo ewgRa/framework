@@ -28,6 +28,16 @@
 				array('TestChainController1', 'TestChainController2')
 			);
 		}
+
+		public function testOuter()
+		{
+			$inner = new TestChainController2();
+			$chain = new TestChainController1($inner);
+				
+			$this->assertTrue($inner->hasOuter());
+			
+			$this->assertSame($inner->getOuter(), $chain);
+		}
 	}
 	
 	class BaseTestChainController extends ChainController

@@ -33,6 +33,19 @@
 			$this->fail();
 		}
 
+		public function testIsFalse()
+		{
+			$this->assertTrue(Assert::isFalse(false));
+			
+			try {
+				Assert::isFalse(true);
+			} catch(DefaultException $e) {
+				return;
+			}
+			
+			$this->fail();
+		}
+		
 		public function testIsNotNull()
 		{
 			$this->assertTrue(Assert::isNotNull(1));
@@ -80,6 +93,17 @@
 			
 			try {
 				Assert::isImplement($this, 'SingletonInterface');
+			} catch(DefaultException $e) {
+				return;
+			}
+			
+			$this->fail();
+		}
+
+		public function testIsUnreachable()
+		{
+			try {
+				Assert::isUnreachable();
 			} catch(DefaultException $e) {
 				return;
 			}

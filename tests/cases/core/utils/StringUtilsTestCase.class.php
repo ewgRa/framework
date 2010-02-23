@@ -22,5 +22,29 @@
 				'test_string'
 			);
 		}
+
+		public function testGetLength()
+		{
+			$this->assertEquals(
+				StringUtils::getLength('testString'),
+				10
+			);
+		}
+		
+		public function testToLower()
+		{
+			$this->assertEquals(
+				StringUtils::toLower('testString'),
+				'teststring'
+			);
+		}
+
+		public function testToUpper()
+		{
+			$this->assertEquals(
+				StringUtils::toUpper('testString'),
+				'TESTSTRING'
+			);
+		}
 	}
 ?>

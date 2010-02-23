@@ -15,10 +15,8 @@
 		 */
 		public function __construct(ChainController $controller = null)
 		{
-			if ($controller) {
+			if ($controller)
 				$this->setInner($controller);
-				$controller->setOuter($this);
-			}
 				
 			return $this;
 		}
@@ -29,6 +27,10 @@
 		public function setInner(ChainController $controller)
 		{
 			$this->inner = $controller;
+			
+			if ($controller->getOuter() != $this)
+				$controller->setOuter($this);
+			
 			return $this;
 		}
 		
@@ -51,6 +53,10 @@
 		public function setOuter(ChainController $controller)
 		{
 			$this->outer = $controller;
+
+			if ($controller->getInner() != $this)
+				$controller->setInner($this);
+			
 			return $this;
 		}
 		

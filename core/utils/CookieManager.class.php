@@ -12,7 +12,9 @@
 		 */
 		public static function me()
 		{
+			// @codeCoverageIgnoreStart
 			return parent::getInstance(__CLASS__);
+			// @codeCoverageIgnoreEnd
 		}
 		
 		/**
@@ -20,8 +22,10 @@
 		 */
 		public function setCookie($alias, $value, $expire = null, $path = '/')
 		{
+			// @codeCoverageIgnoreStart
 			setcookie($alias, $value, $expire, $path);
 			return $this;
+			// @codeCoverageIgnoreEnd
 		}
 	}
 ?>

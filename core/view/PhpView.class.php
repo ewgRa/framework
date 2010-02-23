@@ -7,6 +7,9 @@
 	*/
 	final class PhpView implements ViewInterface
 	{
+		/**
+		 * @var File
+		 */
 		private $layoutFile = null;
 		
 		/**
@@ -17,10 +20,12 @@
 			return new self;
 		}
 
-		public static function includeFile($path, Model $model)
+		public static function includeFile($path, Model $model = null)
 		{
-			foreach ($model->getData() as $varName => $value)
-				$$varName = $value;
+			if ($model) {
+				foreach ($model->getData() as $varName => $value)
+					$$varName = $value;
+			}
 
 			include $path;
 		}
@@ -32,7 +37,7 @@
 		{
 			Assert::isNotNull($layout->getPath());
 			
-			$this->layoutFile = $layout->getPath();
+			$this->layoutFile = $layout;
 			
 			return $this;
 		}
@@ -43,14 +48,16 @@
 			
 			ob_start();
 
-			require($this->layoutFile);
+			require($this->layoutFile->getPath());
 
 			return ob_get_clean();
 		}
 		
 		public function toString()
 		{
-			return __FILE__ . '@' . __LINE__;
+			Assert::isNotNull($this->layoutFile->getPath());
+			
+			return $this->layoutFile->getContent();
 		}
 	}
 ?>

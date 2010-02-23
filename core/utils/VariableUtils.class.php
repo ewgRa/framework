@@ -18,32 +18,24 @@
 				
 				if (
 					preg_match(
-						'/^(\$?\w+)(?:\[(?:\'|")?(\w+?)(?:\'|")?\])?/',
+						'/^(\$\w+)(?:\[(?:\'|")?(\w+?)(?:\'|")?\])?/',
 						$variableName,
 						$variableMatches
 					)
 				) {
 					$varName = $variableMatches[1];
 
-					if (isset($variableMatches[2])) {
-						if (substr($varName, 0, 1) == '$')
-							$varName .= "['" . $variableMatches[2] . "']";
-						else
-							$varName = null;
-					
-					} elseif ($varName != $variableName)
+					if (isset($variableMatches[2]))
+						$varName .= "['" . $variableMatches[2] . "']";
+					elseif ($varName != $variableName)
 						$varName = null;
 
 					if ($varName) {
-						if (substr($varName, 0, 1) == '$') {
-							eval(
-								'$result = isset('
-								. $varName. ') ? '
-								. $varName. ' : null;'
-							);
-						
-						} elseif (defined($varName))
-							$result = constant($varName);
+						eval(
+							'$result = isset('
+							. $varName. ') ? '
+							. $varName. ' : null;'
+						);
 					}
 				}
 			}

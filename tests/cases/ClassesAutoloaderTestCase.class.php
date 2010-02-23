@@ -42,7 +42,32 @@
 			);
 			
 			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			
+			$this->assertClassMapChanged(false);
 			ClassesAutoloader::me()->load($className);
+			$this->assertClassMapChanged(true);
+			
+			unlink($fileName);
+			
+			$this->assertTrue(class_exists($className, false));
+		}
+		
+		public function testLoadClassese()
+		{
+			$className = __FUNCTION__ . rand();
+			
+			$fileName =
+				TMP_DIR . DIRECTORY_SEPARATOR
+				. $className . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				
+			file_put_contents(
+				$fileName,
+				str_replace(get_class($this), $className, file_get_contents(__FILE__))
+			);
+			
+			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			
+			ClassesAutoloader::me()->loadAllClasses();
 			
 			unlink($fileName);
 			
@@ -64,12 +89,56 @@
 				?>"
 			);
 			
-			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			ClassesAutoLoader::me()->addSearchDirectories(array(TMP_DIR));
+
+			$this->assertClassMapChanged(false);
 			ClassesAutoloader::me()->load($interfaceName);
+			$this->assertClassMapChanged(true);
 			
 			unlink($fileName);
 			
 			$this->assertTrue(interface_exists($interfaceName, false));
+			
+			$this->assertSame(
+				ClassesAutoLoader::me()->getFoundClasses(),
+				array($interfaceName => $fileName)
+			);
+		}
+		
+		public function testSetFoundClasses()
+		{
+			$interfaceName = __FUNCTION__ . rand();
+			
+			$fileName =
+				TMP_DIR . DIRECTORY_SEPARATOR
+				. $interfaceName . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				
+			file_put_contents(
+				$fileName,
+				"<?php
+					interface {$interfaceName}{}
+				?>"
+			);
+			
+			ClassesAutoLoader::me()->setFoundClasses(
+				array($interfaceName => $fileName)
+			);
+
+			$this->assertClassMapChanged(false);
+			ClassesAutoloader::me()->load($interfaceName);
+			$this->assertClassMapChanged(false);
+			
+			unlink($fileName);
+			
+			$this->assertTrue(interface_exists($interfaceName, false));
+		}
+		
+		private function assertClassMapChanged($expect = true)
+		{
+			if ($expect)
+				$this->assertTrue(ClassesAutoloader::me()->isClassMapChanged());
+			else
+				$this->assertFalse(ClassesAutoloader::me()->isClassMapChanged());
 		}
 	}
 ?>

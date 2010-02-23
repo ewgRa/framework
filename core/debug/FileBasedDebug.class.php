@@ -9,5 +9,14 @@
 	*/
 	final class FileBasedDebug extends BaseDebug
 	{
+		public static function create()
+		{
+			return new self;
+		}
+		
+		public function store()
+		{
+			throw UnimplementCodeException::create();
+		}
 	}
 ?>
