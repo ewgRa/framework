@@ -17,7 +17,7 @@
 		
 		/**
 		 * @return MysqlDatabase
-		 * @throws DatabaseException::CONNECT
+		 * @throws DatabaseConnectException
 		 */
 		public function connect()
 		{
@@ -30,7 +30,7 @@
 				);
 			
 			if (!$db)
-				throw DatabaseException::connect()->setPool($this);
+				throw DatabaseConnectException::create()->setPool($this);
 			
 			$this->setLinkIdentifier($db)->connected();
 
@@ -57,7 +57,7 @@
 
 		/**
 		 * @return MysqlDatabase
-		 * @throws DatabaseException::SELECT_DATABASE
+		 * @throws DatabaseSelectDatabaseException
 		 */
 		public function selectDatabase($databaseName = null)
 		{
@@ -72,7 +72,7 @@
 					$this->getLinkIdentifier()
 				)
 			)
-				throw DatabaseException::selectDatabase()->setPool($this);
+				throw DatabaseSelectDatabaseException::create()->setPool($this);
 			
 			return $this;
 		}

@@ -198,7 +198,7 @@
 		protected function queryError()
 		{
 			throw
-				DatabaseException::sqlQueryError()->
+				DatabaseQueryException::create()->
 				setPool($this)->
 				setPoolLastQuery($this->getLastQuery())->
 				setPoolError($this->getError());
