@@ -78,7 +78,7 @@
 			
 			try {
 				Assert::isFileExists('noFile');
-			} catch(FileException $e) {
+			} catch(FileNotExistsException $e) {
 				return;
 			}
 			

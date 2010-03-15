@@ -10,7 +10,7 @@
 		public static function load($file)
 		{
 			if(!file_exists($file))
-				throw FileException::fileNotExists()->setFilePath($file);
+				throw FileNotExistsException::create()->setFilePath($file);
 
 			self::checkInclude();
 			

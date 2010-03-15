@@ -65,7 +65,7 @@
 				$trace = array_shift($trace);
 
 				throw
-					FileException::fileNotExists()->
+					FileNotExistsException::create()->
 					setFilePath($filePath)->
 					setFile($trace['file'])->
 					setLine($trace['line']);
