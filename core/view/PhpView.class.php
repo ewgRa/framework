@@ -46,6 +46,9 @@
 		{
 			Assert::isNotNull($this->layoutFile);
 			
+			foreach ($model->getData() as $varName => $value)
+				$$varName = $value;
+			
 			ob_start();
 
 			require($this->layoutFile->getPath());

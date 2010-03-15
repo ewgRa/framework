@@ -13,7 +13,7 @@
 				$this->createView()->
 				transform(Model::create()->set('data', 'testData'));
 			
-			$this->assertSame($viewResult, 'testData');
+			$this->assertSame($viewResult, 'testDatatestData');
 		}
 
 		public function testToString()
@@ -37,7 +37,7 @@
 			
 			$content = ob_get_clean();
 			
-			$this->assertSame($content, 'testData');
+			$this->assertSame($content, 'testDatatestData');
 		}
 		
 		private function createView()

@@ -21,7 +21,7 @@
 			
 			$mav->setModel(Model::create()->set('data', 'value'));
 			
-			$this->assertSame($mav->render(), 'value');
+			$this->assertSame($mav->render(), 'valuevalue');
 		}
 	}
 ?>
