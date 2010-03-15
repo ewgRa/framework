@@ -22,7 +22,7 @@
 
 		public static function includeFile($path, Model $model = null)
 		{
-			if ($model) {
+			if ($model && $model->getData()) {
 				foreach ($model->getData() as $varName => $value)
 					$$varName = $value;
 			}
@@ -46,8 +46,10 @@
 		{
 			Assert::isNotNull($this->layoutFile);
 			
-			foreach ($model->getData() as $varName => $value)
-				$$varName = $value;
+			if ($model && $model->getData()) {
+				foreach ($model->getData() as $varName => $value)
+					$$varName = $value;
+			}
 			
 			ob_start();
 
