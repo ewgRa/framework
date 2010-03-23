@@ -110,6 +110,11 @@
 			return (count($this->getErrors()) > 0);
 		}
 		
+		public function hasError($errorCode)
+		{
+			return in_array($errorCode, $this->getErrors());
+		}
+		
 		/**
 		 * @return BasePrimitive
 		 */
