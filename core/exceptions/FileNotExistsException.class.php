@@ -29,13 +29,12 @@
 		public function __toString()
 		{
 			$result = array(
-				__CLASS__.": [{$this->code}]:",
-				$this->message,
+				__CLASS__." [{$this->code}]: ".$this->message,
 				"File path: {$this->filePath}",
 				"Current directory: ".getcwd()
 			);
 			
-			return join(PHP_EOL.PHP_EOL, $result).PHP_EOL.PHP_EOL;
+			return $this->toString($result);
 		}
 	}
 ?>

@@ -86,6 +86,7 @@
 		
 		/**
 		 * @return HttpUrl
+		 * FIXME: private? or drop all params before parsing
 		 */
 		public function parse($url)
 		{

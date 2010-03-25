@@ -4,6 +4,7 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: pool* rename just to *
 	*/
 	final class DatabaseQueryException extends BaseDatabaseException
 	{
@@ -41,8 +42,7 @@
 			$singleTrace = $this->getSingleTrace(3);
 
 			$result = array(
-				__CLASS__.": [{$this->code}]:",
-				$this->message,
+				__CLASS__." [{$this->code}]: ".$this->message,
 				"Host: {$this->getPool()->getHost()}",
 				"Database: {$this->getPool()->getDatabaseName()}",
 				"Query: {$this->poolLastQuery}",
@@ -51,7 +51,7 @@
 				. " at line {$singleTrace->getLine()}"
 			);
 					
-			return join(PHP_EOL.PHP_EOL, $result).PHP_EOL.PHP_EOL;
+			return $this->toString($result);
 		}
 	}
 ?>

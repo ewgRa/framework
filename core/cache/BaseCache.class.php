@@ -9,6 +9,8 @@
 	{
 		private $namespace		= null;
 		private $enabled		= true;
+
+		// FIXME: rename to ticketsSettings?
 		private $ticketAliases 	= array();
 
 		/**
@@ -116,6 +118,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return BaseCache
+		 */
 		protected function debug(CacheTicket $ticket)
 		{
 			$debugItem =

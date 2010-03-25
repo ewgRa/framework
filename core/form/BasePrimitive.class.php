@@ -12,7 +12,7 @@
 		private $rawValue	= null;
 		private $value		= null;
 		private $errors		= array();
-		private $errorLabel = array();
+		private $errorLabels = array();
 		private $required	= null;
 		
 		protected function __construct($name)
@@ -120,16 +120,16 @@
 		 */
 		public function setErrorLabel($errorCode, $text)
 		{
-			$this->errorLabel[$errorCode] = $text;
+			$this->errorLabels[$errorCode] = $text;
 			return $this;
 		}
 		
 		public function getErrorLabel($errorCode)
 		{
-			if (!isset($this->errorLabel[$errorCode]))
+			if (!isset($this->errorLabels[$errorCode]))
 				throw MissingArgumentException::create();
 			
-			return $this->errorLabel[$errorCode];
+			return $this->errorLabels[$errorCode];
 		}
 		
 		/**
@@ -163,7 +163,7 @@
 		
 		public function markMissing()
 		{
-			$this->errors[] = PrimitiveErrors::MISSING;
+			$this->addError(PrimitiveErrors::MISSING);
 			return $this;
 		}
 	}

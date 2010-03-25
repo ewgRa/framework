@@ -20,13 +20,12 @@
 		public function __toString()
 		{
 			$result = array(
-				__CLASS__.": [{$this->code}]:",
-				$this->message,
+				__CLASS__." [{$this->code}]: ".$this->message,
 				"Host: {$this->getPool()->getHost()}",
 				"Database: {$this->getPool()->getDatabaseName()}"
 			);
 			
-			return join(PHP_EOL.PHP_EOL, $result).PHP_EOL.PHP_EOL;
+			return $this->toString($result);
 		}
 	}
 ?>

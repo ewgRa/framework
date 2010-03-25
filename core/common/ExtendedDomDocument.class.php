@@ -37,13 +37,13 @@
 			foreach ($attributes as $k => $v)
 				$node->setAttribute($k, $v);
 
-			if (is_object($var)) {
+			if (is_object($var))
 				$var = (array)$var;
-			}
 			
 			if (is_array($var)) {
 				foreach ($var as $k => $v)
 					$node->appendChild($this->{__FUNCTION__}($v, $k));
+				
 			} else {
 				$node->appendChild($this->createCDATASection($var));
 			}
@@ -72,7 +72,7 @@
 					);
 			} else {
 				Assert::isUnreachable(
-					'don\'tknow how import file in non-xsl document'
+					'don\'t know how import file in non-xsl document'
 				);
 			}
 

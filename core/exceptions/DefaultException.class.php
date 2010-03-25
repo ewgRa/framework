@@ -72,5 +72,10 @@
 			
 			return $singleTrace;
 		}
+		
+		protected function toString(array $array)
+		{
+			return join(PHP_EOL.PHP_EOL, $array).PHP_EOL.PHP_EOL;
+		}
 	}
 ?>

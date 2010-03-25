@@ -24,7 +24,7 @@
 			return Spyc::YAMLLoad($string);
 		}
 		
-		public static function save($file,$data)
+		public static function save($file, $data)
 		{
 			self::checkInclude();
 			$spyc = new Spyc;

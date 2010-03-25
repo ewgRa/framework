@@ -35,6 +35,7 @@
 			
 			$result = parent::importValue($value);
 			
+			// FIXME: use objectClass::createById instead knowledge about da
 			$classDA = call_user_func(array($this->objectClass,'da'));
 			
 			if (!$this->hasErrors() && $this->getValue())

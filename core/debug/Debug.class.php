@@ -22,8 +22,7 @@
 		{
 			$method = new ReflectionMethod($realization, 'create');
 			
-			return
-				self::setInstance(__CLASS__, $method->invoke(null));
+			return self::setInstance(__CLASS__, $method->invoke(null));
 		}
 	}
 ?>
