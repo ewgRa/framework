@@ -32,15 +32,6 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function __construct()
-		{
-			$this->setLifeTime(31536000 + time()); # one year
-			return $this;
-		}
-		
-		/**
-		 * @return CacheTicket
-		 */
 		public function setCacheInstance(BaseCache $instance)
 		{
 			$this->cacheInstance = $instance;
