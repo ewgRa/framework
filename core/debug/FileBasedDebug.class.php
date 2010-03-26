@@ -16,7 +16,7 @@
 		
 		public function store()
 		{
-			throw UnimplementCodeException::create();
+			throw UnimplementedCodeException::create();
 		}
 	}
 ?>
