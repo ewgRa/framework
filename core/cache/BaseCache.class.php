@@ -10,9 +10,6 @@
 		private $namespace		= null;
 		private $enabled		= true;
 
-		// FIXME: rename to ticketsSettings?
-		private $ticketAliases 	= array();
-
 		/**
 		 * @return BaseCache
 		 */
@@ -50,63 +47,14 @@
 			return $this->namespace;
 		}
 		
-		public function hasTicketParams($ticketAlias)
-		{
-			return isset($this->ticketAliases[$ticketAlias]);
-		}
-		
-		public function getTicketParams($ticketAlias)
-		{
-			return
-				$this->hasTicketParams($ticketAlias)
-					? $this->ticketAliases[$ticketAlias]
-					: null;
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		public function loadConfig($yamlFile)
-		{
-			$cacheTicket =
-				$this->createTicket()->
-				setPrefix('config')->
-				setKey($yamlFile)->
-				setActualTime(filemtime($yamlFile))->
-				restoreData();
-
-			if ($cacheTicket->isExpired()) {
-				$yamlConfig = Yaml::load($yamlFile);
-				
-				if (isset($yamlConfig['ticketAliases']))
-					$this->ticketAliases = $yamlConfig['ticketAliases'];
-				
-				$cacheTicket->
-					setData($this->ticketAliases)->
-					setLifeTime(filemtime($yamlFile))->
-					storeData();
-			} else
-				$this->ticketAliases = $cacheTicket->getData();
-				
-			return $this;
-		}
-		
 		/**
 		 * @return CacheTicket
 		 */
-		public function createTicket($ticketAlias = null)
+		public function createTicket()
 		{
-			if (!is_null($ticketAlias) && !$this->getTicketParams($ticketAlias))
-				throw MissingArgumentException::create();
-			
-			$ticketParams = $this->getTicketParams($ticketAlias);
-			
-			$result =
+			return
 				CacheTicket::create()->
-				setCacheInstance($this)->
-				fillParams($ticketParams);
-				
-			return $result;
+				setCacheInstance($this);
 		}
 		
 		/**

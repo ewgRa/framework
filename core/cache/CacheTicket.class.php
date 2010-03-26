@@ -46,22 +46,6 @@
 			return $this->cacheInstance;
 		}
 		
-		/**
-		 * @return CacheTicket
-		 */
-		public function fillParams(array $params = null)
-		{
-			if ($params) {
-				if (isset($params['prefix']))
-					$this->setPrefix($params['prefix']);
-
-				if (isset($params['lifeTime']))
-					$this->setLifeTime(time() + $params['lifeTime']);
-			}
-			
-			return $this;
-		}
-		
 		public function getPrefix()
 		{
 			return $this->prefix;
