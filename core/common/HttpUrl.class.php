@@ -84,11 +84,19 @@
 			return $this->query;
 		}
 		
+		public function __toString()
+		{
+			return
+				($this->getScheme() ? $this->getScheme().'://' : null)
+				.($this->getHost() ? $this->getHost() : null)
+				.$this->getPath()
+				.($this->getQuery() ? '?'.$this->getQuery() : null);
+		}
+
 		/**
 		 * @return HttpUrl
-		 * FIXME: private? or drop all params before parsing
 		 */
-		public function parse($url)
+		private function parse($url)
 		{
 			$parsed = parse_url($url);
 
@@ -105,15 +113,6 @@
 				$this->setQuery($parsed['query']);
 			
 			return $this;
-		}
-		
-		public function __toString()
-		{
-			return
-				($this->getScheme() ? $this->getScheme().'://' : null)
-				.($this->getHost() ? $this->getHost() : null)
-				.$this->getPath()
-				.($this->getQuery() ? '?'.$this->getQuery() : null);
 		}
 	}
 ?>
