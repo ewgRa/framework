@@ -79,12 +79,8 @@
 			$cacheTicket = $this->realization->createTicket();
 
 			$cacheTicket->
-				fillParams(
-					array(
-						'lifeTime' => -1,
-						'prefix' => $this->getPrefix()
-					)
-				)->
+				setLifeTime($time)->
+				setPrefix($this->getPrefix())->
 				setKey(rand())->
 				setData($this->getData())->
 				storeData()->

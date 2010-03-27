@@ -7,6 +7,8 @@
 	*/
 	final class FileBasedCache extends BaseCache
 	{
+		const MAX_CACHE_LIFE	= 157680000; // 5 year
+		
 		const FILE_PERMISSIONS 	= 0664;
 		const DIR_PERMISSIONS 	= 0775;
 		
@@ -88,8 +90,14 @@
 			
 			file_put_contents($fileName, serialize($ticket->getData()));
 			chmod($fileName, self::FILE_PERMISSIONS);
-			touch($fileName, $ticket->getLifeTime());
-			$ticket->setExpiredTime($ticket->getLifeTime());
+			
+			$lifeTime = $ticket->getLifeTime();
+			
+			if (is_null($lifeTime))
+				$lifeTime = time()+self::MAX_CACHE_LIFE;
+			
+			touch($fileName, $lifeTime);
+			$ticket->setExpiredTime($lifeTime);
 			
 			return $this;
 		}

@@ -15,6 +15,19 @@
 			return new self($version, $encoding);
 		}
 		
+		public function load($source, $options = null)
+		{
+			$result = parent::load($source, $options);
+			
+			if (!$this->documentElement->namespaceURI) {
+				Assert::isUnreachable(
+					'don\'t know anything about non-xsl file'
+				);
+			}
+			
+			return $result;
+		}
+		
 		/**
 		 * @return XsltDocument
 		 */
@@ -25,19 +38,11 @@
 				'are you realy want import file without root node?'
 			);
 			
-			$importNode = null;
-			
-			if ($this->documentElement->namespaceURI) {
-				$importNode =
-					$this->createElementNS(
-						$this->documentElement->namespaceURI,
-						'xsl:import'
-					);
-			} else {
-				Assert::isUnreachable(
-					'don\'t know how import file in non-xsl document'
+			$importNode =
+				$this->createElementNS(
+					$this->documentElement->namespaceURI,
+					'xsl:import'
 				);
-			}
 
 			$importNode->setAttribute('href', $filePath);
 			

@@ -7,38 +7,6 @@
 	*/
 	final class ExtendedDomDocumentTestCase extends FrameworkTestCase
 	{
-		public function testImportFile()
-		{
-			$document = ExtendedDomDocument::create();
-
-			$document->load(dirname(__FILE__).'/test.xsl');
-
-			$this->assertEquals(
-				$document->getDocumentElement()->nodeName,
-				'xsl:stylesheet'
-			);
-			
-			$document->importFile('testFile');
-			
-			$this->assertTrue(
-				strpos($document->saveXml(), '<xsl:import href="testFile"/>') > 0
-			);
-		}
-
-		public function testImportFileNonXslDocument()
-		{
-			$document = ExtendedDomDocument::create();
-	
-			$document->load(dirname(__FILE__).'/test.xml');
-
-			try {
-				$document->importFile('testFile');
-				$this->fail();
-			} catch (UnreachableCodeReachedException $e) {
-				
-			}
-		}
-		
 		public function testCreateNodeFromVar()
 		{
 			$document = ExtendedDomDocument::create();
