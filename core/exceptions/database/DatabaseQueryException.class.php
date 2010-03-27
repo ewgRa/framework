@@ -4,12 +4,11 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * FIXME: pool* rename just to *
 	*/
 	final class DatabaseQueryException extends BaseDatabaseException
 	{
-		private $poolError		= null;
-		private $poolLastQuery	= null;
+		private $error		= null;
+		private $query	= null;
 		
 		/**
 		 * @return DatabaseQueryException
@@ -22,18 +21,18 @@
 		/**
 		 * @return DatabaseQueryException
 		 */
-		public function setPoolLastQuery($query)
+		public function setQuery($query)
 		{
-			$this->poolLastQuery = $query;
+			$this->query = $query;
 			return $this;
 		}
 		
 		/**
 		 * @return DatabaseQueryException
 		 */
-		public function setPoolError($error)
+		public function setError($error)
 		{
-			$this->poolError = $error;
+			$this->error = $error;
 			return $this;
 		}
 		
@@ -45,8 +44,8 @@
 				__CLASS__." [{$this->code}]: ".$this->message,
 				"Host: {$this->getPool()->getHost()}",
 				"Database: {$this->getPool()->getDatabaseName()}",
-				"Query: {$this->poolLastQuery}",
-				"Error: {$this->poolError}",
+				"Query: {$this->query}",
+				"Error: {$this->error}",
 				"Query executed from: {$singleTrace->getFile()}"
 				. " at line {$singleTrace->getLine()}"
 			);

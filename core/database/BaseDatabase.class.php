@@ -200,8 +200,8 @@
 			throw
 				DatabaseQueryException::create()->
 				setPool($this)->
-				setPoolLastQuery($this->getLastQuery())->
-				setPoolError($this->getError());
+				setQuery($this->getLastQuery())->
+				setError($this->getError());
 		}
 		
 		protected function debugQuery($query, $started, $ended)
