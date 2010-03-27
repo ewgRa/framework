@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class ExtendedDomDocument extends DOMDocument
+	class ExtendedDomDocument extends DOMDocument
 	{
 		const NODE_PREFIX 				= 'item';
 		const NUMERIC_NODE_ATTRIBUTE 	= 'key';
@@ -49,42 +49,6 @@
 			}
 			
 			return $node;
-		}
-		
-		/**
-		 * @return ExtendedDomDocument
-		 * FIXME: this is ExtendedXslDocument function
-		 */
-		public function importFile($filePath)
-		{
-			Assert::isNotNull(
-				$this->documentElement,
-				'are you realy want import file without root node?'
-			);
-			
-			$importNode = null;
-			
-			if ($this->documentElement->namespaceURI) {
-				$importNode =
-					$this->createElementNS(
-						$this->documentElement->namespaceURI,
-						'xsl:import'
-					);
-			} else {
-				Assert::isUnreachable(
-					'don\'t know how import file in non-xsl document'
-				);
-			}
-
-			$importNode->setAttribute('href', $filePath);
-			
-			$this->documentElement->
-				insertBefore(
-					$importNode,
-					$this->documentElement->firstChild->nextSibling
-				);
-			
-			return $this;
 		}
 		
 		/**

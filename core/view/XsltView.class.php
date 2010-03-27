@@ -11,7 +11,7 @@
 		private $version = '1.0';
 		
 		/**
-		 * @var ExtendedDomDocument
+		 * @var XsltDocument
 		 */
 		private $xslDocument = null;
 
@@ -58,7 +58,7 @@
 		{
 			Assert::isNotNull($layout->getPath());
 			
-			$this->xslDocument = $this->createDomDocument();
+			$this->xslDocument = $this->createXsltDocument();
 			$this->xslDocument->loadXML($layout->getContent());
 			
 			return $this;
@@ -97,6 +97,18 @@
 		{
 			return
 				ExtendedDomDocument::create(
+					$this->getVersion(),
+					$this->getCharset()
+				);
+		}
+
+		/**
+		 * @return XsltDocument
+		 */
+		private function createXsltDocument()
+		{
+			return
+				XsltDocument::create(
 					$this->getVersion(),
 					$this->getCharset()
 				);
