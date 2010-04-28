@@ -1,11 +1,9 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class PhpViewTestCase extends FrameworkTestCase
+	final class PhpViewTestCase extends FrameworkTestCase
 	{
 		public function testTransform()
 		{
@@ -35,9 +33,7 @@
 				Model::create()->set('data', 'testData')
 			);
 			
-			$content = ob_get_clean();
-			
-			$this->assertSame($content, 'testDatatestData');
+			$this->assertSame(ob_get_clean(), 'testDatatestData');
 		}
 		
 		private function createView()

@@ -12,7 +12,7 @@
 			$message = 'Variable is not array!'
 		) {
 			if (!is_array($array))
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 				
 			return true;
 		}
@@ -22,7 +22,7 @@
 			$message = 'Variable is not true!'
 		) {
 			if ($variable !== true)
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 							
 			return true;
 		}
@@ -32,7 +32,7 @@
 			$message = 'Variable is not false!'
 		) {
 			if ($variable !== false)
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 							
 			return true;
 		}
@@ -42,7 +42,7 @@
 			$message = 'Variable is null!'
 		) {
 			if (is_null($variable))
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 										
 			return true;
 		}
@@ -53,7 +53,7 @@
 			$message = 'one and two not equal'
 		) {
 			if ($one !== $two)
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 										
 			return true;
 		}
@@ -80,7 +80,7 @@
 			$message = 'object has not implement interface'
 		) {
 			if (!in_array($interface, class_implements(get_class($object))))
-				throw DefaultException::create($message);
+				throw WrongArgumentException::create($message);
 												
 			return true;
 		}

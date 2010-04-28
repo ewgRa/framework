@@ -7,6 +7,8 @@
 	*/
 	final class Dir
 	{
+		const PERMISSIONS = 0775;
+		
 		private $path = null;
 		
 		/**
@@ -48,7 +50,7 @@
 		public function make()
 		{
 			$umask = umask(0);
-			mkdir($this->getPath(), FileBasedCache::DIR_PERMISSIONS, true);
+			mkdir($this->getPath(), self::PERMISSIONS, true);
 			umask($umask);
 			return $this;
 		}

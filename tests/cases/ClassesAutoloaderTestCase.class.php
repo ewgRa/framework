@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -30,15 +28,19 @@
 		
 		public function testLoadClass()
 		{
-			$className = __FUNCTION__ . rand();
+			$className = __FUNCTION__.rand();
 			
 			$fileName =
-				TMP_DIR . DIRECTORY_SEPARATOR
-				. $className . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$className.ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
-				str_replace(get_class($this), $className, file_get_contents(__FILE__))
+				str_replace(
+					get_class($this),
+					$className,
+					file_get_contents(__FILE__)
+				)
 			);
 			
 			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
@@ -52,17 +54,21 @@
 			$this->assertTrue(class_exists($className, false));
 		}
 		
-		public function testLoadClassese()
+		public function testLoadClasses()
 		{
-			$className = __FUNCTION__ . rand();
+			$className = __FUNCTION__.rand();
 			
 			$fileName =
-				TMP_DIR . DIRECTORY_SEPARATOR
-				. $className . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$className.ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
-				str_replace(get_class($this), $className, file_get_contents(__FILE__))
+				str_replace(
+					get_class($this),
+					$className,
+					file_get_contents(__FILE__)
+				)
 			);
 			
 			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
@@ -76,11 +82,11 @@
 		
 		public function testLoadInterface()
 		{
-			$interfaceName = __FUNCTION__ . rand();
+			$interfaceName = __FUNCTION__.rand();
 			
 			$fileName =
-				TMP_DIR . DIRECTORY_SEPARATOR
-				. $interfaceName . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$interfaceName.ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
@@ -107,11 +113,11 @@
 		
 		public function testSetFoundClasses()
 		{
-			$interfaceName = __FUNCTION__ . rand();
+			$interfaceName = __FUNCTION__.rand();
 			
 			$fileName =
-				TMP_DIR . DIRECTORY_SEPARATOR
-				. $interfaceName . ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$interfaceName.ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
@@ -135,10 +141,9 @@
 		
 		private function assertClassMapChanged($expect = true)
 		{
-			if ($expect)
-				$this->assertTrue(ClassesAutoloader::me()->isClassMapChanged());
-			else
-				$this->assertFalse(ClassesAutoloader::me()->isClassMapChanged());
+			$this->assertTrue(
+				ClassesAutoloader::me()->isClassMapChanged() === $expect
+			);
 		}
 	}
 ?>

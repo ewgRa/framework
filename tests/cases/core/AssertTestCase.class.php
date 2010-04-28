@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -13,11 +11,10 @@
 			
 			try {
 				Assert::isArray(rand());
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsTrue()
@@ -26,11 +23,10 @@
 			
 			try {
 				Assert::isTrue(false);
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsFalse()
@@ -39,11 +35,10 @@
 			
 			try {
 				Assert::isFalse(true);
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 		
 		public function testIsNotNull()
@@ -52,11 +47,10 @@
 			
 			try {
 				Assert::isNotNull(null);
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsEqual()
@@ -65,11 +59,10 @@
 			
 			try {
 				Assert::isEqual(1, '1');
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsFileExists()
@@ -78,11 +71,10 @@
 			
 			try {
 				Assert::isFileExists('noFile');
+				$this->fail();
 			} catch(FileNotExistsException $e) {
-				return;
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsImplement()
@@ -93,22 +85,20 @@
 			
 			try {
 				Assert::isImplement($this, 'SingletonInterface');
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 
 		public function testIsUnreachable()
 		{
 			try {
 				Assert::isUnreachable();
-			} catch(DefaultException $e) {
-				return;
+				$this->fail();
+			} catch(UnreachableCodeReachedException $e) {
+				# all good
 			}
-			
-			$this->fail();
 		}
 	}
 ?>
