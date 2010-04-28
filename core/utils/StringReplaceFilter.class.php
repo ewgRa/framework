@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,7 +9,7 @@
 		private $replace	= array();
 
 		/**
-		 * @return StringReplaceImportFilter
+		 * @return StringReplaceFilter
 		 */
 		public static function create()
 		{
@@ -19,39 +17,21 @@
 		}
 		
 		/**
-		 * @return StringReplaceImportFilter
+		 * @return StringReplaceFilter
 		 */
-		public function setSearch(array $search)
+		public function addReplacement($search, $replace)
 		{
-			$this->search = $search;
+			$this->search[]	 = $search;
+			$this->replace[] = $replace;
 			return $this;
-		}
-		
-		public function getSearch()
-		{
-			return $this->search;
-		}
-		
-		/**
-		 * @return StringReplaceImportFilter
-		 */
-		public function setReplace(array $replace)
-		{
-			$this->replace = $replace;
-			return $this;
-		}
-		
-		public function getReplace()
-		{
-			return $this->replace;
 		}
 		
 		public function apply($string)
 		{
 			return
 				str_replace(
-					$this->getSearch(),
-					$this->getReplace(),
+					$this->search,
+					$this->replace,
 					$string
 				);
 		}

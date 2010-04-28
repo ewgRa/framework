@@ -1,11 +1,9 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class YamlTestCase extends FrameworkTestCase
+	final class YamlTestCase extends FrameworkTestCase
 	{
 		public function testSaveLoad()
 		{
@@ -19,8 +17,8 @@
 						'key' => 'value'
 					)
 				);
-			
-			$yamlFile = TMP_DIR.'/test.yml';
+
+			$yamlFile = File::create()->setPath(TMP_DIR.'/test.yml');
 			
 			Yaml::save($yamlFile, $data);
 			
@@ -29,11 +27,11 @@
 			$this->assertSame($yamlResult, $data);
 			
 			$this->assertSame(
-				Yaml::loadString(file_get_contents($yamlFile)),
+				Yaml::loadString($yamlFile->getContent()),
 				$data
 			);
 			
-			unlink($yamlFile);
+			$yamlFile->delete();
 		}
 	}
 ?>

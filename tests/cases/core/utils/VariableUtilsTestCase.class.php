@@ -1,26 +1,27 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class VariableUtilsTestCase extends FrameworkTestCase
+	final class VariableUtilsTestCase extends FrameworkTestCase
 	{
 		public function testGetValueByString()
 		{
-			define( 'TEST_CONST', 'value' );
+			define('TEST_CONST', 'value');
 	
 			$this->assertEquals(
-				VariableUtils::getValueByString('TEST_CONST'), TEST_CONST
+				VariableUtils::getValueByString('TEST_CONST'),
+				TEST_CONST
 			);
 
 			$this->assertEquals(
-				VariableUtils::getValueByString('UNDEFINED_CONST'), null
+				VariableUtils::getValueByString('UNDEFINED_CONST'),
+				null
 			);
 			
 			$this->assertEquals(
-				VariableUtils::getValueByString('$_SERVER'), $_SERVER
+				VariableUtils::getValueByString('$_SERVER'),
+				$_SERVER
 			);
 
 			if(!isset($_SERVER['REMOTE_ADDR']))

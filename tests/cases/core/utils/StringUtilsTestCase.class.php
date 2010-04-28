@@ -1,25 +1,23 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class StringUtilsTestCase extends FrameworkTestCase
+	final class StringUtilsTestCase extends FrameworkTestCase
 	{
 		public function testUpperKeyFirstAlpha()
 		{
 			$this->assertEquals(
-				StringUtils::upperKeyFirstAlpha('test'),
-				'Test'
+				StringUtils::upperKeyFirstAlpha('testtest'),
+				'Testtest'
 			);
 		}
 
 		public function testSeparateByUpperKey()
 		{
 			$this->assertEquals(
-				StringUtils::separateByUpperKey('testString'),
-				'test_string'
+				StringUtils::separateByUpperKey('testStringTest'),
+				'test_string_test'
 			);
 		}
 
@@ -34,16 +32,16 @@
 		public function testToLower()
 		{
 			$this->assertEquals(
-				StringUtils::toLower('testString'),
-				'teststring'
+				StringUtils::toLower('testStringTest'),
+				'teststringtest'
 			);
 		}
 
 		public function testToUpper()
 		{
 			$this->assertEquals(
-				StringUtils::toUpper('testString'),
-				'TESTSTRING'
+				StringUtils::toUpper('testStringTest'),
+				'TESTSTRINGTEST'
 			);
 		}
 	}

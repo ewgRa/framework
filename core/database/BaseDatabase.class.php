@@ -96,31 +96,6 @@
 			return $this->connected;
 		}
 
-		/**
-		 * @return BaseDatabase
-		 */
-		public function initialize($yamlFile)
-		{
-			$settings = Yaml::load($yamlFile);
-
-			if (isset($settings['host']))
-				$this->setHost($settings['host']);
-			
-			if (isset($settings['user']))
-				$this->setUser($settings['user']);
-
-			if (isset($settings['password']))
-				$this->setPassword($settings['password']);
-
-			if (isset($settings['database']))
-				$this->setDatabaseName($settings['database']);
-
-			if (isset($settings['charset']))
-				$this->setCharset($settings['charset']);
-
-			return $this;
-		}
-		
 		public function getTable($alias)
 		{
 			return '`'.$alias.'`';

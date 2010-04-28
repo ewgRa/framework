@@ -7,14 +7,17 @@
 	*/
 	final class Yaml
 	{
-		public static function load($file)
+		public static function load(File $file)
 		{
-			if(!file_exists($file))
-				throw FileNotExistsException::create()->setFilePath($file);
+			if(!$file->isExists()) {
+				throw
+					FileNotExistsException::create()->
+					setFilePath($file->getPath());
+			}
 
 			self::checkInclude();
 			
-			return Spyc::YAMLLoad($file);
+			return Spyc::YAMLLoad($file->getPath());
 		}
 
 		public static function loadString($string)
@@ -24,12 +27,12 @@
 			return Spyc::YAMLLoad($string);
 		}
 		
-		public static function save($file, $data)
+		public static function save(File $file, $data)
 		{
 			self::checkInclude();
 			$spyc = new Spyc;
 			
-			return file_put_contents($file, $spyc->dump($data));
+			return $file->setContent($spyc->dump($data));
 		}
 		
 		private static function checkInclude()
