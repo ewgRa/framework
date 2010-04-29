@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -83,9 +81,6 @@
 
 			$fileName = $this->compileKey($ticket);
 				
-			if (!$fileName)
-				throw DefaultException::create('no key');
-			
 			$this->createPreDirs($fileName);
 			
 			file_put_contents($fileName, serialize($ticket->getData()));
@@ -107,14 +102,15 @@
 			$fileName =
 				md5(serialize($this->getNamespace().'-'.$ticket->getKey()));
 			
-			$resultArray = array();
-			$resultArray[] = $this->getCacheDir();
+			$resultArray = array(
+				$this->getCacheDir(),
+				'prefix' => $ticket->getPrefix(),
+				$this->compilePreDirs($fileName),
+				$fileName
+			);
 			
-			if ($ticket->getPrefix())
-				$resultArray[] = $ticket->getPrefix();
-				
-			$resultArray[] = $this->compilePreDirs($fileName);
-			$resultArray[] = $fileName;
+			if (!$resultArray['prefix'])
+				unset($resultArray['prefix']);
 			
 			return join(DIRECTORY_SEPARATOR, $resultArray);
 		}

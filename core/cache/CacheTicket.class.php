@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,15 +6,17 @@
 	final class CacheTicket
 	{
 		/**
-		 * @var BaseCache
+		 * @var CacheInterface
 		 */
 		private $cacheInstance = null;
 
 		private $data 		= null;
 		private $prefix 	= null;
 		private $key 		= null;
+		
 		private $actualTime = null;
 		private $lifeTime 	= null;
+		
 		private $expired	= true;
 		
 		private $expiredTime = null;
@@ -32,14 +32,14 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function setCacheInstance(BaseCache $instance)
+		public function setCacheInstance(CacheInterface $instance)
 		{
 			$this->cacheInstance = $instance;
 			return $this;
 		}
 		
 		/**
-		 * @return Cache
+		 * @return CacheInterface
 		 */
 		public function getCacheInstance()
 		{
@@ -68,7 +68,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function setKey()
+		public function setKey(/* $argument1, $argument2, ..., $argumentN */)
 		{
 			$this->key = func_get_args();
 			return $this;
@@ -77,7 +77,7 @@
 		/**
 		 * @return CacheTicket
 		 */
-		public function addKey()
+		public function addKey(/* $argument1, $argument2, ..., $argumentN */)
 		{
 			$this->key = array($this->key, func_get_args());
 			return $this;

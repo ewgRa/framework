@@ -1,14 +1,12 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
-		private $namespace		= null;
-		private $enabled		= true;
+		private $namespace	= null;
+		private $enabled	= true;
 
 		/**
 		 * @return BaseCache
