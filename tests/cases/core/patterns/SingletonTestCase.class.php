@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -39,7 +37,7 @@
 			$testVar = rand();
 			
 			MySingletonTest::me()->setTestVariable($testVar);
-			MySingletonTest2::me()->setTestVariable($testVar . rand());
+			MySingletonTest2::me()->setTestVariable($testVar.rand());
 			
 			$this->assertNotSame(
 				MySingletonTest::me()->getTestVariable(),

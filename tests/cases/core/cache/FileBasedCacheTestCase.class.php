@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,7 +10,7 @@
 			return
 				FileBasedCache::create()->
 				setCacheDir(
-					TMP_DIR . DIRECTORY_SEPARATOR . 'cacheData' . __CLASS__
+					TMP_DIR.DIRECTORY_SEPARATOR.'cacheData'.__CLASS__
 				);
 		}
 	}

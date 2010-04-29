@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -21,7 +19,10 @@
 			$document->importFile('testFile');
 			
 			$this->assertTrue(
-				strpos($document->saveXml(), '<xsl:import href="testFile"/>') > 0
+				strpos(
+					$document->saveXml(),
+					'<xsl:import href="testFile"/>'
+				) > 0
 			);
 		}
 
@@ -33,7 +34,7 @@
 				$document->load(dirname(__FILE__).'/test.xml');
 				$this->fail();
 			} catch (UnreachableCodeReachedException $e) {
-				
+				# all good
 			}
 		}
 	}

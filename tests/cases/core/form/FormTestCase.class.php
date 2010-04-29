@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -54,8 +52,12 @@
 			$form =
 				Form::create()->
 				addPrimitive(
-					PrimitiveString::create('testPrimitive')->setRequired()->
-					setErrorLabel(PrimitiveErrors::MISSING, 'missing primitive')
+					PrimitiveString::create('testPrimitive')->
+					setRequired()->
+					setErrorLabel(
+						PrimitiveErrors::MISSING,
+						'missing primitive'
+					)
 				);
 				
 			$form->import(array('testPrimitive' => ''));

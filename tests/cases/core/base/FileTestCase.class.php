@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +7,7 @@
 	{
 		public function testContent()
 		{
-			$dirName = TMP_DIR . DIRECTORY_SEPARATOR . __CLASS__;
+			$dirName = TMP_DIR.DIRECTORY_SEPARATOR.__CLASS__;
 			
 			if (!file_exists($dirName))
 				mkdir($dirName);
@@ -23,7 +21,7 @@
 
 		public function testOperations()
 		{
-			$dirName = TMP_DIR . DIRECTORY_SEPARATOR . __CLASS__;
+			$dirName = TMP_DIR.DIRECTORY_SEPARATOR.__CLASS__;
 			
 			if (!file_exists($dirName))
 				mkdir($dirName);

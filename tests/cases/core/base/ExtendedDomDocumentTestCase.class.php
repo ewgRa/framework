@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -24,7 +22,10 @@
 				
 			$this->assertSame(
 				$document->saveXml($node),
-				'<nodeName attr="attrValue"><var><![CDATA[value]]></var><item key="1"><![CDATA[testNumber]]></item><item key="1_1"><![CDATA[testInvalidNodeName]]></item><object><var><![CDATA[1]]></var></object></nodeName>'
+				'<nodeName attr="attrValue"><var><![CDATA[value]]></var>'
+				.'<item key="1"><![CDATA[testNumber]]></item>'
+				.'<item key="1_1"><![CDATA[testInvalidNodeName]]></item>'
+				.'<object><var><![CDATA[1]]></var></object></nodeName>'
 			);
 		}
 

@@ -1,16 +1,14 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
 	final class PrimitiveEnumerationTestClass extends Enumeration
 	{
-		const TEST			= 1;
+		const TEST = 1;
 		
 		protected $names = array(
-			self::TEST 			=> 'test'
+			self::TEST => 'test'
 		);
 		
 		/**

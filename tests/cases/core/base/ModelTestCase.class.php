@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -41,7 +39,7 @@
 				$model->get('a');
 				$this->fail();
 			} catch (MissingArgumentException $e) {
-				
+				# all good
 			}
 		}
 	}

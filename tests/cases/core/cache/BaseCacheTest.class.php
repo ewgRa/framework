@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -34,8 +32,10 @@
 				
 			$cacheTicket->addKey($key2);
 				
-			$this->assertSame($cacheTicket->getKey(), array(array($key1), array($key2)));
-			
+			$this->assertSame(
+				$cacheTicket->getKey(),
+				array(array($key1), array($key2))
+			);
 			
 			$clonedTicket = clone $cacheTicket;
 			
@@ -64,7 +64,8 @@
 		{
 			$data = $this->getData();
 			
-			$cacheTicket = $this->realization->createTicket()->
+			$cacheTicket =
+				$this->realization->createTicket()->
 				setPrefix($this->getPrefix())->
 				setKey(rand());
 				
@@ -131,6 +132,9 @@
 			$cacheTicket2->restoreData();
 			
 			$this->assertNotSame($cacheTicket->getData(), $cacheTicket2->getData());
+			
+			$this->assertSame($data, $cacheTicket->getData());
+			$this->assertSame('asdasd', $cacheTicket2->getData());
 		}
 		
 		private function getPrefix()
