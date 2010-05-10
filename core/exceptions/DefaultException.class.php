@@ -53,27 +53,5 @@
 		{
 			return '<pre>' . $this->__toString() . '</pre>';
 		}
-		
-		/**
-		 * @return SingleTrace
-		 */
-		protected function getSingleTrace($index)
-		{
-			$trace = $this->getTrace();
-			$singleRawTrace = $trace[$index];
-			
-			$singleTrace =
-				SingleTrace::create()->
-				setLine($singleRawTrace['line'])->
-				setFile($singleRawTrace['file']);
-			
-			
-			return $singleTrace;
-		}
-		
-		protected function toString(array $array)
-		{
-			return join(PHP_EOL.PHP_EOL, $array).PHP_EOL.PHP_EOL;
-		}
 	}
 ?>

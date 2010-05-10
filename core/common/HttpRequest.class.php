@@ -18,6 +18,7 @@
 		 */
 		public static function create()
 		{
+			Yaml::load(File::create()->setPath('a'));
 			return new self;
 		}
 		

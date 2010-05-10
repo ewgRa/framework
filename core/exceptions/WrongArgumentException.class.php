@@ -8,7 +8,7 @@
 		/**
 		 * @return WrongArgumentException
 		 */
-		public static function create($message = null, $code = null)
+		public static function create($message = 'Wrorg argument', $code = null)
 		{
 			return new self($message, $code);
 		}

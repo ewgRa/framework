@@ -28,7 +28,7 @@
 				);
 			
 			if (!$db)
-				throw DatabaseConnectException::create()->setPool($this);
+				throw DatabaseConnectException::create();
 			
 			$this->setLinkIdentifier($db)->connected();
 

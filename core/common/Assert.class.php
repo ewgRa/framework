@@ -10,7 +10,7 @@
 			$message = 'Variable is not array!'
 		) {
 			if (!is_array($array))
-				throw WrongArgumentException::create($message);
+				throw self::createException($message);
 				
 			return true;
 		}
@@ -20,7 +20,7 @@
 			$message = 'Variable is not true!'
 		) {
 			if ($variable !== true)
-				throw WrongArgumentException::create($message);
+				throw self::createException($message);
 							
 			return true;
 		}
@@ -30,7 +30,7 @@
 			$message = 'Variable is not false!'
 		) {
 			if ($variable !== false)
-				throw WrongArgumentException::create($message);
+				throw self::createException($message);
 							
 			return true;
 		}
@@ -40,7 +40,7 @@
 			$message = 'Variable is null!'
 		) {
 			if (is_null($variable))
-				throw WrongArgumentException::create($message);
+				throw self::createException($message);
 										
 			return true;
 		}
@@ -51,41 +51,38 @@
 			$message = 'one and two not equal'
 		) {
 			if ($one !== $two)
-				throw WrongArgumentException::create($message);
-										
-			return true;
-		}
-		
-		public static function isFileExists($filePath)
-		{
-			if (!file_exists($filePath)) {
-				$trace = debug_backtrace();
-				$trace = array_shift($trace);
-
-				throw
-					FileNotExistsException::create()->
-					setFilePath($filePath)->
-					setFile($trace['file'])->
-					setLine($trace['line']);
-			}
+				throw self::createException($message);
 			
 			return true;
 		}
-
+		
 		public static function isImplement(
 			$object,
 			$interface,
 			$message = 'object has not implement interface'
 		) {
 			if (!in_array($interface, class_implements(get_class($object))))
-				throw WrongArgumentException::create($message);
+				throw self::createException($message);
 												
+			return true;
+		}
+
+		public static function isFileExists($filePath)
+		{
+			if (!file_exists($filePath))
+				throw FileNotExistsException::create();
+			
 			return true;
 		}
 
 		public static function isUnreachable()
 		{
 			throw UnreachableCodeReachedException::create();
+		}
+		
+		protected static function createException($message)
+		{
+			return WrongArgumentException::create($message);
 		}
 	}
 ?>

@@ -170,11 +170,7 @@
 		
 		protected function queryError()
 		{
-			throw
-				DatabaseQueryException::create()->
-				setPool($this)->
-				setQuery($this->getLastQuery())->
-				setError($this->getError());
+			throw DatabaseQueryException::create($this->getError());
 		}
 		
 		protected function debugQuery($query, $started, $ended)

@@ -7,11 +7,8 @@
 	{
 		public static function load(File $file)
 		{
-			if(!$file->isExists()) {
-				throw
-					FileNotExistsException::create()->
-					setFilePath($file->getPath());
-			}
+			if(!$file->isExists())
+				throw FileNotExistsException::create();
 
 			self::checkInclude();
 			
