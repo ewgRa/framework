@@ -3,11 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class AllBaseTestSuite extends FrameworkTestSuite
-	{
-		public static function suite()
-		{
-			return new self;
-		}
-	}
+
+	require_once(dirname(__FILE__).'/../init.php');
+	require_once(dirname(__FILE__).'/FrameworkTestCase.class.php');
 ?>

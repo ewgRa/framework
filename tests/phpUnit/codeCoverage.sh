@@ -1,6 +1,6 @@
 #!/bin/bash
 
-phpunit \
-	--bootstrap runTestSuite.php \
+phpunit $* \
+	--bootstrap bootstrap.php \
 	--coverage-html \
-	/tmp/ewgraFrameworkCodeCoverage AllTestSuite.class.php
+	/tmp/ewgraFrameworkCodeCoverage AllTestSuite.php
