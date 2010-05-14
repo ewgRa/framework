@@ -16,7 +16,7 @@
 		/**
 		 * @return Cache
 		 */
-		public function addPool(BaseCache $pool, $poolAlias = null)
+		public function addPool(CacheInterface $pool, $poolAlias = null)
 		{
 			$this->pools[$poolAlias] = $pool;
 			return $this;
@@ -35,7 +35,7 @@
 			if (!$this->hasPool($poolAlias)) {
 				throw
 					MissingArgumentException::create(
-						'Known nothing about pool ' . $poolAlias
+						'Known nothing about pool '.$poolAlias
 					);
 			}
 

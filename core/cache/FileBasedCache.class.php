@@ -120,7 +120,9 @@
 		 */
 		public function dropByKey($key)
 		{
-			@unlink($key);
+			if (file_exists($key))
+				unlink($key);
+			
 			return $this;
 		}
 		
@@ -157,12 +159,12 @@
 		{
 			$directory = dirname($fileName);
 
-			$umask = umask(0);
-			
-			if (!file_exists($directory))
+			if (!file_exists($directory)) {
+				$umask = umask(0);
 				mkdir($directory, self::DIR_PERMISSIONS, true);
-							
-			umask($umask);
+				umask($umask);
+			}
+			
 			return $this;
 		}
 	}

@@ -72,8 +72,10 @@
 					$ticket->actual();
 					$result = $data['data'];
 				}
-			} else
+			} else {
 				$ticket->setExpiredTime(null);
+				$ticket->expired();
+			}
 
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
 				$this->debug($ticket);

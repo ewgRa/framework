@@ -68,7 +68,9 @@
 				$this->realization->createTicket()->
 				setPrefix($this->getPrefix())->
 				setKey(rand());
-				
+			
+			$cacheTicket->actual();
+			
 			$cacheTicket->restoreData();
 							
 			$this->assertTrue($cacheTicket->isExpired());
