@@ -8,9 +8,6 @@
 	require_once(dirname(__FILE__).'/FrameworkTestCase.class.php');
 	require_once(dirname(__FILE__).'/FrameworkTestSuite.class.php');
 
-	classesAutoloaderInit();
-	cacheInit();
-	
 	$testSuite = $_SERVER['argv'][1];
 	class_exists($testSuite);
 	

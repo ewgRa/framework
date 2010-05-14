@@ -32,6 +32,9 @@
 	if (!$dir->isExists())
 		$dir->make();
 	
+	classesAutoloaderInit();
+	cacheInit();
+	
 	function classesAutoloaderInit()
 	{
 		require_once(FRAMEWORK_DIR.'/core/patterns/SingletonInterface.class.php');
