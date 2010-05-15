@@ -11,7 +11,7 @@
 			
 			$primitive =
 				PrimitiveObject::create('testPrimitive')->
-				setObjectClass('PrimitiveObjectTestObject')->
+				setClass('PrimitiveObjectTestObject')->
 				import(array('testPrimitive' => $id));
 			
 			$this->assertSame($primitive->getValue()->getId(), $id);

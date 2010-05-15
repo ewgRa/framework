@@ -5,7 +5,7 @@
 	*/
 	final class PrimitiveObject extends BasePrimitive
 	{
-		private $objectClass = null;
+		private $class = null;
 		
 		/**
 		 * @return PrimitiveObject
@@ -17,11 +17,10 @@
 		
 		/**
 		 * @return PrimitiveObject
-		 * FIXME: naming, setClass
 		 */
-		public function setObjectClass($class)
+		public function setClass($class)
 		{
-			$this->objectClass = $class;
+			$this->class = $class;
 			return $this;
 		}
 
@@ -30,11 +29,11 @@
 		 */
 		public function importValue($value)
 		{
-			Assert::isNotNull($this->objectClass);
+			Assert::isNotNull($this->class);
 			
 			$result = parent::importValue($value);
 			
-			$classDA = call_user_func(array($this->objectClass, 'da'));
+			$classDA = call_user_func(array($this->class, 'da'));
 			
 			if (!$this->hasErrors() && $this->getValue())
 				$this->setValue($classDA->getById($this->getValue()));
