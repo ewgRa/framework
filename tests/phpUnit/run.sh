@@ -1,3 +1,5 @@
 #!/bin/bash
 
-phpunit $* --bootstrap bootstrap.php $TEST_SUITE AllTestSuite
+phpunit $* \
+	--bootstrap bootstrap.php \
+	AllTestSuite
