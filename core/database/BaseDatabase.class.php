@@ -10,9 +10,8 @@
 		private $host			= null;
 		private $user			= null;
 		private $password		= null;
-		private $databaseName	= null;
+		private $database		= null;
 		private $charset		= null;
-		private $lastQuery		= null;
 		
 		/**
 		 * @return BaseDatabase
@@ -73,20 +72,32 @@
 		/**
 		 * @return BaseDatabase
 		 */
-		public function setDatabaseName($databaseName)
+		public function setDatabase($database)
 		{
-			$this->databaseName = $databaseName;
+			$this->database = $database;
 			return $this;
 		}
 		
-		public function getDatabaseName()
+		public function getDatabase()
 		{
-			return $this->databaseName;
+			return $this->database;
 		}
 		
-		public function getLastQuery()
+		public function query(DatabaseQueryInterface $query)
 		{
-			return $this->lastQuery;
+			return $this->queryRaw($query->toString($this->getDialect(), $this));
+		}
+
+		public function queryNull(DatabaseQueryInterface $query)
+		{
+			$this->query($query);
+			return $this;
+		}
+
+		public function queryRawNull($queryString)
+		{
+			$this->queryRaw($queryString);
+			return $this;
 		}
 		
 		public function isConnected()
@@ -94,80 +105,17 @@
 			return $this->connected;
 		}
 
-		public function getTable($alias)
+		public function getLinkIdentifier()
 		{
-			return '`'.$alias.'`';
+			return $this->linkIdentifier;
 		}
 		
-		public function queryString($query, array $values = array())
-		{
-			if (count($values))
-				$query = $this->processQuery($query, $values);
-				
-			return $query;
-		}
-
 		public function __destruct()
 		{
 			if ($this->isConnected())
 				$this->disconnect();
 		}
 
-		/**
-		 * @return BaseDatabase
-		 */
-		protected function setLastQuery($query)
-		{
-			$this->lastQuery = $query;
-			return $this;
-		}
-		
-		protected function prepareQuery($query, array $values)
-		{
-			if (!$this->isConnected())
-				$this->connect()->selectDatabase()->selectCharset();
-			
-			if (count($values))
-				$query = $this->processQuery($query, $values);
-						
-			return $query;
-		}
-		
-		protected function processQuery($query, array $values = array())
-		{
-			$query = str_replace('?', '??', $query);
-			$queryParts = explode('?', $query);
-			$partsCounter = 0;
-			
-			foreach ($queryParts as $partKey => $part) {
-				if ($partsCounter % 2) {
-					if (!is_null(key($values))) {
-						$value = $values[key($values)];
-						
-						if (is_null($value))
-							$part = "NULL";
-						else {
-							$value = $this->escape($value);
-							
-							$part =
-								is_array($value)
-									? "'" . join("', '", $value) . "'"
-									: "'" . $value . "'";
-						}
-
-						next($values);
-					}
-					else
-						$part = "?";
-				}
-				
-				$queryParts[$partKey] = $part;
-				$partsCounter++;
-			}
-			
-			return join('', $queryParts);
-		}
-		
 		protected function queryError()
 		{
 			throw DatabaseQueryException::create($this->getError());
@@ -195,11 +143,6 @@
 		{
 			$this->linkIdentifier = $link;
 			return $this;
-		}
-		
-		protected function getLinkIdentifier()
-		{
-			return $this->linkIdentifier;
 		}
 		
 		/**

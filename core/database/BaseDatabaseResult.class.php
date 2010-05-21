@@ -18,7 +18,7 @@
 			return $this->resource;
 		}
 		
-		public function fetchList($field = null, $keyField = null)
+		public function fetchList()
 		{
 			$result = array();
 			
@@ -28,16 +28,43 @@
 			) {
 				$this->dataSeek(1);
 				
-				while ($row = $this->fetchArray()) {
-					$resultValue =
-						is_null($field)
-							? $row
-							: $row[$field];
-					
-					if ($keyField && isset($row[$keyField]))
-						$result[$row[$keyField]] = $resultValue;
+				while ($row = $this->fetchRow())
+					$result[] = $row;
+			}
+			
+			return $result;
+		}
+
+		/**
+		 * @throws MissingArgumentException
+		 */
+		public function fetchFieldList($field, $keyField = null)
+		{
+			$result = array();
+			
+			if (
+				$this->getResource()
+				&& $this->recordCount($this->getResource())
+			) {
+				$this->dataSeek(1);
+				
+				if ($keyField) {
+					$row = $this->fetchRow();
+				
+					if (!isset($row[$keyField])) {
+						throw MissingArgumentException(
+							"result row doesn't have keyfield '".$keyField."'"
+						);
+					}
+
+					$this->dataSeek(1);
+				}
+				
+				while ($row = $this->fetchRow()) {
+					if ($keyField)
+						$result[$row[$keyField]] = $row[$field];
 					else
-						$result[] = $resultValue;
+						$result[] = $row[$field];
 				}
 			}
 			

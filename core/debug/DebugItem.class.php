@@ -2,8 +2,9 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: finalize, and think about cms page
 	*/
-	final class DebugItem
+	class DebugItem
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;

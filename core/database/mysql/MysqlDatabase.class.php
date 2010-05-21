@@ -14,6 +14,14 @@
 		}
 		
 		/**
+		 * @return MysqlDialect
+		 */
+		public function getDialect()
+		{
+			return MysqlDialect::me();
+		}
+		
+		/**
 		 * @return MysqlDatabase
 		 * @throws DatabaseConnectException
 		 */
@@ -38,16 +46,21 @@
 		/**
 		 * @return MysqlDatabase
 		 */
-		public function selectCharset($charset = 'utf8')
+		public function selectCharset($charset = null)
 		{
-			$this->setCharset($charset);
+			if ($charset)
+				$this->setCharset($charset);
+			else
+				$charset = $this->getCharset();
 			
 			$this->
-				queryNull('SET NAMES ?', array($charset))->
-				queryNull('SET CHARACTER SET ?', array($charset))->
-				queryNull(
-					'SET collation_connection = ?',
-					array($charset . '_general_ci')
+				queryRawNull('SET NAMES '.$this->getDialect()->escape($charset, $this))->
+				queryRawNull(
+					'SET CHARACTER SET '.$this->getDialect()->escape($charset, $this)
+				)->
+				queryRawNull(
+					'SET collation_connection = '
+					.$this->getDialect()->escape($charset.'_general_ci', $this)
 				);
 			
 			return $this;
@@ -62,11 +75,11 @@
 			if($databaseName)
 				$this->setDatabaseName($databaseName);
 			else
-				$databaseName = $this->getDatabaseName();
+				$databaseName = $this->getDatabase();
 			
 			if(
 				!mysql_select_db(
-					$this->getDatabaseName(),
+					$this->getDatabase(),
 					$this->getLinkIdentifier()
 				)
 			)
@@ -85,19 +98,19 @@
 			return $this;
 		}
 
-		/**
-		 * @todo think about $values must be a DBValue::equal, DBValue::like
-		 * 		 or something else instance
-		 */
-		public function query($query, array $values = array())
+		public function queryRaw($queryString)
 		{
+			if (!$this->isConnected())
+				$this->connect()->selectDatabase()->selectCharset();
+			
 			$startTime = microtime(true);
 			
-			$query = $this->prepareQuery($query, $values);
-
-			$resource = mysql_query($query, $this->getLinkIdentifier());
+			Assert::isNotNull($this->getLinkIdentifier());
 			
-			$this->setLastQuery($query);
+			$resource = mysql_query(
+				$queryString,
+				$this->getLinkIdentifier()
+			);
 			
 			if ($this->getError())
 				$this->queryError();
@@ -105,39 +118,11 @@
 			$endTime = microtime(true);
 				
 			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				$this->debugQuery($query, $startTime, $endTime);
+				$this->debugQuery($queryString, $startTime, $endTime);
 			
 			return
 				MysqlDatabaseResult::create()->
 				setResource($resource);
-		}
-
-		public function queryNull($query, array $values = array())
-		{
-			$this->query($query, $values);
-			return $this;
-		}
-		
-		public function getLimit($count = null, $from = null)
-		{
-			if (!is_null($from) && $from < 0)
-				$from = 0;
-			
-			if (!is_null($count) && $count < 0)
-				$count = 0;
-			
-			$limit = array();
-			
-			if (!is_null($from))
-				$limit[] = (int)$from;
-			
-			if (!is_null($count))
-				$limit[] = (int)$count;
-			
-			return
-				count($limit)
-					? ' LIMIT ' . join(', ', $limit)
-					: '';
 		}
 
 		public function getInsertedId()
@@ -145,25 +130,6 @@
 			return mysql_insert_id($this->getLinkIdentifier());
 		}
 
-		public function escape($variable)
-		{
-			if (is_array($variable)) {
-				foreach ($variable as &$value)
-					$value = $this->{__FUNCTION__}($value);
-			} else {
-				if (!$this->isConnected())
-					$this->connect();
-				
-				$variable =
-					mysql_real_escape_string(
-						$variable,
-						$this->getLinkIdentifier()
-					);
-			}
-			
-			return $variable;
-		}
-		
 		public function getError()
 		{
 			return mysql_error($this->getLinkIdentifier());

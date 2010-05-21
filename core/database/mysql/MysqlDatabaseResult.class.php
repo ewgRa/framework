@@ -18,7 +18,7 @@
 			return mysql_numrows($this->getResource());
 		}
 
-		public function fetchArray()
+		public function fetchRow()
 		{
 			return mysql_fetch_assoc($this->getResource());
 		}

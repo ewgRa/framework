@@ -9,11 +9,15 @@
 
 		public function recordCount();
 
-		public function fetchArray();
+		public function fetchRow();
 		
-		public function fetchList($field = null, $keyField = null);
+		public function fetchList();
+		
+		/**
+		 * @throws MissingArgumentException
+		 */
+		public function fetchFieldList($field, $keyField = null);
 		
 		public function dataSeek($row);
-		
 	}
 ?>
