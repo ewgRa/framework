@@ -69,6 +69,12 @@
 				array('testPrimitive' => array(PrimitiveErrors::MISSING))
 			);
 			
+			$this->assertTrue(
+				$form->
+					getPrimitive('testPrimitive')->
+					hasError(PrimitiveErrors::MISSING)
+			);
+			
 			$this->assertSame(
 				$form->getPrimitive('testPrimitive')->
 				getErrorLabel(PrimitiveErrors::MISSING),

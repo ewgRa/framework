@@ -5,13 +5,48 @@
 	*/
 	final class CacheTestCase extends FrameworkTestCase
 	{
-		protected function getRealization()
+		private $savedCache = null;
+		
+		public function setUp()
 		{
-			return
-				FileBasedCache::create()->
-				setCacheDir(
-					TMP_DIR.DIRECTORY_SEPARATOR.'cacheData'.__CLASS__
-				);
+			$this->savedCache = serialize(Cache::me());
+			Singleton::dropInstance('Cache');
+		}
+		
+		public function tearDown()
+		{
+			Singleton::setInstance(
+				'Cache',
+				unserialize($this->savedCache)
+			);
+		}
+		
+		public function testIsSingleton()
+		{
+			$this->assertTrue(Cache::me() instanceof Singleton);
+		}
+		
+		public function testPoolOperations()
+		{
+			$this->assertFalse(Cache::me()->hasPool('default'));
+			$this->assertFalse(Cache::me()->hasPool('default2'));
+			
+			try {
+				Cache::me()->getPool('default2');
+				$this->fail();
+			} catch (MissingArgumentException $e) {
+				# good
+			}
+			
+			$pool = FileBasedCache::create();
+			
+			Cache::me()->addPool($pool, 'default');
+			Cache::me()->addPool(FileBasedCache::create(), 'default2');
+			
+			$this->assertTrue(Cache::me()->hasPool('default'));
+			$this->assertTrue(Cache::me()->hasPool('default2'));
+			
+			$this->assertSame(Cache::me()->getPool('default'), $pool);
 		}
 	}
 ?>
