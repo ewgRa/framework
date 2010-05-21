@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class DebugItem
+	final class DebugItem
 	{
 		const ENGINE_ECHO	= 1;
 		const DATABASE		= 2;
@@ -11,7 +11,10 @@
 		const CACHE			= 4;
 		
 		private $trace 		= null;
+		
+		# FIXME: enumeration
 		private $type  		= null;
+		
 		private $data  		= null;
 		private $startTime  = null;
 		private $endTime	= null;
