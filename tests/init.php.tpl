@@ -16,8 +16,15 @@
 	define('CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
 	define('TMP_DIR', '/tmp/ewgraFrameworkTests');
 	define('CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
+
 	define('MEMCACHED_TEST_HOST', 'localhost');
 	define('MEMCACHED_TEST_PORT', '11211');
+
+	define('MYSQL_TEST_HOST', 'localhost');
+	define('MYSQL_TEST_DATABASE', 'frameworkTest');
+	define('MYSQL_TEST_USER', '');
+	define('MYSQL_TEST_PASSWORD', '');
+	define('MYSQL_TEST_CHARSET', 'utf8');
 
 	require_once(FRAMEWORK_DIR.'/core/common/Dir.class.php');
 	require_once(FRAMEWORK_DIR.'/core/common/File.class.php');

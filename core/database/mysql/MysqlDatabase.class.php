@@ -83,7 +83,7 @@
 					$this->getLinkIdentifier()
 				)
 			)
-				throw DatabaseSelectDatabaseException::create()->setPool($this);
+				throw DatabaseSelectDatabaseException::create();
 			
 			return $this;
 		}
@@ -94,7 +94,7 @@
 		public function disconnect()
 		{
 			mysql_close($this->getLinkIdentifier());
-			$this->connected = false;
+			$this->disconnected();
 			return $this;
 		}
 

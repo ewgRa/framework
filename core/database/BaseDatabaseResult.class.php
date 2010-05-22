@@ -52,7 +52,7 @@
 					$row = $this->fetchRow();
 				
 					if (!isset($row[$keyField])) {
-						throw MissingArgumentException(
+						throw MissingArgumentException::create(
 							"result row doesn't have keyfield '".$keyField."'"
 						);
 					}

@@ -3,10 +3,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class MysqlDialect extends Singleton implements DatabaseDialectInterface
+	final class DummyDatabaseDialect extends Singleton implements DatabaseDialectInterface
 	{
 		/**
-		 * @return MysqlDialect
+		 * @return DummyDatabaseDialect
 		 */
 		public static function me()
 		{
@@ -40,24 +40,15 @@
 			if (is_array($variable)) {
 				foreach ($variable as &$value)
 					$value = $this->{__FUNCTION__}($value, $database);
-			} else {
-				if ($database && !$database->isConnected())
-					$database->connect()->selectDatabase()->selectCharset();
-
-				$variable =
-					$database
-						? mysql_real_escape_string(
-							$variable, $database->getLinkIdentifier()
-						)
-						: mysql_real_escape_string($variable);
-			}
+			} else
+				$variable = '|'.$variable.'|';
 			
 			return $variable;
 		}
 
 		public function quoteTable($table, DatabaseInterface $database = null)
 		{
-			return '`'.$table.'`';
+			return '|'.$table.'|';
 		}
 	}
 ?>

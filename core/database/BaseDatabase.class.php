@@ -153,5 +153,14 @@
 			$this->connected = true;
 			return $this;
 		}
+
+		/**
+		 * @return BaseDatabase
+		 */
+		protected function disconnected()
+		{
+			$this->connected = false;
+			return $this;
+		}
 	}
 ?>

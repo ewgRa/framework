@@ -5,7 +5,7 @@
 	*/
 	interface DatabaseDialectInterface
 	{
-		public function getLimit($count = null, $from = null);
+		public function getLimit($count, $offset = null);
 		
 		/**
 		 * @var $database needed for escaping, depended on charset
@@ -17,6 +17,6 @@
 		 * @var $database needed for escaping, depended on charset
 		 * 					(e.g. mysql_real_escape_string)
 		 */
-		public function escapeTable($table, DatabaseInterface $database = null);
+		public function quoteTable($table, DatabaseInterface $database = null);
 	}
 ?>
