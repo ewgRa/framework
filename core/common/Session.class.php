@@ -3,14 +3,21 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class FileBasedSession extends BaseSession
+	final class Session extends Singleton
 	{
+		private $isStarted = false;
+
 		/**
-		 * @return FileBasedSession
+		 * @return Session
 		 */
-		public static function create()
+		public static function me()
 		{
-			return new self;
+			return parent::getInstance(__CLASS__);
+		}
+		
+		public function isStarted()
+		{
+			return $this->isStarted;
 		}
 		
 		/**
@@ -32,7 +39,6 @@
 			if (!$this->isStarted) {
 				$this->isStarted = true;
 				session_start();
-				$this->setData($_SESSION);
 			}
 			
 			return $this;
@@ -43,16 +49,6 @@
 		 */
 		public function save()
 		{
-			if (isset($_SESSION)) {
-				foreach ($_SESSION as $k => $v)
-					session_unregister($k);
-			}
-			
-			foreach ($this->getData() as $k => $v) {
-				session_register($k);
-				$_SESSION[$k] = $v;
-			}
-			
 			return $this;
 		}
 
@@ -62,6 +58,37 @@
 				$this->isStarted()
 					? session_id()
 					: null;
+		}
+
+		public function has($key)
+		{
+			return isset($_SESSION[$key]);
+		}
+		
+		public function get($key)
+		{
+			if (!$this->has($key))
+				throw MissingArgumentException::create('known nothing about key');
+			
+			return $_SESSION[$key];
+		}
+		
+		/**
+		 * @return Session
+		 */
+		public function set($key, $value)
+		{
+			$_SESSION[$key] = $value;
+			return $this;
+		}
+		
+		/**
+		 * @return Session
+		 */
+		public function drop($key)
+		{
+			unset($_SESSION[$key]);
+			return $this;
 		}
 	}
 ?>
