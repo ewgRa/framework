@@ -2,6 +2,7 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * @codeCoverageIgnoreStart
 	*/
 	class DefaultException extends Exception
 	{
@@ -11,42 +12,6 @@
 		public static function create($message = null, $code = null)
 		{
 			return new self($message, $code);
-		}
-		
-		/**
-		 * @return DefaultException
-		 */
-		public function setCode($code)
-		{
-			$this->code = $code;
-			return $this;
-		}
-
-		/**
-		 * @return DefaultException
-		 */
-		public function setLine($line)
-		{
-			$this->line = $line;
-			return $this;
-		}
-
-		/**
-		 * @return DefaultException
-		 */
-		public function setFile($file)
-		{
-			$this->file = $file;
-			return $this;
-		}
-
-		/**
-		 * @return DefaultException
-		 */
-		public function setMessage($message)
-		{
-			$this->message = $message;
-			return $this;
 		}
 		
 		public function toHtmlString()
