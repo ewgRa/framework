@@ -24,7 +24,7 @@
 					$varName = $variableMatches[1];
 
 					if (isset($variableMatches[2]))
-						$varName .= "['" . $variableMatches[2] . "']";
+						$varName .= "['".$variableMatches[2]."']";
 					elseif ($varName != $variableName)
 						$varName = null;
 

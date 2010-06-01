@@ -138,7 +138,7 @@
 			
 			foreach ($searchDirectories as $directory) {
 				foreach (
-					glob($directory . DIRECTORY_SEPARATOR . '*') as $fileName
+					glob($directory.DIRECTORY_SEPARATOR.'*') as $fileName
 				) {
 					if (is_dir($fileName)) {
 						$result =
@@ -149,7 +149,7 @@
 					} elseif (
 						is_file($fileName)
 						&& basename($fileName)
-							== $className . self::CLASS_FILE_EXTENSION
+							== $className.self::CLASS_FILE_EXTENSION
 					) {
 						$result = $fileName;
 						break 2;

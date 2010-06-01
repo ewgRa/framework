@@ -11,7 +11,7 @@
 		{
 			return
 				$this->getField() .
-				" = '" . MysqlDatabase::escape($this->getValue()) . "'";
+				" = '".MysqlDatabase::escape($this->getValue())."'";
 		}
 	}
 ?>

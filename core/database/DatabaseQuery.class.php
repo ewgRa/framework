@@ -47,8 +47,8 @@
 							
 							$part =
 								is_array($value)
-									? "'" . join("', '", $value) . "'"
-									: "'" . $value . "'";
+									? "'".join("', '", $value)."'"
+									: "'".$value."'";
 						}
 
 						next($this->values);

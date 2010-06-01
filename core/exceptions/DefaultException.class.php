@@ -16,7 +16,7 @@
 		
 		public function toHtmlString()
 		{
-			return '<pre>' . $this->__toString() . '</pre>';
+			return '<pre>'.$this->__toString().'</pre>';
 		}
 	}
 ?>

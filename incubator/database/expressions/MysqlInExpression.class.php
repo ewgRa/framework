@@ -10,7 +10,7 @@
 		public function __toString()
 		{
 			return
-				'`' . $this->getField() . '`' .
+				'`'.$this->getField().'`' .
 				" IN ('" .
 					join("', '", MysqlDatabase::escape($this->getValues())) .
 				"')";

@@ -13,7 +13,7 @@
 		) {
 			return
 				MysqlSqlBuilder::toString($expression->getField()).
-				" = '" . $db->escape($expression->getValue()) . "'";
+				" = '".$db->escape($expression->getValue())."'";
 		}
 	}
 ?>

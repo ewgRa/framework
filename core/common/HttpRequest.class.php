@@ -61,7 +61,7 @@
 		{
 			if (!$this->hasGetVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			
@@ -108,7 +108,7 @@
 		{
 			if (!$this->hasPostVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			
@@ -155,7 +155,7 @@
 		{
 			if (!$this->hasAttachedVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			
@@ -202,7 +202,7 @@
 		{
 			if (!$this->hasCookieVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			
@@ -249,7 +249,7 @@
 		{
 			if (!$this->hasServerVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			
@@ -296,7 +296,7 @@
 		{
 			if (!$this->hasFilesVar($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 			

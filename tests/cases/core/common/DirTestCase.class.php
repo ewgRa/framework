@@ -12,7 +12,7 @@
 			if (!file_exists($dirName))
 				mkdir($dirName);
 				
-			file_put_contents($dirName . DIRECTORY_SEPARATOR . 'file', rand());
+			file_put_contents($dirName.DIRECTORY_SEPARATOR.'file', rand());
 			
 			$dir = Dir::create()->setPath($dirName);
 			

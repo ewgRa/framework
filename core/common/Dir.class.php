@@ -55,7 +55,7 @@
 		
 		public static function deleteDir($dir)
 		{
-			$files = glob($dir . DIRECTORY_SEPARATOR . '*');
+			$files = glob($dir.DIRECTORY_SEPARATOR.'*');
 			
 			$function = __FUNCTION__;
 			

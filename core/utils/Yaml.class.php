@@ -33,7 +33,7 @@
 		private static function checkInclude()
 		{
 			if (!class_exists('Spyc') && defined('LIB_DIR'))
-				require_once(LIB_DIR . '/php/spyc/spyc.php');
+				require_once(LIB_DIR.'/php/spyc/spyc.php');
 		}
 	}
 ?>

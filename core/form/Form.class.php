@@ -25,7 +25,7 @@
 		public function getPrimitive($name)
 		{
 			if (!isset($this->primitives[$name]))
-				throw MissingArgumentException::create('known nothing about ' . $name);
+				throw MissingArgumentException::create('known nothing about '.$name);
 			
 			return $this->primitives[$name];
 		}

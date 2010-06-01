@@ -20,7 +20,7 @@
 			
 			$file =
 				File::create()->setPath(
-					TMP_DIR . DIRECTORY_SEPARATOR.'renderXsltView'.rand().'.xsl'
+					TMP_DIR.DIRECTORY_SEPARATOR.'renderXsltView'.rand().'.xsl'
 				);
 			
 			$file->setContent($view->toString());

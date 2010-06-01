@@ -47,7 +47,7 @@
 		{
 			if (!$this->has($key)) {
 				throw MissingArgumentException::create(
-					'known nothing about key "' . $key . '"'
+					'known nothing about key "'.$key.'"'
 				);
 			}
 				

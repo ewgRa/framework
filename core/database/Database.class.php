@@ -35,7 +35,7 @@
 			if (!$this->hasPool($poolAlias)) {
 				throw
 					MissingArgumentException::create(
-						'Known nothing about pool ' . $poolAlias
+						'Known nothing about pool '.$poolAlias
 					);
 			}
 					

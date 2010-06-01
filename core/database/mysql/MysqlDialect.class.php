@@ -31,7 +31,7 @@
 			
 			return
 				count($limit)
-					? ' LIMIT ' . join(', ', $limit)
+					? ' LIMIT '.join(', ', $limit)
 					: '';
 		}
 
