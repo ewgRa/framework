@@ -7,6 +7,8 @@
 	{
 		public static function create();
 		
+		public function createTicket();
+		
 		public function get(CacheTicket $ticket);
 		
 		public function set(CacheTicket $ticket, $data);
