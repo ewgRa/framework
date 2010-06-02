@@ -5,8 +5,6 @@
 	*/
 	final class FileBasedCache extends BaseCache
 	{
-		const MAX_CACHE_LIFE	= 157680000; // 5 year
-		
 		const FILE_PERMISSIONS 	= 0664;
 		const DIR_PERMISSIONS 	= 0775;
 		
@@ -36,16 +34,6 @@
 		
 		public function get(CacheTicket $ticket)
 		{
-			if ($this->isDisabled()) {
-				$ticket->expired();
-				return null;
-			}
-			
-			$actualTime = $ticket->getActualTime();
-
-			if (!$actualTime)
-				$actualTime = time();
-			
 			$result = null;
 			
 			$fileName = $this->compileKey($ticket);
@@ -54,13 +42,18 @@
 				$ticket->expired();
 			else {
 				$fileModifiedTime = filemtime($fileName);
-				$ticket->setExpiredTime($fileModifiedTime);
 				
-				if ($fileModifiedTime < $actualTime) {
+				if ($fileModifiedTime < time()) {
+					$ticket->
+						setExpiredTime(null)->
+						expired();
+					
 					$this->dropByKey($fileName);
-					$ticket->expired();
 				} else {
-					$ticket->actual();
+					$ticket->
+						setExpiredTime($fileModifiedTime)->
+						actual();
+
 					$result = unserialize(file_get_contents($fileName));
 				}
 			}
@@ -74,22 +67,23 @@
 		/**
 		 * @return FileBasedCache
 		 */
-		public function set(CacheTicket $ticket)
+		public function set(CacheTicket $ticket, $data)
 		{
-			if ($this->isDisabled())
-				return null;
+			$lifeTime = $ticket->getLifeTime();
 
+			if (is_null($lifeTime))
+				$lifeTime = Cache::FOREVER;
+			
+			$lifeTime += time();
+
+			Assert::isTrue($lifeTime > time());
+			
 			$fileName = $this->compileKey($ticket);
 				
 			$this->createPreDirs($fileName);
 			
-			file_put_contents($fileName, serialize($ticket->getData()));
+			file_put_contents($fileName, serialize($data));
 			chmod($fileName, self::FILE_PERMISSIONS);
-			
-			$lifeTime = $ticket->getLifeTime();
-			
-			if (is_null($lifeTime))
-				$lifeTime = time()+self::MAX_CACHE_LIFE;
 			
 			touch($fileName, $lifeTime);
 			$ticket->setExpiredTime($lifeTime);

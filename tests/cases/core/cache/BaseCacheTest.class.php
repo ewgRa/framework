@@ -39,20 +39,14 @@
 			
 			$clonedTicket = clone $cacheTicket;
 			
-			$cacheTicket->setData($data)->storeData();
+			$cacheTicket->storeData($data);
 
-			$clonedTicket->restoreData();
+			$clonedTicketData = $clonedTicket->restoreData();
 							
-			$this->assertSame($data, $clonedTicket->getData());
+			$this->assertFalse($clonedTicket->isExpired());
+			$this->assertNotNull($clonedTicket->getExpiredTime());
 			
-			$clonedTicket = clone $cacheTicket;
-			$this->realization->disable();
-			$clonedTicket->restoreData();
-			$this->assertTrue($clonedTicket->isExpired());
-			$this->realization->enable();
-			$clonedTicket = clone $cacheTicket;
-			$clonedTicket->restoreData();
-			$this->assertSame($data, $clonedTicket->getData());
+			$this->assertSame($data, $clonedTicketData);
 			
 			$clonedTicket->drop();
 			$clonedTicket = clone $cacheTicket;
@@ -78,37 +72,25 @@
 		
 		public function testExpired()
 		{
-			$time = time()-1;
 			$cacheTicket = $this->realization->createTicket();
 
 			$cacheTicket->
-				setLifeTime($time)->
+				setLifeTime(1)->
 				setPrefix($this->getPrefix())->
 				setKey(rand())->
-				setData($this->getData())->
-				storeData()->
-				restoreData();
-
-			$this->assertTrue($cacheTicket->isExpired());
-			$this->assertSame($cacheTicket->getExpiredTime(), $time);
-		}
-		
-		public function testActualTime()
-		{
-			$time = time();
+				storeData($this->getData());
 			
-			$cacheTicket = $this->realization->createTicket();
-
-			$cacheTicket->
-				setLifeTime($time-1)->
-				setPrefix($this->getPrefix())->
-				setKey(rand())->
-				setData($this->getData())->
-				storeData()->
-				setActualTime($time-2)->
-				restoreData();
+			$cacheTicket->restoreData();
 
 			$this->assertFalse($cacheTicket->isExpired());
+			$this->assertNotNull($cacheTicket->getExpiredTime());
+				
+			sleep(2);
+			
+			$cacheTicket->restoreData();
+
+			$this->assertTrue($cacheTicket->isExpired());
+			$this->assertNull($cacheTicket->getExpiredTime());
 		}
 		
 		public function testNamespace()
@@ -126,17 +108,17 @@
 			$cacheTicket->getCacheInstance()->setNamespace('a');
 			$cacheTicket2->getCacheInstance()->setNamespace('b');
 			
-			$cacheTicket->setData($data)->storeData()->setData(null);
+			$cacheTicket->storeData($data);
 			
-			$cacheTicket2->setData('asdasd')->storeData()->setData(null);
+			$cacheTicket2->storeData('asdasd');
 			
-			$cacheTicket->restoreData();
-			$cacheTicket2->restoreData();
+			$data1 = $cacheTicket->restoreData();
+			$data2 = $cacheTicket2->restoreData();
 			
-			$this->assertNotSame($cacheTicket->getData(), $cacheTicket2->getData());
+			$this->assertNotSame($data1, $data2);
 			
-			$this->assertSame($data, $cacheTicket->getData());
-			$this->assertSame('asdasd', $cacheTicket2->getData());
+			$this->assertSame($data, $data1);
+			$this->assertSame('asdasd', $data2);
 		}
 		
 		private function getPrefix()

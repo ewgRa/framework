@@ -10,15 +10,12 @@
 		 */
 		private $cacheInstance = null;
 
-		private $data 		= null;
 		private $prefix 	= null;
 		private $key 		= null;
 		
-		private $actualTime = null;
-		private $lifeTime 	= null;
+		private $lifeTime 	= null; //seconds
 		
 		private $expired	= true;
-		
 		private $expiredTime = null;
 		
 		/**
@@ -83,20 +80,6 @@
 			return $this;
 		}
 		
-		public function getActualTime()
-		{
-			return $this->actualTime;
-		}
-		
-		/**
-		 * @return CacheTicket
-		 */
-		public function setActualTime($actualTime)
-		{
-			$this->actualTime = $actualTime;
-			return $this;
-		}
-		
 		public function getExpiredTime()
 		{
 			return $this->expiredTime;
@@ -148,26 +131,12 @@
 			return $this;
 		}
 		
-		public function getData()
-		{
-			return $this->data;
-		}
-		
 		/**
 		 * @return CacheTicket
 		 */
-		public function setData($data)
+		public function storeData($data)
 		{
-			$this->data = $data;
-			return $this;
-		}
-		
-		/**
-		 * @return CacheTicket
-		 */
-		public function storeData()
-		{
-			$this->getCacheInstance()->set($this);
+			$this->getCacheInstance()->set($this, $data);
 			return $this;
 		}
 
@@ -176,11 +145,7 @@
 		 */
 		public function restoreData()
 		{
-			$this->setData(
-				$this->getCacheInstance()->get($this)
-			);
-			
-			return $this;
+			return $this->getCacheInstance()->get($this);
 		}
 		
 		public function drop()

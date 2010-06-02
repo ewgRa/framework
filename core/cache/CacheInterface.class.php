@@ -9,7 +9,7 @@
 		
 		public function get(CacheTicket $ticket);
 		
-		public function set(CacheTicket $ticket);
+		public function set(CacheTicket $ticket, $data);
 		
 		public function drop(CacheTicket $cacheTicket);
 		
@@ -17,12 +17,6 @@
 		
 		public function compileKey(CacheTicket $ticket);
 		
-		public function disable();
-		
-		public function enable();
-
 		public function clean();
-		
-		public function isDisabled();
 	}
 ?>

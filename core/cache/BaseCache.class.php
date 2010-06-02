@@ -6,31 +6,7 @@
 	abstract class BaseCache implements CacheInterface
 	{
 		private $namespace	= null;
-		private $enabled	= true;
 
-		/**
-		 * @return BaseCache
-		 */
-		public function enable()
-		{
-			$this->enabled = true;
-			return $this;
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		public function disable()
-		{
-			$this->enabled = false;
-			return $this;
-		}
-				
-		public function isDisabled()
-		{
-			return !$this->enabled;
-		}
-		
 		/**
 		 * @return BaseCache
 		 */

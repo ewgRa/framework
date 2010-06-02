@@ -5,6 +5,8 @@
 	*/
 	final class Cache extends Singleton
 	{
+		const FOREVER = 31536000; // 1 year
+		
 		/**
 		 * @return Cache
 		 */
@@ -28,14 +30,14 @@
 		}
 		
 		/**
-		 * @return BaseCache
+		 * @return CacheInterface
 		 */
 		public function getPool($poolAlias = null)
 		{
 			if (!$this->hasPool($poolAlias)) {
 				throw
 					MissingArgumentException::create(
-						'Known nothing about pool '.$poolAlias
+						'Known nothing about pool "'.$poolAlias.'"'
 					);
 			}
 

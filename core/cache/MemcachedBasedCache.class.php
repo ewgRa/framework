@@ -48,30 +48,17 @@
 		
 		public function get(CacheTicket $ticket)
 		{
-			if ($this->isDisabled()) {
-				$ticket->expired();
-				return null;
-			}
-			
-			$actualTime = $ticket->getActualTime();
-
-			if (!$actualTime)
-				$actualTime = time();
-			
 			$result = null;
 			
 			$key = $this->compileKey($ticket);
 			
 			if ($data = $this->getMemcache()->get($key)) {
-				$ticket->setExpiredTime($data['lifeTime']);
 				
-				if ($data['lifeTime'] && $data['lifeTime'] < $actualTime) {
-					$this->dropByKey($key);
-					$ticket->expired();
-				} else {
-					$ticket->actual();
-					$result = $data['data'];
-				}
+				$ticket->
+					setExpiredTime($data['lifeTime'])->
+					actual();
+					
+				$result = $data['data'];
 			} else {
 				$ticket->setExpiredTime(null);
 				$ticket->expired();
@@ -86,23 +73,25 @@
 		/**
 		 * @return FileBasedCache
 		 */
-		public function set(CacheTicket $ticket)
+		public function set(CacheTicket $ticket, $data)
 		{
-			if ($this->isDisabled())
-				return null;
+			$lifeTime = $ticket->getLifeTime();
+
+			if (is_null($lifeTime))
+				$lifeTime = Cache::FOREVER;
+						
+			$lifeTime += time();
+			
+			Assert::isTrue($lifeTime > time());
 
 			$key = $this->compileKey($ticket);
 				
 			$data = array(
-				'data' 		=> $ticket->getData(),
-				'lifeTime' 	=> $ticket->getLifeTime()
+				'data' 		=> $data,
+				'lifeTime' 	=> $lifeTime
 			);
 			
-			$lifeTime = $ticket->getLifeTime();
 			$ticket->setExpiredTime($lifeTime);
-			
-			if ($lifeTime <= time())
-				$lifeTime = null;
 			
 			$this->getMemcache()->set($key, $data, 0, $lifeTime);
 			
