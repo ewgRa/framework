@@ -8,9 +8,9 @@
 		/**
 		 * @return FileNotExistsException
 		 */
-		public static function create($message = 'File doesn\'t exists', $code = 1)
+		public static function create($message = 'File doesn\'t exists')
 		{
-			return new self($message, $code);
+			return new self($message);
 		}
 	}
 ?>

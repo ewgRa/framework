@@ -8,11 +8,9 @@
 		/**
 		 * @return DatabaseConnectException
 		 */
-		public static function create(
-			$message = 'Could not connect to database',
-			$code = 1
-		) {
-			return new self($message, $code);
+		public static function create($message = 'Could not connect to database')
+		{
+			return new self($message);
 		}
 	}
 ?>

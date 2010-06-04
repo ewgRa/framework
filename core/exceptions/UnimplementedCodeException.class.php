@@ -9,9 +9,9 @@
 		/**
 		 * @return UnimplementedCodeException
 		 */
-		public static function create($message = null, $code = null)
+		public static function create($message = null)
 		{
-			return new self($message, $code);
+			return new self($message);
 		}
 	}
 ?>

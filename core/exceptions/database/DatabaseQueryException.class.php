@@ -8,9 +8,9 @@
 		/**
 		 * @return DatabaseQueryException
 		 */
-		public static function create($message = 'SQL query has error', $code = 1)
+		public static function create($message = 'SQL query has error')
 		{
-			return new self($message, $code);
+			return new self($message);
 		}
 	}
 ?>

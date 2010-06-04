@@ -8,11 +8,9 @@
 		/**
 		 * @return DatabaseSelectDatabaseException
 		 */
-		public static function create(
-			$message = 'Could not select database',
-			$code = 1
-		) {
-			return new self($message, $code);
+		public static function create($message = 'Could not select database')
+		{
+			return new self($message);
 		}
 	}
 ?>
