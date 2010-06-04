@@ -9,11 +9,11 @@
 
 		public function connect();
 		
+		public function disconnect();
+		
 		public function selectCharset($charset = null);
 		
 		public function selectDatabase($database = null);
-		
-		public function disconnect();
 		
 		/**
 		 * @return DatabaseDialectInterface
@@ -41,5 +41,7 @@
 		public function queryRawNull($queryString);
 		
 		public function getInsertedId();
+
+		public function getError();
 	}
 ?>

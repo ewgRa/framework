@@ -112,8 +112,8 @@
 				$this->getLinkIdentifier()
 			);
 			
-			if ($this->getError())
-				$this->queryError();
+			if ($error = $this->getError())
+				throw DatabaseQueryException::create($error);
 
 			$endTime = microtime(true);
 				

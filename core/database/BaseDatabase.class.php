@@ -116,11 +116,6 @@
 				$this->disconnect();
 		}
 
-		protected function queryError()
-		{
-			throw DatabaseQueryException::create($this->getError());
-		}
-		
 		protected function debugQuery($query, $started, $ended)
 		{
 			$debugItem =
