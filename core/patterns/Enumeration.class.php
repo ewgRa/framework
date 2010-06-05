@@ -43,9 +43,8 @@
 		{
 			$result = array();
 			
-			foreach ($this->names as $id => $name) {
+			foreach ($this->names as $id => $name)
 				$result[$id] = $this->create($id);
-			}
 			
 			return $result;
 		}
