@@ -19,21 +19,21 @@
 		{
 			$enumeration = EnumerationTest::create(1);
 			
-			$this->assertSame($enumeration->getName(), 'test');
+			$this->assertSame('test', $enumeration->getName());
 			
-			$this->assertSame((string)$enumeration, $enumeration->getName());
+			$this->assertSame($enumeration->getName(), (string)$enumeration);
 			
 			$this->assertEquals(
-				$enumeration->getList(),
 				array(
 					1 => $enumeration,
 					2 => EnumerationTest::create(2)
-				)
+				),
+				$enumeration->getList()
 			);
 
 			$this->assertEquals(
-				$enumeration->getNames(),
-				array(1 => 'test', 2 => 'test2')
+				array(1 => 'test', 2 => 'test2'),
+				$enumeration->getNames()
 			);
 		}
 	}

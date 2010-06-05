@@ -33,8 +33,8 @@
 			$cacheTicket->addKey($key2);
 				
 			$this->assertSame(
-				$cacheTicket->getKey(),
-				array(array($key1), array($key2))
+				array(array($key1), array($key2)),
+				$cacheTicket->getKey()
 			);
 			
 			$clonedTicket = clone $cacheTicket;

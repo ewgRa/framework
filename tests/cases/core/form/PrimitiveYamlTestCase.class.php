@@ -14,8 +14,8 @@
 				import(array('testPrimitive' => $data));
 			
 			$this->assertSame(
-				$primitive->getValue(),
-				array('testData' => 'testValue')
+				array('testData' => 'testValue'),
+				$primitive->getValue()
 			);
 		}
 	}

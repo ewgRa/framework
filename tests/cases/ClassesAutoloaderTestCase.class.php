@@ -106,8 +106,8 @@
 			$this->assertTrue(interface_exists($interfaceName, false));
 			
 			$this->assertSame(
-				ClassesAutoLoader::me()->getFoundClasses(),
-				array($interfaceName => $fileName)
+				array($interfaceName => $fileName),
+				ClassesAutoLoader::me()->getFoundClasses()
 			);
 		}
 		

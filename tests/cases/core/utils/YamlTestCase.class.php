@@ -24,11 +24,11 @@
 			
 			$yamlResult = Yaml::load($yamlFile);
 			
-			$this->assertSame($yamlResult, $data);
+			$this->assertSame($data, $yamlResult);
 			
 			$this->assertSame(
-				Yaml::loadString($yamlFile->getContent()),
-				$data
+				$data,
+				Yaml::loadString($yamlFile->getContent())
 			);
 			
 			$yamlFile->delete();

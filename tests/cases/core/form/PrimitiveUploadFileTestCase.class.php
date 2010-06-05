@@ -18,8 +18,8 @@
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				$primitive->getErrors(),
-				array(PrimitiveErrors::UPLOAD_ERROR)
+				array(PrimitiveErrors::UPLOAD_ERROR),
+				$primitive->getErrors()
 			);
 		}
 
@@ -33,8 +33,8 @@
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				$primitive->getErrors(),
-				array(PrimitiveErrors::MISSING)
+				array(PrimitiveErrors::MISSING),
+				$primitive->getErrors()
 			);
 		}
 
@@ -51,8 +51,8 @@
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				$primitive->getFile()->getPath(),
-				'/tmp/fwef'
+				'/tmp/fwef',
+				$primitive->getFile()->getPath()
 			);
 		}
 	}

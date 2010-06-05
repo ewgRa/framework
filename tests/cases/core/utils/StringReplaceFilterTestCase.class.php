@@ -8,11 +8,11 @@
 		public function testApply()
 		{
 			$this->assertSame(
-				 StringReplaceFilter::create()->
-				 addReplacement('a', 'c')->
-				 addReplacement('b', 'c')->
-				 apply('ab'),
-				 'cc'
+				'cc',
+				StringReplaceFilter::create()->
+				addReplacement('a', 'c')->
+				addReplacement('b', 'c')->
+				apply('ab')
 			);
 		}
 	}

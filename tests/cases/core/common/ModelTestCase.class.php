@@ -20,14 +20,14 @@
 			$this->assertTrue($model->has('j'));
 			
 			$this->assertSame(
-				$model->getData(),
 				array(
 					'a' => 'b',
 					'c' => 'd',
 					0 => 'h',
 					'g' => 'g1',
 					'j' => 'k'
-				)
+				),
+				$model->getData()
 			);
 		}
 

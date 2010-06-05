@@ -24,14 +24,14 @@
 		public function testRecursiveMerge()
 		{
 			$this->assertEquals(
-				ArrayUtils::recursiveMerge(
-					$this->array['all'],
-					$this->array['section']
-				),
 				array(
 					'test' => $this->array['all']['test'],
 					'test2' => $this->array['section']['test2'],
 					'test3' => $this->array['section']['test3']
+				),
+				ArrayUtils::recursiveMerge(
+					$this->array['all'],
+					$this->array['section']
 				)
 			);
 		}
@@ -41,8 +41,8 @@
 			$object = new ArrayUtilsTestObject();
 			
 			$this->assertEquals(
-				ArrayUtils::getObjectIds(array($object)),
-				array($object->getId())
+				array($object->getId()),
+				ArrayUtils::getObjectIds(array($object))
 			);
 		}
 	}

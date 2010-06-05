@@ -14,7 +14,7 @@
 				setClass('PrimitiveObjectTestObject')->
 				import(array('testPrimitive' => $id));
 			
-			$this->assertSame($primitive->getValue()->getId(), $id);
+			$this->assertSame($id, $primitive->getValue()->getId());
 		}
 	}
 ?>

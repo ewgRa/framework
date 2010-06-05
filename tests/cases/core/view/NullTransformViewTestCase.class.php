@@ -13,14 +13,14 @@
 				$this->createView()->
 				transform($model);
 			
-			$this->assertSame($viewResult, $model);
+			$this->assertSame($model, $viewResult);
 		}
 
 		public function testToString()
 		{
 			$this->assertSame(
-				$this->createView()->toString(),
-				null
+				null,
+				$this->createView()->toString()
 			);
 		}
 		

@@ -8,40 +8,40 @@
 		public function testUpperKeyFirstAlpha()
 		{
 			$this->assertEquals(
-				StringUtils::upperKeyFirstAlpha('testtest'),
-				'Testtest'
+				'Testtest',
+				StringUtils::upperKeyFirstAlpha('testtest')
 			);
 		}
 
 		public function testSeparateByUpperKey()
 		{
 			$this->assertEquals(
-				StringUtils::separateByUpperKey('testStringTest'),
-				'test_string_test'
+				'test_string_test',
+				StringUtils::separateByUpperKey('testStringTest')
 			);
 		}
 
 		public function testGetLength()
 		{
 			$this->assertEquals(
-				StringUtils::getLength('testString'),
-				10
+				10,
+				StringUtils::getLength('testString')
 			);
 		}
 		
 		public function testToLower()
 		{
 			$this->assertEquals(
-				StringUtils::toLower('testStringTest'),
-				'teststringtest'
+				'teststringtest',
+				StringUtils::toLower('testStringTest')
 			);
 		}
 
 		public function testToUpper()
 		{
 			$this->assertEquals(
-				StringUtils::toUpper('testStringTest'),
-				'TESTSTRINGTEST'
+				'TESTSTRINGTEST',
+				StringUtils::toUpper('testStringTest')
 			);
 		}
 	}

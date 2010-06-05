@@ -46,7 +46,7 @@
 			$this->assertTrue(Database::me()->hasPool('default'));
 			$this->assertTrue(Database::me()->hasPool('default2'));
 			
-			$this->assertSame(Database::me()->getPool('default'), $pool);
+			$this->assertSame($pool, Database::me()->getPool('default'));
 		}
 	}
 ?>

@@ -29,7 +29,7 @@
 				$this->assertFalse($request->{'has'.$key}());
 				$request->{'set'.$key}($value);
 				$this->assertTrue($request->{'has'.$key}());
-				$this->assertSame($request->{'get'.$key}(), $value);
+				$this->assertSame($value, $request->{'get'.$key}());
 
 				$this->assertFalse($request->{'has'.$key.'Var'}('var'));
 				
@@ -41,12 +41,12 @@
 				}
 				
 				$request->{'set'.$key.'Var'}('var', 'value');
-				$this->assertSame($request->{'get'.$key.'Var'}('var'), 'value');
+				$this->assertSame('value', $request->{'get'.$key.'Var'}('var'));
 				$this->assertTrue($request->{'has'.$key.'Var'}('var'));
 			}
 			
 			$this->assertTrue($request->hasHttpReferer());
-			$this->assertSame($request->getHttpReferer(), 'referer');
+			$this->assertSame('referer', $request->getHttpReferer());
 		}
 	}
 ?>

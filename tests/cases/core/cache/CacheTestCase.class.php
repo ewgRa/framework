@@ -46,7 +46,7 @@
 			$this->assertTrue(Cache::me()->hasPool('default'));
 			$this->assertTrue(Cache::me()->hasPool('default2'));
 			
-			$this->assertSame(Cache::me()->getPool('default'), $pool);
+			$this->assertSame($pool, Cache::me()->getPool('default'));
 		}
 	}
 ?>

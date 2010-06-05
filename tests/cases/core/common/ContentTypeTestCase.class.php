@@ -24,9 +24,9 @@
 		public function testFileExtension()
 		{
 			$this->assertEquals(
+				'php',
 				ContentType::create(ContentType::APPLICATION_PHP)->
-				getFileExtension(),
-				'php'
+				getFileExtension()
 			);
 		}
 

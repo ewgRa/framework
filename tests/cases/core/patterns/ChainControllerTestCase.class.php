@@ -22,8 +22,8 @@
 			$chain->handleRequest(HttpRequest::create(), $mav);
 			
 			$this->assertSame(
-				$mav->getModel()->get('callStack'),
-				array('TestChainController1', 'TestChainController2')
+				array('TestChainController1', 'TestChainController2'),
+				$mav->getModel()->get('callStack')
 			);
 		}
 
@@ -34,7 +34,7 @@
 				
 			$this->assertTrue($inner->hasOuter());
 			
-			$this->assertSame($inner->getOuter(), $chain);
+			$this->assertSame($chain, $inner->getOuter());
 		}
 	}
 	

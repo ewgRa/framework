@@ -11,16 +11,16 @@
 				$this->createView()->
 				transform(Model::create()->set('data', 'testData'));
 			
-			$this->assertSame($viewResult, 'testDatatestData');
+			$this->assertSame('testDatatestData', $viewResult);
 		}
 
 		public function testToString()
 		{
 			$this->assertSame(
-				$this->createView()->toString(),
 				File::create()->
 				setPath(dirname(__FILE__).'/renderPhpView.php')->
-				getContent()
+				getContent(),
+				$this->createView()->toString()
 			);
 		}
 		
@@ -33,7 +33,7 @@
 				Model::create()->set('data', 'testData')
 			);
 			
-			$this->assertSame(ob_get_clean(), 'testDatatestData');
+			$this->assertSame('testDatatestData', ob_get_clean());
 		}
 		
 		private function createView()

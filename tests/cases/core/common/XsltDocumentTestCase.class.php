@@ -12,8 +12,8 @@
 			$document->load(dirname(__FILE__).'/test.xsl');
 
 			$this->assertEquals(
-				$document->getDocumentElement()->nodeName,
-				'xsl:stylesheet'
+				'xsl:stylesheet',
+				$document->getDocumentElement()->nodeName
 			);
 			
 			$document->importFile('testFile');

@@ -18,8 +18,8 @@
 			$form->import($data);
 			
 			$this->assertSame(
-				$form->getPrimitive('testPrimitive')->getValue(),
-				$data['testPrimitive']
+				$data['testPrimitive'],
+				$form->getPrimitive('testPrimitive')->getValue()
 			);
 		}
 
@@ -65,8 +65,8 @@
 			$this->assertTrue($form->hasErrors());
 			
 			$this->assertSame(
-				$form->getErrors(),
-				array('testPrimitive' => array(PrimitiveErrors::MISSING))
+				array('testPrimitive' => array(PrimitiveErrors::MISSING)),
+				$form->getErrors()
 			);
 			
 			$this->assertTrue(
@@ -76,9 +76,9 @@
 			);
 			
 			$this->assertSame(
+				'missing primitive',
 				$form->getPrimitive('testPrimitive')->
-				getErrorLabel(PrimitiveErrors::MISSING),
-				'missing primitive'
+				getErrorLabel(PrimitiveErrors::MISSING)
 			);
 		}
 	}

@@ -20,15 +20,15 @@
 			$testVar = rand();
 			
 			$this->assertSame(
-				MySingletonTest::me()->getTestVariable(),
-				null
+				null,
+				MySingletonTest::me()->getTestVariable()
 			);
 			
 			MySingletonTest::me()->setTestVariable($testVar);
 			
 			$this->assertSame(
-				MySingletonTest::me()->getTestVariable(),
-				$testVar
+				$testVar,
+				MySingletonTest::me()->getTestVariable()
 			);
 		}
 		

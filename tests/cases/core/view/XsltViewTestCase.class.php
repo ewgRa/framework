@@ -11,7 +11,7 @@
 				$this->createView()->
 				transform(Model::create()->set('data', 'testData'));
 			
-			$this->assertSame($viewResult, 'testData');
+			$this->assertSame('testData', $viewResult);
 		}
 
 		public function testToString()
