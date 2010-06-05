@@ -11,7 +11,7 @@
 		/**
 		 * @var XsltDocument
 		 */
-		private $xslDocument = null;
+		private $xsltDocument = null;
 
 		/**
 		 * @return XsltView
@@ -56,8 +56,8 @@
 		{
 			Assert::isNotNull($layout->getPath());
 			
-			$this->xslDocument = $this->createXsltDocument();
-			$this->xslDocument->loadXML($layout->getContent());
+			$this->xsltDocument = $this->createXsltDocument();
+			$this->xsltDocument->loadXML($layout->getContent());
 			
 			return $this;
 		}
@@ -75,17 +75,17 @@
 		
 		public function transformXML(ExtendedDomDocument $domModel)
 		{
-			Assert::isNotNull($this->xslDocument);
+			Assert::isNotNull($this->xsltDocument);
 			
 			$proc = new XsltProcessor();
-			$proc->importStylesheet($this->xslDocument);
+			$proc->importStylesheet($this->xsltDocument);
 
 			return $proc->transformToXML($domModel);
 		}
 		
 		public function toString()
 		{
-			return $this->xslDocument->saveXml();
+			return $this->xsltDocument->saveXml();
 		}
 		
 		/**
