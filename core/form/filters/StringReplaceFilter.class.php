@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class StringReplaceFilter
+	final class StringReplaceFilter implements FilterInterface
 	{
 		private $search		= array();
 		private $replace	= array();
@@ -23,16 +23,17 @@
 		{
 			$this->search[]	 = $search;
 			$this->replace[] = $replace;
+			
 			return $this;
 		}
 		
-		public function apply($string)
+		public function apply($var)
 		{
 			return
 				str_replace(
 					$this->search,
 					$this->replace,
-					$string
+					$var
 				);
 		}
 	}

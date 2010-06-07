@@ -35,7 +35,7 @@
 			
 			if (!$this->hasErrors() && $this->getValue()) {
 				$this->setValue(
-					call_user_func(array($this->class,'create'), $value)
+					call_user_func(array($this->class, 'create'), $value)
 				);
 			}
 			

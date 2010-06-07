@@ -3,7 +3,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class BasePrimitive
+	abstract class BasePrimitive implements PrimitiveInterface
 	{
 		private $name 		= null;
 		private $scopeKey	= null;

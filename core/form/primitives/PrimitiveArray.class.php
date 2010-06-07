@@ -6,7 +6,7 @@
 	final class PrimitiveArray extends BasePrimitive
 	{
 		/**
-		 * @return PrimitiveString
+		 * @return PrimitiveArray
 		 */
 		public static function create($name)
 		{

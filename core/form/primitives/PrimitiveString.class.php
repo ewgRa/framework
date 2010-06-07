@@ -21,6 +21,7 @@
 			$result = parent::importValue($value);
 			
 			$this->setValue((string)$this->getValue());
+
 			return $result;
 		}
 	}
