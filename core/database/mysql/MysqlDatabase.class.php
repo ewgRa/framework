@@ -115,10 +115,7 @@
 			if ($error = $this->getError())
 				throw DatabaseQueryException::create($error);
 
-			$endTime = microtime(true);
-				
-			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				$this->debugQuery($queryString, $startTime, $endTime);
+			$this->debugQuery($queryString, $startTime, microtime(true));
 			
 			return
 				MysqlDatabaseResult::create()->

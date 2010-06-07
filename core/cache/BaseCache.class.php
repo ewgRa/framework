@@ -45,6 +45,9 @@
 		 */
 		protected function debug(CacheTicket $ticket)
 		{
+			if (!Singleton::hasInstance('Debug') || !Debug::me()->isEnabled())
+				return $this;
+			
 			$debugItem =
 				DebugItem::create()->
 				setType(DebugItem::CACHE)->

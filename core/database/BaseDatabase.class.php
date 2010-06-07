@@ -118,6 +118,9 @@
 
 		protected function debugQuery($query, $started, $ended)
 		{
+			if (!Singleton::hasInstance('Debug') || !Debug::me()->isEnabled())
+				return $this;
+			
 			$debugItem =
 				DebugItem::create()->
 				setType(DebugItem::DATABASE)->

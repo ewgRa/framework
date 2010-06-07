@@ -64,8 +64,7 @@
 				$ticket->expired();
 			}
 
-			if (Singleton::hasInstance('Debug') && Debug::me()->isEnabled())
-				$this->debug($ticket);
+			$this->debug($ticket);
 		
 			return $result;
 		}
