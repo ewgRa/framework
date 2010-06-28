@@ -45,12 +45,11 @@
 		 */
 		protected function debug(CacheTicket $ticket)
 		{
-			if (!Singleton::hasInstance('Debug') || !Debug::me()->isEnabled())
+			if (!Debug::me()->isEnabled())
 				return $this;
 			
 			$debugItem =
-				DebugItem::create()->
-				setType(DebugItem::CACHE)->
+				CacheDebugItem::create()->
 				setData(clone $ticket);
 			
 			Debug::me()->addItem($debugItem);

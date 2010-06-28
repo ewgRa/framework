@@ -118,12 +118,11 @@
 
 		protected function debugQuery($query, $started, $ended)
 		{
-			if (!Singleton::hasInstance('Debug') || !Debug::me()->isEnabled())
+			if (!Debug::me()->isEnabled())
 				return $this;
 			
 			$debugItem =
-				DebugItem::create()->
-				setType(DebugItem::DATABASE)->
+				DatabaseDebugItem::create()->
 				setData($query)->
 				setTrace(debug_backtrace())->
 				setStartTime($started)->

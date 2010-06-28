@@ -3,24 +3,62 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class Debug extends SingletonFactory
+	final class Debug extends Singleton
 	{
+		private $enabled = null;
+		private $items	 = array();
+		
 		/**
-		 * @return BaseDebug
+		 * @return Debug
 		 */
 		public static function me()
 		{
 			return parent::getInstance(__CLASS__);
 		}
+
+		/**
+		 * @return Debug
+		 */
+		public function enable()
+		{
+			$this->enabled = true;
+			return $this;
+		}
 		
 		/**
-		 * @return BaseDebug
+		 * @return Debug
 		 */
-		public static function factory($realization)
+		public function disable()
 		{
-			$method = new ReflectionMethod($realization, 'create');
-			
-			return self::setInstance(__CLASS__, $method->invoke(null));
+			$this->enabled = null;
+			return $this;
+		}
+		
+		public function isEnabled()
+		{
+			return $this->enabled;
+		}
+		
+		/**
+		 * @return Debug
+		 */
+		public function addItem(DebugItemInterface $item)
+		{
+			$this->items[] = $item;
+			return $this;
+		}
+		
+		public function getItems()
+		{
+			return $this->items;
+		}
+
+		/**
+		 * @return DebugItem
+		 */
+		public function getItem($index)
+		{
+			return $this->items[$index];
 		}
 	}
 ?>

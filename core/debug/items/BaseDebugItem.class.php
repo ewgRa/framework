@@ -2,34 +2,18 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
-	 * FIXME: finalize, and think about cms page
 	*/
-	class DebugItem
+	abstract class BaseDebugItem implements DebugItemInterface
 	{
-		const ENGINE_ECHO	= 1;
-		const DATABASE		= 2;
-		const REQUEST		= 3;
-		const CACHE			= 4;
-		
 		private $trace 		= null;
-		
-		# FIXME: enumeration
-		private $type  		= null;
-		
+
 		private $data  		= null;
+		
 		private $startTime  = null;
 		private $endTime	= null;
 		
 		/**
-		 * @return DebugItem
-		 */
-		public static function create()
-		{
-			return new self;
-		}
-		
-		/**
-		 * @return DebugItem
+		 * @return BaseDebugItem
 		 */
 		public function setStartTime($time)
 		{
@@ -43,7 +27,7 @@
 		}
 		
 		/**
-		 * @return DebugItem
+		 * @return BaseDebugItem
 		 */
 		public function setEndTime($time)
 		{
@@ -57,7 +41,7 @@
 		}
 		
 		/**
-		 * @return DebugItem
+		 * @return BaseDebugItem
 		 */
 		public function setTrace(array $trace)
 		{
@@ -74,30 +58,7 @@
 		}
 		
 		/**
-		 * @return DebugItem
-		 */
-		public function dropTrace()
-		{
-			$this->trace = null;
-			return $this;
-		}
-		
-		/**
-		 * @return DebugItem
-		 */
-		public function setType($type)
-		{
-			$this->type = $type;
-			return $this;
-		}
-		
-		public function getType()
-		{
-			return $this->type;
-		}
-
-		/**
-		 * @return DebugItem
+		 * @return BaseDebugItem
 		 */
 		public function setData($data)
 		{
