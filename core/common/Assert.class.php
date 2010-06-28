@@ -45,6 +45,16 @@
 			return true;
 		}
 		
+		public static function isNotEmpty(
+			$array,
+			$message = 'Variable is empty!'
+		) {
+			if (empty($array))
+				throw self::createException($message);
+				
+			return true;
+		}
+		
 		public static function isEqual(
 			$one,
 			$two,

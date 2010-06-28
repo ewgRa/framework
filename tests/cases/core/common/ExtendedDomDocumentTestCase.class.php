@@ -29,6 +29,40 @@
 			);
 		}
 
+		public function testGetNode()
+		{
+			$document = ExtendedDomDocument::create();
+			
+			$node = $document->createNodeFromVar(
+				array(),
+				'nodeName',
+				array('attr' => 'attrValue')
+			);
+			
+			$node2 = $document->createNodeFromVar(
+				array(
+					'var2' => 'value2',
+					'var3' => 'value3'
+				),
+				'nodeName2'
+			);
+			
+			$node->appendChild($node2);
+			
+			$document->appendChild($node);
+			
+			$this->assertSame(
+				$document->getNode('nodeName2/var2')->nodeValue,
+				'value2'
+			);
+
+			$this->assertSame(
+				$document->getNodeList('nodeName2/var2|nodeName2/var3')->
+				item(1)->nodeValue,
+				'value3'
+			);
+		}
+		
 		public function testSleepAndWakeup()
 		{
 			$document = ExtendedDomDocument::create();

@@ -17,6 +17,18 @@
 			}
 		}
 
+		public function testIsNotEmpty()
+		{
+			$this->assertTrue(Assert::isNotEmpty(array(1)));
+			
+			try {
+				Assert::isNotEmpty(array());
+				$this->fail();
+			} catch(WrongArgumentException $e) {
+				# all good
+			}
+		}
+		
 		public function testIsTrue()
 		{
 			$this->assertTrue(Assert::isTrue(true));

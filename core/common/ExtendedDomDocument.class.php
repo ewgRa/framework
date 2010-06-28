@@ -57,6 +57,27 @@
 			return $this->documentElement;
 		}
 		
+		/**
+		 * @return DOMNode
+		 */
+		public function getNode($query, DOMNode $contextNode = null)
+		{
+			return $this->getNodeList($query, $contextNode)->item(0);
+		}
+		
+		/**
+		 * @return DOMNodeList
+		 */
+		public function getNodeList($query, DOMNode $contextNode = null)
+		{
+			$xpath = new DOMXPath($this);
+			
+			return
+				$contextNode
+					? $xpath->query($query, $contextNode)
+					: $xpath->query($query);
+		}
+		
 		public function toString()
 		{
 			return $this->saveXML();
