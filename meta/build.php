@@ -1,6 +1,4 @@
 <?php
-	/* $Id$ */
-
 	require_once(dirname(__FILE__).'/init.php.tpl');
 
 	$curDir = $argv[1];
