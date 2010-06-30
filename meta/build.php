@@ -48,11 +48,8 @@
 	foreach ($meta->getDocumentElement()->childNodes as $node) {
 		if (
 			$node->nodeType !== XML_ELEMENT_NODE
-			|| $node->nodeName == 'className'
-			|| (
-				$node->getAttribute('type')
-				&& $node->getAttribute('type') != 'Identifier'
-			)
+			|| $node->getAttribute('build') === false
+			|| $node->getAttribute('type') != 'Identifier'
 		)
 			continue;
 
@@ -71,6 +68,14 @@
 	
 	function preConfigure(ExtendedDomDocument $meta)
 	{
+		foreach ($meta->getDocumentElement()->childNodes as $node) {
+			if ($node->nodeType !== XML_ELEMENT_NODE)
+				continue;
+	
+			if (!$node->getAttribute('type'))
+				$node->setAttribute('type', 'Identifier');
+		}
+		
 		foreach ($meta->getDocumentElement()->childNodes as $node) {
 			if ($node->nodeType !== XML_ELEMENT_NODE)
 				continue;
@@ -100,10 +105,7 @@
 					
 					Assert::isNotNull($relationClass, $propertyNode->getAttribute('class'));
 					
-					$relationClassType = 
-						$relationClass->getAttribute('type')
-							? $relationClass->getAttribute('type')
-							: 'Identifier';
+					$relationClassType = $relationClass->getAttribute('type');
 					
 					$propertyNode->setAttribute('classType', $relationClassType);	
 					
@@ -121,6 +123,8 @@
 						'upperName',
 						StringUtils::upperKeyFirstAlpha($relationNode->nodeName)
 					);
+					
+					$relationNode->setAttribute('identifierId', $propertyNode->nodeName);
 					
 					$relationNode->setAttribute(
 						'downSeparatedName',

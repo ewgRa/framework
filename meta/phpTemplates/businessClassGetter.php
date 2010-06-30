@@ -27,7 +27,10 @@
 	if ($class) {
 		if ($classType == 'Identifier') {
 ?>
-			return <?=$class?>::da()->getById($this->get<?=$upperName?>Id());
+			if (!$this-><?=$name?> && $this->get<?=$upperName?>Id())
+				$this-><?=$name?> = <?=$class?>::da()->getById($this->get<?=$upperName?>Id());
+				
+			return $this-><?=$name?>;
 <?php
 		} else if(in_array($classType, array('Enumeration', 'Stringable'))) {
 ?>

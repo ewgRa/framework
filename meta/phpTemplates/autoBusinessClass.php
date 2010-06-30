@@ -29,9 +29,6 @@
 		$class = $property->getAttribute('class');
 		$classType = $property->getAttribute('classType');
 		
-		if ($class && $classType == 'Identifier')
-			continue;
-		
 		$phpDocVar = $class;
 		
 		if (!$phpDocVar)

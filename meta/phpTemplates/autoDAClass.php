@@ -177,19 +177,25 @@
 				<?=join("->".PHP_EOL.'				', $methods).';'.PHP_EOL?>
 		}
 <?php
-	/*
-<!--<xsl:variable name="relationClasses" select="/meta/*[properties/*[@type=$name and string-length(@relation)]]" /><xsl:if test="count($relationClasses)">
+		$relationNodes = 
+			$meta->getNodeList("*[properties/*[@class='".$classNode->nodeName."']]");
 		
+		if ($relationNodes->length) {
+?>
+
 		public function dropCache()
 		{
-			<xsl:for-each select="$relationClasses">
-			<xsl:value-of select="name()" />::da()->dropCache();
-			</xsl:for-each>
+<?php 
+			foreach($relationNodes as $node) {
+?>
+			<?=$node->nodeName?>->da()->dropCache();
+<?php 
+			}
+?>
 			return parent::dropCache();
 		}
-</xsl:if>
--->
-	*/
+<?php			
+		}
 ?>
 	}
 <?php

@@ -37,11 +37,15 @@
 ?>
 			$this-><?=$name?>Id = <?=$value?>->getId();
 <?php
-	} else {
+	}
+	
+	if ($identifierId = $property->getAttribute('identifierId')) {
 ?>
-			$this-><?=$name?> = <?=$value?>;
-<?php
+			$this-><?=$identifierId?> = null;
+<?php		
 	}
 ?>
+			$this-><?=$name?> = <?=$value?>;
+
 			return $this;
 		}
