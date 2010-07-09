@@ -5,8 +5,8 @@
 	*/
 	abstract class BaseCache implements CacheInterface
 	{
-		private $namespace	= null;
-
+		private $namespace = null;
+		
 		/**
 		 * @return BaseCache
 		 */

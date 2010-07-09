@@ -92,14 +92,13 @@
 
 		public function compileKey(CacheTicket $ticket)
 		{
-			$fileName =
-				md5(serialize($this->getNamespace().'-'.$ticket->getKey()));
-			
+			$fileName = md5(serialize($ticket->getKey()));
+
 			$resultArray = array(
 				$this->getCacheDir(),
 				'prefix' => $ticket->getPrefix(),
 				$this->compilePreDirs($fileName),
-				$fileName
+				$fileName.'-'.$this->getNamespace()
 			);
 			
 			if (!$resultArray['prefix'])

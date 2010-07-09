@@ -121,6 +121,24 @@
 			$this->assertSame('asdasd', $data2);
 		}
 		
+		public function testDiffKey()
+		{
+			$cacheTicket =
+				$this->realization->createTicket()->
+					setPrefix($this->getPrefix())->
+					setKey(array(rand(), rand()));
+					
+			$cacheTicket2 =
+				$this->realization->createTicket()->
+					setPrefix($cacheTicket->getPrefix())->
+					setKey(array(rand(), rand()));
+			
+			$this->assertNotSame(
+				$this->realization->compileKey($cacheTicket), 
+				$this->realization->compileKey($cacheTicket2)
+			);
+		}
+		
 		private function getPrefix()
 		{
 			return __CLASS__.__FUNCTION__.rand();

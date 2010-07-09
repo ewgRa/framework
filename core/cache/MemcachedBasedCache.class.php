@@ -109,7 +109,7 @@
 		public function compileKey(CacheTicket $ticket)
 		{
 			return
-				$this->getNamespace().'-'.$ticket->getPrefix()
+				$ticket->getPrefix().'-'.$this->getNamespace()
 				.'-'.md5(serialize($ticket->getKey()));
 		}
 		
