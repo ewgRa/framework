@@ -102,7 +102,8 @@
 		 */
 		public function dropByKey($key)
 		{
-			$this->getMemcache()->delete($key);
+			# NOTE: zero needed for back compability with memcached protocol
+			$this->getMemcache()->delete($key, 0);
 			return $this;
 		}
 		
