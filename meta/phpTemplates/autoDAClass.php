@@ -19,7 +19,6 @@
 	 */
 	abstract class Auto<?=$classNode->nodeName?>DA extends <?=$extends.PHP_EOL?>
 	{
-
 		protected $tableAlias = '<?=$classNode->nodeName?>';
 		
 		/**
