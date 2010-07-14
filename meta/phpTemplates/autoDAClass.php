@@ -188,7 +188,7 @@
 <?php 
 			foreach($relationNodes as $node) {
 ?>
-			<?=$node->nodeName?>->da()->dropCache();
+			<?=$node->nodeName?>::da()->dropCache();
 <?php 
 			}
 ?>
