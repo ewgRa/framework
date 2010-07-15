@@ -2,4 +2,4 @@
 
 SELF_DIR=`dirname $0`
 
-php $SELF_DIR/build.php $PWD
+php $SELF_DIR/build.php --base-dir $PWD $@

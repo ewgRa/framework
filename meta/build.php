@@ -1,10 +1,31 @@
 <?php
 	require_once(dirname(__FILE__).'/init.php.tpl');
 
-	$curDir = $argv[1];
+	$longOptions = array(
+		'base-dir:',
+		'meta:',
+		'classes-dir:'
+	);
 	
-	define('CLASSES_DIR', $curDir.'/classes');
-	define('META_FILE', $curDir.'/config/meta.xml');
+	$options = getopt('', $longOptions);
+	
+	$curDir = $options['base-dir'];
+	
+	define(
+		'CLASSES_DIR', 
+		isset ($options['classes-dir'])
+			? $options['classes-dir']
+			: $curDir.'/classes'
+	);
+
+	define(
+		'META_FILE', 
+		isset ($options['meta'])
+			? $options['meta']
+			: $curDir.'/config/meta.xml'
+	);
+	
+	Assert::isFileExists(META_FILE);
 	
 	$builders = array(
 		'AutoBusinessClass' => META_BUILDER_DIR.'/phpTemplates/autoBusinessClass.php',
@@ -48,7 +69,7 @@
 	foreach ($meta->getDocumentElement()->childNodes as $node) {
 		if (
 			$node->nodeType !== XML_ELEMENT_NODE
-			|| $node->getAttribute('build') === false
+			|| $node->getAttribute('generate') === 'false'
 			|| $node->getAttribute('type') != 'Identifier'
 		)
 			continue;
@@ -65,6 +86,16 @@
 				$file->setContent(${$builderName}->transform($model));
 		}
 	}
+	
+	$configBuilder = 
+		PhpView::create()->
+		loadLayout(
+			File::create()->
+			setPath(META_BUILDER_DIR.'/phpTemplates/autoConfig.php')
+		);
+	
+	$file = File::create()->setPath($curDir.'/auto.config.php');
+	$file->setContent($configBuilder->transform($model));
 	
 	function preConfigure(ExtendedDomDocument $meta)
 	{
