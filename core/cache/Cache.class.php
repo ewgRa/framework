@@ -7,6 +7,8 @@
 	{
 		const FOREVER = 31536000; // 1 year
 		
+		private $pools = array();
+		
 		/**
 		 * @return Cache
 		 */

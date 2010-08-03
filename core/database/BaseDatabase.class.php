@@ -3,8 +3,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class BaseDatabase implements DatabaseInterface
+	abstract class BaseDatabase extends Observable implements DatabaseInterface
 	{
+		const QUERY_EVENT = 1;
+		
 		private $linkIdentifier	= null;
 		private $connected		= false;
 		private $host			= null;
@@ -12,6 +14,10 @@
 		private $password		= null;
 		private $database		= null;
 		private $charset		= null;
+		
+		abstract protected function runQuery($queryString);
+
+		abstract protected function createResult();
 		
 		/**
 		 * @return BaseDatabase
@@ -100,6 +106,28 @@
 			return $this;
 		}
 		
+		public function queryRaw($queryString)
+		{
+			if (!$this->isConnected())
+				$this->connect()->selectDatabase()->selectCharset();
+			
+			$startTime = microtime(true);
+			
+			Assert::isNotNull($this->getLinkIdentifier());
+			
+			$resource = $this->runQuery($queryString);
+			
+			if ($error = $this->getError())
+				throw DatabaseQueryException::create($error);
+
+			$this->notifyObservers(
+				self::QUERY_EVENT, 
+				array($queryString, $startTime, microtime(true))
+			);
+			
+			return $this->createResult()->setResource($resource);
+		}
+
 		public function isConnected()
 		{
 			return $this->connected;
@@ -116,23 +144,6 @@
 				$this->disconnect();
 		}
 
-		protected function debugQuery($query, $started, $ended)
-		{
-			if (!Debug::me()->isEnabled())
-				return $this;
-			
-			$debugItem =
-				DatabaseDebugItem::create()->
-				setData($query)->
-				setTrace(debug_backtrace())->
-				setStartTime($started)->
-				setEndTime($ended);
-			
-			Debug::me()->addItem($debugItem);
-			
-			return $this;
-		}
-		
 		/**
 		 * @return BaseDatabase
 		 */

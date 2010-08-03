@@ -64,8 +64,11 @@
 				$ticket->expired();
 			}
 
-			$this->debug($ticket);
-		
+			$this->notifyObservers(
+				self::GET_TICKET_EVENT, 
+				array('ticket' => $ticket)
+			);
+					
 			return $result;
 		}
 

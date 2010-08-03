@@ -3,10 +3,12 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class BaseCache implements CacheInterface
+	abstract class BaseCache extends Observable implements CacheInterface
 	{
-		private $namespace = null;
+		const GET_TICKET_EVENT = 1;
 		
+		private $namespace = null;
+
 		/**
 		 * @return BaseCache
 		 */
@@ -37,23 +39,6 @@
 		public function drop(CacheTicket $cacheTicket)
 		{
 			$this->dropByKey($this->compileKey($cacheTicket));
-			return $this;
-		}
-		
-		/**
-		 * @return BaseCache
-		 */
-		protected function debug(CacheTicket $ticket)
-		{
-			if (!Debug::me()->isEnabled())
-				return $this;
-			
-			$debugItem =
-				CacheDebugItem::create()->
-				setData(clone $ticket);
-			
-			Debug::me()->addItem($debugItem);
-			
 			return $this;
 		}
 	}

@@ -98,30 +98,6 @@
 			return $this;
 		}
 
-		public function queryRaw($queryString)
-		{
-			if (!$this->isConnected())
-				$this->connect()->selectDatabase()->selectCharset();
-			
-			$startTime = microtime(true);
-			
-			Assert::isNotNull($this->getLinkIdentifier());
-			
-			$resource = mysql_query(
-				$queryString,
-				$this->getLinkIdentifier()
-			);
-			
-			if ($error = $this->getError())
-				throw DatabaseQueryException::create($error);
-
-			$this->debugQuery($queryString, $startTime, microtime(true));
-			
-			return
-				MysqlDatabaseResult::create()->
-				setResource($resource);
-		}
-
 		public function getInsertedId()
 		{
 			return mysql_insert_id($this->getLinkIdentifier());
@@ -130,6 +106,19 @@
 		public function getError()
 		{
 			return mysql_error($this->getLinkIdentifier());
+		}
+		
+		protected function runQuery($queryString)
+		{
+			return mysql_query(
+				$queryString,
+				$this->getLinkIdentifier()
+			);
+		}
+		
+		protected function createResult()
+		{
+			return MysqlDatabaseResult::create();
 		}
 	}
 ?>
