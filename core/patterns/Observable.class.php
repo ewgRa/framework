@@ -7,7 +7,7 @@
 	{
 		private $observers = null;
 		
-		public function addObserver(Observer $observer, $event)
+		public function addObserver(ObserverInterface $observer, $event)
 		{
 			if (!isset($this->observers[$event]))
 				$this->observers[$event] = array();
@@ -16,7 +16,7 @@
 			return $this;
 		}
 		
-		public function removeObserver(Observer $observer, $event)
+		public function removeObserver(ObserverInterface $observer, $event)
 		{
 			throw UnimplementedCodeException::create();
 		}

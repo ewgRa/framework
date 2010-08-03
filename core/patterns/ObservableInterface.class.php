@@ -7,7 +7,5 @@
 	{
 		public function addObserver(ObserverInterface $observer, $event);
 		public function removeObserver(ObserverInterface $observer, $event);
-
-		protected function notifyObservers($event, $arguments = array());
 	}
 ?>
