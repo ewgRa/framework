@@ -122,7 +122,11 @@
 
 			$this->notifyObservers(
 				self::QUERY_EVENT, 
-				array($queryString, $startTime, microtime(true))
+				array(
+					'query'		=> $queryString, 
+					'startTime' => $startTime, 
+					'endTime'	=> microtime(true)
+				)
 			);
 			
 			return $this->createResult()->setResource($resource);
