@@ -82,6 +82,11 @@
 			return $this->query;
 		}
 		
+		public function downloadContent()
+		{
+			return file_get_contents((string)$this);			
+		}
+		
 		public function __toString()
 		{
 			return

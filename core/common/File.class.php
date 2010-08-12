@@ -5,6 +5,8 @@
 	*/
 	final class File
 	{
+		const PERMISSIONS = 0664;
+		
 		private $path = null;
 		
 		/**
@@ -77,6 +79,19 @@
 		public function getBaseName()
 		{
 			return basename($this->getPath());
+		}
+		
+		public function getDir()
+		{
+			return 
+				Dir::create()->
+				setPath(pathinfo($this->getPath(), PATHINFO_DIRNAME));
+		}
+		
+		public function chmod($permission)
+		{
+			chmod($this->getPath(), $permission);
+			return $this;
 		}
 	}
 ?>
