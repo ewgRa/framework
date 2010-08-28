@@ -99,9 +99,10 @@
 
 			$resultArray = array(
 				$this->getCacheDir(),
+				$this->getNamespace(),
 				'prefix' => $ticket->getPrefix(),
 				$this->compilePreDirs($fileName),
-				$fileName.'-'.$this->getNamespace()
+				$fileName
 			);
 			
 			if (!$resultArray['prefix'])
@@ -121,6 +122,9 @@
 			return $this;
 		}
 		
+		/**
+		 * @return FileBasedCache
+		 */
 		public function clean()
 		{
 			if(file_exists($this->getCacheDir()))

@@ -140,9 +140,6 @@
 			return $this;
 		}
 
-		/**
-		 * @return CacheTicket
-		 */
 		public function restoreData()
 		{
 			return $this->getCacheInstance()->get($this);
@@ -151,6 +148,7 @@
 		public function drop()
 		{
 			$this->getCacheInstance()->drop($this);
+			return $this;
 		}
 	}
 ?>

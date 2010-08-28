@@ -110,13 +110,9 @@
 			return $this;
 		}
 		
-		public function compileKey(CacheTicket $ticket)
-		{
-			return
-				$ticket->getPrefix().'-'.$this->getNamespace()
-				.'-'.md5(serialize($ticket->getKey()));
-		}
-		
+		/**
+		 * @return MemcachedBasedCache
+		 */
 		public function clean()
 		{
 			$this->getMemcache()->flush();

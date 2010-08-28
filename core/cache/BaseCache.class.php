@@ -41,5 +41,12 @@
 			$this->dropByKey($this->compileKey($cacheTicket));
 			return $this;
 		}
+		
+		public function compileKey(CacheTicket $ticket)
+		{
+			return
+				$this->getNamespace().'-'.$ticket->getPrefix()
+				.'-'.md5(serialize($ticket->getKey()));
+		}
 	}
 ?>
