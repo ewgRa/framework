@@ -25,7 +25,14 @@
 		 */
 		public function relativeStart()
 		{
-			if (isset($_REQUEST[session_name()]) && !$this->isStarted())
+			if (
+				(
+					isset($_COOKIE[session_name()]) 
+					|| isset($_GET[session_name()]) 
+					|| isset($_POST[session_name()])
+				) 
+				&& !$this->isStarted()
+			)
 				$this->start();
 
 			return $this;
