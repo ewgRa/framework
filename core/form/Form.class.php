@@ -49,6 +49,8 @@
 		 */
 		public function import(array $scope)
 		{
+			Assert::isTrue(!$this->isImported(), 'form already imported');
+			
 			$this->imported = (count($scope) > 0);
 			
 			if ($this->imported) {
@@ -79,6 +81,11 @@
 			}
 			
 			return $result;
+		}
+
+		public function getValue($primitiveName)
+		{
+			return $this->getPrimitive($primitiveName)->getValue();
 		}
 	}
 ?>
