@@ -6,7 +6,8 @@
 	final class Form
 	{
 		private $primitives = array();
-		
+
+		// FIXME: think about importMore
 		private $imported	= null;
 		
 		/**
