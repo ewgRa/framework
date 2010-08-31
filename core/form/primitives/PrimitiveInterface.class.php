@@ -34,6 +34,11 @@
 		/**
 		 * @return PrimitiveInterface
 		 */
+		public function clean();
+		
+		/**
+		 * @return PrimitiveInterface
+		 */
 		public function import($scope);
 		
 		public function importValue($value);

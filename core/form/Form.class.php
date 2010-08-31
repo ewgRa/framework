@@ -7,9 +7,6 @@
 	{
 		private $primitives = array();
 
-		// FIXME: think about importMore
-		private $imported	= null;
-		
 		/**
 		 * @return Form
 		 */
@@ -31,6 +28,16 @@
 			return $this->primitives[$name];
 		}
 		
+		public function getPrimitiveByScopeKey($key)
+		{
+			foreach ($this->getPrimitives() as $primitive) {
+				if ($primitive->getScopeKey() == $key)
+					return $primitive;
+			}
+
+			return null;
+		}
+		
 		/**
 		 * @return Form
 		 */
@@ -39,25 +46,35 @@
 			$this->primitives[$primitive->getName()] = $primitive;
 			return $this;
 		}
-
-		public function isImported()
-		{
-			return $this->imported;
-		}
 		
 		/**
 		 * @return Form
 		 */
 		public function import(array $scope)
 		{
-			Assert::isTrue(!$this->isImported(), 'form already imported');
+			foreach ($this->getPrimitives() as $primitive)
+				$primitive->import($scope);
 			
-			$this->imported = (count($scope) > 0);
-			
-			if ($this->imported) {
-				foreach ($this->getPrimitives() as $primitive)
-					$primitive->import($scope);
+			return $this;
+		}
+		
+		/**
+		 * @return Form
+		 */
+		public function importMore(array $scope)
+		{
+			foreach ($scope as $scopeKey => $value) {
+				if ($primitive = $this->getPrimitiveByScopeKey($scopeKey))
+					$primitive->importValue($value);
 			}
+			
+			return $this;
+		}
+		
+		public function clean()
+		{
+			foreach ($this->getPrimitives() as $primitive)
+				$primitive->clean();
 			
 			return $this;
 		}

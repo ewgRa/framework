@@ -33,10 +33,10 @@
 			
 			$result = parent::importValue($value);
 			
-			$classDA = call_user_func(array($this->class, 'da'));
-			
-			if (!$this->hasErrors() && $this->getValue())
+			if (!$this->hasErrors() && $this->getValue()) {
+				$classDA = call_user_func(array($this->class, 'da'));
 				$this->setValue($classDA->getById($this->getValue()));
+			}
 			
 			return $result;
 		}

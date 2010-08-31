@@ -133,6 +133,18 @@
 		/**
 		 * @return BasePrimitive
 		 */
+		public function clean()
+		{
+			$this->rawValue = null;
+			$this->value = null;
+			$this->errors = null;
+			
+			return $this;
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
 		public function import($scope)
 		{
 			$value =
@@ -145,6 +157,8 @@
 		
 		public function importValue($value)
 		{
+			$this->clean();
+			
 			if ($this->notEmpty($value)) {
 				$this->setRawValue($value);
 				$this->setValue($value);

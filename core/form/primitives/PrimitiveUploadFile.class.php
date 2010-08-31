@@ -29,6 +29,16 @@
 		/**
 		 * @return BasePrimitive
 		 */
+		public function clean()
+		{
+			$this->file = null;
+			
+			return parent::clean();
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
 		public function importValue($value)
 		{
 			$result = $this;

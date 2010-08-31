@@ -31,15 +31,9 @@
 					PrimitiveString::create('testPrimitive')
 				);
 				
-			$form->import(array());
-			
-			$this->assertFalse($form->isImported());
-
 			$form->import(array('a' => 'b'));
 			
 			$this->assertFalse($form->hasErrors());
-			
-			$this->assertTrue($form->isImported());
 			
 			$form->getPrimitive('testPrimitive')->
 				addError(PrimitiveErrors::MISSING);
