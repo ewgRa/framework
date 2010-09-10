@@ -83,5 +83,13 @@
 					? $this->getInner()->handleRequest($request, $mav)
 					: $mav;
 		}
+		
+		public function getFirstController()
+		{
+			if (!$this->getOuter())
+				return $this;
+				
+			return $this->getOuter()->getFirstController();
+		}
 	}
 ?>
