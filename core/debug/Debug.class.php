@@ -5,6 +5,8 @@
 	*/
 	final class Debug extends Singleton
 	{
+		private $hash = null;
+		
 		private $enabled = null;
 		private $items	 = array();
 		
@@ -59,6 +61,35 @@
 		public function getItem($index)
 		{
 			return $this->items[$index];
+		}
+
+		/**
+		 *@return CmsDebugItem
+		 */
+		public function createRequestDebugItem()
+		{
+			return
+				RequestDebugItem::create()->
+				setData(
+					array(
+						'get'	 	=> $_GET,
+						'post'	 	=> $_POST,
+						'server' 	=> $_SERVER,
+						'cookie' 	=> $_COOKIE,
+						'session'	=>
+							isset($_SESSION)
+								? $_SESSION
+								: array()
+					)
+				);
+		}
+		
+		public function getHash()
+		{
+			if (!$this->hash)
+				$this->hash = md5(microtime().' '.rand(0, 1000000));
+			
+			return $this->hash;
 		}
 	}
 ?>
