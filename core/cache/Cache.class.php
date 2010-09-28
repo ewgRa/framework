@@ -45,5 +45,10 @@
 
 			return $this->pools[$poolAlias];
 		}
+		
+		public function getPools()
+		{
+			return $this->pools;
+		}
 	}
 ?>

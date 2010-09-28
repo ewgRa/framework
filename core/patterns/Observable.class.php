@@ -5,7 +5,7 @@
 	*/
 	abstract class Observable implements ObservableInterface
 	{
-		private $observers = null;
+		private $observers = array();
 		
 		public function addObserver($event, $callback)
 		{
