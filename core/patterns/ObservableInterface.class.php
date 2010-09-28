@@ -5,7 +5,12 @@
 	*/
 	interface ObservableInterface
 	{
-		public function addObserver(ObserverInterface $observer, $event);
-		public function removeObserver(ObserverInterface $observer, $event);
+		/**
+		 * @return unique string $hash
+		 */
+		public function addObserver($event, $callback);
+		
+		public function hasObserver($hash);
+		public function removeObserver($hash);
 	}
 ?>
