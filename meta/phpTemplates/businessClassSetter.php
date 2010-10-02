@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework;
+	
 	$name = $property->nodeName;
 	$upperName = $property->getAttribute('upperName');
 	$type = $property->getAttribute('type');

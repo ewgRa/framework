@@ -1,10 +1,12 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	 * @codeCoverageIgnoreStart
 	*/
-	class DefaultException extends Exception
+	class DefaultException extends \Exception
 	{
 		/**
 		 * @return DefaultException

@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,8 +14,8 @@
 			);
 			
 			$form =
-				Form::create()->
-				addPrimitive(PrimitiveString::create('testPrimitive'));
+				\ewgraFramework\Form::create()->
+				addPrimitive(\ewgraFramework\PrimitiveString::create('testPrimitive'));
 				
 			$form->import($data);
 			
@@ -26,9 +28,9 @@
 		public function testImported()
 		{
 			$form =
-				Form::create()->
+				\ewgraFramework\Form::create()->
 				addPrimitive(
-					PrimitiveString::create('testPrimitive')
+					\ewgraFramework\PrimitiveString::create('testPrimitive')
 				);
 				
 			$form->import(array('a' => 'b'));
@@ -36,7 +38,7 @@
 			$this->assertFalse($form->hasErrors());
 			
 			$form->getPrimitive('testPrimitive')->
-				addError(PrimitiveErrors::MISSING);
+				addError(\ewgraFramework\PrimitiveErrors::MISSING);
 
 			$this->assertTrue($form->hasErrors());
 		}
@@ -44,12 +46,12 @@
 		public function testErrors()
 		{
 			$form =
-				Form::create()->
+				\ewgraFramework\Form::create()->
 				addPrimitive(
-					PrimitiveString::create('testPrimitive')->
+					\ewgraFramework\PrimitiveString::create('testPrimitive')->
 					setRequired()->
 					setErrorLabel(
-						PrimitiveErrors::MISSING,
+						\ewgraFramework\PrimitiveErrors::MISSING,
 						'missing primitive'
 					)
 				);
@@ -59,20 +61,23 @@
 			$this->assertTrue($form->hasErrors());
 			
 			$this->assertSame(
-				array('testPrimitive' => array(PrimitiveErrors::MISSING)),
+				array(
+					'testPrimitive' => 
+						array(\ewgraFramework\PrimitiveErrors::MISSING)
+				),
 				$form->getErrors()
 			);
 			
 			$this->assertTrue(
 				$form->
 					getPrimitive('testPrimitive')->
-					hasError(PrimitiveErrors::MISSING)
+					hasError(\ewgraFramework\PrimitiveErrors::MISSING)
 			);
 			
 			$this->assertSame(
 				'missing primitive',
 				$form->getPrimitive('testPrimitive')->
-				getErrorLabel(PrimitiveErrors::MISSING)
+				getErrorLabel(\ewgraFramework\PrimitiveErrors::MISSING)
 			);
 		}
 	}

@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -47,12 +49,12 @@
 		
 		private function dropInstances()
 		{
-			Singleton::dropInstance('MySingletonTest');
-			Singleton::dropInstance('MySingletonTest2');
+			\ewgraFramework\Singleton::dropInstance('MySingletonTest');
+			\ewgraFramework\Singleton::dropInstance('MySingletonTest2');
 		}
 	}
 
-	class MySingletonTest extends Singleton
+	class MySingletonTest extends \ewgraFramework\Singleton
 	{
 		private $testVariable = null;
 		

@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -77,7 +79,7 @@
 		{
 			Assert::isNotNull($this->xsltDocument);
 			
-			$proc = new XsltProcessor();
+			$proc = new \XsltProcessor();
 			$proc->importStylesheet($this->xsltDocument);
 
 			return $proc->transformToXML($domModel);

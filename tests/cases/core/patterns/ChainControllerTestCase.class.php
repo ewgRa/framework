@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -13,16 +15,19 @@
 				);
 				
 			$mav =
-				ModelAndView::create()->
+				\ewgraFramework\ModelAndView::create()->
 				setModel(
-					Model::create()->
+					\ewgraFramework\Model::create()->
 					set('callStack', array())
 				);
 				
-			$chain->handleRequest(HttpRequest::create(), $mav);
+			$chain->handleRequest(\ewgraFramework\HttpRequest::create(), $mav);
 			
 			$this->assertSame(
-				array('TestChainController1', 'TestChainController2'),
+				array(
+					__NAMESPACE__.'\\TestChainController1', 
+					__NAMESPACE__.'\\TestChainController2'
+				),
 				$mav->getModel()->get('callStack')
 			);
 		}
@@ -38,14 +43,14 @@
 		}
 	}
 	
-	class BaseTestChainController extends ChainController
+	class BaseTestChainController extends \ewgraFramework\ChainController
 	{
 		/**
-		 * @return ModelAndView
+		 * @return \ewgraFramework\ModelAndView
 		 */
 		public function handleRequest(
-			HttpRequest $request,
-			ModelAndView $mav
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
 		) {
 			$callStack = $mav->getModel()->get('callStack');
 			$callStack[] = get_class($this);

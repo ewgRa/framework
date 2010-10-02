@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +11,7 @@
 		{
 			$this->assertSame(
 				'cc',
-				StringReplaceFilter::create()->
+				\ewgraFramework\StringReplaceFilter::create()->
 				addReplacement('a', 'c')->
 				addReplacement('b', 'c')->
 				apply('ab')

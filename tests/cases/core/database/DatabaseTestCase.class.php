@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,44 +11,57 @@
 		
 		public function setUp()
 		{
-			$this->savedDatabase = serialize(Database::me());
-			Singleton::dropInstance('Database');
+			$this->savedDatabase = serialize(\ewgraFramework\Database::me());
+			\ewgraFramework\Singleton::dropInstance('ewgraFramework\Database');
 		}
 		
 		public function tearDown()
 		{
-			Singleton::setInstance(
-				'Database',
+			\ewgraFramework\Singleton::setInstance(
+				'ewgraFramework\Database',
 				unserialize($this->savedDatabase)
 			);
 		}
 		
 		public function testIsSingleton()
 		{
-			$this->assertTrue(Database::me() instanceof Singleton);
+			$this->assertTrue(
+				\ewgraFramework\Database::me() instanceof \ewgraFramework\Singleton
+			);
 		}
 		
 		public function testPoolOperations()
 		{
-			$this->assertFalse(Database::me()->hasPool('default'));
-			$this->assertFalse(Database::me()->hasPool('default2'));
+			$this->assertFalse(\ewgraFramework\Database::me()->hasPool('default'));
+			$this->assertFalse(\ewgraFramework\Database::me()->hasPool('default2'));
 			
 			try {
-				Database::me()->getPool('default2');
+				\ewgraFramework\Database::me()->getPool('default2');
 				$this->fail();
-			} catch (MissingArgumentException $e) {
+			} catch (\ewgraFramework\MissingArgumentException $e) {
 				# good
 			}
 			
-			$pool = MysqlDatabase::create();
+			$pool = \ewgraFramework\MysqlDatabase::create();
 			
-			Database::me()->addPool($pool, 'default');
-			Database::me()->addPool(MysqlDatabase::create(), 'default2');
+			\ewgraFramework\Database::me()->addPool($pool, 'default');
 			
-			$this->assertTrue(Database::me()->hasPool('default'));
-			$this->assertTrue(Database::me()->hasPool('default2'));
+			\ewgraFramework\Database::me()->addPool(
+				\ewgraFramework\MysqlDatabase::create(), 'default2'
+			);
 			
-			$this->assertSame($pool, Database::me()->getPool('default'));
+			$this->assertTrue(
+				\ewgraFramework\Database::me()->hasPool('default')
+			);
+			
+			$this->assertTrue(
+				\ewgraFramework\Database::me()->hasPool('default2')
+			);
+			
+			$this->assertSame(
+				$pool, 
+				\ewgraFramework\Database::me()->getPool('default')
+			);
 		}
 	}
 ?>

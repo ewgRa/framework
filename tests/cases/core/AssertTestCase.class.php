@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -7,84 +9,84 @@
 	{
 		public function testIsArray()
 		{
-			$this->assertTrue(Assert::isArray(array(rand())));
+			$this->assertTrue(\ewgraFramework\Assert::isArray(array(rand())));
 			
 			try {
-				Assert::isArray(rand());
+				\ewgraFramework\Assert::isArray(rand());
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 
 		public function testIsNotEmpty()
 		{
-			$this->assertTrue(Assert::isNotEmpty(array(1)));
+			$this->assertTrue(\ewgraFramework\Assert::isNotEmpty(array(1)));
 			
 			try {
-				Assert::isNotEmpty(array());
+				\ewgraFramework\Assert::isNotEmpty(array());
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 		
 		public function testIsTrue()
 		{
-			$this->assertTrue(Assert::isTrue(true));
+			$this->assertTrue(\ewgraFramework\Assert::isTrue(true));
 			
 			try {
-				Assert::isTrue(false);
+				\ewgraFramework\Assert::isTrue(false);
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 
 		public function testIsFalse()
 		{
-			$this->assertTrue(Assert::isFalse(false));
+			$this->assertTrue(\ewgraFramework\Assert::isFalse(false));
 			
 			try {
-				Assert::isFalse(true);
+				\ewgraFramework\Assert::isFalse(true);
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 		
 		public function testIsNotNull()
 		{
-			$this->assertTrue(Assert::isNotNull(1));
+			$this->assertTrue(\ewgraFramework\Assert::isNotNull(1));
 			
 			try {
-				Assert::isNotNull(null);
+				\ewgraFramework\Assert::isNotNull(null);
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 
 		public function testIsEqual()
 		{
-			$this->assertTrue(Assert::isEqual(1, 1));
+			$this->assertTrue(\ewgraFramework\Assert::isEqual(1, 1));
 			
 			try {
-				Assert::isEqual(1, '1');
+				\ewgraFramework\Assert::isEqual(1, '1');
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
 
 		public function testIsFileExists()
 		{
-			$this->assertTrue(Assert::isFileExists(__FILE__));
+			$this->assertTrue(\ewgraFramework\Assert::isFileExists(__FILE__));
 			
 			try {
-				Assert::isFileExists('noFile');
+				\ewgraFramework\Assert::isFileExists('noFile');
 				$this->fail();
-			} catch(FileNotExistsException $e) {
+			} catch(\ewgraFramework\FileNotExistsException $e) {
 				# all good
 			}
 		}
@@ -92,13 +94,19 @@
 		public function testIsImplement()
 		{
 			$this->assertTrue(
-				Assert::isImplement(Cache::me(), 'SingletonInterface')
+				\ewgraFramework\Assert::isImplement(
+					\ewgraFramework\Cache::me(), 
+					'ewgraFramework\SingletonInterface'
+				)
 			);
 			
 			try {
-				Assert::isImplement($this, 'SingletonInterface');
+				\ewgraFramework\Assert::isImplement(
+					$this, 
+					'ewgraFramework\SingletonInterface'
+				);
 				$this->fail();
-			} catch(WrongArgumentException $e) {
+			} catch(\ewgraFramework\WrongArgumentException $e) {
 				# all good
 			}
 		}
@@ -106,9 +114,9 @@
 		public function testIsUnreachable()
 		{
 			try {
-				Assert::isUnreachable();
+				\ewgraFramework\Assert::isUnreachable();
 				$this->fail();
-			} catch(UnreachableCodeReachedException $e) {
+			} catch(\ewgraFramework\UnreachableCodeReachedException $e) {
 				# all good
 			}
 		}

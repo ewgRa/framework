@@ -1,16 +1,19 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DummyDatabaseDialect extends Singleton implements DatabaseDialectInterface
+	final class DummyDatabaseDialect extends \ewgraFramework\Singleton 
+		implements \ewgraFramework\DatabaseDialectInterface
 	{
 		/**
 		 * @return DummyDatabaseDialect
 		 */
 		public static function me()
 		{
-			return Singleton::getInstance(__CLASS__);
+			return \ewgraFramework\Singleton::getInstance(__CLASS__);
 		}
 
 		public function getLimit($count, $offset = null)
@@ -35,7 +38,7 @@
 					: '';
 		}
 
-		public function escape($variable, DatabaseInterface $database = null)
+		public function escape($variable, \ewgraFramework\DatabaseInterface $database = null)
 		{
 			if (is_array($variable)) {
 				foreach ($variable as &$value)
@@ -46,7 +49,7 @@
 			return $variable;
 		}
 
-		public function quoteTable($table, DatabaseInterface $database = null)
+		public function quoteTable($table, \ewgraFramework\DatabaseInterface $database = null)
 		{
 			return '|'.$table.'|';
 		}

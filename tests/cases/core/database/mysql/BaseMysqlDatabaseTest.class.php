@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -15,7 +17,7 @@
 		public function setUp()
 		{
 			$this->instance =
-				MysqlDatabase::create()->
+				\ewgraFramework\MysqlDatabase::create()->
 				setHost(MYSQL_TEST_HOST)->
 				setDatabase(MYSQL_TEST_DATABASE)->
 				setUser(MYSQL_TEST_USER)->
@@ -24,7 +26,7 @@
 			
 			try {
 				$this->instance->connect();
-			} catch (DatabaseConnectException $e) {
+			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				$this->markTestSkipped("can't connect to test mysql server");
 			}
 			
@@ -36,19 +38,19 @@
 				$this->instance->queryRawNull(
 					'CREATE DATABASE '.$this->instance->getDatabase()
 				);
-			} catch (DatabaseQueryException $e) {
+			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				$this->markTestSkipped("can't clean mysql test database");
 			}
 				
 			try {
 				$this->instance->selectDatabase();
-			} catch (DatabaseSelectDatabaseException $e) {
+			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
 				$this->markTestSkipped("can't select test mysql database");
 			}
 
 			try {
 				$this->instance->selectCharset();
-			} catch (DatabaseQueryException $e) {
+			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				$this->markTestSkipped("can't select test mysql charset");
 			}
 
@@ -61,7 +63,7 @@
 					) ENGINE=MyISAM
 					DEFAULT CHARSET=utf8'
 				);
-			} catch (DatabaseQueryException $e) {
+			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				$this->markTestSkipped("can't create test table");
 			}
 		}
@@ -79,7 +81,7 @@
 			try {
 				$this->instance->connect();
 				$this->fail();
-			} catch (DatabaseConnectException $e) {
+			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				# good
 			}
 		}
@@ -91,7 +93,7 @@
 			try {
 				$this->instance->selectDatabase();
 				$this->fail();
-			} catch (DatabaseSelectDatabaseException $e) {
+			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
 				# good
 			}
 		}

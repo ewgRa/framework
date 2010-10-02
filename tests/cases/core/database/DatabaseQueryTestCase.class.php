@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,7 +10,7 @@
 		public function testToString()
 		{
 			$dbQuery =
-				DatabaseQuery::create()->
+				\ewgraFramework\DatabaseQuery::create()->
 				setQuery('SELECT * FROM a WHERE id = ? and set=?')->
 				setValues(array(1));
 			

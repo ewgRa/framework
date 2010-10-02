@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	class ExtendedDomDocument extends DOMDocument
+	class ExtendedDomDocument extends \DOMDocument
 	{
 		const NODE_PREFIX 				= 'item';
 		const NUMERIC_NODE_ATTRIBUTE 	= 'key';
@@ -26,7 +28,7 @@
 		) {
 			try {
 				$node = $this->createElement($nodeName);
-			} catch (DOMException $e) {
+			} catch (\DOMException $e) {
 				$attributes[self::NUMERIC_NODE_ATTRIBUTE] = $nodeName;
 				$nodeName = self::NODE_PREFIX;
 				$node = $this->createElement($nodeName);
@@ -60,7 +62,7 @@
 		/**
 		 * @return DOMNode
 		 */
-		public function getNode($query, DOMNode $contextNode = null)
+		public function getNode($query, \DOMNode $contextNode = null)
 		{
 			return $this->getNodeList($query, $contextNode)->item(0);
 		}
@@ -68,9 +70,9 @@
 		/**
 		 * @return DOMNodeList
 		 */
-		public function getNodeList($query, DOMNode $contextNode = null)
+		public function getNodeList($query, \DOMNode $contextNode = null)
 		{
-			$xpath = new DOMXPath($this);
+			$xpath = new \DOMXPath($this);
 			
 			return
 				$contextNode

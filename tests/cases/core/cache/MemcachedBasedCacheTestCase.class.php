@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,7 +10,7 @@
 		protected function getRealization()
 		{
 			return
-				MemcachedBasedCache::create()->
+				\ewgraFramework\MemcachedBasedCache::create()->
 				setHost(MEMCACHED_TEST_HOST)->
 				setPort(MEMCACHED_TEST_PORT);
 		}

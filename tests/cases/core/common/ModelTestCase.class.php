@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -7,7 +9,7 @@
 	{
 		public function testData()
 		{
-			$model = Model::create();
+			$model = \ewgraFramework\Model::create();
 			
 			$model->setData(array('a' => 'b'));
 			$model->set('c', 'd');
@@ -15,7 +17,7 @@
 			$model->drop('e');
 			$model->append('h');
 			$model->merge(array('g' => 'g1'));
-			$model->mergeModel(Model::create()->set('j', 'k'));
+			$model->mergeModel(\ewgraFramework\Model::create()->set('j', 'k'));
 
 			$this->assertTrue($model->has('j'));
 			
@@ -33,12 +35,12 @@
 
 		public function testGetMissing()
 		{
-			$model = Model::create();
+			$model = \ewgraFramework\Model::create();
 
 			try {
 				$model->get('a');
 				$this->fail();
-			} catch (MissingArgumentException $e) {
+			} catch (\ewgraFramework\MissingArgumentException $e) {
 				# all good
 			}
 		}

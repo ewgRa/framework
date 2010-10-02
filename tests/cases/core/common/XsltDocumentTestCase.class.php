@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -7,7 +9,7 @@
 	{
 		public function testImportFile()
 		{
-			$document = XsltDocument::create();
+			$document = \ewgraFramework\XsltDocument::create();
 
 			$document->load(dirname(__FILE__).'/test.xsl');
 
@@ -28,12 +30,12 @@
 
 		public function testLoadNonXslDocument()
 		{
-			$document = XsltDocument::create();
+			$document = \ewgraFramework\XsltDocument::create();
 	
 			try {
 				$document->load(dirname(__FILE__).'/test.xml');
 				$this->fail();
-			} catch (UnreachableCodeReachedException $e) {
+			} catch (\ewgraFramework\UnreachableCodeReachedException $e) {
 				# all good
 			}
 		}

@@ -1,11 +1,12 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
 	final class ClassesAutoloader extends Singleton
 	{
-		const NAMESPACE_DELIMER = '\\';
 		const VARIOUS_NAMESPACE = null;
 		const ROOT_NAMESPACE = '\\';
 		
@@ -138,11 +139,11 @@
 		{
 			$searchDirectories = array();
 			
-			$nameParts = explode(self::NAMESPACE_DELIMER, $className);
+			$nameParts = explode('\\', $className);
 			
 			$classNameWithoutNamespace = array_pop($nameParts);
 			
-			$namespace = join(self::NAMESPACE_DELIMER, $nameParts);
+			$namespace = join('\\', $nameParts);
 
 			if ($namespace) {
 				foreach($this->namespaces as $probablyNamespace) {

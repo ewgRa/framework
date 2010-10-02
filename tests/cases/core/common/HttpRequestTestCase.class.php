@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -18,10 +20,10 @@
 				'Server' => $_SERVER
 			);
 			
-			$request = HttpRequest::create();
+			$request = \ewgraFramework\HttpRequest::create();
 			$this->assertFalse($request->hasHttpReferer());
 			
-			$url = HttpUrl::create()->setPath('/aaa');
+			$url = \ewgraFramework\HttpUrl::create()->setPath('/aaa');
 			$request->setUrl($url);
 			$this->assertSame($url, $request->getUrl());
 			
@@ -36,7 +38,7 @@
 				try {
 					$request->{'get'.$key.'Var'}('var');
 					$this->fail();
-				} catch (MissingArgumentException $e) {
+				} catch (\ewgraFramework\MissingArgumentException $e) {
 					# all good
 				}
 				

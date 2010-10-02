@@ -1,9 +1,11 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PrimitiveEnumerationTestClass extends Enumeration
+	final class PrimitiveEnumerationTestClass extends \ewgraFramework\Enumeration
 	{
 		const TEST = 1;
 		

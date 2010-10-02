@@ -1,5 +1,7 @@
 <?php
-	require_once(dirname(__FILE__).'/init.php.tpl');
+	namespace ewgraFramework;
+	
+	require_once(dirname(__FILE__).'/init.tpl.php');
 
 	$longOptions = array(
 		'base-dir:',
@@ -111,6 +113,16 @@
 			if ($node->nodeType !== XML_ELEMENT_NODE)
 				continue;
 	
+			$node->setAttribute(
+				'fullClassName', 
+				(
+					$node->getAttribute('namespace')
+						? $node->getAttribute('namespace').'\\'
+						: null
+				)
+				.$node->nodeName
+			);
+			
 			$propertiesNode = $node->getElementsByTagName('properties')->item(0);
 	
 			if (!$propertiesNode)
@@ -131,10 +143,19 @@
 				);
 				
 				if ($propertyNode->getAttribute('class')) {
-					$relationClass = 
-						$meta->getNode($propertyNode->getAttribute('class'));
+					$class = $propertyNode->getAttribute('class');
+
+					$classWithoutNamespace = StringUtils::getClassName($class);
 					
-					Assert::isNotNull($relationClass, $propertyNode->getAttribute('class'));
+					$classQuery = $classWithoutNamespace;
+
+					$namespace = StringUtils::getClassNamespace($class);
+					
+					if ($namespace)
+						$classQuery .= '[@namespace="'.$namespace.'"]';
+					
+					$relationClass = $meta->getNode($classQuery);
+					Assert::isNotNull($relationClass, $classQuery);
 					
 					$relationClassType = $relationClass->getAttribute('type');
 					

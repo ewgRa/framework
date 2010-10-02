@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -10,8 +12,8 @@
 			$id = 1;
 			
 			$primitive =
-				PrimitiveEnumeration::create('testPrimitive')->
-				setClass('PrimitiveEnumerationTestClass')->
+				\ewgraFramework\PrimitiveEnumeration::create('testPrimitive')->
+				setClass(__NAMESPACE__.'\\PrimitiveEnumerationTestClass')->
 				import(array('testPrimitive' => $id));
 			
 			$this->assertSame($id, $primitive->getValue()->getId());

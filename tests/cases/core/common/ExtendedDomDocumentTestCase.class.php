@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -7,7 +9,7 @@
 	{
 		public function testCreateNodeFromVar()
 		{
-			$document = ExtendedDomDocument::create();
+			$document = \ewgraFramework\ExtendedDomDocument::create();
 			
 			$node = $document->createNodeFromVar(
 				array(
@@ -31,7 +33,7 @@
 
 		public function testGetNode()
 		{
-			$document = ExtendedDomDocument::create();
+			$document = \ewgraFramework\ExtendedDomDocument::create();
 			
 			$node = $document->createNodeFromVar(
 				array(),
@@ -65,7 +67,7 @@
 		
 		public function testSleepAndWakeup()
 		{
-			$document = ExtendedDomDocument::create();
+			$document = \ewgraFramework\ExtendedDomDocument::create();
 				
 			$document->load(dirname(__FILE__).'/test.xsl');
 			

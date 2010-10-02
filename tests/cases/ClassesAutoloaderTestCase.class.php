@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,105 +11,116 @@
 		
 		public function setUp()
 		{
-			$this->savedClassesAutoloader = serialize(ClassesAutoloader::me());
-			Singleton::dropInstance('ClassesAutoloader');
+			$this->savedClassesAutoloader = serialize(\ewgraFramework\ClassesAutoloader::me());
+			\ewgraFramework\Singleton::dropInstance('ewgraFramework\ClassesAutoloader');
 		}
 		
 		public function tearDown()
 		{
-			Singleton::setInstance(
-				'ClassesAutoloader',
+			\ewgraFramework\Singleton::setInstance(
+				'ewgraFramework\ClassesAutoloader',
 				unserialize($this->savedClassesAutoloader)
 			);
 		}
 		
 		public function testIsSingleton()
 		{
-			$this->assertTrue(ClassesAutoloader::me() instanceof Singleton);
+			$this->assertTrue(
+				\ewgraFramework\ClassesAutoloader::me() instanceof \ewgraFramework\Singleton
+			);
 		}
 		
 		public function testLoadClass()
 		{
 			$className = __FUNCTION__.rand();
+
+			$fullClassName = __NAMESPACE__.'\\'.$className;
 			
 			$fileName =
 				TMP_DIR.DIRECTORY_SEPARATOR
-				.$className.ClassesAutoLoader::CLASS_FILE_EXTENSION;
-				
+				.$className.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
+
 			file_put_contents(
 				$fileName,
 				str_replace(
-					get_class($this),
+					\ewgraFramework\StringUtils::getClassName(__CLASS__),
 					$className,
 					file_get_contents(__FILE__)
 				)
 			);
 			
-			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 			
 			$this->assertClassMapChanged(false);
-			ClassesAutoloader::me()->load($className);
+			\ewgraFramework\ClassesAutoloader::me()->load($fullClassName);
 			$this->assertClassMapChanged(true);
 			
 			unlink($fileName);
 			
-			$this->assertTrue(class_exists($className, false));
+			$this->assertTrue(class_exists($fullClassName, false));
 		}
 		
 		public function testLoadClasses()
 		{
 			$className = __FUNCTION__.rand();
 			
+			$fullClassName = __NAMESPACE__.'\\'.$className;
+			
 			$fileName =
 				TMP_DIR.DIRECTORY_SEPARATOR
-				.$className.ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				.$className.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
 				str_replace(
-					get_class($this),
+					\ewgraFramework\StringUtils::getClassName(__CLASS__),
 					$className,
 					file_get_contents(__FILE__)
 				)
 			);
 			
-			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 			
-			ClassesAutoloader::me()->loadAllClasses();
+			\ewgraFramework\ClassesAutoloader::me()->loadAllClasses();
 			
 			unlink($fileName);
 			
-			$this->assertTrue(class_exists($className, false));
+			$this->assertTrue(class_exists($fullClassName, false));
 		}
 		
 		public function testLoadInterface()
 		{
 			$interfaceName = __FUNCTION__.rand();
 			
+			$fullInterfaceName = __NAMESPACE__.'\\'.$interfaceName;
+			
 			$fileName =
 				TMP_DIR.DIRECTORY_SEPARATOR
-				.$interfaceName.ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				.$interfaceName.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
 				"<?php
+					namespace ".__NAMESPACE__.";
 					interface {$interfaceName}{}
 				?>"
 			);
 			
-			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 
 			$this->assertClassMapChanged(false);
-			ClassesAutoloader::me()->load($interfaceName);
+			
+			\ewgraFramework\ClassesAutoloader::me()->load($fullInterfaceName);
+			
 			$this->assertClassMapChanged(true);
 			
 			unlink($fileName);
 			
-			$this->assertTrue(interface_exists($interfaceName, false));
-			
+			$this->assertTrue(interface_exists($fullInterfaceName, false));
+
 			$this->assertSame(
-				array($interfaceName => $fileName),
-				ClassesAutoLoader::me()->getFoundClasses()
+				array($fullInterfaceName => $fileName),
+				\ewgraFramework\ClassesAutoLoader::me()->getFoundClasses()
 			);
 		}
 		
@@ -117,7 +130,7 @@
 			
 			$fileName =
 				TMP_DIR.DIRECTORY_SEPARATOR
-				.$interfaceName.ClassesAutoLoader::CLASS_FILE_EXTENSION;
+				.$interfaceName.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
 				
 			file_put_contents(
 				$fileName,
@@ -126,12 +139,12 @@
 				?>"
 			);
 			
-			ClassesAutoLoader::me()->setFoundClasses(
+			\ewgraFramework\ClassesAutoLoader::me()->setFoundClasses(
 				array($interfaceName => $fileName)
 			);
 
 			$this->assertClassMapChanged(false);
-			ClassesAutoloader::me()->load($interfaceName);
+			\ewgraFramework\ClassesAutoloader::me()->load($interfaceName);
 			$this->assertClassMapChanged(false);
 			
 			unlink($fileName);
@@ -147,7 +160,7 @@
 		private function assertClassMapChanged($expect = true)
 		{
 			$this->assertTrue(
-				ClassesAutoloader::me()->isClassMapChanged() === $expect
+				\ewgraFramework\ClassesAutoloader::me()->isClassMapChanged() === $expect
 			);
 		}
 	}

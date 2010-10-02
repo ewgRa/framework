@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,44 +11,57 @@
 		
 		public function setUp()
 		{
-			$this->savedCache = serialize(Cache::me());
-			Singleton::dropInstance('Cache');
+			$this->savedCache = serialize(\ewgraFramework\Cache::me());
+			\ewgraFramework\Singleton::dropInstance('ewgraFramework\Cache');
 		}
 		
 		public function tearDown()
 		{
-			Singleton::setInstance(
-				'Cache',
+			\ewgraFramework\Singleton::setInstance(
+				'ewgraFramework\Cache',
 				unserialize($this->savedCache)
 			);
 		}
 		
 		public function testIsSingleton()
 		{
-			$this->assertTrue(Cache::me() instanceof Singleton);
+			$this->assertTrue(
+				\ewgraFramework\Cache::me() instanceof \ewgraFramework\Singleton
+			);
 		}
 		
 		public function testPoolOperations()
 		{
-			$this->assertFalse(Cache::me()->hasPool('default'));
-			$this->assertFalse(Cache::me()->hasPool('default2'));
+			$this->assertFalse(\ewgraFramework\Cache::me()->hasPool('default'));
+			$this->assertFalse(\ewgraFramework\Cache::me()->hasPool('default2'));
 			
 			try {
-				Cache::me()->getPool('default2');
+				\ewgraFramework\Cache::me()->getPool('default2');
 				$this->fail();
-			} catch (MissingArgumentException $e) {
+			} catch (\ewgraFramework\MissingArgumentException $e) {
 				# good
 			}
 			
-			$pool = FileBasedCache::create();
+			$pool = \ewgraFramework\FileBasedCache::create();
 			
-			Cache::me()->addPool($pool, 'default');
-			Cache::me()->addPool(FileBasedCache::create(), 'default2');
+			\ewgraFramework\Cache::me()->addPool($pool, 'default');
 			
-			$this->assertTrue(Cache::me()->hasPool('default'));
-			$this->assertTrue(Cache::me()->hasPool('default2'));
+			\ewgraFramework\Cache::me()->addPool(
+				\ewgraFramework\FileBasedCache::create(), 'default2'
+			);
 			
-			$this->assertSame($pool, Cache::me()->getPool('default'));
+			$this->assertTrue(
+				\ewgraFramework\Cache::me()->hasPool('default')
+			);
+			
+			$this->assertTrue(
+				\ewgraFramework\Cache::me()->hasPool('default2')
+			);
+			
+			$this->assertSame(
+				$pool, 
+				\ewgraFramework\Cache::me()->getPool('default')
+			);
 		}
 	}
 ?>

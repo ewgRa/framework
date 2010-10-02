@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -26,7 +28,8 @@
 			$key1 = rand();
 			$key2 = rand();
 
-			$cacheTicket = $this->realization->createTicket()->
+			$cacheTicket = 
+				$this->realization->createTicket()->
 				setPrefix($this->getPrefix())->
 				setKey($key1);
 				
@@ -125,13 +128,13 @@
 		{
 			$cacheTicket =
 				$this->realization->createTicket()->
-					setPrefix($this->getPrefix())->
-					setKey(array(rand(), rand()));
+				setPrefix($this->getPrefix())->
+				setKey(array(rand(), rand()));
 					
 			$cacheTicket2 =
 				$this->realization->createTicket()->
-					setPrefix($cacheTicket->getPrefix())->
-					setKey(array(rand(), rand()));
+				setPrefix($cacheTicket->getPrefix())->
+				setKey(array(rand(), rand()));
 			
 			$this->assertNotSame(
 				$this->realization->compileKey($cacheTicket), 
@@ -141,7 +144,7 @@
 		
 		private function getPrefix()
 		{
-			return __CLASS__.__FUNCTION__.rand();
+			return __CLASS__.'_'.__FUNCTION__.'_'.rand();
 		}
 		
 		private function getData()

@@ -1,3 +1,6 @@
+<?php 
+	namespace ewgraFramework;
+?>
 		
 <?php
 	$name = $property->nodeName;

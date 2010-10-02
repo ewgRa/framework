@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -18,17 +20,17 @@
 					)
 				);
 
-			$yamlFile = File::create()->setPath(TMP_DIR.'/test.yml');
+			$yamlFile = \ewgraFramework\File::create()->setPath(TMP_DIR.'/test.yml');
 			
-			Yaml::save($yamlFile, $data);
+			\ewgraFramework\Yaml::save($yamlFile, $data);
 			
-			$yamlResult = Yaml::load($yamlFile);
+			$yamlResult = \ewgraFramework\Yaml::load($yamlFile);
 			
 			$this->assertSame($data, $yamlResult);
 			
 			$this->assertSame(
 				$data,
-				Yaml::loadString($yamlFile->getContent())
+				\ewgraFramework\Yaml::loadString($yamlFile->getContent())
 			);
 			
 			$yamlFile->delete();

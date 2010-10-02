@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -29,7 +31,7 @@
 					'test2' => $this->array['section']['test2'],
 					'test3' => $this->array['section']['test3']
 				),
-				ArrayUtils::recursiveMerge(
+				\ewgraFramework\ArrayUtils::recursiveMerge(
 					$this->array['all'],
 					$this->array['section']
 				)
@@ -42,7 +44,7 @@
 			
 			$this->assertEquals(
 				array($object->getId()),
-				ArrayUtils::getObjectIds(array($object))
+				\ewgraFramework\ArrayUtils::getObjectIds(array($object))
 			);
 		}
 	}

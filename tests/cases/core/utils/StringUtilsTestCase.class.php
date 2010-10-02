@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +11,7 @@
 		{
 			$this->assertEquals(
 				'Testtest',
-				StringUtils::upperKeyFirstAlpha('testtest')
+				\ewgraFramework\StringUtils::upperKeyFirstAlpha('testtest')
 			);
 		}
 
@@ -17,7 +19,7 @@
 		{
 			$this->assertEquals(
 				'test_string_test',
-				StringUtils::separateByUpperKey('testStringTest')
+				\ewgraFramework\StringUtils::separateByUpperKey('testStringTest')
 			);
 		}
 
@@ -25,7 +27,7 @@
 		{
 			$this->assertEquals(
 				10,
-				StringUtils::getLength('testString')
+				\ewgraFramework\StringUtils::getLength('testString')
 			);
 		}
 		
@@ -33,7 +35,7 @@
 		{
 			$this->assertEquals(
 				'teststringtest',
-				StringUtils::toLower('testStringTest')
+				\ewgraFramework\StringUtils::toLower('testStringTest')
 			);
 		}
 
@@ -41,7 +43,7 @@
 		{
 			$this->assertEquals(
 				'TESTSTRINGTEST',
-				StringUtils::toUpper('testStringTest')
+				\ewgraFramework\StringUtils::toUpper('testStringTest')
 			);
 		}
 	}

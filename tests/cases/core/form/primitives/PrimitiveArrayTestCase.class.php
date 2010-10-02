@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -10,7 +12,7 @@
 			$data = array(rand(), rand());
 			
 			$primitive =
-				PrimitiveArray::create('testPrimitive')->
+				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
 				import(array('testPrimitive' => $data));
 			
 			$this->assertSame($data, $primitive->getRawValue());

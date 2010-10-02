@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +11,7 @@
 		{
 			$url = 'http://localhost.ru/path?query=queryString';
 			
-			$httpUrl = HttpUrl::createFromString($url);
+			$httpUrl = \ewgraFramework\HttpUrl::createFromString($url);
 			
 			$this->assertSame('http', $httpUrl->getScheme());
 			$this->assertSame('localhost.ru', $httpUrl->getHost());

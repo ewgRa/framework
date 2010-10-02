@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,7 +14,7 @@
 			if (!file_exists($dirName))
 				mkdir($dirName);
 				
-			$file = File::create()->setPath($dirName.'/'.rand());
+			$file = \ewgraFramework\File::create()->setPath($dirName.'/'.rand());
 			$content = rand();
 			$file->setContent($content);
 			
@@ -27,10 +29,22 @@
 				mkdir($dirName);
 				
 			$basename = rand();
-			$copy = File::create()->setPath($dirName.'/'.$basename.'.copiedtest');
-			$dest = File::create()->setPath($dirName.'/'.$basename.'.movedtest');
+			
+			$copy = 
+				\ewgraFramework\File::create()->setPath(
+					$dirName.'/'.$basename.'.copiedtest'
+				);
+			
+			$dest = 
+				\ewgraFramework\File::create()->setPath(
+					$dirName.'/'.$basename.'.movedtest'
+				);
 				
-			$file = File::create()->setPath($dirName.'/'.$basename.'.test');
+			$file = 
+				\ewgraFramework\File::create()->setPath(
+					$dirName.'/'.$basename.'.test'
+				);
+			
 			$this->assertEquals($basename.'.test', $file->getBaseName());
 			$this->assertFalse($file->isExists());
 			$file->setContent('aaa');

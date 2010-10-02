@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -30,6 +32,19 @@
 		public static function toUpper($string)
 		{
 			return mb_strtoupper($string, 'utf8');
+		}
+		
+		public static function getClassNamespace($className)
+		{
+			$nameParts = explode('\\', $className);
+			array_pop($nameParts);
+			return join('\\', $nameParts);
+		}
+		
+		public static function getClassName($className)
+		{
+			$nameParts = explode('\\', $className);
+			return array_pop($nameParts);
 		}
 	}
 ?>

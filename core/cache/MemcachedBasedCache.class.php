@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -126,7 +128,7 @@
 		private function getMemcache()
 		{
 			if (!$this->memcache) {
-				$this->memcache = new Memcache();
+				$this->memcache = new \Memcache();
 				$this->memcache->addServer($this->getHost(), $this->getPort());
 			}
 			

@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -14,11 +16,11 @@
 			);
 
 			$primitive =
-				PrimitiveUploadFile::create('testPrimitive')->
+				\ewgraFramework\PrimitiveUploadFile::create('testPrimitive')->
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				array(PrimitiveErrors::UPLOAD_ERROR),
+				array(\ewgraFramework\PrimitiveErrors::UPLOAD_ERROR),
 				$primitive->getErrors()
 			);
 		}
@@ -28,12 +30,12 @@
 			$file = array('error' => 0, 'tmp_name' => '');
 
 			$primitive =
-				PrimitiveUploadFile::create('testPrimitive')->
+				\ewgraFramework\PrimitiveUploadFile::create('testPrimitive')->
 				setRequired()->
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				array(PrimitiveErrors::MISSING),
+				array(\ewgraFramework\PrimitiveErrors::MISSING),
 				$primitive->getErrors()
 			);
 		}
@@ -47,7 +49,7 @@
 			);
 
 			$primitive =
-				PrimitiveUploadFile::create('testPrimitive')->
+				\ewgraFramework\PrimitiveUploadFile::create('testPrimitive')->
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(

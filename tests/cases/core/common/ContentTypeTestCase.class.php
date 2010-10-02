@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,16 +10,20 @@
 		public function testCreateByName()
 		{
 			$this->assertEquals(
-				ContentType::create(ContentType::APPLICATION_PHP),
-				ContentType::createByName('application/php')
+				\ewgraFramework\ContentType::create(
+					\ewgraFramework\ContentType::APPLICATION_PHP
+				),
+				\ewgraFramework\ContentType::createByName('application/php')
 			);
 		}
 
 		public function testCreateByExtension()
 		{
 			$this->assertEquals(
-				ContentType::create(ContentType::APPLICATION_PHP),
-				ContentType::createByExtension('php')
+				\ewgraFramework\ContentType::create(
+					\ewgraFramework\ContentType::APPLICATION_PHP
+				),
+				\ewgraFramework\ContentType::createByExtension('php')
 			);
 		}
 
@@ -25,7 +31,9 @@
 		{
 			$this->assertEquals(
 				'php',
-				ContentType::create(ContentType::APPLICATION_PHP)->
+				\ewgraFramework\ContentType::create(
+					\ewgraFramework\ContentType::APPLICATION_PHP
+				)->
 				getFileExtension()
 			);
 		}
@@ -33,11 +41,17 @@
 		public function testCanBeJoined()
 		{
 			$this->assertTrue(
-				ContentType::create(ContentType::TEXT_CSS)->canBeJoined()
+				\ewgraFramework\ContentType::create(
+					\ewgraFramework\ContentType::TEXT_CSS
+				)->
+				canBeJoined()
 			);
 
 			$this->assertFalse(
-				ContentType::create(ContentType::APPLICATION_PHP)->canBeJoined()
+				\ewgraFramework\ContentType::create(
+					\ewgraFramework\ContentType::APPLICATION_PHP
+				)->
+				canBeJoined()
 			);
 		}
 	}

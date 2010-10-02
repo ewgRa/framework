@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework\tests;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -23,13 +25,14 @@
 			$rows[3] = rand();
 			
 			$result = $this->getInstance()->queryNull(
-				DatabaseQuery::create()->setQuery(
+				\ewgraFramework\DatabaseQuery::create()->setQuery(
 					'INSERT INTO `TestTable` SET `field` = '.$rows[3]
 				)
 			);
 			
 			$result = $this->getInstance()->query(
-				DatabaseQuery::create()->setQuery('SELECT * FROM `TestTable`')
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM `TestTable`')
 			);
 			
 			$this->assertEquals(
@@ -51,14 +54,14 @@
 			try {
 				$this->assertEquals($rows, $result->fetchFieldList('field', 'no-id'));
 				$this->fail();
-			} catch (MissingArgumentException $e) {
+			} catch (\ewgraFramework\MissingArgumentException $e) {
 				# good
 			}
 			
 			try {
 				$this->getInstance()->queryRaw('SELECT * FROM `TestTable2`');
 				$this->fail();
-			} catch (DatabaseQueryException $e) {
+			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				# good
 			}
 		}

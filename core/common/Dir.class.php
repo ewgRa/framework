@@ -1,4 +1,6 @@
 <?php
+	namespace ewgraFramework;
+	
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -55,7 +57,7 @@
 		
 		public static function deleteDir($dir)
 		{
-			$files = glob($dir.DIRECTORY_SEPARATOR.'*');
+			$files = glob(str_replace('\\', '\\\\', $dir).DIRECTORY_SEPARATOR.'*');
 			
 			$function = __FUNCTION__;
 			
