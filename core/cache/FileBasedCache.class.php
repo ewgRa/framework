@@ -60,7 +60,8 @@
 
 			$this->notifyObservers(
 				self::GET_TICKET_EVENT, 
-				array('ticket' => $ticket)
+				Model::create()->
+				set('ticket', $ticket)
 			);
 					
 			return $result;
