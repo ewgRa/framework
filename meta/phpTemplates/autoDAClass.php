@@ -77,7 +77,7 @@
 			$dbQuery .= join(', ', $queryParts);
 			
 			$this->db()->query(
-				DatabaseQuery::create()->
+				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues($queryParams)
 			);
@@ -135,12 +135,12 @@
 <?php
 	}
 ?>
-			Assert::isNotEmpty($whereParts);
+			\ewgraFramework\Assert::isNotEmpty($whereParts);
 			
 			$dbQuery .= join(', ', $queryParts).' WHERE '.join(' AND ', $whereParts);
 
 			$this->db()->query(
-				DatabaseQuery::create()->
+				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues($queryParams)
 			);

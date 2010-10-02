@@ -40,11 +40,11 @@
 			return $this-><?=$name?>;
 <?php
 		} else
-			Assert::isUnreachable();
+			\ewgraFramework\Assert::isUnreachable();
 	} else {
 		if ($name == 'id') {
 ?>
-			Assert::isNotNull($this-><?=$name?>);
+			\ewgraFramework\Assert::isNotNull($this-><?=$name?>);
 <?php
 		}
 ?>
