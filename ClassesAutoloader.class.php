@@ -5,10 +5,20 @@
 	*/
 	final class ClassesAutoloader extends Singleton
 	{
+		const NAMESPACE_DELIMER = '\\';
+		const VARIOUS_NAMESPACE = null;
+		const ROOT_NAMESPACE = '\\';
+		
 		const CLASS_FILE_EXTENSION	= '.class.php';
 		
 		private $foundClasses 		= array();
-		private $searchDirectories	= array();
+		
+		private $searchDirectories = array(
+			self::ROOT_NAMESPACE 	=> array(),
+			self::VARIOUS_NAMESPACE => array()
+		);
+
+		private $namespaces	= array();
 		
 		private $classMapChanged 	= false;
 		
@@ -28,36 +38,26 @@
 		/**
 		 * @return ClassesAutoloader
 		 */
-		public function setSearchDirectories(array $searchDirectories)
-		{
-			$this->searchDirectories = $searchDirectories;
-			return $this;
-		}
-		
-		public function getSearchDirectories()
-		{
-			return $this->searchDirectories;
-		}
-		
-		/**
-		 * @return ClassesAutoloader
-		 */
-		public function addSearchDirectories(array $searchDirectories)
-		{
-			$this->searchDirectories =
-				array_unique(
-					array_merge($this->searchDirectories, $searchDirectories)
-				);
+		public function addSearchDirectory(
+			$directory, 
+			$namespace = self::VARIOUS_NAMESPACE
+		) {
+			if (!isset($this->searchDirectories[$namespace])) {
+				$this->searchDirectories[$namespace] = array();
+				$this->recalcNamespaces();
+			}
+			
+			$this->searchDirectories[$namespace][] = $directory;
 			
 			return $this;
 		}
-		
+
 		/**
 		 * @return ClassesAutoloader
 		 */
 		public function load($className)
 		{
-			if (class_exists($className) || interface_exists($className))
+			if ($this->classExists($className))
 				return $this;
 			
 			$classFile = $this->getFoundClassFile($className);
@@ -75,7 +75,7 @@
 				require_once($classFile);
 
 			if (
-				(!class_exists($className) && !interface_exists($className))
+				!$this->classExists($className)
 				|| !$classFile
 			) {
 				$this->dropFound($className);
@@ -108,13 +108,20 @@
 					: null;
 		}
 		
-		public function loadAllClasses($searchDirs = array())
+		public function loadAllClasses()
 		{
-			$searchDirectories =
-				$searchDirs
-					? $searchDirs
-					: $this->getSearchDirectories();
+			$searchDirectories = array();
 			
+			foreach ($this->searchDirectories as $namespace => $directories)
+				$searchDirectories = array_merge($searchDirectories, $directories);
+				
+			$this->baseLoadAllClasses(array_unique($searchDirectories));
+			
+			return $this;
+		}
+		
+		private function baseLoadAllClasses(array $searchDirectories)
+		{
 			foreach ($searchDirectories as $directory) {
 				foreach (glob($directory.DIRECTORY_SEPARATOR.'*') as $fileName) {
 					if (is_dir($fileName))
@@ -127,14 +134,58 @@
 			return $this;
 		}
 		
-		private function findClassFile(
+		private function findClassFile($className)
+		{
+			$searchDirectories = array();
+			
+			$nameParts = explode(self::NAMESPACE_DELIMER, $className);
+			
+			$classNameWithoutNamespace = array_pop($nameParts);
+			
+			$namespace = join(self::NAMESPACE_DELIMER, $nameParts);
+
+			if ($namespace) {
+				foreach($this->namespaces as $probablyNamespace) {
+					if (
+						in_array(
+							$probablyNamespace, 
+							array(self::ROOT_NAMESPACE, self::VARIOUS_NAMESPACE)
+						)
+					)
+						continue;
+					
+					if (strpos($namespace, $probablyNamespace) === 0) {
+						$searchDirectories = 
+							$this->searchDirectories[$probablyNamespace];
+						 
+						break;
+					}
+				}
+			} else
+				$searchDirectories = $this->searchDirectories[self::ROOT_NAMESPACE];
+		
+			$searchDirectories = 
+				array_unique(
+					array_merge(
+						$searchDirectories,
+						$this->searchDirectories[self::VARIOUS_NAMESPACE]
+					)
+				);
+
+			return 
+				$this->baseFindClassFile(
+					$className, 
+					$classNameWithoutNamespace, 
+					$searchDirectories
+				);
+		}
+		
+		private function baseFindClassFile(
 			$className,
-			array $searchDirectories = null
+			$classNameWithoutNamespace,
+			array $searchDirectories
 		) {
 			$result = null;
-			
-			if (!$searchDirectories)
-				$searchDirectories = $this->getSearchDirectories();
 			
 			foreach ($searchDirectories as $directory) {
 				foreach (
@@ -142,17 +193,25 @@
 				) {
 					if (is_dir($fileName)) {
 						$result =
-							$this->{__FUNCTION__}($className, array($fileName));
+							$this->{__FUNCTION__}(
+								$className, 
+								$classNameWithoutNamespace,
+								array($fileName)
+							);
 						
 						if ($result)
 							break 2;
 					} elseif (
 						is_file($fileName)
 						&& basename($fileName)
-							== $className.self::CLASS_FILE_EXTENSION
+							== $classNameWithoutNamespace.self::CLASS_FILE_EXTENSION
 					) {
-						$result = $fileName;
-						break 2;
+						require_once($fileName);
+						
+						if ($this->classExists($className)) {
+							$result = $fileName;
+							break 2;
+						}
 					}
 				}
 			}
@@ -181,6 +240,19 @@
 		private function isFound($className)
 		{
 			return isset($this->foundClasses[$className]);
+		}
+		
+		private function recalcNamespaces()
+		{
+			$this->namespaces = array_keys($this->searchDirectories);
+			sort($this->namespaces);
+			$this->namespaces = array_reverse($this->namespaces);
+			return $this;
+		}
+
+		private function classExists($className)
+		{
+			return class_exists($className) || interface_exists($className);			
 		}
 	}
 ?>

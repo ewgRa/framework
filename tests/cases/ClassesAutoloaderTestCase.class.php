@@ -43,7 +43,7 @@
 				)
 			);
 			
-			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 			
 			$this->assertClassMapChanged(false);
 			ClassesAutoloader::me()->load($className);
@@ -71,7 +71,7 @@
 				)
 			);
 			
-			ClassesAutoLoader::me()->setSearchDirectories(array(TMP_DIR));
+			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 			
 			ClassesAutoloader::me()->loadAllClasses();
 			
@@ -95,7 +95,7 @@
 				?>"
 			);
 			
-			ClassesAutoLoader::me()->addSearchDirectories(array(TMP_DIR));
+			ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
 
 			$this->assertClassMapChanged(false);
 			ClassesAutoloader::me()->load($interfaceName);
@@ -137,6 +137,11 @@
 			unlink($fileName);
 			
 			$this->assertTrue(interface_exists($interfaceName, false));
+		}
+		
+		public function testNamespace()
+		{
+			$this->fail();
 		}
 		
 		private function assertClassMapChanged($expect = true)
