@@ -7,8 +7,12 @@
 	*/
 	final class MemcachedBasedCache extends BaseCache
 	{
-		private $host = 'localhost';
-		private $port = 11211;
+		private $servers = array(
+			array(
+				'host' => 'localhost',
+				'port' => 11211
+			)
+		);
 
 		private $memcache = null;
 		
@@ -23,29 +27,14 @@
 		/**
 		 * @return MemcachedBasedCache
 		 */
-		public function setHost($host)
+		public function addServer($host, $port)
 		{
-			$this->host = $host;
+			$this->servers[] = array(
+				'host' => $host,
+				'port' => $port
+			);
+			
 			return $this;
-		}
-		
-		public function getHost()
-		{
-			return $this->host;
-		}
-		
-		/**
-		 * @return MemcachedBasedCache
-		 */
-		public function setPort($port)
-		{
-			$this->port = $port;
-			return $this;
-		}
-		
-		public function getPort()
-		{
-			return $this->port;
 		}
 		
 		public function get(CacheTicket $ticket)
@@ -129,7 +118,9 @@
 		{
 			if (!$this->memcache) {
 				$this->memcache = new \Memcache();
-				$this->memcache->addServer($this->getHost(), $this->getPort());
+				
+				foreach ($this->servers as $server)
+					$this->memcache->addServer($server['host'], $server['port']);
 			}
 			
 			return $this->memcache;

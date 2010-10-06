@@ -11,8 +11,7 @@
 		{
 			return
 				\ewgraFramework\MemcachedBasedCache::create()->
-				setHost(MEMCACHED_TEST_HOST)->
-				setPort(MEMCACHED_TEST_PORT);
+				addServer(MEMCACHED_TEST_HOST, MEMCACHED_TEST_PORT);
 		}
 	}
 ?>
