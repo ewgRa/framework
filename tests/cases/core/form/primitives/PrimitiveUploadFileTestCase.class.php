@@ -20,7 +20,7 @@
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				array(\ewgraFramework\PrimitiveErrors::UPLOAD_ERROR),
+				array($primitive::UPLOAD_ERROR),
 				$primitive->getErrors()
 			);
 		}
@@ -35,7 +35,7 @@
 				import(array('testPrimitive' => $file));
 			
 			$this->assertSame(
-				array(\ewgraFramework\PrimitiveErrors::MISSING),
+				array($primitive::MISSING_ERROR),
 				$primitive->getErrors()
 			);
 		}

@@ -7,6 +7,8 @@
 	*/
 	final class PrimitiveUploadFile extends BasePrimitive
 	{
+		const UPLOAD_ERROR = 'uploadError';
+		
 		/**
 		 * @var File
 		 */
@@ -46,7 +48,7 @@
 			$result = $this;
 			
 			if ($value['error'] && $value['tmp_name'])
-				$this->addError(PrimitiveErrors::UPLOAD_ERROR);
+				$this->addError(self::UPLOAD_ERROR);
 			else if(!$value['tmp_name'] && $this->isRequired())
 				$this->markMissing();
 			else {

@@ -37,8 +37,7 @@
 			
 			$this->assertFalse($form->hasErrors());
 			
-			$form->getPrimitive('testPrimitive')->
-				addError(\ewgraFramework\PrimitiveErrors::MISSING);
+			$form->getPrimitive('testPrimitive')->markMissing();
 
 			$this->assertTrue($form->hasErrors());
 		}
@@ -50,10 +49,7 @@
 				addPrimitive(
 					\ewgraFramework\PrimitiveString::create('testPrimitive')->
 					setRequired()->
-					setErrorLabel(
-						\ewgraFramework\PrimitiveErrors::MISSING,
-						'missing primitive'
-					)
+					setMissingErrorLabel('missing primitive')
 				);
 				
 			$form->import(array('testPrimitive' => ''));
@@ -63,7 +59,7 @@
 			$this->assertSame(
 				array(
 					'testPrimitive' => 
-						array(\ewgraFramework\PrimitiveErrors::MISSING)
+						array(\ewgraFramework\BasePrimitive::MISSING_ERROR)
 				),
 				$form->getErrors()
 			);
@@ -71,13 +67,13 @@
 			$this->assertTrue(
 				$form->
 					getPrimitive('testPrimitive')->
-					hasError(\ewgraFramework\PrimitiveErrors::MISSING)
+					hasError(\ewgraFramework\BasePrimitive::MISSING_ERROR)
 			);
 			
 			$this->assertSame(
 				'missing primitive',
 				$form->getPrimitive('testPrimitive')->
-				getErrorLabel(\ewgraFramework\PrimitiveErrors::MISSING)
+				getErrorLabel(\ewgraFramework\BasePrimitive::MISSING_ERROR)
 			);
 		}
 	}

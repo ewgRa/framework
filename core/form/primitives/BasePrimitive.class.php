@@ -7,6 +7,8 @@
 	*/
 	abstract class BasePrimitive implements PrimitiveInterface
 	{
+		const MISSING_ERROR	= 'missing';
+		
 		private $name 		= null;
 		private $scopeKey	= null;
 		private $rawValue	= null;
@@ -124,6 +126,15 @@
 			return $this;
 		}
 		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setMissingErrorLabel($text)
+		{
+			$this->errorLabels[self::MISSING_ERROR] = $text;
+			return $this;
+		}
+		
 		public function getErrorLabel($errorCode)
 		{
 			if (!isset($this->errorLabels[$errorCode]))
@@ -177,7 +188,7 @@
 		
 		public function markMissing()
 		{
-			$this->addError(PrimitiveErrors::MISSING);
+			$this->addError(self::MISSING_ERROR);
 			return $this;
 		}
 	}
