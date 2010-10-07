@@ -18,11 +18,12 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function importValue($value)
+		public function import($scope)
 		{
-			$result = parent::importValue($value);
+			$result = parent::import($scope);
 			
-			$this->setValue((string)$this->getValue());
+			if (!$this->hasErrors() && $this->getValue())
+				$this->setValue((string)$this->getValue());
 
 			return $result;
 		}

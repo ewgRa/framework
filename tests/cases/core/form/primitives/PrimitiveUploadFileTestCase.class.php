@@ -54,7 +54,7 @@
 			
 			$this->assertSame(
 				'/tmp/fwef',
-				$primitive->getFile()->getPath()
+				$primitive->getValue()->getPath()
 			);
 		}
 	}

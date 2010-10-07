@@ -42,7 +42,5 @@
 		 * @return PrimitiveInterface
 		 */
 		public function import($scope);
-		
-		public function importValue($value);
 	}
 ?>

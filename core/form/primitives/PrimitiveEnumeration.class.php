@@ -29,15 +29,18 @@
 		/**
 		 * @return PrimitiveEnumeration
 		 */
-		public function importValue($value)
+		public function import($scope)
 		{
 			Assert::isNotNull($this->class);
 			
-			$result = parent::importValue($value);
+			$result = parent::import($scope);
 			
 			if (!$this->hasErrors() && $this->getValue()) {
 				$this->setValue(
-					call_user_func(array($this->class, 'create'), $value)
+					call_user_func(
+						array($this->class, 'create'), 
+						$this->getValue()
+					)
 				);
 			}
 			

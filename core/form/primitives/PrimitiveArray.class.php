@@ -15,9 +15,9 @@
 			return new self($name);
 		}
 		
-		public function notEmpty($value)
+		public function isEmpty($value)
 		{
-			return is_array($value) && count($value);
+			return !is_array($value) || !count($value);
 		}
 	}
 ?>

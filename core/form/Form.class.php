@@ -67,7 +67,7 @@
 		{
 			foreach ($scope as $scopeKey => $value) {
 				if ($primitive = $this->getPrimitiveByScopeKey($scopeKey))
-					$primitive->importValue($value);
+					$primitive->import($scope);
 			}
 			
 			return $this;

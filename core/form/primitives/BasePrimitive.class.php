@@ -8,6 +8,7 @@
 	abstract class BasePrimitive implements PrimitiveInterface
 	{
 		const MISSING_ERROR	= 'missing';
+		const WRONG_ERROR	= 'wrong';
 		
 		private $name 		= null;
 		private $scopeKey	= null;
@@ -63,6 +64,12 @@
 		public function getValue()
 		{
 			return $this->value;
+		}
+		
+		public function dropValue()
+		{
+			$this->value = null;
+			return $this;
 		}
 		
 		/**
@@ -135,6 +142,15 @@
 			return $this;
 		}
 		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setWrongErrorLabel($text)
+		{
+			$this->errorLabels[self::WRONG_ERROR] = $text;
+			return $this;
+		}
+		
 		public function getErrorLabel($errorCode)
 		{
 			if (!isset($this->errorLabels[$errorCode]))
@@ -165,30 +181,39 @@
 					? $scope[$this->getScopeKey()]
 					: null;
 			
-			return $this->importValue($value);
-		}
-		
-		public function importValue($value)
-		{
 			$this->clean();
 			
-			if ($this->notEmpty($value)) {
-				$this->setRawValue($value);
-				$this->setValue($value);
-			} else if($this->isRequired())
+			$this->setRawValue($value);
+			
+			if ($this->isWrong($value))
+				$this->markWrong();
+			else if ($this->isRequired() && $this->isEmpty($value)) {
 				$this->markMissing();
+			} else if(!$this->isEmpty($value))
+				$this->setValue($value);
 
 			return $this;
 		}
 		
-		public function notEmpty($value)
+		public function isEmpty($value)
 		{
-			return $value && $value !== '';
+			return !$value;
+		}
+		
+		public function isWrong($value)
+		{
+			return false;
 		}
 		
 		public function markMissing()
 		{
 			$this->addError(self::MISSING_ERROR);
+			return $this;
+		}
+
+		public function markWrong()
+		{
+			$this->addError(self::WRONG_ERROR);
 			return $this;
 		}
 	}

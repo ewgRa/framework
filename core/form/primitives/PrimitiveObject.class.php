@@ -29,11 +29,11 @@
 		/**
 		 * @return BasePrimitive
 		 */
-		public function importValue($value)
+		public function import($scope)
 		{
 			Assert::isNotNull($this->class);
 			
-			$result = parent::importValue($value);
+			$result = parent::import($scope);
 			
 			if (!$this->hasErrors() && $this->getValue()) {
 				$classDA = call_user_func(array($this->class, 'da'));

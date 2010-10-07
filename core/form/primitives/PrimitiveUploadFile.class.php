@@ -10,11 +10,6 @@
 		const UPLOAD_ERROR = 'uploadError';
 		
 		/**
-		 * @var File
-		 */
-		private $file = null;
-		
-		/**
 		 * @return PrimitiveUploadFile
 		 */
 		public static function create($name)
@@ -23,40 +18,32 @@
 		}
 
 		/**
-		 * @return File
-		 */
-		public function getFile()
-		{
-			return $this->file;
-		}
-		
-		/**
 		 * @return BasePrimitive
 		 */
-		public function clean()
+		public function import($scope)
 		{
-			$this->file = null;
+			$result = parent::import($scope);
+
+			if (!$this->hasErrors() && $this->getValue()) {
+				Assert::isArray($this->getValue());
 			
-			return parent::clean();
-		}
-		
-		/**
-		 * @return BasePrimitive
-		 */
-		public function importValue($value)
-		{
-			$result = $this;
+				$value = $this->getValue();
 			
-			if ($value['error'] && $value['tmp_name'])
-				$this->addError(self::UPLOAD_ERROR);
-			else if(!$value['tmp_name'] && $this->isRequired())
-				$this->markMissing();
-			else {
-				$result = parent::importValue($value['name']);
-				$this->file = File::create()->setPath($value['tmp_name']);
+				if (!empty($value['error']) && !empty($value['tmp_name'])) {
+					$this->addError(self::UPLOAD_ERROR);
+					$this->dropValue();
+				} else
+					$this->setValue(File::create()->setPath($value['tmp_name']));
 			}
 			
 			return $result;
+		}
+		
+		public function isEmpty($value)
+		{
+			return 
+				parent::isEmpty($value)
+				|| empty($value['tmp_name']); 
 		}
 	}
 ?>

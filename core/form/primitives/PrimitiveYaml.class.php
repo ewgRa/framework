@@ -18,12 +18,14 @@
 		/**
 		 * @return PrimitiveYaml
 		 */
-		public function importValue($value)
+		public function import($scope)
 		{
-			parent::importValue($value);
-			$this->setValue(Yaml::loadString($this->getRawValue()));
+			$result = parent::import($scope);
 
-			return $this;
+			if (!$this->hasErrors() && $this->getValue())
+				$this->setValue(Yaml::loadString($this->getValue()));
+
+			return $result;
 		}
 	}
 ?>
