@@ -1,8 +1,8 @@
 <?php
 	namespace ewgraFramework {
 	
-		define('FRAMEWORK_DIR', dirname(__FILE__).'/..');
-		define('META_BUILDER_DIR', dirname(__FILE__));
+		define(__NAMESPACE__.'\FRAMEWORK_DIR', dirname(__FILE__).'/..');
+		define(__NAMESPACE__.'\META_BUILDER_DIR', dirname(__FILE__));
 		
 		require_once(FRAMEWORK_DIR . '/core/patterns/SingletonInterface.class.php');
 		require_once(FRAMEWORK_DIR . '/core/patterns/Singleton.class.php');

@@ -14,14 +14,14 @@
 	$curDir = $options['base-dir'];
 	
 	define(
-		'CLASSES_DIR', 
+		__NAMESPACE__.'\CLASSES_DIR', 
 		isset ($options['classes-dir'])
 			? $options['classes-dir']
 			: $curDir.'/classes'
 	);
 
 	define(
-		'META_FILE', 
+		__NAMESPACE__.'\META_FILE', 
 		isset ($options['meta'])
 			? $options['meta']
 			: $curDir.'/config/meta.xml'
