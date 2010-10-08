@@ -9,24 +9,24 @@
 		error_reporting(E_ALL | E_STRICT);
 		ini_set('display_errors', true);
 		
-		define('PROJECT', 'ewgraFrameworkTests');
-		define('FRAMEWORK_DIR', dirname(__FILE__).'/..');
+		define(__NAMESPACE__.'\PROJECT', 'ewgraFrameworkTests');
+		define(__NAMESPACE__.'\FRAMEWORK_DIR', dirname(__FILE__).'/..');
 		
-		define('EWGRA_PROJECTS_DIR', '/home/www/ewgraProjects');
-		define('LIB_DIR', EWGRA_PROJECTS_DIR.'/lib');
+		define(__NAMESPACE__.'\EWGRA_PROJECTS_DIR', '/home/www/ewgraProjects');
+		define('ewgraFramework\LIB_DIR', EWGRA_PROJECTS_DIR.'/lib');
 		
-		define('CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
-		define('TMP_DIR', '/tmp/ewgraFrameworkTests');
-		define('CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
+		define(__NAMESPACE__.'\CASES_DIR', FRAMEWORK_DIR.'/tests/cases');
+		define(__NAMESPACE__.'\TMP_DIR', '/tmp/ewgraFrameworkTests');
+		define(__NAMESPACE__.'\CACHE_DIR', '/tmp/ewgraFrameworkTests/cache');
 		
-		define('MEMCACHED_TEST_HOST', 'localhost');
-		define('MEMCACHED_TEST_PORT', '11211');
+		define(__NAMESPACE__.'\MEMCACHED_TEST_HOST', 'localhost');
+		define(__NAMESPACE__.'\MEMCACHED_TEST_PORT', '11211');
 	
-		define('MYSQL_TEST_HOST', 'localhost');
-		define('MYSQL_TEST_DATABASE', 'frameworkTest');
-		define('MYSQL_TEST_USER', '');
-		define('MYSQL_TEST_PASSWORD', '');
-		define('MYSQL_TEST_CHARSET', 'utf8');
+		define(__NAMESPACE__.'\MYSQL_TEST_HOST', 'localhost');
+		define(__NAMESPACE__.'\MYSQL_TEST_DATABASE', 'frameworkTest');
+		define(__NAMESPACE__.'\MYSQL_TEST_USER', '');
+		define(__NAMESPACE__.'\MYSQL_TEST_PASSWORD', '');
+		define(__NAMESPACE__.'\MYSQL_TEST_CHARSET', 'utf8');
 		
 		require_once(FRAMEWORK_DIR.'/core/common/Dir.class.php');
 		require_once(FRAMEWORK_DIR.'/core/common/File.class.php');

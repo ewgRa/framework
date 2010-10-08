@@ -87,7 +87,7 @@
 			
 			$ticket->setExpiredTime($lifeTime);
 			
-			$this->getMemcache()->set($key, $data, $lifeTime);
+			$this->getMemcache()->set($key, $data, 0, $lifeTime);
 			
 			return $this;
 		}
@@ -117,7 +117,7 @@
 		private function getMemcache()
 		{
 			if (!$this->memcache) {
-				$this->memcache = new \Memcached();
+				$this->memcache = new \Memcache();
 				
 				foreach ($this->servers as $server)
 					$this->memcache->addServer($server['host'], $server['port']);

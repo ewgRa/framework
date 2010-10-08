@@ -34,7 +34,7 @@
 		
 		private static function checkInclude()
 		{
-			if (!class_exists('\Spyc') && defined('LIB_DIR'))
+			if (!class_exists('\Spyc', false) && defined('\ewgraFramework\LIB_DIR'))
 				require_once(LIB_DIR.'/php/spyc/spyc.php');
 		}
 	}
