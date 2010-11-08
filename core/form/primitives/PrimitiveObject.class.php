@@ -38,6 +38,9 @@
 			if (!$this->hasErrors() && $this->getValue()) {
 				$classDA = call_user_func(array($this->class, 'da'));
 				$this->setValue($classDA->getById($this->getValue()));
+				
+				if (!$this->getValue() && $this->isRequired())
+					$this->markMissing();
 			}
 			
 			return $result;

@@ -27,6 +27,19 @@
 			return $result;
 		}
 		
+		public static function objectsToArray(array $mixed)
+		{
+			foreach ($mixed as &$value)
+				if (is_array($value))
+					$value = $this->objectsToArray($value);
+				else if (is_object($value) && $value instanceof ArrayableInterface)
+					$value = $value->toArray();
+				else if (is_object($value))
+					$value = (array)$value;
+			
+			return $mixed;
+		}
+		
 		/**
 		 * @link http://ru2.php.net/manual/ru/function.array-merge-recursive.php#42663
 		 * @param $arr1, $arr2, ..., $arrN
