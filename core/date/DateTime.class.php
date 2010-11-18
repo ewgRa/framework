@@ -7,14 +7,24 @@
 	*/
 	final class DateTime extends \DateTime
 	{
-		public static function create($time)
+		public static function create($time = null)
 		{
 			return new self($time);
+		}
+		
+		public function getDay()
+		{
+			return $this->format('d');
 		}
 		
 		public function getMonth()
 		{
 			return $this->format('m');
+		}
+
+		public function getYear()
+		{
+			return $this->format('y');
 		}
 	}
 ?>

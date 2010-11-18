@@ -31,7 +31,7 @@
 		{
 			foreach ($mixed as &$value)
 				if (is_array($value))
-					$value = $this->objectsToArray($value);
+					$value = self::objectsToArray($value);
 				else if (is_object($value) && $value instanceof ArrayableInterface)
 					$value = $value->toArray();
 				else if (is_object($value))
