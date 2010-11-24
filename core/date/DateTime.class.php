@@ -24,7 +24,7 @@
 
 		public function getYear()
 		{
-			return $this->format('y');
+			return $this->format('Y');
 		}
 	}
 ?>
