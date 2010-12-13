@@ -13,6 +13,7 @@
 		private $name 		= null;
 		private $scopeKey	= null;
 		private $rawValue	= null;
+		private $defaultValue = null;
 		private $value		= null;
 		private $errors		= array();
 		private $errorLabels = array();
@@ -50,6 +51,23 @@
 		public function getScopeKey()
 		{
 			return $this->scopeKey;
+		}
+		
+		/**
+		 * @return BasePrimitive
+		 */
+		public function setDefaultValue($value)
+		{
+			$this->value = $value;
+			return $this;
+		}
+
+		public function getSafeValue()
+		{
+			return 
+				$this->getValue()
+					? $this->getValue()
+					: $this->getDefaultValue();
 		}
 		
 		/**

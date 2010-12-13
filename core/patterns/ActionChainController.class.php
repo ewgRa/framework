@@ -10,6 +10,8 @@
 		private $requestAction = null;
 		private $defaultAction = null;
 		private $actionList = array();
+		private $action = null;
+		private $scopeKey = 'action';
 		
 		/**
 		 * @return ActionChainController
@@ -49,6 +51,20 @@
 		}
 		
 		/**
+		 * @return ActionChainController
+		 */
+		public function setScopeKey($scopeKey)
+		{
+			$this->scopeKey = $scopeKey;
+			return $this;
+		}
+		
+		public function getScopeKey()
+		{
+			return $this->scopeKey;
+		}
+		
+		/**
 		 * @return ModelAndView
 		 */
 		public function handleRequest(
@@ -60,11 +76,11 @@
 			if (!$action) {
 				$form = 
 					Form::create()->
-					addPrimitive(PrimitiveString::create('action'));
+					addPrimitive(PrimitiveString::create($this->getScopeKey()));
 				
 				$form->import($request->getPost() + $request->getGet());
 				
-				$action = $form->getValue('action');
+				$action = $form->getValue($this->getScopeKey());
 			}
 			
 			if (!$action)
@@ -75,6 +91,7 @@
 			if(!isset($this->actionList[$action]))
 				throw BadRequestException::create();
 			
+			$this->action = $action;
 			return $this->{$this->actionList[$action]}($request, $mav);
 		}
 
@@ -86,6 +103,11 @@
 			ModelAndView $mav
 		) {
 			return parent::handleRequest($request, $mav);
+		}
+
+		protected function getAction()
+		{
+			return $this->action;
 		}
 	}
 ?>

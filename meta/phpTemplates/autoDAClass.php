@@ -67,7 +67,7 @@
 ?>
 			
 			if (!is_null($object->get<?=$property->getAttribute('upperName')?>())) {
-				$queryParts[] = '<?=$property->getAttribute('downSeparatedName')?> = ?';
+				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
 				$queryParams[] = <?=$value?>;
 			}
 <?php
@@ -122,7 +122,7 @@
 		else if ($classType == 'Stringable')
 			$value = $value.'->__toString()';
 ?>
-			$queryParts[] = '<?=$property->getAttribute('downSeparatedName')?> = ?';
+			$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
 			$queryParams[] = <?=$value?>;
 <?php
 	}
@@ -197,6 +197,8 @@
 		{
 <?php 
 			foreach($relationNodes as $node) {
+				if ($node->nodeName == $classNode->nodeName)
+					continue;
 ?>
 			<?=$node->nodeName?>::da()->dropCache();
 <?php 
