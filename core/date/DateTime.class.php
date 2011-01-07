@@ -7,6 +7,19 @@
 	*/
 	final class DateTime extends \DateTime
 	{
+		public static function makeNow()
+		{
+			return self::createFromTimestamp(time());
+		}
+		
+		public static function createFromTimestamp($timestamp)
+		{
+			$dateTime = new self();
+			$dateTime->setTimestamp($timestamp);
+			
+			return $dateTime;
+		}
+		
 		public static function create($time = null)
 		{
 			return new self($time);
@@ -19,7 +32,7 @@
 		
 		public function getMonth()
 		{
-			return $this->format('m');
+			return $this->format('n');
 		}
 
 		public function getYear()
