@@ -27,5 +27,10 @@
 
 			return $result;
 		}
+		
+		public function isEmpty($value)
+		{
+			return ($value === '' || $value === null);
+		}
 	}
 ?>
