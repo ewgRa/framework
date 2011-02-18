@@ -40,7 +40,7 @@
 		 * @return ClassesAutoloader
 		 */
 		public function addSearchDirectory(
-			$directory, 
+			$directory,
 			$namespace = self::VARIOUS_NAMESPACE
 		) {
 			if (!isset($this->searchDirectories[$namespace])) {
@@ -149,14 +149,14 @@
 				foreach($this->namespaces as $probablyNamespace) {
 					if (
 						in_array(
-							$probablyNamespace, 
+							$probablyNamespace,
 							array(self::ROOT_NAMESPACE, self::VARIOUS_NAMESPACE)
 						)
 					)
 						continue;
 					
 					if (strpos($namespace, $probablyNamespace) === 0) {
-						$searchDirectories = 
+						$searchDirectories =
 							$this->searchDirectories[$probablyNamespace];
 						 
 						break;
@@ -165,7 +165,7 @@
 			} else
 				$searchDirectories = $this->searchDirectories[self::ROOT_NAMESPACE];
 		
-			$searchDirectories = 
+			$searchDirectories =
 				array_unique(
 					array_merge(
 						$searchDirectories,
@@ -173,10 +173,10 @@
 					)
 				);
 
-			return 
+			return
 				$this->baseFindClassFile(
-					$className, 
-					$classNameWithoutNamespace, 
+					$className,
+					$classNameWithoutNamespace,
 					$searchDirectories
 				);
 		}
@@ -195,7 +195,7 @@
 					if (is_dir($fileName)) {
 						$result =
 							$this->{__FUNCTION__}(
-								$className, 
+								$className,
 								$classNameWithoutNamespace,
 								array($fileName)
 							);
@@ -253,7 +253,7 @@
 
 		private function classExists($className)
 		{
-			return class_exists($className) || interface_exists($className);			
+			return class_exists($className) || interface_exists($className);
 		}
 	}
 ?>

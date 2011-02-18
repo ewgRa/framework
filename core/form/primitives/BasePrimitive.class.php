@@ -58,13 +58,18 @@
 		 */
 		public function setDefaultValue($value)
 		{
-			$this->value = $value;
+			$this->defaultValue = $value;
 			return $this;
 		}
 
+		public function getDefaultValue()
+		{
+			return $this->defaultValue;
+		}
+		
 		public function getSafeValue()
 		{
-			return 
+			return
 				$this->getValue()
 					? $this->getValue()
 					: $this->getDefaultValue();
