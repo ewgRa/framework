@@ -20,6 +20,17 @@
 		/**
 		 * @return CookieManager
 		 */
+		public function set($alias, $value, $expire = null, $path = '/')
+		{
+			// @codeCoverageIgnoreStart
+			return $this->setCookie($alias, $value, $expire, $path);
+			// @codeCoverageIgnoreEnd
+		}
+		
+		/**
+		 * @return CookieManager
+		 * @deprecated
+		 */
 		public function setCookie($alias, $value, $expire = null, $path = '/')
 		{
 			// @codeCoverageIgnoreStart
