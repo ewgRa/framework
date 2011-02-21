@@ -27,6 +27,16 @@
 			// @codeCoverageIgnoreEnd
 		}
 		
+		public function has($alias)
+		{
+			return isset($_COOKIE[$alias]);
+		}
+		
+		public function get($alias)
+		{
+			return $_COOKIE[$alias];
+		}
+		
 		/**
 		 * @return CookieManager
 		 * @deprecated

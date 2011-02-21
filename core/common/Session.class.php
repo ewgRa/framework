@@ -29,10 +29,11 @@
 		{
 			if (
 				(
-					isset($_COOKIE[session_name()]) 
-					|| isset($_GET[session_name()]) 
+					// FIXME: use CookieManager
+					isset($_COOKIE[session_name()])
+					|| isset($_GET[session_name()])
 					|| isset($_POST[session_name()])
-				) 
+				)
 				&& !$this->isStarted()
 			)
 				$this->start();
