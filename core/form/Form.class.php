@@ -52,6 +52,19 @@
 		/**
 		 * @return Form
 		 */
+		public function dropPrimitive($name)
+		{
+			if (!isset($this->primitives[$name]))
+				throw MissingArgumentException::create('known nothing about '.$name);
+			
+			unset($this->primitives[$name]);
+			
+			return $this;
+		}
+		
+		/**
+		 * @return Form
+		 */
 		public function import(array $scope)
 		{
 			foreach ($this->getPrimitives() as $primitive)

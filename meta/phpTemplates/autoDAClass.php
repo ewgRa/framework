@@ -151,6 +151,25 @@
 		}
 
 		/**
+		 * @return Auto<?=$classNode->nodeName?>DA
+		 */
+		public function delete(<?=$classNode->nodeName?> $object)
+		{
+			$dbQuery =
+				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
+			
+			$this->db()->query(
+				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
+			);
+			 
+			$object->setId(null);
+			
+			$this->dropCache();
+			
+			return $this;
+		}
+
+		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
 		public function build(array $array)
