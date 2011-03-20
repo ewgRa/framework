@@ -171,8 +171,12 @@
 		
 		if ($property->getAttribute('type') == 'array')
 			$value = $value. ' ? unserialize('.$value.') : null';
-		else if ($property->getAttribute('type') == 'boolean')
-			$value = $value. ' == true';
+		else if ($property->getAttribute('type') == 'boolean') {
+			if ($property->getAttribute('nullable') == 'true')
+				$value = $value.' == null ? null : '.$value.' == true';
+			else
+				$value = $value.' == true';
+		}
 		else if ($property->getAttribute('classType') == 'Enumeration')
 			$value = $property->getAttribute('class').'::create('.$value. ')';
 		else if ($property->getAttribute('classType') == 'Stringable') {
