@@ -15,7 +15,7 @@
 ?>
 	namespace <?=$namespace?>;
 	
-<?php 
+<?php
 	}
 ?>
 	/**
@@ -153,7 +153,7 @@
 		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
-		protected function build(array $array)
+		public function build(array $array)
 		{
 			return
 				<?=$classNode->nodeName?>::create()->
@@ -176,7 +176,7 @@
 		else if ($property->getAttribute('classType') == 'Enumeration')
 			$value = $property->getAttribute('class').'::create('.$value. ')';
 		else if ($property->getAttribute('classType') == 'Stringable') {
-			$value = 
+			$value =
 				$property->getAttribute('class')
 				.'::createFromString('.$value. ')';
 		}
@@ -187,7 +187,7 @@
 				<?=join("->".PHP_EOL.'				', $methods).';'.PHP_EOL?>
 		}
 <?php
-		$relationNodes = 
+		$relationNodes =
 			$meta->getNodeList("*[properties/*[@class='".$classNode->nodeName."']]");
 		
 		if ($relationNodes->length) {
@@ -195,18 +195,18 @@
 
 		public function dropCache()
 		{
-<?php 
+<?php
 			foreach($relationNodes as $node) {
 				if ($node->nodeName == $classNode->nodeName)
 					continue;
 ?>
 			<?=$node->nodeName?>::da()->dropCache();
-<?php 
+<?php
 			}
 ?>
 			return parent::dropCache();
 		}
-<?php			
+<?php
 		}
 ?>
 	}

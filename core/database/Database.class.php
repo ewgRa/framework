@@ -23,6 +23,19 @@
 			return $this;
 		}
 		
+		/**
+		 * @return Database
+		 */
+		public function swapPools($poolAlias, $swapPoolAlias)
+		{
+			$pool = $this->getPool($poolAlias);
+			$swapPool = $this->getPool($swapPoolAlias);
+			
+			$this->pools[$poolAlias] = $swapPool;
+			$this->pools[$swapPoolAlias] = $pool;
+			return $this;
+		}
+		
 		public function hasPool($poolAlias)
 		{
 			return isset($this->pools[$poolAlias]);
