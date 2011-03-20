@@ -5,10 +5,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PrimitiveString extends BasePrimitive
+	final class PrimitiveInteger extends BasePrimitive
 	{
 		/**
-		 * @return PrimitiveString
+		 * @return PrimitiveInteger
 		 */
 		public static function create($name)
 		{
@@ -16,21 +16,21 @@
 		}
 
 		/**
-		 * @return PrimitiveString
+		 * @return PrimitiveInteger
 		 */
 		public function import($scope)
 		{
 			$result = parent::import($scope);
 			
 			if (!$this->hasErrors() && $this->getValue())
-				$this->setValue((string)$this->getValue());
+				$this->setValue((int)$this->getValue());
 
 			return $result;
 		}
 		
 		public function isEmpty($value)
 		{
-			return ($value === '' || $value === null);
+			return $value === null;
 		}
 	}
 ?>
