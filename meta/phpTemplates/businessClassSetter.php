@@ -25,8 +25,12 @@
 		
 	$value = '$'.$name;
 	
-	if ($type == 'boolean')
+	if ($type == 'boolean') {
 		$value = '($'.$name. ' === true)';
+		
+		if ($nullable)
+			$value = '($'.$name.' === null ? null : '.$value.')';
+	}
 ?>
 		
 		/**
@@ -44,7 +48,7 @@
 	if ($identifierId = $property->getAttribute('identifierId')) {
 ?>
 			$this-><?=$identifierId?> = null;
-<?php		
+<?php
 	}
 ?>
 			$this-><?=$name?> = <?=$value?>;

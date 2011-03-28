@@ -114,17 +114,35 @@
 		$classType = $property->getAttribute('classType');
 				
 		$value = '$object->get'.$property->getAttribute('upperName').'()';
+		$storeValue = $value;
 		
 		if ($type == 'array')
-			$value = 'serialize('.$value.')';
-		else if ($classType == 'Identifier' || $classType == 'Enumeration')
+			$storeValue = 'serialize('.$value.')';
+		else if ($classType == 'Identifier' || $classType == 'Enumeration') {
 			$value = $value.'->getId()';
-		else if ($classType == 'Stringable')
+			$storeValue = $value;
+		} else if ($classType == 'Stringable') {
 			$value = $value.'->__toString()';
+			$storeValue = $value;
+		}
+		
+		if ($property->getAttribute('nullable')) {
+?>
+			
+			if (<?=$value?> === null)
+				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = NULL';
+			else {
+				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
+				$queryParams[] = <?=$storeValue?>;
+			}
+			
+<?php
+		} else {
 ?>
 			$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
-			$queryParams[] = <?=$value?>;
+			$queryParams[] = <?=$storeValue?>;
 <?php
+		}
 	}
 
 	if ($idProperty) {
