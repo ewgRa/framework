@@ -37,6 +37,16 @@
 			return $this;
 		}
 		
+		/**
+		 * @return MemcachedBasedCache
+		 */
+		public function dropServers()
+		{
+			$this->servers = array();
+			
+			return $this;
+		}
+		
 		public function get(CacheTicket $ticket)
 		{
 			$result = null;
@@ -56,7 +66,7 @@
 			}
 
 			$this->notifyObservers(
-				self::GET_TICKET_EVENT, 
+				self::GET_TICKET_EVENT,
 				Model::create()->
 				set('ticket', $ticket)
 			);
