@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,34 +12,34 @@
 			$viewResult =
 				$this->createView()->
 				transform(\ewgraFramework\Model::create()->set('data', 'testData'));
-			
+
 			$this->assertSame('testData', $viewResult);
 		}
 
 		public function testToString()
 		{
 			$view = $this->createView();
-			
+
 			$file =
 				\ewgraFramework\File::create()->setPath(
 					TMP_DIR.DIRECTORY_SEPARATOR.'renderXsltView'.rand().'.xsl'
 				);
-			
+
 			$file->setContent($view->toString());
-			
+
 			$model = \ewgraFramework\Model::create()->set('data', 'testData');
-			
+
 			$viewResult = $view->transform($model);
-			
+
 			$view->loadLayout($file);
-			
+
 			$viewResultSame = $view->transform($model);
 
 			$file->delete();
-				
+
 			$this->assertSame($viewResult, $viewResultSame);
 		}
-		
+
 		private function createView()
 		{
 			return

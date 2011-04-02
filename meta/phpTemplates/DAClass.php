@@ -1,19 +1,19 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	$meta = $model->get('meta');
-	
+
 	$classNode = $meta->getNode($meta->getNode('className')->nodeValue);
-	
+
 	echo '<?php'.PHP_EOL;
 
 	$namespace = $meta->getDocumentElement()->getAttribute('namespace');
-	
+
 	if ($namespace) {
 ?>
 	namespace <?=$namespace?>;
-	
-<?php 
+
+<?php
 	}
 ?>
 	/**

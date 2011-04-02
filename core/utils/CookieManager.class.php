@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -16,7 +16,7 @@
 			return parent::getInstance(__CLASS__);
 			// @codeCoverageIgnoreEnd
 		}
-		
+
 		/**
 		 * @return CookieManager
 		 */
@@ -26,17 +26,17 @@
 			return $this->setCookie($alias, $value, $expire, $path);
 			// @codeCoverageIgnoreEnd
 		}
-		
+
 		public function has($alias)
 		{
 			return isset($_COOKIE[$alias]);
 		}
-		
+
 		public function get($alias)
 		{
 			return $_COOKIE[$alias];
 		}
-		
+
 		/**
 		 * @return CookieManager
 		 * @deprecated

@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,9 +8,9 @@
 	final class Dir
 	{
 		const PERMISSIONS = 0775;
-		
+
 		private $path = null;
-		
+
 		/**
 		 * @return Dir
 		 */
@@ -18,7 +18,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return Dir
 		 */
@@ -27,23 +27,23 @@
 			$this->path = $path;
 			return $this;
 		}
-		
+
 		public function getPath()
 		{
 			return $this->path;
 		}
-		
+
 		public function delete()
 		{
 			self::deleteDir($this->getPath());
 			return $this;
 		}
-		
+
 		public function isExists()
 		{
 			return file_exists($this->getPath());
 		}
-		
+
 		/**
 		 * @return Dir
 		 */
@@ -54,13 +54,13 @@
 			umask($umask);
 			return $this;
 		}
-		
+
 		public static function deleteDir($dir)
 		{
 			$files = glob(str_replace('\\', '\\\\', $dir).DIRECTORY_SEPARATOR.'*');
-			
+
 			$function = __FUNCTION__;
-			
+
 			foreach ($files as $file) {
 				if(is_dir($file))
 					self::$function($file);

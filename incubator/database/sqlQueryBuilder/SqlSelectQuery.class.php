@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,7 +12,7 @@
 		private $from	= null;
 
 		private $where	= null;
-		
+
 		/**
 		 * @return SqlQuery
 		 */
@@ -20,7 +20,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return SqlQuery
 		 */
@@ -29,7 +29,7 @@
 			$this->fields = $fields;
 			return $this;
 		}
-		
+
 		public function getFields()
 		{
 			return $this->fields;
@@ -42,11 +42,11 @@
 		{
 			if (!is_object($from))
 				$from = SqlTable::create($from);
-			
+
 			$this->from = $from;
 			return $this;
 		}
-		
+
 		public function getFrom()
 		{
 			return $this->from;
@@ -60,7 +60,7 @@
 			$this->where = $where;
 			return $this;
 		}
-		
+
 		public function getWhere()
 		{
 			return $this->where;

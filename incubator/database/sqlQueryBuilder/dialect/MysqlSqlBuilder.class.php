@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,9 +11,9 @@
 		{
 			if (!is_object($something))
 				return $something;
-				
+
 			$class = 'Mysql'.get_class($something);
-			
+
 			return
 				call_user_func_array(
 					array($class, 'toString'),

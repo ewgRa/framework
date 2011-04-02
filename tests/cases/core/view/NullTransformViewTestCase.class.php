@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -10,11 +10,11 @@
 		public function testTransform()
 		{
 			$model = \ewgraFramework\Model::create()->set('data', 'testData');
-		
+
 			$viewResult =
 				$this->createView()->
 				transform($model);
-			
+
 			$this->assertSame($model, $viewResult);
 		}
 
@@ -25,7 +25,7 @@
 				$this->createView()->toString()
 			);
 		}
-		
+
 		private function createView()
 		{
 			return \ewgraFramework\NullTransformView::create();

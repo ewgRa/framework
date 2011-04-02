@@ -1,20 +1,20 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	$meta = $model->get('meta');
-	
+
 	$classNode = $meta->getNode($meta->getNode('className')->nodeValue);
-	
+
 	$extends = $meta->getDocumentElement()->getAttribute('DAExtends');
 
 	echo '<?php'.PHP_EOL;
-	
+
 	$namespace = $meta->getDocumentElement()->getAttribute('namespace');
-	
+
 	if ($namespace) {
 ?>
 	namespace <?=$namespace?>;
-	
+
 <?php
 	}
 ?>
@@ -31,7 +31,7 @@
 	abstract class Auto<?=$classNode->nodeName?>DA extends <?=$extends.PHP_EOL?>
 	{
 		protected $tableAlias = '<?=$classNode->nodeName?>';
-		
+
 		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
@@ -49,15 +49,15 @@
 			"properties/*[name() != 'id' and not(@classType = 'Identifier')]",
 			$classNode
 		);
-		
+
 	foreach ($properties as $property) {
 		$type = $property->getAttribute('type');
-		
+
 		$class = $property->getAttribute('class');
 		$classType = $property->getAttribute('classType');
-				
+
 		$value = '$object->get'.$property->getAttribute('upperName').'()';
-		
+
 		if ($type == 'array')
 			$value = 'serialize('.$value.')';
 		else if ($classType == 'Identifier' || $classType == 'Enumeration')
@@ -65,7 +65,7 @@
 		else if ($classType == 'Stringable')
 			$value = $value.'->__toString()';
 ?>
-			
+
 			if (!is_null($object->get<?=$property->getAttribute('upperName')?>())) {
 				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
 				$queryParams[] = <?=$value?>;
@@ -73,15 +73,15 @@
 <?php
 	}
 ?>
-			
+
 			$dbQuery .= join(', ', $queryParts);
-			
+
 			$this->db()->query(
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery($dbQuery)->
 				setValues($queryParams)
 			);
-			
+
 <?php
 	if ($idProperty) {
 ?>
@@ -89,9 +89,9 @@
 <?php
 	}
 ?>
-			
+
 			$this->dropCache();
-			
+
 			return $object;
 		}
 
@@ -101,21 +101,21 @@
 		public function save(<?=$classNode->nodeName?> $object)
 		{
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
-			
+
 			$queryParts = array();
 			$whereParts = array();
 			$queryParams = array();
-			
+
 <?php
 	foreach ($properties as $property) {
 		$type = $property->getAttribute('type');
-		
+
 		$class = $property->getAttribute('class');
 		$classType = $property->getAttribute('classType');
-				
+
 		$value = '$object->get'.$property->getAttribute('upperName').'()';
 		$storeValue = $value;
-		
+
 		if ($type == 'array')
 			$storeValue = 'serialize('.$value.')';
 		else if ($classType == 'Identifier' || $classType == 'Enumeration') {
@@ -125,17 +125,17 @@
 			$value = $value.'->__toString()';
 			$storeValue = $value;
 		}
-		
+
 		if ($property->getAttribute('nullable')) {
 ?>
-			
+
 			if (<?=$value?> === null)
 				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = NULL';
 			else {
 				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
 				$queryParams[] = <?=$storeValue?>;
 			}
-			
+
 <?php
 		} else {
 ?>
@@ -147,14 +147,14 @@
 
 	if ($idProperty) {
 ?>
-			
+
 			$whereParts[] = 'id = ?';
 			$queryParams[] = $object->getId();
 <?php
 	}
 ?>
 			\ewgraFramework\Assert::isNotEmpty($whereParts);
-			
+
 			$dbQuery .= join(', ', $queryParts).' WHERE '.join(' AND ', $whereParts);
 
 			$this->db()->query(
@@ -162,9 +162,9 @@
 				setQuery($dbQuery)->
 				setValues($queryParams)
 			);
-			 
+
 			$this->dropCache();
-			
+
 			return $object;
 		}
 
@@ -175,15 +175,15 @@
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
-			
+
 			$this->db()->query(
 				\ewgraFramework\DatabaseQuery::create()->setQuery($dbQuery)
 			);
-			 
+
 			$object->setId(null);
-			
+
 			$this->dropCache();
-			
+
 			return $this;
 		}
 
@@ -195,7 +195,7 @@
 				setValues(array($id))
 			);
 		}
-		
+
 		public function getByIds(array $ids)
 		{
 			return $this->getListCachedByQuery(
@@ -204,7 +204,7 @@
 				setValues(array($ids))
 			);
 		}
-		
+
 		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
@@ -218,12 +218,12 @@
 			"properties/*[not(@classType = 'Identifier')]",
 			$classNode
 		);
-	
+
 	$methods = array();
-	
+
 	foreach ($properties as $property) {
 		$value = '$array[\''.$property->getAttribute('downSeparatedName').'\']';
-		
+
 		if ($property->getAttribute('type') == 'array')
 			$value = $value. ' ? unserialize('.$value.') : null';
 		else if ($property->getAttribute('type') == 'boolean') {
@@ -239,7 +239,7 @@
 				$property->getAttribute('class')
 				.'::createFromString('.$value. ')';
 		}
-		
+
 		$methods[] = 'set'.$property->getAttribute('upperName').'('.$value.')';
 	}
 ?>
@@ -248,7 +248,7 @@
 <?php
 		$relationNodes =
 			$meta->getNodeList("*[properties/*[@class='".$classNode->nodeName."']]");
-		
+
 		if ($relationNodes->length) {
 ?>
 

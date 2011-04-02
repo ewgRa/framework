@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +9,7 @@
 	{
 		const FILE_PERMISSIONS 	= 0664;
 		const DIR_PERMISSIONS 	= 0775;
-		
+
 		private $cacheDir = null;
 
 		/**
@@ -19,7 +19,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return FileBasedCache
 		 */
@@ -28,28 +28,28 @@
 			$this->cacheDir = $cacheDir;
 			return $this;
 		}
-		
+
 		public function getCacheDir()
 		{
 			return $this->cacheDir;
 		}
-		
+
 		public function get(CacheTicket $ticket)
 		{
 			$result = null;
-			
+
 			$fileName = $this->compileKey($ticket);
-			
+
 			if (!file_exists($fileName))
 				$ticket->expired();
 			else {
 				$fileModifiedTime = filemtime($fileName);
-				
+
 				if ($fileModifiedTime < time()) {
 					$ticket->
 						setExpiredTime(null)->
 						expired();
-					
+
 					$this->dropByKey($fileName);
 				} else {
 					$ticket->
@@ -61,11 +61,11 @@
 			}
 
 			$this->notifyObservers(
-				self::GET_TICKET_EVENT, 
+				self::GET_TICKET_EVENT,
 				Model::create()->
 				set('ticket', $ticket)
 			);
-					
+
 			return $result;
 		}
 
@@ -78,21 +78,21 @@
 
 			if (is_null($lifeTime))
 				$lifeTime = Cache::FOREVER;
-			
+
 			$lifeTime += time();
 
 			Assert::isTrue($lifeTime > time());
-			
+
 			$fileName = $this->compileKey($ticket);
-				
+
 			$this->createPreDirs($fileName);
-			
+
 			file_put_contents($fileName, serialize($data));
 			chmod($fileName, self::FILE_PERMISSIONS);
-			
+
 			touch($fileName, $lifeTime);
 			$ticket->setExpiredTime($lifeTime);
-			
+
 			return $this;
 		}
 
@@ -107,13 +107,13 @@
 				$this->compilePreDirs($fileName),
 				$fileName
 			);
-			
+
 			if (!$resultArray['prefix'])
 				unset($resultArray['prefix']);
-			
+
 			return join(DIRECTORY_SEPARATOR, $resultArray);
 		}
-		
+
 		/**
 		 * @return FileBasedCache
 		 */
@@ -121,10 +121,10 @@
 		{
 			if (file_exists($key))
 				unlink($key);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return FileBasedCache
 		 */
@@ -142,7 +142,7 @@
 			$symbolCount = 2
 		) {
 			$resultArray = array();
-			
+
 			for ($i=0; $i < $directoryCount; $i++ ) {
 				$resultArray[] = substr(
 					$fileName,
@@ -150,7 +150,7 @@
 					$symbolCount
 				);
 			}
-			
+
 			return join(DIRECTORY_SEPARATOR, $resultArray);
 		}
 
@@ -166,7 +166,7 @@
 				mkdir($directory, self::DIR_PERMISSIONS, true);
 				umask($umask);
 			}
-			
+
 			return $this;
 		}
 	}

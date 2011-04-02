@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,7 +8,7 @@
 	final class ArrayUtilsTestCase extends FrameworkTestCase
 	{
 		private $array = null;
-		
+
 		public function setUp()
 		{
 			$this->array = array(
@@ -22,7 +22,7 @@
 				)
 			);
 		}
-			
+
 		public function testRecursiveMerge()
 		{
 			$this->assertEquals(
@@ -41,7 +41,7 @@
 		public function testGetObjectIds()
 		{
 			$object = new ArrayUtilsTestObject();
-			
+
 			$this->assertEquals(
 				array($object->getId()),
 				\ewgraFramework\ArrayUtils::getObjectIds(array($object))

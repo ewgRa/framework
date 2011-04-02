@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -19,18 +19,18 @@
 		{
 			if (!is_null($offset) && $offset < 0)
 				$offset = 0;
-			
+
 			if (!is_null($count) && $count < 0)
 				$count = 0;
-			
+
 			$limit = array();
-			
+
 			if (!is_null($offset))
 				$limit[] = (int)$offset;
-			
+
 			if (!is_null($count))
 				$limit[] = (int)$count;
-			
+
 			return
 				count($limit)
 					? ' LIMIT '.join(', ', $limit)
@@ -53,7 +53,7 @@
 						)
 						: mysql_real_escape_string($variable);
 			}
-			
+
 			return $variable;
 		}
 

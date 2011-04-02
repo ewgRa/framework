@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -10,7 +10,7 @@
 		public function testRender()
 		{
 			$mav = \ewgraFramework\ModelAndView::create();
-			
+
 			$mav->setView(
 				\ewgraFramework\PhpView::create()->
 				loadLayout(
@@ -18,9 +18,9 @@
 					setPath(dirname(__FILE__).'/../view/renderPhpView.php')
 				)
 			);
-			
+
 			$mav->setModel(\ewgraFramework\Model::create()->set('data', 'value'));
-			
+
 			$this->assertSame('valuevalue', $mav->render());
 		}
 	}

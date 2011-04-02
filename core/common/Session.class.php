@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -16,12 +16,12 @@
 		{
 			return parent::getInstance(__CLASS__);
 		}
-		
+
 		public function isStarted()
 		{
 			return $this->isStarted;
 		}
-		
+
 		/**
 		 * @return FileBasedSession
 		 */
@@ -50,10 +50,10 @@
 				$this->isStarted = true;
 				session_start();
 			}
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return FileBasedSession
 		 */
@@ -74,15 +74,15 @@
 		{
 			return isset($_SESSION[$key]);
 		}
-		
+
 		public function get($key)
 		{
 			if (!$this->has($key))
 				throw MissingArgumentException::create('known nothing about key');
-			
+
 			return $_SESSION[$key];
 		}
-		
+
 		/**
 		 * @return Session
 		 */
@@ -91,7 +91,7 @@
 			$_SESSION[$key] = $value;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Session
 		 */

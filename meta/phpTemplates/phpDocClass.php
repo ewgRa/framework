@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	if ($license = $meta->getDocumentElement()->getAttribute('license')) {
 ?>
 	 * @license <?=$license.PHP_EOL?>

@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,9 +8,9 @@
 	final class File
 	{
 		const PERMISSIONS = 0664;
-		
+
 		private $path = null;
-		
+
 		/**
 		 * @return File
 		 */
@@ -18,7 +18,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return File
 		 */
@@ -27,12 +27,12 @@
 			$this->path = $path;
 			return $this;
 		}
-		
+
 		public function getPath()
 		{
 			return $this->path;
 		}
-		
+
 		public function getContent()
 		{
 			return file_get_contents($this->getPath());
@@ -42,12 +42,12 @@
 		{
 			return file_put_contents($this->getPath(), $content);
 		}
-		
+
 		public function isExists()
 		{
 			return file_exists($this->getPath());
 		}
-		
+
 		/**
 		 * @return File
 		 */
@@ -57,7 +57,7 @@
 			unlink($this->getPath());
 			return $this;
 		}
-		
+
 		/**
 		 * @return File
 		 */
@@ -67,7 +67,7 @@
 			rename($this->getPath(), $file->getPath());
 			return $this;
 		}
-		
+
 		/**
 		 * @return File
 		 */
@@ -77,19 +77,19 @@
 			copy($this->getPath(), $file->getPath());
 			return $this;
 		}
-		
+
 		public function getBaseName()
 		{
 			return basename($this->getPath());
 		}
-		
+
 		public function getDir()
 		{
-			return 
+			return
 				Dir::create()->
 				setPath(pathinfo($this->getPath(), PATHINFO_DIRNAME));
 		}
-		
+
 		public function chmod($permission)
 		{
 			chmod($this->getPath(), $permission);

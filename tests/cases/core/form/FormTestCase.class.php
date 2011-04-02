@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,13 +12,13 @@
 			$data = array(
 				'testPrimitive' => 'string primitive value'
 			);
-			
+
 			$form =
 				\ewgraFramework\Form::create()->
 				addPrimitive(\ewgraFramework\PrimitiveString::create('testPrimitive'));
-				
+
 			$form->import($data);
-			
+
 			$this->assertSame(
 				$data['testPrimitive'],
 				$form->getPrimitive('testPrimitive')->getValue()
@@ -32,11 +32,11 @@
 				addPrimitive(
 					\ewgraFramework\PrimitiveString::create('testPrimitive')
 				);
-				
+
 			$form->import(array('a' => 'b'));
-			
+
 			$this->assertFalse($form->hasErrors());
-			
+
 			$form->getPrimitive('testPrimitive')->markMissing();
 
 			$this->assertTrue($form->hasErrors());
@@ -51,25 +51,25 @@
 					setRequired()->
 					setMissingErrorLabel('missing primitive')
 				);
-				
+
 			$form->import(array('testPrimitive' => ''));
-			
+
 			$this->assertTrue($form->hasErrors());
-			
+
 			$this->assertSame(
 				array(
-					'testPrimitive' => 
+					'testPrimitive' =>
 						array(\ewgraFramework\BasePrimitive::MISSING_ERROR)
 				),
 				$form->getErrors()
 			);
-			
+
 			$this->assertTrue(
 				$form->
 					getPrimitive('testPrimitive')->
 					hasError(\ewgraFramework\BasePrimitive::MISSING_ERROR)
 			);
-			
+
 			$this->assertSame(
 				'missing primitive',
 				$form->getPrimitive('testPrimitive')->

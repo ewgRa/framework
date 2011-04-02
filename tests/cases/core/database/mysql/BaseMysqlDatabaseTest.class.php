@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,12 +8,12 @@
 	abstract class BaseMysqlDatabaseTest extends FrameworkTestCase
 	{
 		private $instance = null;
-		
+
 		public function getInstance()
 		{
 			return $this->instance;
 		}
-		
+
 		public function setUp()
 		{
 			$this->instance =
@@ -23,25 +23,25 @@
 				setUser(MYSQL_TEST_USER)->
 				setPassword(MYSQL_TEST_PASSWORD)->
 				setCharset(MYSQL_TEST_CHARSET);
-			
+
 			try {
 				$this->instance->connect();
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				$this->markTestSkipped("can't connect to test mysql server");
 			}
-			
+
 			try {
 				$this->instance->queryRawNull(
 					'DROP DATABASE IF EXISTS '.$this->instance->getDatabase()
 				);
-				
+
 				$this->instance->queryRawNull(
 					'CREATE DATABASE '.$this->instance->getDatabase()
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				$this->markTestSkipped("can't clean mysql test database");
 			}
-				
+
 			try {
 				$this->instance->selectDatabase();
 			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
@@ -67,17 +67,17 @@
 				$this->markTestSkipped("can't create test table");
 			}
 		}
-		
+
 		public function tearDown()
 		{
 			$this->instance = null;
 		}
-		
+
 		public function testConnectException()
 		{
 			$this->instance->disconnect();
 			$this->instance->setHost('nonExistsHost');
-			
+
 			try {
 				$this->instance->connect();
 				$this->fail();
@@ -85,7 +85,7 @@
 				# good
 			}
 		}
-		
+
 		public function testSelectDatabaseException()
 		{
 			$this->instance->setDatabase('nonExistsDatabase');

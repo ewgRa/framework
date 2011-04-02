@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -10,11 +10,11 @@
 		public function testImport()
 		{
 			$data = array(rand(), rand());
-			
+
 			$primitive =
 				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
 				import(array('testPrimitive' => $data));
-			
+
 			$this->assertSame($data, $primitive->getRawValue());
 			$this->assertSame($data, $primitive->getValue());
 		}

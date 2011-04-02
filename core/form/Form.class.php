@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -16,20 +16,20 @@
 		{
 			return new self;
 		}
-		
+
 		public function getPrimitives()
 		{
 			return $this->primitives;
 		}
-		
+
 		public function getPrimitive($name)
 		{
 			if (!isset($this->primitives[$name]))
 				throw MissingArgumentException::create('known nothing about '.$name);
-			
+
 			return $this->primitives[$name];
 		}
-		
+
 		public function getPrimitiveByScopeKey($key)
 		{
 			foreach ($this->getPrimitives() as $primitive) {
@@ -39,7 +39,7 @@
 
 			return null;
 		}
-		
+
 		/**
 		 * @return Form
 		 */
@@ -48,7 +48,7 @@
 			$this->primitives[$primitive->getName()] = $primitive;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Form
 		 */
@@ -56,12 +56,12 @@
 		{
 			if (!isset($this->primitives[$name]))
 				throw MissingArgumentException::create('known nothing about '.$name);
-			
+
 			unset($this->primitives[$name]);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return Form
 		 */
@@ -69,10 +69,10 @@
 		{
 			foreach ($this->getPrimitives() as $primitive)
 				$primitive->import($scope);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return Form
 		 */
@@ -82,37 +82,37 @@
 				if ($primitive = $this->getPrimitiveByScopeKey($scopeKey))
 					$primitive->import($scope);
 			}
-			
+
 			return $this;
 		}
-		
+
 		public function clean()
 		{
 			foreach ($this->getPrimitives() as $primitive)
 				$primitive->clean();
-			
+
 			return $this;
 		}
-		
+
 		public function hasErrors()
 		{
 			foreach ($this->getPrimitives() as $primitive) {
 				if ($primitive->hasErrors())
 					return true;
 			}
-			
+
 			return false;
 		}
 
 		public function getErrors()
 		{
 			$result = array();
-			
+
 			foreach ($this->getPrimitives() as $primitive) {
 				if ($primitive->hasErrors())
 					$result[$primitive->getName()] = $primitive->getErrors();
 			}
-			
+
 			return $result;
 		}
 

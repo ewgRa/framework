@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -30,7 +30,7 @@
 				\ewgraFramework\StringUtils::getLength('testString')
 			);
 		}
-		
+
 		public function testToLower()
 		{
 			$this->assertEquals(

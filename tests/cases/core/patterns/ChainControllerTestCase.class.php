@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -13,19 +13,19 @@
 				new TestChainController1(
 					new TestChainController2()
 				);
-				
+
 			$mav =
 				\ewgraFramework\ModelAndView::create()->
 				setModel(
 					\ewgraFramework\Model::create()->
 					set('callStack', array())
 				);
-				
+
 			$chain->handleRequest(\ewgraFramework\HttpRequest::create(), $mav);
-			
+
 			$this->assertSame(
 				array(
-					__NAMESPACE__.'\\TestChainController1', 
+					__NAMESPACE__.'\\TestChainController1',
 					__NAMESPACE__.'\\TestChainController2'
 				),
 				$mav->getModel()->get('callStack')
@@ -36,13 +36,13 @@
 		{
 			$inner = new TestChainController2();
 			$chain = new TestChainController1($inner);
-				
+
 			$this->assertTrue($inner->hasOuter());
-			
+
 			$this->assertSame($chain, $inner->getOuter());
 		}
 	}
-	
+
 	class BaseTestChainController extends \ewgraFramework\ChainController
 	{
 		/**
@@ -56,7 +56,7 @@
 			$callStack[] = get_class($this);
 
 			$mav->getModel()->set('callStack', $callStack);
-			
+
 			return parent::handleRequest($request, $mav);
 		}
 	}

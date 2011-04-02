@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -17,7 +17,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return StringReplaceFilter
 		 */
@@ -25,10 +25,10 @@
 		{
 			$this->search[]	 = $search;
 			$this->replace[] = $replace;
-			
+
 			return $this;
 		}
-		
+
 		public function apply($var)
 		{
 			return

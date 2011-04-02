@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -16,7 +16,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return SqlQuery
 		 */
@@ -25,7 +25,7 @@
 			$this->fields = $fields;
 			return $this;
 		}
-		
+
 		public function getFields()
 		{
 			return $this->fields;

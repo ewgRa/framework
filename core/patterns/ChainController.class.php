@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +9,7 @@
 	{
 		private $inner = null;
 		private $outer = null;
-		
+
 		/**
 		 * @return ChainController
 		 */
@@ -17,23 +17,23 @@
 		{
 			if ($controller)
 				$this->setInner($controller);
-				
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return ChainController
 		 */
 		public function setInner(ChainController $controller)
 		{
 			$this->inner = $controller;
-			
+
 			if ($controller->getOuter() != $this)
 				$controller->setOuter($this);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return ChainController
 		 */
@@ -46,7 +46,7 @@
 		{
 			return !is_null($this->inner);
 		}
-		
+
 		/**
 		 * @return ChainController
 		 */
@@ -56,10 +56,10 @@
 
 			if ($controller->getInner() != $this)
 				$controller->setInner($this);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return ChainController
 		 */
@@ -67,12 +67,12 @@
 		{
 			return $this->outer;
 		}
-		
+
 		public function hasOuter()
 		{
 			return !is_null($this->outer);
 		}
-		
+
 		/**
 		 * @return ModelAndView
 		 */
@@ -85,12 +85,12 @@
 					? $this->getInner()->handleRequest($request, $mav)
 					: $mav;
 		}
-		
+
 		public function getFirstController()
 		{
 			if (!$this->getOuter())
 				return $this;
-				
+
 			return $this->getOuter()->getFirstController();
 		}
 	}

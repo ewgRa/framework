@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -14,7 +14,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return MysqlDialect
 		 */
@@ -22,7 +22,7 @@
 		{
 			return MysqlDialect::me();
 		}
-		
+
 		/**
 		 * @return MysqlDatabase
 		 * @throws DatabaseConnectException
@@ -36,15 +36,15 @@
 					$this->getPassword(),
 					true
 				);
-			
+
 			if (!$db)
 				throw DatabaseConnectException::create();
-			
+
 			$this->setLinkIdentifier($db)->connected();
 
 			return $this;
 		}
-		
+
 		/**
 		 * @return MysqlDatabase
 		 */
@@ -54,7 +54,7 @@
 				$this->setCharset($charset);
 			else
 				$charset = $this->getCharset();
-			
+
 			$this->
 				queryRawNull('SET NAMES '.$this->getDialect()->escape($charset, $this))->
 				queryRawNull(
@@ -64,7 +64,7 @@
 					'SET collation_connection = '
 					.$this->getDialect()->escape($charset.'_general_ci', $this)
 				);
-			
+
 			return $this;
 		}
 
@@ -78,7 +78,7 @@
 				$this->setDatabaseName($databaseName);
 			else
 				$databaseName = $this->getDatabase();
-			
+
 			if(
 				!mysql_select_db(
 					$this->getDatabase(),
@@ -86,7 +86,7 @@
 				)
 			)
 				throw DatabaseSelectDatabaseException::create();
-			
+
 			return $this;
 		}
 
@@ -109,7 +109,7 @@
 		{
 			return mysql_error($this->getLinkIdentifier());
 		}
-		
+
 		protected function runQuery($queryString)
 		{
 			return mysql_query(
@@ -117,7 +117,7 @@
 				$this->getLinkIdentifier()
 			);
 		}
-		
+
 		protected function createResult()
 		{
 			return MysqlDatabaseResult::create();

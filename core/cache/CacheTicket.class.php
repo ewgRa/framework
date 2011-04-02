@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -14,12 +14,12 @@
 
 		private $prefix 	= null;
 		private $key 		= null;
-		
+
 		private $lifeTime 	= null; //seconds
-		
+
 		private $expired	= true;
 		private $expiredTime = null;
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -27,7 +27,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -36,7 +36,7 @@
 			$this->cacheInstance = $instance;
 			return $this;
 		}
-		
+
 		/**
 		 * @return CacheInterface
 		 */
@@ -44,12 +44,12 @@
 		{
 			return $this->cacheInstance;
 		}
-		
+
 		public function getPrefix()
 		{
 			return $this->prefix;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -58,12 +58,12 @@
 			$this->prefix = $prefix;
 			return $this;
 		}
-		
+
 		public function getKey()
 		{
 			return $this->key;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -72,7 +72,7 @@
 			$this->key = func_get_args();
 			return $this;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -81,12 +81,12 @@
 			$this->key = array($this->key, func_get_args());
 			return $this;
 		}
-		
+
 		public function getExpiredTime()
 		{
 			return $this->expiredTime;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -95,7 +95,7 @@
 			$this->expiredTime = $expiredTime;
 			return $this;
 		}
-		
+
 		public function isExpired()
 		{
 			return $this->expired;
@@ -105,7 +105,7 @@
 		{
 			return $this->lifeTime;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -114,7 +114,7 @@
 			$this->lifeTime = $lifeTime;
 			return $this;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -123,7 +123,7 @@
 			$this->expired = true;
 			return $this;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -132,7 +132,7 @@
 			$this->expired = false;
 			return $this;
 		}
-		
+
 		/**
 		 * @return CacheTicket
 		 */
@@ -146,7 +146,7 @@
 		{
 			return $this->getCacheInstance()->get($this);
 		}
-		
+
 		public function drop()
 		{
 			$this->getCacheInstance()->drop($this);

@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,7 +12,7 @@
 		private $actionList = array();
 		private $action = null;
 		private $scopeKey = 'action';
-		
+
 		/**
 		 * @return ActionChainController
 		 */
@@ -21,12 +21,12 @@
 			$this->requestAction = $requestAction;
 			return $this;
 		}
-		
+
 		public function getRequestAction()
 		{
 			return $this->requestAction;
 		}
-				
+
 		/**
 		 * @return ActionChainController
 		 */
@@ -35,12 +35,12 @@
 			$this->defaultAction = $defaultAction;
 			return $this;
 		}
-		
+
 		public function getDefaultAction()
 		{
 			return $this->defaultAction;
 		}
-		
+
 		/**
 		 * @return ActionChainController
 		 */
@@ -49,7 +49,7 @@
 			$this->actionList[$action] = $function;
 			return $this;
 		}
-		
+
 		/**
 		 * @return ActionChainController
 		 */
@@ -58,12 +58,12 @@
 			$this->scopeKey = $scopeKey;
 			return $this;
 		}
-		
+
 		public function getScopeKey()
 		{
 			return $this->scopeKey;
 		}
-		
+
 		/**
 		 * @return ModelAndView
 		 */
@@ -72,25 +72,25 @@
 			ModelAndView $mav
 		) {
 			$action = $this->getRequestAction();
-			
+
 			if (!$action) {
-				$form = 
+				$form =
 					Form::create()->
 					addPrimitive(PrimitiveString::create($this->getScopeKey()));
-				
+
 				$form->import($request->getPost() + $request->getGet());
-				
+
 				$action = $form->getValue($this->getScopeKey());
 			}
-			
+
 			if (!$action)
 				$action = $this->getDefaultAction();
-			
+
 			Assert::isNotNull($action, 'action is not defined');
-			
+
 			if(!isset($this->actionList[$action]))
 				throw BadRequestException::create();
-			
+
 			$this->action = $action;
 			return $this->{$this->actionList[$action]}($request, $mav);
 		}

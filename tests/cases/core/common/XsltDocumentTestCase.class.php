@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -17,9 +17,9 @@
 				'xsl:stylesheet',
 				$document->getDocumentElement()->nodeName
 			);
-			
+
 			$document->importFile('testFile');
-			
+
 			$this->assertTrue(
 				strpos(
 					$document->saveXml(),
@@ -31,7 +31,7 @@
 		public function testLoadNonXslDocument()
 		{
 			$document = \ewgraFramework\XsltDocument::create();
-	
+
 			try {
 				$document->load(dirname(__FILE__).'/test.xml');
 				$this->fail();

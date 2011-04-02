@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,20 +9,20 @@
 	{
 		const VARIOUS_NAMESPACE = null;
 		const ROOT_NAMESPACE = '\\';
-		
+
 		const CLASS_FILE_EXTENSION	= '.class.php';
-		
+
 		private $foundClasses 		= array();
-		
+
 		private $searchDirectories = array(
 			self::ROOT_NAMESPACE 	=> array(),
 			self::VARIOUS_NAMESPACE => array()
 		);
 
 		private $namespaces	= array();
-		
+
 		private $classMapChanged 	= false;
-		
+
 		/**
 		 * @return ClassesAutoloader
 		 */
@@ -35,7 +35,7 @@
 		{
 			return $this->classMapChanged;
 		}
-		
+
 		/**
 		 * @return ClassesAutoloader
 		 */
@@ -47,9 +47,9 @@
 				$this->searchDirectories[$namespace] = array();
 				$this->recalcNamespaces();
 			}
-			
+
 			$this->searchDirectories[$namespace][] = $directory;
-			
+
 			return $this;
 		}
 
@@ -60,12 +60,12 @@
 		{
 			if ($this->classExists($className))
 				return $this;
-			
+
 			$classFile = $this->getFoundClassFile($className);
-			
+
 			if (!$classFile || !file_exists($classFile)) {
 				$classFile = $this->findClassFile($className);
-				
+
 				if ($classFile) {
 					$this->setClassFile($className, $classFile);
 					$this->classMapChanged = true;
@@ -82,10 +82,10 @@
 				$this->dropFound($className);
 				$this->classMapChanged = true;
 			}
-			
+
 			return $this;
 		}
-				
+
 		/**
 		 * @return ClassesAutoloader
 		 */
@@ -94,13 +94,13 @@
 			$this->foundClasses = $foundClasses;
 			return $this;
 		}
-		
+
 		public function getFoundClasses()
 		{
 			return $this->foundClasses;
 		}
-		
-		
+
+
 		public function getFoundClassFile($className)
 		{
 			return
@@ -108,19 +108,19 @@
 					? $this->foundClasses[$className]
 					: null;
 		}
-		
+
 		public function loadAllClasses()
 		{
 			$searchDirectories = array();
-			
+
 			foreach ($this->searchDirectories as $namespace => $directories)
 				$searchDirectories = array_merge($searchDirectories, $directories);
-				
+
 			$this->baseLoadAllClasses(array_unique($searchDirectories));
-			
+
 			return $this;
 		}
-		
+
 		private function baseLoadAllClasses(array $searchDirectories)
 		{
 			foreach ($searchDirectories as $directory) {
@@ -131,18 +131,18 @@
 						require_once($fileName);
 				}
 			}
-			
+
 			return $this;
 		}
-		
+
 		private function findClassFile($className)
 		{
 			$searchDirectories = array();
-			
+
 			$nameParts = explode('\\', $className);
-			
+
 			$classNameWithoutNamespace = array_pop($nameParts);
-			
+
 			$namespace = join('\\', $nameParts);
 
 			if ($namespace) {
@@ -154,17 +154,17 @@
 						)
 					)
 						continue;
-					
+
 					if (strpos($namespace, $probablyNamespace) === 0) {
 						$searchDirectories =
 							$this->searchDirectories[$probablyNamespace];
-						 
+
 						break;
 					}
 				}
 			} else
 				$searchDirectories = $this->searchDirectories[self::ROOT_NAMESPACE];
-		
+
 			$searchDirectories =
 				array_unique(
 					array_merge(
@@ -180,14 +180,14 @@
 					$searchDirectories
 				);
 		}
-		
+
 		private function baseFindClassFile(
 			$className,
 			$classNameWithoutNamespace,
 			array $searchDirectories
 		) {
 			$result = null;
-			
+
 			foreach ($searchDirectories as $directory) {
 				foreach (
 					glob($directory.DIRECTORY_SEPARATOR.'*') as $fileName
@@ -199,7 +199,7 @@
 								$classNameWithoutNamespace,
 								array($fileName)
 							);
-						
+
 						if ($result)
 							break 2;
 					} elseif (
@@ -208,7 +208,7 @@
 							== $classNameWithoutNamespace.self::CLASS_FILE_EXTENSION
 					) {
 						require_once($fileName);
-						
+
 						if ($this->classExists($className)) {
 							$result = $fileName;
 							break 2;
@@ -216,10 +216,10 @@
 					}
 				}
 			}
-			
+
 			return $result;
 		}
-		
+
 		/**
 		 * @return ClassesAutoloader
 		 */
@@ -228,7 +228,7 @@
 			$this->foundClasses[$className] = $classFile;
 			return $this;
 		}
-		
+
 		/**
 		 * @return ClassesAutoloader
 		 */
@@ -237,12 +237,12 @@
 			unset($this->foundClasses[$className]);
 			return $this;
 		}
-		
+
 		private function isFound($className)
 		{
 			return isset($this->foundClasses[$className]);
 		}
-		
+
 		private function recalcNamespaces()
 		{
 			$this->namespaces = array_keys($this->searchDirectories);

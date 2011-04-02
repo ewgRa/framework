@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -16,7 +16,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return Model
 		 */
@@ -25,7 +25,7 @@
 			$this->data = $data;
 			return $this;
 		}
-		
+
 		public function getData()
 		{
 			return $this->data;
@@ -39,12 +39,12 @@
 			$this->data[$key] = $value;
 			return $this;
 		}
-		
+
 		public function has($key)
 		{
 			return isset($this->data[$key]);
 		}
-		
+
 		public function get($key)
 		{
 			if (!$this->has($key)) {
@@ -52,18 +52,18 @@
 					'known nothing about key "'.$key.'"'
 				);
 			}
-				
+
 			return $this->data[$key];
 		}
-		
+
 		public function drop($key)
 		{
 			if ($this->has($key))
 				unset($this->data[$key]);
-				
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return Model
 		 */
@@ -72,7 +72,7 @@
 			$this->data[] = $data;
 			return $this;
 		}
-		
+
 		/**
 		 * @return Model
 		 */
@@ -81,7 +81,7 @@
 			$this->data = array_merge($this->data, $array);
 			return $this;
 		}
-		
+
 		/**
 		 * @return Model
 		 */

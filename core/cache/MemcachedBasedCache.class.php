@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -15,7 +15,7 @@
 		);
 
 		private $memcache = null;
-		
+
 		/**
 		 * @return MemcachedBasedCache
 		 */
@@ -23,7 +23,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return MemcachedBasedCache
 		 */
@@ -33,32 +33,32 @@
 				'host' => $host,
 				'port' => $port
 			);
-			
+
 			return $this;
 		}
-		
+
 		/**
 		 * @return MemcachedBasedCache
 		 */
 		public function dropServers()
 		{
 			$this->servers = array();
-			
+
 			return $this;
 		}
-		
+
 		public function get(CacheTicket $ticket)
 		{
 			$result = null;
-			
+
 			$key = $this->compileKey($ticket);
-			
+
 			if ($data = $this->getMemcache()->get($key)) {
-				
+
 				$ticket->
 					setExpiredTime($data['lifeTime'])->
 					actual();
-					
+
 				$result = $data['data'];
 			} else {
 				$ticket->setExpiredTime(null);
@@ -70,7 +70,7 @@
 				Model::create()->
 				set('ticket', $ticket)
 			);
-					
+
 			return $result;
 		}
 
@@ -83,22 +83,22 @@
 
 			if (is_null($lifeTime))
 				$lifeTime = Cache::FOREVER;
-						
+
 			$lifeTime += time();
-			
+
 			Assert::isTrue($lifeTime > time());
 
 			$key = $this->compileKey($ticket);
-				
+
 			$data = array(
 				'data' 		=> $data,
 				'lifeTime' 	=> $lifeTime
 			);
-			
+
 			$ticket->setExpiredTime($lifeTime);
-			
+
 			$this->getMemcache()->set($key, $data, 0, $lifeTime);
-			
+
 			return $this;
 		}
 
@@ -111,7 +111,7 @@
 			$this->getMemcache()->delete($key, 0);
 			return $this;
 		}
-		
+
 		/**
 		 * @return MemcachedBasedCache
 		 */
@@ -128,11 +128,11 @@
 		{
 			if (!$this->memcache) {
 				$this->memcache = new \Memcache();
-				
+
 				foreach ($this->servers as $server)
 					$this->memcache->addServer($server['host'], $server['port']);
 			}
-			
+
 			return $this->memcache;
 		}
 	}

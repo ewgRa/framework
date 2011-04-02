@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -11,7 +11,7 @@
 		private $host	= null;
 		private $path	= null;
 		private $query	= null;
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -19,7 +19,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -27,7 +27,7 @@
 		{
 			return self::create()->parse($string);
 		}
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -41,7 +41,7 @@
 		{
 			return $this->scheme;
 		}
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -55,7 +55,7 @@
 		{
 			return $this->host;
 		}
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -69,7 +69,7 @@
 		{
 			return $this->path;
 		}
-		
+
 		/**
 		 * @return HttpUrl
 		 */
@@ -83,12 +83,12 @@
 		{
 			return $this->query;
 		}
-		
+
 		public function downloadContent()
 		{
-			return file_get_contents((string)$this);			
+			return file_get_contents((string)$this);
 		}
-		
+
 		public function __toString()
 		{
 			return
@@ -110,13 +110,13 @@
 
 			if (isset($parsed['host']))
 				$this->setHost($parsed['host']);
-			
+
 			if (isset($parsed['path']))
 				$this->setPath($parsed['path']);
-			
+
 			if (isset($parsed['query']))
 				$this->setQuery($parsed['query']);
-			
+
 			return $this;
 		}
 	}

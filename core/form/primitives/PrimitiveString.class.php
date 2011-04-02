@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -21,13 +21,13 @@
 		public function import($scope)
 		{
 			$result = parent::import($scope);
-			
+
 			if (!$this->hasErrors() && $this->getValue())
 				$this->setValue((string)$this->getValue());
 
 			return $result;
 		}
-		
+
 		public function isEmpty($value)
 		{
 			return ($value === '' || $value === null);

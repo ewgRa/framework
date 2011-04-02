@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -12,7 +12,7 @@
 			$viewResult =
 				$this->createView()->
 				transform(\ewgraFramework\Model::create()->set('data', 'testData'));
-			
+
 			$this->assertSame('testDatatestData', $viewResult);
 		}
 
@@ -25,19 +25,19 @@
 				$this->createView()->toString()
 			);
 		}
-		
+
 		public function testIncludeFile()
 		{
 			ob_start();
-			
+
 			\ewgraFramework\PhpView::includeFile(
 				dirname(__FILE__).'/renderPhpView.php',
 				\ewgraFramework\Model::create()->set('data', 'testData')
 			);
-			
+
 			$this->assertSame('testDatatestData', ob_get_clean());
 		}
-		
+
 		private function createView()
 		{
 			return

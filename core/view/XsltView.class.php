@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -9,7 +9,7 @@
 	{
 		private $charset = 'utf8';
 		private $version = '1.0';
-		
+
 		/**
 		 * @var XsltDocument
 		 */
@@ -22,7 +22,7 @@
 		{
 			return new self;
 		}
-		
+
 		/**
 		 * @return XsltView
 		 */
@@ -31,12 +31,12 @@
 			$this->charset = $charset;
 			return $this;
 		}
-		
+
 		public function getCharset()
 		{
 			return $this->charset;
 		}
-		
+
 		/**
 		 * @return XsltView
 		 */
@@ -45,25 +45,25 @@
 			$this->version = $version;
 			return $this;
 		}
-		
+
 		public function getVersion()
 		{
 			return $this->version;
 		}
-		
+
 		/**
 		 * @return XsltView
 		 */
 		public function loadLayout(File $layout)
 		{
 			Assert::isNotNull($layout->getPath());
-			
+
 			$this->xsltDocument = $this->createXsltDocument();
 			$this->xsltDocument->loadXML($layout->getContent());
-			
+
 			return $this;
 		}
-		
+
 		public function transform(Model $model)
 		{
 			$domModel = $this->createDomDocument();
@@ -71,25 +71,25 @@
 			$root = $domModel->createNodeFromVar($model->getData(), 'document');
 
 			$domModel->appendChild($root);
-		
+
 			return $this->transformXML($domModel);
 		}
-		
+
 		public function transformXML(ExtendedDomDocument $domModel)
 		{
 			Assert::isNotNull($this->xsltDocument);
-			
+
 			$proc = new \XsltProcessor();
 			$proc->importStylesheet($this->xsltDocument);
 
 			return $proc->transformToXML($domModel);
 		}
-		
+
 		public function toString()
 		{
 			return $this->xsltDocument->saveXml();
 		}
-		
+
 		/**
 		 * @return ExtendedDomDocument
 		 */

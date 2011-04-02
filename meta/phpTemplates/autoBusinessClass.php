@@ -1,24 +1,24 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	$meta = $model->get('meta');
-	
+
 	$classNode = $meta->getNode($meta->getNode('className')->nodeValue);
-	
+
 	$extends = $classNode->getAttribute('extends');
 
 	if ($extends)
 		$extends = ' extends '.$extends;
-	
+
 	echo '<?php'.PHP_EOL;
-	
+
 	$namespace = $meta->getDocumentElement()->getAttribute('namespace');
-	
+
 	if ($namespace) {
 ?>
 	namespace <?=$namespace?>;
-	
-<?php 
+
+<?php
 	}
 ?>
 	/**
@@ -39,12 +39,12 @@
 	foreach ($properies as $property) {
 		$class = $property->getAttribute('class');
 		$classType = $property->getAttribute('classType');
-		
+
 		$phpDocVar = $class;
-		
+
 		if (!$phpDocVar)
 			$phpDocVar = $property->getAttribute('type');
-		
+
 		if ($phpDocVar) {
 ?>
 		/**
@@ -54,7 +54,7 @@
 		}
 ?>
 		private $<?=$property->nodeName?> = null;
-		
+
 <?php
 	}
 ?>
@@ -67,14 +67,14 @@
 		}
 <?php
 	$properties = $meta->getNodeList('properties/*', $classNode);
-	
+
 	foreach ($properties as $property) {
 		$modelProperty =
 			Model::create()->
 			set('meta', $meta)->
 			set('property', $property)->
 			set('generateClassName', $classNode->nodeName);
-		
+
 		PhpView::includeFile(
 			dirname(__FILE__).'/businessClassSetter.php',
 			$modelProperty

@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -8,7 +8,7 @@
 	final class PrimitiveObject extends BasePrimitive
 	{
 		private $class = null;
-		
+
 		/**
 		 * @return PrimitiveObject
 		 */
@@ -16,7 +16,7 @@
 		{
 			return new self($name);
 		}
-		
+
 		/**
 		 * @return PrimitiveObject
 		 */
@@ -32,17 +32,17 @@
 		public function import($scope)
 		{
 			Assert::isNotNull($this->class);
-			
+
 			$result = parent::import($scope);
-			
+
 			if (!$this->hasErrors() && $this->getValue()) {
 				$classDA = call_user_func(array($this->class, 'da'));
 				$this->setValue($classDA->getById($this->getValue()));
-				
+
 				if (!$this->getValue() && $this->isRequired())
 					$this->markMissing();
 			}
-			
+
 			return $result;
 		}
 	}

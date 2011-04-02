@@ -1,6 +1,6 @@
 <?php
 	namespace ewgraFramework\tests;
-	
+
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
@@ -20,11 +20,11 @@
 		public function testCommon()
 		{
 			$enumeration = EnumerationTest::create(1);
-			
+
 			$this->assertSame('test', $enumeration->getName());
-			
+
 			$this->assertSame($enumeration->getName(), (string)$enumeration);
-			
+
 			$this->assertEquals(
 				array(
 					1 => $enumeration,
