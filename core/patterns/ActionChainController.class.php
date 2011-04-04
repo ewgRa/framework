@@ -73,15 +73,8 @@
 		) {
 			$action = $this->getRequestAction();
 
-			if (!$action) {
-				$form =
-					Form::create()->
-					addPrimitive(PrimitiveString::create($this->getScopeKey()));
-
-				$form->import($request->getPost() + $request->getGet());
-
-				$action = $form->getValue($this->getScopeKey());
-			}
+			if (!$action)
+				$action = $this->defineActionFromRequest($request);
 
 			if (!$action)
 				$action = $this->getDefaultAction();
@@ -108,6 +101,17 @@
 		protected function getAction()
 		{
 			return $this->action;
+		}
+
+		protected function defineActionFromRequest(HttpRequest $request)
+		{
+			$form =
+				Form::create()->
+				addPrimitive(PrimitiveString::create($this->getScopeKey()));
+
+			$form->import($request->getPost() + $request->getGet());
+
+			return $form->getValue($this->getScopeKey());
 		}
 	}
 ?>
