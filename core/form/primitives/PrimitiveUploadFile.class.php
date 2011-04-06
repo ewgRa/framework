@@ -8,8 +8,11 @@
 	final class PrimitiveUploadFile extends BasePrimitive
 	{
 		const UPLOAD_ERROR = 'uploadError';
+		const EXTENSION_ERROR = 'extensionError';
 
 		private $originalFileName = null;
+
+		private $allowedExtensions = null;
 
 		/**
 		 * @return PrimitiveUploadFile
@@ -24,6 +27,15 @@
 			return $this->originalFileName;
 		}
 
+		/*
+		 * @return PrimitiveUploadFile
+		 */
+		public function setAllowedExtensions(array $allowedExtensions)
+		{
+			$this->allowedExtensions = $allowedExtensions;
+			return $this;
+		}
+
 		/**
 		 * @return BasePrimitive
 		 */
@@ -36,8 +48,20 @@
 
 				$value = $this->getValue();
 
+				$extension = pathinfo($value['name'], PATHINFO_EXTENSION);
+
 				if (!empty($value['error']) && !empty($value['tmp_name'])) {
 					$this->addError(self::UPLOAD_ERROR);
+				}
+
+				if (
+					$this->allowedExtensions
+					&& !in_array($extension, $this->allowedExtensions)
+				) {
+					$this->addError(self::EXTENSION_ERROR);
+				}
+
+				if ($this->hasErrors()) {
 					$this->dropValue();
 					$this->originalFileName = null;
 				} else {
