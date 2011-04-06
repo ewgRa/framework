@@ -9,12 +9,19 @@
 	{
 		const UPLOAD_ERROR = 'uploadError';
 
+		private $originalFileName = null;
+
 		/**
 		 * @return PrimitiveUploadFile
 		 */
 		public static function create($name)
 		{
 			return new self($name);
+		}
+
+		public function getOriginalFileName()
+		{
+			return $this->originalFileName;
 		}
 
 		/**
@@ -32,8 +39,11 @@
 				if (!empty($value['error']) && !empty($value['tmp_name'])) {
 					$this->addError(self::UPLOAD_ERROR);
 					$this->dropValue();
-				} else
+					$this->originalFileName = null;
+				} else {
 					$this->setValue(File::create()->setPath($value['tmp_name']));
+					$this->originalFileName = $value['name'];
+				}
 			}
 
 			return $result;
