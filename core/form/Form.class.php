@@ -121,6 +121,11 @@
 			return $this->getPrimitive($primitiveName)->getValue();
 		}
 
+		public function getRawValue($primitiveName)
+		{
+			return $this->getPrimitive($primitiveName)->getRawValue();
+		}
+
 		public function getSafeValue($primitiveName)
 		{
 			return $this->getPrimitive($primitiveName)->getSafeValue();
