@@ -23,7 +23,7 @@
 		}
 
 		/**
-		 * @return FileBasedSession
+		 * @return Session
 		 */
 		public function relativeStart()
 		{
@@ -42,7 +42,7 @@
 		}
 
 		/**
-		 * @return FileBasedSession
+		 * @return Session
 		 */
 		public function start()
 		{
@@ -55,7 +55,7 @@
 		}
 
 		/**
-		 * @return FileBasedSession
+		 * @return Session
 		 */
 		public function save()
 		{
