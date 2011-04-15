@@ -5,10 +5,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class NullTransformView implements ViewInterface
+	final class NullView implements ViewInterface
 	{
 		/**
-		 * @return NullTransformView
+		 * @return NullView
 		 */
 		public static function create()
 		{
@@ -17,7 +17,7 @@
 
 		public function transform(Model $model)
 		{
-			return $model;
+			return null;
 		}
 
 		public function toString()
