@@ -115,6 +115,7 @@
 
 		$value = '$object->get'.$property->getAttribute('upperName').'()';
 		$storeValue = $value;
+		$rawValue = $value;
 
 		if ($type == 'array')
 			$storeValue = 'serialize('.$value.')';
@@ -129,7 +130,7 @@
 		if ($property->getAttribute('nullable')) {
 ?>
 
-			if (<?=$value?> === null)
+			if (<?=$rawValue?> === null)
 				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = NULL';
 			else {
 				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
