@@ -27,5 +27,10 @@
 		{
 
 		}
+
+		public function toString()
+		{
+			return $this->url;
+		}
 	}
 ?>
