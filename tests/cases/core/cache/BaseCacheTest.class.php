@@ -52,6 +52,7 @@
 			$this->assertSame($data, $clonedTicketData);
 
 			$clonedTicket->drop();
+			$this->assertTrue($clonedTicket->isExpired());
 			$clonedTicket = clone $cacheTicket;
 			$clonedTicket->restoreData();
 			$this->assertTrue($clonedTicket->isExpired());

@@ -41,6 +41,7 @@
 		public function drop(CacheTicket $cacheTicket)
 		{
 			$this->dropByKey($this->compileKey($cacheTicket));
+			$cacheTicket->expired();
 			return $this;
 		}
 

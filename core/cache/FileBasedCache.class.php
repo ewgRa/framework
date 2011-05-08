@@ -92,6 +92,7 @@
 
 			touch($fileName, $lifeTime);
 			$ticket->setExpiredTime($lifeTime);
+			$ticket->actual();
 
 			return $this;
 		}

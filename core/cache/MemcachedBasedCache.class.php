@@ -99,6 +99,8 @@
 
 			$this->getMemcache()->set($key, $data, 0, $lifeTime);
 
+			$ticket->actual();
+
 			return $this;
 		}
 
