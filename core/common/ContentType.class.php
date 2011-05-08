@@ -33,7 +33,7 @@
 			self::APPLICATION_PHP 	=> false,
 			self::TEXT_XSLT 		=> false,
 			self::TEXT_CSS 			=> true,
-			self::TEXT_JAVASCRIPT 	=> false,
+			self::TEXT_JAVASCRIPT 	=> true,
 			self::TEXT_XML		 	=> false
 		);
 
