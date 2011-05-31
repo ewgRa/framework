@@ -22,6 +22,11 @@
 			return $this->primitives;
 		}
 
+		public function hasPrimitive($name)
+		{
+			return isset($this->primitives[$name]);
+		}
+
 		public function getPrimitive($name)
 		{
 			if (!isset($this->primitives[$name]))
