@@ -12,6 +12,24 @@
 			'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' =>'E', 'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z', 'И' => 'I', 'Й' => 'I', 'К' => 'K', 'Л' => 'L', 'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P', 'Р' => 'R', 'С' => 'S', 'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Х' => 'H', 'Ц' => 'Ts', 'Ч' => 'Ch', 'Ш' => 'Ch', 'Щ' => 'ScH', 'Ь' => '', 'Ъ' => '', 'Э' => 'E', 'Ю' => 'Ju', 'Я' => 'Ja', 'Ы' => 'Y'
 		);
 
+		/*
+		 * @example selectCaseForNumber($count, array('слово', 'слова', 'слов'))
+		 */
+		public static function selectCaseForNumber($number, $cases)
+		{
+			if (($number % 10) == 1 && ($number % 100) != 11) {
+				return $cases[0];
+			} else if (
+				($number % 10) > 1
+				&& ($number % 10) < 5
+				&& ($number % 100 < 10 || $number % 100 > 20)
+			) {
+				return $cases[1];
+			}
+
+			return $cases[2];
+		}
+
 		public static function translit($string)
 		{
 			return strtr($string, self::$replacement);
