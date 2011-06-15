@@ -22,6 +22,12 @@
 		private $total = null;
 		private $orderId = null;
 		private $description = null;
+
+		/**
+		 * @var RobokassaCurrency
+		 */
+		private $currency = null;
+
 		private $userEmail = null;
 
 		private $language = self::LANGUAGE_RU;
@@ -34,6 +40,12 @@
 		public function setTestMode($testMode = true)
 		{
 			$this->testMode = ($testMode === true);
+			return $this;
+		}
+
+		public function setCurrency(RobokassaCurrency $currency)
+		{
+			$this->currency = $currency;
 			return $this;
 		}
 
@@ -93,25 +105,26 @@
 		 */
 		public function getUrl()
 		{
+			$data = array(
+				'MrchLogin' => $this->login,
+				'OutSum' => $this->total,
+				'InvId' => $this->orderId,
+				'Desc' => $this->description,
+				'SignatureValue' => $this->compileSecureHash(),
+				'Email' => $this->userEmail,
+				'Culture' => $this->language
+			);
+
+			if ($this->currency)
+				$data['IncCurrLabel'] = $this->currency->getAlias();
+
 			return
 				HttpUrl::createFromString(
 					$this->isTestMode()
 						? self::TEST_SERVER_URL
 						: self::SERVER_URL
 				)->
-				setQuery(
-					http_build_query(
-						array(
-							'MrchLogin' => $this->login,
-							'OutSum' => $this->total,
-							'InvId' => $this->orderId,
-							'Desc' => $this->description,
-							'SignatureValue' => $this->compileSecureHash(),
-							'Email' => $this->userEmail,
-							'Culture' => $this->language
-						)
-					)
-				);
+				setQuery(http_build_query($data));
 		}
 
 		private function compileSecureHash()

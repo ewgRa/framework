@@ -245,13 +245,19 @@
 			$value = $value. ' ? unserialize('.$value.') : null';
 		else if ($property->getAttribute('type') == 'boolean') {
 			if ($property->getAttribute('nullable') == 'true')
-				$value = $value.' == null ? null : '.$value.' == true';
+				$value = $value.' === null ? null : '.$value.' == true';
 			else
 				$value = $value.' == true';
 		}
-		else if ($property->getAttribute('classType') == 'Enumeration')
-			$value = $property->getAttribute('class').'::create('.$value. ')';
-		else if ($property->getAttribute('classType') == 'Stringable') {
+		else if ($property->getAttribute('classType') == 'Enumeration') {
+			$createValue = $property->getAttribute('class').'::create('.$value. ')';
+
+			if ($property->getAttribute('nullable') == 'true')
+				$value = $value.' === null ? null : '.$createValue;
+			else
+				$value = $createValue;
+
+		} else if ($property->getAttribute('classType') == 'Stringable') {
 			$value =
 				$property->getAttribute('class')
 				.'::createFromString('.$value. ')';
