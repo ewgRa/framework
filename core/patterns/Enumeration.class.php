@@ -11,6 +11,38 @@
 
 		protected $names = array();
 
+		public static function create($id)
+		{
+			$className = get_called_class();
+
+			return new $className($id);
+		}
+
+		public static function any()
+		{
+			$class = get_called_class();
+			$reflection = new \ReflectionClass(get_called_class());
+
+			$result = null;
+
+			foreach ($reflection->getConstants() as $value) {
+				try {
+					$result = new $class($value);
+
+					return $result;
+				} catch(MissingArgumentException $e) {
+					# fine, try another one
+				}
+			}
+
+			throw new Exception("can't find any id constant");
+		}
+
+		public static function createList()
+		{
+			return self::any()->getList();
+		}
+
 		/**
 		 * @return Enumeration
 		 */
