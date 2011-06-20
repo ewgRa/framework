@@ -52,7 +52,7 @@
 					join(
 						':',
 						array(
-							$this->form->getValue('OutSum'),
+							$this->form->getRawValue('OutSum'),
 							$this->form->getValue(RobokassaRequest::ORDER_ID_KEY),
 							$this->password
 						)
