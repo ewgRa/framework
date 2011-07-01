@@ -48,6 +48,7 @@
 		{
 			require_once(FRAMEWORK_DIR.'/core/patterns/SingletonInterface.class.php');
 			require_once(FRAMEWORK_DIR.'/core/patterns/Singleton.class.php');
+			require_once(FRAMEWORK_DIR.'/tests/cases/core/patterns/TestSingleton.class.php');
 			require_once(FRAMEWORK_DIR.'/ClassesAutoloader.class.php');
 
 			$foundClassesFile =

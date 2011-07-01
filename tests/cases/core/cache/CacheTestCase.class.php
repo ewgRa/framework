@@ -12,12 +12,12 @@
 		public function setUp()
 		{
 			$this->savedCache = serialize(\ewgraFramework\Cache::me());
-			\ewgraFramework\Singleton::dropInstance('ewgraFramework\Cache');
+			\ewgraFramework\TestSingleton::dropInstance('ewgraFramework\Cache');
 		}
 
 		public function tearDown()
 		{
-			\ewgraFramework\Singleton::setInstance(
+			\ewgraFramework\TestSingleton::setInstance(
 				'ewgraFramework\Cache',
 				unserialize($this->savedCache)
 			);

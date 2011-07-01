@@ -12,12 +12,12 @@
 		public function setUp()
 		{
 			$this->savedDatabase = serialize(\ewgraFramework\Database::me());
-			\ewgraFramework\Singleton::dropInstance('ewgraFramework\Database');
+			\ewgraFramework\TestSingleton::dropInstance('ewgraFramework\Database');
 		}
 
 		public function tearDown()
 		{
-			\ewgraFramework\Singleton::setInstance(
+			\ewgraFramework\TestSingleton::setInstance(
 				'ewgraFramework\Database',
 				unserialize($this->savedDatabase)
 			);

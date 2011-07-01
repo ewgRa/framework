@@ -12,12 +12,12 @@
 		public function setUp()
 		{
 			$this->savedClassesAutoloader = serialize(\ewgraFramework\ClassesAutoloader::me());
-			\ewgraFramework\Singleton::dropInstance('ewgraFramework\ClassesAutoloader');
+			\ewgraFramework\TestSingleton::dropInstance('ewgraFramework\ClassesAutoloader');
 		}
 
 		public function tearDown()
 		{
-			\ewgraFramework\Singleton::setInstance(
+			\ewgraFramework\TestSingleton::setInstance(
 				'ewgraFramework\ClassesAutoloader',
 				unserialize($this->savedClassesAutoloader)
 			);

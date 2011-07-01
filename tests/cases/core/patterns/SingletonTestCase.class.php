@@ -49,8 +49,8 @@
 
 		private function dropInstances()
 		{
-			\ewgraFramework\Singleton::dropInstance('MySingletonTest');
-			\ewgraFramework\Singleton::dropInstance('MySingletonTest2');
+			\ewgraFramework\TestSingleton::dropInstance('MySingletonTest');
+			\ewgraFramework\TestSingleton::dropInstance('MySingletonTest2');
 		}
 	}
 
