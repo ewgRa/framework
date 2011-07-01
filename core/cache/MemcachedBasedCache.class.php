@@ -75,7 +75,7 @@
 		}
 
 		/**
-		 * @return FileBasedCache
+		 * @return MemcachedBasedCache
 		 */
 		public function set(CacheTicket $ticket, $data)
 		{

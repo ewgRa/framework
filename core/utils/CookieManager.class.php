@@ -9,11 +9,12 @@
 	{
 		/**
 		 * @return CookieManager
+		 * method needed for methods hinting
 		 */
 		public static function me()
 		{
 			// @codeCoverageIgnoreStart
-			return parent::getInstance(__CLASS__);
+			return parent::me();
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -23,7 +24,8 @@
 		public function set($alias, $value, $expire = null, $path = '/')
 		{
 			// @codeCoverageIgnoreStart
-			return $this->setCookie($alias, $value, $expire, $path);
+			setcookie($alias, $value, $expire, $path);
+			return $this;
 			// @codeCoverageIgnoreEnd
 		}
 
@@ -35,18 +37,6 @@
 		public function get($alias)
 		{
 			return $_COOKIE[$alias];
-		}
-
-		/**
-		 * @return CookieManager
-		 * @deprecated
-		 */
-		public function setCookie($alias, $value, $expire = null, $path = '/')
-		{
-			// @codeCoverageIgnoreStart
-			setcookie($alias, $value, $expire, $path);
-			return $this;
-			// @codeCoverageIgnoreEnd
 		}
 	}
 ?>

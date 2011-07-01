@@ -7,9 +7,13 @@
 	*/
 	final class TestSingleton extends Singleton
 	{
+		/**
+		 * @return TestSingleton
+		 * method needed for methods hinting
+		 */
 		public static function me()
 		{
-			return parent::getInstance(__CLASS__);
+			return parent::me();
 		}
 
 		public static function getInstance($className)

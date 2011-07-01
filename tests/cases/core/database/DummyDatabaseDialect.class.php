@@ -10,10 +10,11 @@
 	{
 		/**
 		 * @return DummyDatabaseDialect
+		 * method needed for methods hinting
 		 */
 		public static function me()
 		{
-			return \ewgraFramework\Singleton::getInstance(__CLASS__);
+			return parent::me();
 		}
 
 		public function getLimit($count, $offset = null)

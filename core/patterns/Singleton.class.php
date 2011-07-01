@@ -9,6 +9,11 @@
 	{
 		private static $instances = array();
 
+		public static function me()
+		{
+			return self::getInstance(get_called_class());
+		}
+
 		/**
 		 * @return Singleton
 		 */
@@ -16,6 +21,11 @@
 		{
 		}
 
+		/**
+		 * @access private
+		 * protected because needed for tests
+		 * actually is private, use it carefully on your own risk
+		 */
 		protected static function getInstance($className)
 		{
 			if (!self::hasInstance($className))
@@ -24,6 +34,11 @@
 			return self::$instances[$className];
 		}
 
+		/**
+		 * @access private
+		 * protected because needed for tests
+		 * actually is private, use it carefully on your own risk
+		 */
 		protected static function setInstance($className, $instance)
 		{
 			self::$instances[$className] = $instance;
@@ -31,6 +46,11 @@
 			return $instance;
 		}
 
+		/**
+		 * @access private
+		 * protected because needed for tests
+		 * actually is private, use it carefully on your own risk
+		 */
 		protected static function dropInstance($className)
 		{
 			unset(self::$instances[$className]);
