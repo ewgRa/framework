@@ -42,8 +42,8 @@
 			if (!isset($this->observers[$event]))
 				return $this;
 
-			foreach ($this->observers[$event] as $callback)
-				call_user_func($callback, $model);
+			foreach ($this->observers[$event] as $hash => $callback)
+				call_user_func($callback, $model, $this, $hash);
 
 			return $this;
 		}
