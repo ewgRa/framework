@@ -11,7 +11,11 @@
 		private $defaultAction = null;
 		private $actionList = array();
 		private $action = null;
-		private $scopeKey = 'action';
+
+		public static function getActionScopeKey()
+		{
+			return str_replace('\\', '', get_called_class().'Action');
+		}
 
 		/**
 		 * @return ActionChainController
@@ -48,20 +52,6 @@
 		{
 			$this->actionList[$action] = $function;
 			return $this;
-		}
-
-		/**
-		 * @return ActionChainController
-		 */
-		public function setScopeKey($scopeKey)
-		{
-			$this->scopeKey = $scopeKey;
-			return $this;
-		}
-
-		public function getScopeKey()
-		{
-			return $this->scopeKey;
 		}
 
 		/**
@@ -107,11 +97,11 @@
 		{
 			$form =
 				Form::create()->
-				addPrimitive(PrimitiveString::create($this->getScopeKey()));
+				addPrimitive(PrimitiveString::create($this->getActionScopeKey()));
 
 			$form->import($request->getPost() + $request->getGet());
 
-			return $form->getValue($this->getScopeKey());
+			return $form->getValue($this->getActionScopeKey());
 		}
 	}
 ?>
