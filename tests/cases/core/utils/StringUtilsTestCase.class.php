@@ -13,13 +13,10 @@
 				'Testtest',
 				\ewgraFramework\StringUtils::upperKeyFirstAlpha('testtest')
 			);
-		}
 
-		public function testSeparateByUpperKey()
-		{
 			$this->assertEquals(
-				'test_string_test',
-				\ewgraFramework\StringUtils::separateByUpperKey('testStringTest')
+				'Тесттест',
+				\ewgraFramework\StringUtils::upperKeyFirstAlpha('тесттест')
 			);
 		}
 
@@ -29,6 +26,11 @@
 				10,
 				\ewgraFramework\StringUtils::getLength('testString')
 			);
+
+			$this->assertEquals(
+				10,
+				\ewgraFramework\StringUtils::getLength('тестСтрока')
+			);
 		}
 
 		public function testToLower()
@@ -37,6 +39,11 @@
 				'teststringtest',
 				\ewgraFramework\StringUtils::toLower('testStringTest')
 			);
+
+			$this->assertEquals(
+				'тестстрокатест',
+				\ewgraFramework\StringUtils::toLower('тестСтрокаТест')
+			);
 		}
 
 		public function testToUpper()
@@ -44,6 +51,11 @@
 			$this->assertEquals(
 				'TESTSTRINGTEST',
 				\ewgraFramework\StringUtils::toUpper('testStringTest')
+			);
+
+			$this->assertEquals(
+				'ТЕСТСТРОКАТЕСТ',
+				\ewgraFramework\StringUtils::toUpper('тестСтрокаТест')
 			);
 		}
 	}

@@ -19,5 +19,12 @@
 		{
 			return self::$alphabet;
 		}
+
+		public static function separateByUpperKey($string)
+		{
+			$string = preg_replace('/([A-Z])/', "_$1", $string);
+
+			return mb_strtolower($string);
+		}
 	}
 ?>

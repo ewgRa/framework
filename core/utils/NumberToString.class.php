@@ -15,8 +15,8 @@
 
 		private $words = array(
 			0 => 'ноль',
-			1 => array( 'один', self::THOUSAND => 'одна', self::KOPEYKA => 'одна' ),
-			2 => array( 'два', self::THOUSAND => 'две', self::KOPEYKA => 'две' ),
+			1 => array('один', self::THOUSAND => 'одна', self::KOPEYKA => 'одна'),
+			2 => array('два', self::THOUSAND => 'две', self::KOPEYKA => 'две'),
 			3 => 'три',
 			4 => 'четыре',
 			5 => 'пять',
@@ -74,20 +74,20 @@
 			return parent::me();
 		}
 
-		function __construct()
+		public function __construct()
 		{
 			$this->dimensionWords = array(
-				self::RUBL => array( 'рубль' => $this->symanticLink[0], 'рубля' => $this->symanticLink[1], 'рублей' => $this->symanticLink[2] ),
-				self::THOUSAND => array( 'тысяча' => $this->symanticLink[0], 'тысячи' => $this->symanticLink[1], 'тысяч' => $this->symanticLink[2] ),
-				self::MILLION => array( 'миллион' => $this->symanticLink[0], 'миллиона' => $this->symanticLink[1], 'миллионов' => $this->symanticLink[2] ),
-				self::MILLIARD => array( 'миллиард' => $this->symanticLink[0], 'миллиарда' => $this->symanticLink[1], 'миллиардов' => $this->symanticLink[2] )
+				self::RUBL => array('рубль' => $this->symanticLink[0], 'рубля' => $this->symanticLink[1], 'рублей' => $this->symanticLink[2]),
+				self::THOUSAND => array('тысяча' => $this->symanticLink[0], 'тысячи' => $this->symanticLink[1], 'тысяч' => $this->symanticLink[2]),
+				self::MILLION => array('миллион' => $this->symanticLink[0], 'миллиона' => $this->symanticLink[1], 'миллионов' => $this->symanticLink[2]),
+				self::MILLIARD => array('миллиард' => $this->symanticLink[0], 'миллиарда' => $this->symanticLink[1], 'миллиардов' => $this->symanticLink[2])
 			);
 
 			$this->dimensionWordsKopeyka = array(
-				self::KOPEYKA => array( 'копейка' => $this->symanticLink[0], 'копейки' => $this->symanticLink[1], 'копеек' => $this->symanticLink[2] ),
-				self::THOUSAND => array( 'тысяча' => $this->symanticLink[0], 'тысячи' => $this->symanticLink[1], 'тысяч' => $this->symanticLink[2] ),
-				self::MILLION => array( 'миллион' => $this->symanticLink[0], 'миллиона' => $this->symanticLink[1], 'миллионов' => $this->symanticLink[2] ),
-				self::MILLIARD => array( 'миллиард' => $this->symanticLink[0], 'миллиарда' => $this->symanticLink[1], 'миллиардов' => $this->symanticLink[2] )
+				self::KOPEYKA => array('копейка' => $this->symanticLink[0], 'копейки' => $this->symanticLink[1], 'копеек' => $this->symanticLink[2]),
+				self::THOUSAND => array('тысяча' => $this->symanticLink[0], 'тысячи' => $this->symanticLink[1], 'тысяч' => $this->symanticLink[2]),
+				self::MILLION => array('миллион' => $this->symanticLink[0], 'миллиона' => $this->symanticLink[1], 'миллионов' => $this->symanticLink[2]),
+				self::MILLIARD => array('миллиард' => $this->symanticLink[0], 'миллиарда' => $this->symanticLink[1], 'миллиардов' => $this->symanticLink[2])
 			);
 		}
 

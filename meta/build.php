@@ -139,7 +139,7 @@
 
 				$propertyNode->setAttribute(
 					'downSeparatedName',
-					StringUtils::separateByUpperKey($propertyNode->nodeName)
+					EnglishStringUtils::separateByUpperKey($propertyNode->nodeName)
 				);
 
 				if ($propertyNode->getAttribute('class')) {
@@ -180,7 +180,7 @@
 
 					$relationNode->setAttribute(
 						'downSeparatedName',
-						StringUtils::separateByUpperKey($relationNode->nodeName)
+						EnglishStringUtils::separateByUpperKey($relationNode->nodeName)
 					);
 
 					$propertiesNode->insertBefore($relationNode, $propertyNode);
