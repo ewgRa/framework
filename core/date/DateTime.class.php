@@ -7,11 +7,17 @@
 	*/
 	final class DateTime extends \DateTime
 	{
+		/**
+		 * @return DateTime
+		 */
 		public static function makeNow()
 		{
 			return self::createFromTimestamp(time());
 		}
 
+		/**
+		 * @return DateTime
+		 */
 		public static function createFromTimestamp($timestamp)
 		{
 			$dateTime = new self();
