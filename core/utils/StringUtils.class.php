@@ -14,6 +14,13 @@
 				.self::substr($string, 1);
 		}
 
+		public static function lowerKeyFirstAlpha($string)
+		{
+			return
+				self::toLower(mb_substr($string, 0, 1, 'utf8'))
+				.self::substr($string, 1);
+		}
+
 		public static function getLength($string)
 		{
 			return mb_strlen($string, 'utf8');
