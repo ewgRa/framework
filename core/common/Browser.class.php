@@ -20,7 +20,7 @@
 
 		public function isIE6()
 		{
-			return mb_stripos($this->userAgent, 'msie 6', 0, 'utf8');
+			return mb_stripos($this->userAgent, 'msie 6', 0, 'utf8') !== false;
 		}
 
 		private function setUserAgent($userAgent)
