@@ -7,7 +7,11 @@
 	*/
 	final class HttpRequest
 	{
+		/**
+		 * @var HttpUrl
+		 */
 		private $url		= null;
+
 		private $get		= array();
 		private $post		= array();
 		private $cookie		= array();
