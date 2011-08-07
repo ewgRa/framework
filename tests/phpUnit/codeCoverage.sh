@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./run.sh --coverage-html /tmp/ewgraFrameworkCodeCoverage $*
+/bin/bash ./run.sh --coverage-html /tmp/ewgraFrameworkCodeCoverage $*

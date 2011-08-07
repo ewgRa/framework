@@ -77,8 +77,11 @@
 				require_once($classFile);
 
 			if (
-				!$this->classExists($className)
-				|| !$classFile
+				$this->isFound($className)
+				&& (
+					!$this->classExists($className)
+					|| !$classFile
+				)
 			) {
 				$this->dropFound($className);
 				$this->classMapChanged = true;
@@ -156,7 +159,10 @@
 					)
 						continue;
 
-					if (strpos($namespace, $probablyNamespace) === 0) {
+					if (
+						$namespace == $probablyNamespace
+						|| strpos($namespace, $probablyNamespace.'\\') === 0
+					) {
 						$searchDirectories =
 							$this->searchDirectories[$probablyNamespace];
 

@@ -154,7 +154,48 @@
 
 		public function testNamespace()
 		{
-			$this->fail();
+			$className = __FUNCTION__.rand();
+
+			$fullClassName = __NAMESPACE__.'Additional\\'.$className;
+
+			$fileName =
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$className.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
+
+			file_put_contents(
+				$fileName,
+				"<?php
+					namespace ".__NAMESPACE__."Additional;
+					class {$className}{}
+				?>"
+			);
+
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR, __NAMESPACE__);
+
+			$this->assertClassMapChanged(false);
+
+			\ewgraFramework\ClassesAutoloader::me()->load($fullClassName);
+
+			$this->assertClassMapChanged(false);
+
+			$this->assertFalse(class_exists($fullClassName, false));
+
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR, __NAMESPACE__.'Additional');
+
+			$this->assertClassMapChanged(false);
+
+			\ewgraFramework\ClassesAutoloader::me()->load($fullClassName);
+
+			$this->assertClassMapChanged(true);
+
+			unlink($fileName);
+
+			$this->assertTrue(class_exists($fullClassName, false));
+
+			$this->assertSame(
+				array($fullClassName => $fileName),
+				\ewgraFramework\ClassesAutoLoader::me()->getFoundClasses()
+			);
 		}
 
 		private function assertClassMapChanged($expect = true)
