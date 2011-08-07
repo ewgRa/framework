@@ -17,6 +17,9 @@
 
 		public function get(CacheTicket $ticket)
 		{
+			$ticket->setExpiredTime(null);
+			$ticket->expired();
+
 			return null;
 		}
 
@@ -25,6 +28,9 @@
 		 */
 		public function set(CacheTicket $ticket, $data)
 		{
+			$ticket->setExpiredTime(null);
+			$ticket->expired();
+
 			return $this;
 		}
 

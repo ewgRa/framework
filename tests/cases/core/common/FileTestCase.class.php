@@ -45,6 +45,7 @@
 					$dirName.'/'.$basename.'.test'
 				);
 
+			$this->assertEquals($dirName, $file->getDir()->getPath());
 			$this->assertEquals($basename.'.test', $file->getBaseName());
 			$this->assertFalse($file->isExists());
 			$file->setContent('aaa');
@@ -60,6 +61,16 @@
 			$this->assertFalse($file->isExists());
 			$this->assertTrue($dest->isExists());
 			$this->assertSame($content, $dest->getContent());
+
+			$dest->chmod(0777);
+
+			$this->assertSame(substr(sprintf('%o', fileperms($dest->getPath())), -4), '0777');
+
+			$dest->chmod(0644);
+
+			clearstatcache();
+
+			$this->assertSame(substr(sprintf('%o', fileperms($dest->getPath())), -4), '0644');
 
 			$dest->delete();
 			$this->assertFalse($dest->isExists());

@@ -55,14 +55,6 @@
 			return $this;
 		}
 
-		/**
-		 * @return Session
-		 */
-		public function save()
-		{
-			return $this;
-		}
-
 		public function getId()
 		{
 			return
