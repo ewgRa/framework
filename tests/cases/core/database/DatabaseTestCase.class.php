@@ -42,7 +42,7 @@
 				# good
 			}
 
-			$pool = \ewgraFramework\MysqlDatabase::create();
+			$pool = \ewgraFramework\MysqlDatabase::create()->setUser('baobab');
 
 			\ewgraFramework\Database::me()->addPool($pool, 'default');
 
@@ -61,6 +61,27 @@
 			$this->assertSame(
 				$pool,
 				\ewgraFramework\Database::me()->getPool('default')
+			);
+
+			\ewgraFramework\Database::me()->swapPools('default', 'default2');
+
+			$this->assertNull(
+				\ewgraFramework\Database::me()->getPool('default')->getUser()
+			);
+
+			$this->assertSame(
+				$pool->getUser(),
+				\ewgraFramework\Database::me()->getPool('default2')->getUser()
+			);
+
+			\ewgraFramework\Database::me()->swapPools('default', 'default2');
+
+			$this->assertSame(
+				array(
+					'default' => $pool,
+					'default2' => \ewgraFramework\Database::me()->getPool('default2')
+				),
+				\ewgraFramework\Database::me()->getPools()
 			);
 		}
 	}

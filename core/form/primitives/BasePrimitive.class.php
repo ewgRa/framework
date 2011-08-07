@@ -19,6 +19,8 @@
 		private $errorLabels = array();
 		private $required	= null;
 
+		private $preImportFilters = array();
+
 		protected function __construct($name)
 		{
 			$this->setName($name);
@@ -208,6 +210,9 @@
 
 			$this->setRawValue($value);
 
+			foreach ($this->preImportFilters as $filter)
+				$value = $filter->apply($value);
+
 			if ($this->isWrong($value))
 				$this->markWrong();
 			else if ($this->isRequired() && $this->isEmpty($value)) {
@@ -237,6 +242,12 @@
 		public function markWrong()
 		{
 			$this->addError(self::WRONG_ERROR);
+			return $this;
+		}
+
+		public function addPreImportFilter(FilterInterface $filter)
+		{
+			$this->preImportFilters[] = $filter;
 			return $this;
 		}
 	}

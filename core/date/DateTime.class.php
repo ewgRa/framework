@@ -33,17 +33,17 @@
 
 		public function getDay()
 		{
-			return $this->format('d');
+			return (int)$this->format('d');
 		}
 
 		public function getMonth()
 		{
-			return $this->format('n');
+			return (int)$this->format('n');
 		}
 
 		public function getYear()
 		{
-			return $this->format('Y');
+			return (int)$this->format('Y');
 		}
 	}
 ?>

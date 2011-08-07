@@ -12,7 +12,9 @@
 		 */
 		public static function create($message = null, $code = null)
 		{
+			// @codeCoverageIgnoreStart
 			return new self($message, $code);
+			// @codeCoverageIgnore
 		}
 	}
 ?>

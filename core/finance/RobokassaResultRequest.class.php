@@ -26,6 +26,9 @@
 				)->
 				addPrimitive(
 					PrimitiveFloat::create('OutSum')->
+					addPreImportFilter(
+						StringReplaceFilter::create()->addReplacement(',', '.')
+					)->
 					setRequired()
 				)->
 				addPrimitive(
