@@ -7,13 +7,6 @@
 	*/
 	final class MemcachedBasedCache extends BaseCache
 	{
-		private $servers = array(
-			array(
-				'host' => 'localhost',
-				'port' => 11211
-			)
-		);
-
 		private $memcache = null;
 
 		/**
@@ -29,20 +22,7 @@
 		 */
 		public function addServer($host, $port)
 		{
-			$this->servers[] = array(
-				'host' => $host,
-				'port' => $port
-			);
-
-			return $this;
-		}
-
-		/**
-		 * @return MemcachedBasedCache
-		 */
-		public function dropServers()
-		{
-			$this->servers = array();
+			$this->getMemcache()->addServer($host, $port);
 
 			return $this;
 		}
@@ -128,12 +108,8 @@
 		 */
 		private function getMemcache()
 		{
-			if (!$this->memcache) {
+			if (!$this->memcache)
 				$this->memcache = new \Memcache();
-
-				foreach ($this->servers as $server)
-					$this->memcache->addServer($server['host'], $server['port']);
-			}
 
 			return $this->memcache;
 		}

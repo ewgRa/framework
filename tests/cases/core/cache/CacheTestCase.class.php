@@ -42,7 +42,7 @@
 				# good
 			}
 
-			$pool = \ewgraFramework\FileBasedCache::create();
+			$pool = \ewgraFramework\FileBasedCache::create()->setCacheDir('test');
 
 			\ewgraFramework\Cache::me()->addPool($pool, 'default');
 
@@ -61,6 +61,27 @@
 			$this->assertSame(
 				$pool,
 				\ewgraFramework\Cache::me()->getPool('default')
+			);
+
+			\ewgraFramework\Cache::me()->swapPools('default', 'default2');
+
+			$this->assertNull(
+				\ewgraFramework\Cache::me()->getPool('default')->getCacheDir()
+			);
+
+			$this->assertSame(
+				$pool->getCacheDir(),
+				\ewgraFramework\Cache::me()->getPool('default2')->getCacheDir()
+			);
+
+			\ewgraFramework\Cache::me()->swapPools('default', 'default2');
+
+			$this->assertSame(
+				array(
+					'default' => $pool,
+					'default2' => \ewgraFramework\Cache::me()->getPool('default2')
+				),
+				\ewgraFramework\Cache::me()->getPools()
 			);
 		}
 	}

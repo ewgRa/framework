@@ -143,12 +143,12 @@
 			);
 		}
 
-		private function getPrefix()
+		protected function getPrefix()
 		{
 			return __CLASS__.'_'.__FUNCTION__.'_'.rand();
 		}
 
-		private function getData()
+		protected function getData()
 		{
 			return array(rand(), rand(), rand());
 		}
