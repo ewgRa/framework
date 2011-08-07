@@ -32,6 +32,33 @@
 			);
 		}
 
+		public function testBreakHandleRequest()
+		{
+			$chain =
+				new TestChainController1(
+					new TestChainControllerBreakChain(
+						new TestChainController2()
+					)
+				);
+
+			$mav =
+				\ewgraFramework\ModelAndView::create()->
+				setModel(
+					\ewgraFramework\Model::create()->
+					set('callStack', array())
+				);
+
+			$chain->handleRequest(\ewgraFramework\HttpRequest::create(), $mav);
+
+			$this->assertSame(
+				array(
+					__NAMESPACE__.'\\TestChainController1',
+					__NAMESPACE__.'\\TestChainControllerBreakChain'
+				),
+				$mav->getModel()->get('callStack')
+			);
+		}
+
 		public function testOuter()
 		{
 			$inner = new TestChainController2();
@@ -52,12 +79,19 @@
 			\ewgraFramework\HttpRequest $request,
 			\ewgraFramework\ModelAndView $mav
 		) {
+			$this->registerCallback($mav);
+
+			return parent::handleRequest($request, $mav);
+		}
+
+		protected function registerCallback(\ewgraFramework\ModelAndView $mav)
+		{
 			$callStack = $mav->getModel()->get('callStack');
 			$callStack[] = get_class($this);
 
 			$mav->getModel()->set('callStack', $callStack);
 
-			return parent::handleRequest($request, $mav);
+			return $this;
 		}
 	}
 
@@ -67,5 +101,21 @@
 
 	final class TestChainController2 extends BaseTestChainController
 	{
+	}
+
+	final class TestChainControllerBreakChain extends BaseTestChainController
+	{
+		/**
+		 * @return \ewgraFramework\ModelAndView
+		 */
+		public function handleRequest(
+			\ewgraFramework\HttpRequest $request,
+			\ewgraFramework\ModelAndView $mav
+		) {
+			$this->registerCallback($mav);
+
+			return $mav;
+		}
+
 	}
 ?>
