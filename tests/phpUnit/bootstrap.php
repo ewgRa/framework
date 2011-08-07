@@ -7,5 +7,10 @@
 	*/
 
 	require_once(dirname(__FILE__).'/../init.php');
+
+	\PHPUnit_Util_Filter::addDirectoryToFilter(
+	  FRAMEWORK_DIR.'/incubator', '.php'
+	);
+
 	require_once(dirname(__FILE__).'/FrameworkTestCase.class.php');
 ?>

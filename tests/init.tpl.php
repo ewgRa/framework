@@ -46,6 +46,7 @@
 
 		function classesAutoloaderInit()
 		{
+			// @codeCoverageIgnoreStart
 			require_once(FRAMEWORK_DIR.'/core/patterns/SingletonInterface.class.php');
 			require_once(FRAMEWORK_DIR.'/core/patterns/Singleton.class.php');
 			require_once(FRAMEWORK_DIR.'/tests/cases/core/patterns/TestSingleton.class.php');
@@ -75,19 +76,24 @@
 				'\ewgraFramework\tests\storeAutoloaderMap',
 				$foundClassesFile
 			);
+			// @codeCoverageIgnoreEnd
 		}
 
 		function cacheInit()
 		{
+			// @codeCoverageIgnoreStart
+			// @codeCoverageIgnoreEnd
 		}
 
 		function storeAutoloaderMap(\ewgraFramework\File $file)
 		{
+			// @codeCoverageIgnoreStart
 			if (\ewgraFramework\ClassesAutoloader::me()->isClassMapChanged()) {
 				$file->setContent(
 					serialize(\ewgraFramework\ClassesAutoloader::me()->getFoundClasses())
 				);
 			}
+			// @codeCoverageIgnoreEnd
 		}
 	}
 

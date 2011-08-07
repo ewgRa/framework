@@ -27,7 +27,9 @@
 			try {
 				$this->instance->connect();
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
+				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't connect to test mysql server");
+				// @codeCoverageIgnoreEnd
 			}
 
 			try {
@@ -39,19 +41,25 @@
 					'CREATE DATABASE '.$this->instance->getDatabase()
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
+				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't clean mysql test database");
+				// @codeCoverageIgnoreEnd
 			}
 
 			try {
 				$this->instance->selectDatabase();
 			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
+				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't select test mysql database");
+				// @codeCoverageIgnoreEnd
 			}
 
 			try {
 				$this->instance->selectCharset();
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
+				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't select test mysql charset");
+				// @codeCoverageIgnoreEnd
 			}
 
 			try {
@@ -64,7 +72,9 @@
 					DEFAULT CHARSET=utf8'
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
+				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't create test table");
+				// @codeCoverageIgnoreEnd
 			}
 		}
 
@@ -80,7 +90,9 @@
 
 			try {
 				$this->instance->connect();
+				// @codeCoverageIgnoreStart
 				$this->fail();
+				// @codeCoverageIgnoreEnd
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				# good
 			}
@@ -92,7 +104,9 @@
 
 			try {
 				$this->instance->selectDatabase();
+				// @codeCoverageIgnoreStart
 				$this->fail();
+				// @codeCoverageIgnoreEnd
 			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
 				# good
 			}

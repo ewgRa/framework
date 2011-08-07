@@ -198,6 +198,34 @@
 			);
 		}
 
+		public function testDropClass()
+		{
+			$className = __FUNCTION__.rand();
+
+			$fullClassName = __NAMESPACE__.'\\'.$className;
+
+			$fileName =
+				TMP_DIR.DIRECTORY_SEPARATOR
+				.$className.\ewgraFramework\ClassesAutoLoader::CLASS_FILE_EXTENSION;
+
+			\ewgraFramework\ClassesAutoLoader::me()->setFoundClasses(
+				array(
+					$fullClassName => $fileName
+				)
+			);
+
+			\ewgraFramework\ClassesAutoLoader::me()->addSearchDirectory(TMP_DIR);
+
+			$this->assertClassMapChanged(false);
+			$this->assertNotNull(\ewgraFramework\ClassesAutoloader::me()->getFoundClassFile($fullClassName));
+
+			\ewgraFramework\ClassesAutoloader::me()->load($fullClassName);
+
+			$this->assertClassMapChanged(true);
+			$this->assertFalse(class_exists($fullClassName, false));
+			$this->assertNull(\ewgraFramework\ClassesAutoloader::me()->getFoundClassFile($fullClassName));
+		}
+
 		private function assertClassMapChanged($expect = true)
 		{
 			$this->assertTrue(

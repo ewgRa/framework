@@ -11,11 +11,15 @@
 		{
 			$dbQuery =
 				\ewgraFramework\DatabaseQuery::create()->
-				setQuery('SELECT * FROM a WHERE id = ? and set=?')->
-				setValues(array(1));
+				setQuery(
+					'SELECT * FROM '.DummyDatabaseDialect::me()->quoteTable('a')
+					.' WHERE id = ? and set_array IN (?) and set=?'
+					.DummyDatabaseDialect::me()->getLimit(1, 2)
+				)->
+				setValues(array(1, array(2, 3)));
 
 			$this->assertSame(
-				"SELECT * FROM a WHERE id = '|1|' and set=?",
+				"SELECT * FROM |a| WHERE id = '|1|' and set_array IN ('|2|', '|3|') and set=? LIMIT 2, 1",
 				$dbQuery->toString(DummyDatabaseDialect::me())
 			);
 		}
