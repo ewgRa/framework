@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PrimitiveUploadFile extends BasePrimitive
+	final class PrimitiveUploadFile extends PrimitiveArray
 	{
 		const UPLOAD_ERROR = 'uploadError';
 		const EXTENSION_ERROR = 'extensionError';
@@ -43,9 +43,7 @@
 		{
 			$result = parent::import($scope);
 
-			if (!$this->hasErrors() && $this->getValue()) {
-				Assert::isArray($this->getValue());
-
+			if (!$this->hasErrors() && $this->getValue() !== null) {
 				$value = $this->getValue();
 
 				$extension = pathinfo($value['name'], PATHINFO_EXTENSION);
@@ -61,16 +59,21 @@
 					$this->addError(self::EXTENSION_ERROR);
 				}
 
-				if ($this->hasErrors()) {
+				if ($this->hasErrors())
 					$this->dropValue();
-					$this->originalFileName = null;
-				} else {
+				else {
 					$this->setValue(File::create()->setPath($value['tmp_name']));
 					$this->originalFileName = $value['name'];
 				}
 			}
 
 			return $result;
+		}
+
+		public function clean()
+		{
+			$this->originalFileName = null;
+			return parent::clean();
 		}
 
 		public function isEmpty($value)

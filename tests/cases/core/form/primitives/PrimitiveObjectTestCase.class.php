@@ -9,12 +9,18 @@
 	{
 		public function testImport()
 		{
-			$id = 1;
+			$id = '0';
 
 			$primitive =
 				\ewgraFramework\PrimitiveObject::create('testPrimitive')->
 				setClass(__NAMESPACE__.'\\PrimitiveObjectTestObject')->
 				import(array('testPrimitive' => $id));
+
+			$this->assertTrue($primitive->hasErrors());
+
+			$id = PrimitiveObjectTestObject::EXISTS_ID;
+
+			$primitive->clean()->import(array('testPrimitive' => $id));
 
 			$this->assertSame($id, $primitive->getValue()->getId());
 		}

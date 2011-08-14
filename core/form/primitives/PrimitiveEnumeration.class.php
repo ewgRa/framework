@@ -35,13 +35,17 @@
 
 			$result = parent::import($scope);
 
-			if (!$this->hasErrors() && $this->getValue()) {
-				$this->setValue(
-					call_user_func(
-						array($this->class, 'create'),
-						$this->getValue()
-					)
-				);
+			if (!$this->hasErrors() && $this->getValue() !== null) {
+				try {
+					$this->setValue(
+						call_user_func(
+							array($this->class, 'create'),
+							$this->getValue()
+						)
+					);
+				} catch (MissingArgumentException $e) {
+					$this->markMissing();
+				}
 			}
 
 			return $result;

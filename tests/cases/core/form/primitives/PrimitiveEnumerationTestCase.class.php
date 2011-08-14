@@ -9,7 +9,21 @@
 	{
 		public function testImport()
 		{
-			$id = 1;
+			$primitive =
+				\ewgraFramework\PrimitiveEnumeration::create('testPrimitive')->
+				setClass(__NAMESPACE__.'\\PrimitiveEnumerationTestClass')->
+				import(array('testPrimitive' => '0'));
+
+			$this->assertTrue($primitive->hasErrors());
+
+			$primitive =
+				\ewgraFramework\PrimitiveEnumeration::create('testPrimitive')->
+				setClass(__NAMESPACE__.'\\PrimitiveEnumerationTestClass')->
+				import(array('testPrimitive' => 'NON_EXISTS_ID'));
+
+			$this->assertTrue($primitive->hasErrors());
+
+			$id = PrimitiveEnumerationTestClass::TEST;
 
 			$primitive =
 				\ewgraFramework\PrimitiveEnumeration::create('testPrimitive')->

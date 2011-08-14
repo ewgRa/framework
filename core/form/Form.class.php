@@ -42,7 +42,9 @@
 					return $primitive;
 			}
 
-			return null;
+			throw MissingArgumentException::create(
+				'known nothing about primitive with scope key '.$key
+			);
 		}
 
 		/**
@@ -84,8 +86,11 @@
 		public function importMore(array $scope)
 		{
 			foreach ($scope as $scopeKey => $value) {
-				if ($primitive = $this->getPrimitiveByScopeKey($scopeKey))
-					$primitive->import($scope);
+				try {
+					$this->getPrimitiveByScopeKey($scopeKey)->import($scope);
+				} catch (MissingArgumentException $e) {
+					# not my scope key
+				}
 			}
 
 			return $this;

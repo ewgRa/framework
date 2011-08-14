@@ -17,6 +17,15 @@
 
 			$this->assertSame($data, $primitive->getRawValue());
 			$this->assertSame((string)$data, $primitive->getValue());
+
+			$data = 0;
+
+			$primitive =
+				\ewgraFramework\PrimitiveString::create('testPrimitive')->
+				import(array('testPrimitive' => $data));
+
+			$this->assertSame($data, $primitive->getRawValue());
+			$this->assertSame((string)$data, $primitive->getValue());
 		}
 	}
 ?>

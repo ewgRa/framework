@@ -22,15 +22,10 @@
 		{
 			$result = parent::import($scope);
 
-			if (!$this->hasErrors() && $this->getValue())
+			if (!$this->hasErrors() && $this->getValue() !== null)
 				$this->setValue($this->getValue() ? true : false);
 
 			return $result;
-		}
-
-		public function isEmpty($value)
-		{
-			return ($value === '' || $value === null);
 		}
 	}
 ?>

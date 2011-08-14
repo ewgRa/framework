@@ -35,11 +35,13 @@
 
 			$result = parent::import($scope);
 
-			if (!$this->hasErrors() && $this->getValue()) {
+			if (!$this->hasErrors() && $this->getValue() !== null) {
 				$classDA = call_user_func(array($this->class, 'da'));
-				$this->setValue($classDA->getById($this->getValue()));
+				$value = $classDA->getById($this->getValue());
 
-				if (!$this->getValue() && $this->isRequired())
+				$this->setValue($value);
+
+				if ($this->getValue() === null)
 					$this->markMissing();
 			}
 

@@ -17,21 +17,9 @@
 			return new self($name);
 		}
 
-		/**
-		 * @return PrimitiveEmail
-		 */
-		public function import($scope)
+		public function isWrong($value)
 		{
-			$result = parent::import($scope);
-
-			if (!$this->hasErrors() && $this->getValue()) {
-				if (!preg_match(self::MAIL_PATTERN, $this->getValue())) {
-					$this->markWrong();
-					$this->dropValue();
-				}
-			}
-
-			return $result;
+			return !preg_match(self::MAIL_PATTERN, $value);
 		}
 	}
 ?>

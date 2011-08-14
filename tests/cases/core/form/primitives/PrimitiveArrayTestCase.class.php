@@ -9,7 +9,25 @@
 	{
 		public function testImport()
 		{
+			try {
+				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
+				import(array('testPrimitive' => '0'));
+
+				$this->fail();
+			} catch (\ewgraFramework\WrongArgumentException $e) {
+				# good
+			}
+
 			$data = array(rand(), rand());
+
+			$primitive =
+				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
+				import(array('testPrimitive' => $data));
+
+			$this->assertSame($data, $primitive->getRawValue());
+			$this->assertSame($data, $primitive->getValue());
+
+			$data = array('0');
 
 			$primitive =
 				\ewgraFramework\PrimitiveArray::create('testPrimitive')->

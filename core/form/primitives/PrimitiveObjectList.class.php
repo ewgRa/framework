@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class PrimitiveObjectList extends BasePrimitive
+	final class PrimitiveObjectList extends PrimitiveArray
 	{
 		private $class = null;
 
@@ -35,7 +35,7 @@
 
 			$result = parent::import($scope);
 
-			if (!$this->hasErrors() && $this->getValue()) {
+			if (!$this->hasErrors() && $this->getValue() !== null) {
 				$value = $this->getValue();
 
 				foreach ($value as $key => $objectId) {

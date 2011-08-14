@@ -9,6 +9,12 @@
 	{
 		public function testImport()
 		{
+			$primitive =
+				\ewgraFramework\PrimitiveYaml::create('testPrimitive')->
+				import(array('testPrimitive' => '0'));
+
+			$this->assertTrue($primitive->hasErrors());
+
 			$data = 'testData: testValue';
 
 			$primitive =

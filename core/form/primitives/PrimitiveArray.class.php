@@ -17,7 +17,16 @@
 
 		public function isEmpty($value)
 		{
-			return !is_array($value) || !count($value);
+			return !count($value);
+		}
+
+		/**
+		 * @return PrimitiveArray
+		 */
+		public function setRawValue($value)
+		{
+			Assert::isArray($value);
+			return parent::setRawValue($value);
 		}
 	}
 ?>

@@ -56,6 +56,47 @@
 				'/tmp/fwef',
 				$primitive->getValue()->getPath()
 			);
+
+			$this->assertSame(
+				'aaaa.jpg',
+				$primitive->getOriginalFileName()
+			);
+
+			$primitive->clean();
+
+			$this->assertNull($primitive->getOriginalFileName());
+		}
+
+		public function testAllowedExtensionsImport()
+		{
+			$file = array(
+				'error' => 0,
+				'tmp_name' => '/tmp/fwef',
+				'name' => 'aaaa.jpg'
+			);
+
+			$primitive =
+				\ewgraFramework\PrimitiveUploadFile::create('testPrimitive')->
+				setAllowedExtensions(array('css'))->
+				import(array('testPrimitive' => $file));
+
+			$this->assertTrue(
+				$primitive->hasError(
+					\ewgraFramework\PrimitiveUploadFile::EXTENSION_ERROR
+				)
+			);
+
+			$primitive->clean();
+
+			$file = array(
+				'error' => 0,
+				'tmp_name' => '/tmp/fwef',
+				'name' => 'aaaa.css'
+			);
+
+			$primitive->import(array('testPrimitive' => $file));
+
+			$this->assertFalse($primitive->hasErrors());
 		}
 	}
 ?>

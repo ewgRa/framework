@@ -7,6 +7,8 @@
 	*/
 	final class PrimitiveObjectTestObject
 	{
+		const EXISTS_ID = 1;
+
 		private $id = null;
 
 		public static function create()

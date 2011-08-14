@@ -14,6 +14,9 @@
 
 		public function getById($id)
 		{
+			if ($id != PrimitiveObjectTestObject::EXISTS_ID)
+				return null;
+
 			return PrimitiveObjectTestObject::create()->setId($id);
 		}
 	}

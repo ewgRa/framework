@@ -215,17 +215,17 @@
 
 			if ($this->isWrong($value))
 				$this->markWrong();
-			else if ($this->isRequired() && $this->isEmpty($value)) {
-				$this->markMissing();
-			} else if(!$this->isEmpty($value))
+			else if(!$this->isEmpty($value))
 				$this->setValue($value);
+			else if ($this->isRequired())
+				$this->markMissing();
 
 			return $this;
 		}
 
 		public function isEmpty($value)
 		{
-			return !$value;
+			return ($value === '' || $value === null);
 		}
 
 		public function isWrong($value)
