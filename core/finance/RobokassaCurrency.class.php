@@ -28,13 +28,6 @@
 			return new self($id);
 		}
 
-		public static function createList()
-		{
-			$any = new self(self::BANK_CARD);
-
-			return $any->getList();
-		}
-
 		public function getAlias()
 		{
 			return $this->aliases[$this->getId()];
