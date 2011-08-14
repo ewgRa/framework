@@ -25,7 +25,9 @@
 		 */
 		public function setRawValue($value)
 		{
-			Assert::isArray($value);
+			if ($value !== null)
+				Assert::isArray($value);
+
 			return parent::setRawValue($value);
 		}
 	}

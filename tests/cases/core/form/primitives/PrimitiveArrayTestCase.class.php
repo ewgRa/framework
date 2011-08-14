@@ -11,6 +11,13 @@
 		{
 			try {
 				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
+				import(array('testPrimitive' => null));
+			} catch (\ewgraFramework\WrongArgumentException $e) {
+				$this->fail();
+			}
+
+			try {
+				\ewgraFramework\PrimitiveArray::create('testPrimitive')->
 				import(array('testPrimitive' => '0'));
 
 				$this->fail();
