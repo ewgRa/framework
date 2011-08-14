@@ -7,6 +7,9 @@
 	*/
 	final class RedirectView implements ViewInterface
 	{
+		/**
+		 * @var HttpUrl
+		 */
 		private $url = null;
 
 		/**
@@ -17,20 +20,20 @@
 			return new self;
 		}
 
-		public static function setUrl($url)
+		public function setUrl(HttpUrl $url)
 		{
 			$this->url = $url;
-			return $url;
+			return $this;
 		}
 
 		public function transform(Model $model)
 		{
-
+			throw UnimplementedCodeException::create();
 		}
 
 		public function toString()
 		{
-			return $this->url;
+			return $this->url->__toString();
 		}
 	}
 ?>

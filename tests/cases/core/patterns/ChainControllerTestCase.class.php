@@ -59,7 +59,7 @@
 			);
 		}
 
-		public function testOuter()
+		public function testChain()
 		{
 			$inner = new TestChainController2();
 			$chain = new TestChainController1($inner);
@@ -67,6 +67,7 @@
 			$this->assertTrue($inner->hasOuter());
 
 			$this->assertSame($chain, $inner->getOuter());
+			$this->assertSame($chain, $inner->getFirstController());
 		}
 	}
 

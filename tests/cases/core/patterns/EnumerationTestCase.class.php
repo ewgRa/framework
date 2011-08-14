@@ -17,6 +17,25 @@
 			}
 		}
 
+		public function testAny()
+		{
+			$this->assertSame(
+				EnumerationTest::any()->getId(),
+				EnumerationTest::TEST
+			);
+		}
+
+		public function testCreateList()
+		{
+			$this->assertSame(
+				\ewgraFramework\ArrayUtils::getObjectIds(EnumerationTest::createList()),
+				array(
+					EnumerationTest::TEST,
+					EnumerationTest::TEST2
+				)
+			);
+		}
+
 		public function testCommon()
 		{
 			$enumeration = EnumerationTest::create(1);

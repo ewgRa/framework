@@ -20,7 +20,7 @@
 		 */
 		public static function create($id)
 		{
-			return new self($id);
+			return parent::create($id);
 		}
 	}
 ?>

@@ -7,6 +7,28 @@
 	*/
 	final class ActionChainControllerTestCase extends FrameworkTestCase
 	{
+		public function testRequest()
+		{
+			$controller = new TestActionChainController1();
+
+			$controller->setRequestAction('action');
+
+			$controller->handleRequest(
+				\ewgraFramework\HttpRequest::create()->
+				setGetVar(
+					TestActionChainController1::getActionScopeKey(),
+					'breakChainAction'
+				),
+				\ewgraFramework\ModelAndView::create()->
+				setModel(\ewgraFramework\Model::create())
+			);
+
+			$this->assertSame(
+				'action',
+				$controller->getAction()
+			);
+		}
+
 		public function testActionScopeKey()
 		{
 			$chain = new TestActionChainController3();
@@ -88,6 +110,11 @@
 
 	class TestActionChainController1 extends \ewgraFramework\ActionChainController
 	{
+		public function getAction()
+		{
+			return parent::getAction();
+		}
+
 		public static function getActionScopeKey()
 		{
 			return 'action';

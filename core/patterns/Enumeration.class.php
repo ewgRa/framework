@@ -25,17 +25,9 @@
 
 			$result = null;
 
-			foreach ($reflection->getConstants() as $value) {
-				try {
-					$result = new $class($value);
+			$props = $reflection->getDefaultProperties();
 
-					return $result;
-				} catch(MissingArgumentException $e) {
-					# fine, try another one
-				}
-			}
-
-			throw new Exception("can't find any id constant");
+			return new $class(key($props['names']));
 		}
 
 		public static function createList()
