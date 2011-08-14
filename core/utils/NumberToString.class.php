@@ -104,7 +104,7 @@
 				$r = array_merge($r, $this->process($n[1]/100, $this->dimensionWordsKopeyka));
 			}
 
-			return $r;
+			return join($r, ' ');
 		}
 
 		private function process($number, $dimensionWords)

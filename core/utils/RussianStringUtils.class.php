@@ -68,7 +68,7 @@
 			$string = self::translit($string);
 
 			$string = preg_replace('/\./', '_', $string);
-			$string = preg_replace( '/[^\w^\s]/', '', $string);
+			$string = preg_replace( '/[^\w^\s^-]/', '', $string);
 			$string = preg_replace('/\s+/', '_', $string);
 			$string = preg_replace('/_+/', '_', $string);
 

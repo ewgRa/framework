@@ -14,5 +14,24 @@
 				\ewgraFramework\RussianStringUtils::translit('Баобаб')
 			);
 		}
+
+		public function testUrlTranslit()
+		{
+			$this->assertEquals(
+				'baobab_-df',
+				\ewgraFramework\RussianStringUtils::urlTranslit('Baobab.__ -дф')
+			);
+		}
+
+		public function testSelectCaseForNumber()
+		{
+			$this->assertEquals(
+				'слов',
+				\ewgraFramework\RussianStringUtils::selectCaseForNumber(
+					5,
+					array('слово', 'слова', 'слов')
+				)
+			);
+		}
 	}
 ?>

@@ -20,6 +20,19 @@
 			);
 		}
 
+		public function testLowerKeyFirstAlpha()
+		{
+			$this->assertEquals(
+				'tEsttest',
+				\ewgraFramework\StringUtils::lowerKeyFirstAlpha('TEsttest')
+			);
+
+			$this->assertEquals(
+				'тЕсттест',
+				\ewgraFramework\StringUtils::lowerKeyFirstAlpha('ТЕсттест')
+			);
+		}
+
 		public function testGetLength()
 		{
 			$this->assertEquals(
@@ -30,6 +43,14 @@
 			$this->assertEquals(
 				10,
 				\ewgraFramework\StringUtils::getLength('тестСтрока')
+			);
+		}
+
+		public function testGetClassNamespace()
+		{
+			$this->assertEquals(
+				__NAMESPACE__,
+				\ewgraFramework\StringUtils::getClassNamespace(get_class($this))
 			);
 		}
 
