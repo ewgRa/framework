@@ -1,5 +1,7 @@
 <?php
 	namespace ewgraFramework;
+	// FIXME: insert method broken on PostgreSQL database, change insert style
+	// 		  and also use correct getInsertId for PostgreSQL
 
 	$meta = $model->get('meta');
 
