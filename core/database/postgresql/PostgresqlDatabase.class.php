@@ -81,8 +81,11 @@
 			return $this;
 		}
 
-		# you can get inserted id by "RETURNING" construction
-		# http://www.postgresql.org/docs/current/static/sql-insert.html
+		/**
+		 * You can get inserted id by "RETURNING" construction
+		 * @link http://www.postgresql.org/docs/current/static/sql-insert.html
+		 * or use currval(sequence)
+		 */
 		public function getInsertedId()
 		{
 			throw UnsupportedException::create();
