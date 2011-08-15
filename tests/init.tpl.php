@@ -28,6 +28,12 @@
 		define(__NAMESPACE__.'\MYSQL_TEST_PASSWORD', '');
 		define(__NAMESPACE__.'\MYSQL_TEST_CHARSET', 'utf8');
 
+		define(__NAMESPACE__.'\POSTGRESQL_TEST_HOST', 'localhost');
+		define(__NAMESPACE__.'\POSTGRESQL_TEST_DATABASE', 'frameworkTest');
+		define(__NAMESPACE__.'\POSTGRESQL_TEST_USER', '');
+		define(__NAMESPACE__.'\POSTGRESQL_TEST_PASSWORD', '');
+		define(__NAMESPACE__.'\POSTGRESQL_TEST_CHARSET', 'utf8');
+
 		require_once(FRAMEWORK_DIR.'/core/common/Dir.class.php');
 		require_once(FRAMEWORK_DIR.'/core/common/File.class.php');
 

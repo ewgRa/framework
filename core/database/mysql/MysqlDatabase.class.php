@@ -40,7 +40,11 @@
 			if (!$db)
 				throw DatabaseConnectException::create();
 
-			$this->setLinkIdentifier($db)->connected();
+			$this->
+				setLinkIdentifier($db)->
+				connected()->
+				selectDatabase()->
+				selectCharset();
 
 			return $this;
 		}

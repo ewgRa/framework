@@ -13,10 +13,6 @@
 
 		public function disconnect();
 
-		public function selectCharset($charset = null);
-
-		public function selectDatabase($database = null);
-
 		/**
 		 * @return DatabaseDialectInterface
 		 */

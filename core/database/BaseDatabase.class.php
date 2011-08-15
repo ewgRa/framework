@@ -111,7 +111,7 @@
 		public function queryRaw($queryString)
 		{
 			if (!$this->isConnected())
-				$this->connect()->selectDatabase()->selectCharset();
+				$this->connect();
 
 			$startTime = microtime(true);
 

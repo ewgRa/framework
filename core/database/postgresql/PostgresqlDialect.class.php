@@ -5,10 +5,10 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class MysqlDialect extends Singleton implements DatabaseDialectInterface
+	final class PostgresqlDialect extends Singleton implements DatabaseDialectInterface
 	{
 		/**
-		 * @return MysqlDialect
+		 * @return PostgresqlDialect
 		 * method needed for methods hinting
 		 */
 		public static function me()
@@ -26,15 +26,15 @@
 
 			$limit = array();
 
-			if (!is_null($offset))
-				$limit[] = (int)$offset;
-
 			if (!is_null($count))
 				$limit[] = (int)$count;
 
+			if (!is_null($offset))
+				$limit[] = (int)$offset;
+
 			return
 				count($limit)
-					? ' LIMIT '.join(', ', $limit)
+					? ' LIMIT '.join(' OFFSET ', $limit)
 					: '';
 		}
 
@@ -49,10 +49,11 @@
 
 				$variable =
 					$database
-						? mysql_real_escape_string(
-							$variable, $database->getLinkIdentifier()
+						? pg_escape_string(
+							$database->getLinkIdentifier(),
+							$variable
 						)
-						: mysql_real_escape_string($variable);
+						: pg_escape_string($variable);
 			}
 
 			return $variable;
@@ -60,7 +61,7 @@
 
 		public function quoteTable($table, DatabaseInterface $database = null)
 		{
-			return '`'.$table.'`';
+			return '"'.$table.'"';
 		}
 	}
 ?>
