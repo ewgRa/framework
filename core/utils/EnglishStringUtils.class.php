@@ -22,7 +22,7 @@
 
 		public static function separateByUpperKey($string)
 		{
-			$string = preg_replace('/([A-Z])/', "_$1", $string);
+			$string = preg_replace('/([^_])([A-Z])/', "$1_$2", $string);
 
 			return mb_strtolower($string);
 		}

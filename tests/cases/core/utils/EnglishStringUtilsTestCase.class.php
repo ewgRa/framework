@@ -11,7 +11,12 @@
 		{
 			$this->assertEquals(
 				'test_string_test',
-				\ewgraFramework\EnglishStringUtils::separateByUpperKey('testStringTest')
+				\ewgraFramework\EnglishStringUtils::separateByUpperKey('TestStringTest')
+			);
+
+			$this->assertEquals(
+				'_test_string_test',
+				\ewgraFramework\EnglishStringUtils::separateByUpperKey('_TestStringTest')
 			);
 		}
 	}
