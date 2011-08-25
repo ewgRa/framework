@@ -7,6 +7,7 @@
 	*/
 	final class StringUtils
 	{
+		// FIXME: rename to upperKeyFirst
 		public static function upperKeyFirstAlpha($string)
 		{
 			return
@@ -14,6 +15,7 @@
 				.self::substr($string, 1);
 		}
 
+		// FIXME: rename to lowerKeyFirst
 		public static function lowerKeyFirstAlpha($string)
 		{
 			return
