@@ -77,8 +77,8 @@
 		public function disconnect()
 		{
 			pg_close($this->getLinkIdentifier());
-			$this->disconnected();
-			return $this;
+
+			return parent::disconnect();
 		}
 
 		/**

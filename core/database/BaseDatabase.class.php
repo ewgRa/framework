@@ -143,10 +143,23 @@
 			return $this->linkIdentifier;
 		}
 
+		public function disconnect()
+		{
+			$this->linkIdentifier = null;
+			$this->disconnected();
+			return $this;
+		}
+
 		public function __destruct()
 		{
-			if ($this->isConnected())
+			if ($this->isConnected()) {
 				$this->disconnect();
+			}
+		}
+
+		public function __sleep()
+		{
+			throw UnsupportedException::create();
 		}
 
 		/**

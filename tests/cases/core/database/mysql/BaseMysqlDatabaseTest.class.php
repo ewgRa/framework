@@ -5,18 +5,11 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class BaseMysqlDatabaseTest extends FrameworkTestCase
+	abstract class BaseMysqlDatabaseTest extends BaseDatabaseTest
 	{
-		private $instance = null;
-
-		public function getInstance()
-		{
-			return $this->instance;
-		}
-
 		public function setUp()
 		{
-			$this->instance =
+			$instance =
 				\ewgraFramework\MysqlDatabase::create()->
 				setHost(MYSQL_TEST_HOST)->
 				setDatabase(MYSQL_TEST_DATABASE)->
@@ -25,7 +18,7 @@
 				setCharset(MYSQL_TEST_CHARSET);
 
 			try {
-				$this->instance->connect();
+				$instance->connect();
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't connect to test mysql server");
@@ -33,12 +26,12 @@
 			}
 
 			try {
-				$this->instance->queryRawNull(
-					'DROP DATABASE IF EXISTS '.$this->instance->getDatabase()
+				$instance->queryRawNull(
+					'DROP DATABASE IF EXISTS '.$instance->getDatabase()
 				);
 
-				$this->instance->queryRawNull(
-					'CREATE DATABASE '.$this->instance->getDatabase()
+				$instance->queryRawNull(
+					'CREATE DATABASE '.$instance->getDatabase()
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				// @codeCoverageIgnoreStart
@@ -47,7 +40,7 @@
 			}
 
 			try {
-				$this->instance->selectDatabase();
+				$instance->selectDatabase();
 			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't select test mysql database");
@@ -55,7 +48,7 @@
 			}
 
 			try {
-				$this->instance->selectCharset();
+				$instance->selectCharset();
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't select test mysql charset");
@@ -63,7 +56,7 @@
 			}
 
 			try {
-				$this->instance->queryRawNull(
+				$instance->queryRawNull(
 					'CREATE TEMPORARY TABLE `TestTable` (
   						`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 						`field` bigint(20) unsigned DEFAULT NULL,
@@ -76,40 +69,8 @@
 				$this->markTestSkipped("can't create test table");
 				// @codeCoverageIgnoreEnd
 			}
-		}
 
-		public function tearDown()
-		{
-			$this->instance = null;
-		}
-
-		public function testConnectException()
-		{
-			$this->instance->disconnect();
-			$this->instance->setHost('nonExistsHost');
-
-			try {
-				$this->instance->connect();
-				// @codeCoverageIgnoreStart
-				$this->fail();
-				// @codeCoverageIgnoreEnd
-			} catch (\ewgraFramework\DatabaseConnectException $e) {
-				# good
-			}
-		}
-
-		public function testSelectDatabaseException()
-		{
-			$this->instance->setDatabase('nonExistsDatabase');
-
-			try {
-				$this->instance->selectDatabase();
-				// @codeCoverageIgnoreStart
-				$this->fail();
-				// @codeCoverageIgnoreEnd
-			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
-				# good
-			}
+			$this->setInstance($instance);
 		}
 	}
 ?>

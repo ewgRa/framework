@@ -5,18 +5,11 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	abstract class BasePostgresqlDatabaseTest extends FrameworkTestCase
+	abstract class BasePostgresqlDatabaseTest extends BaseDatabaseTest
 	{
-		private $instance = null;
-
-		public function getInstance()
-		{
-			return $this->instance;
-		}
-
 		public function setUp()
 		{
-			$this->instance =
+			$instance =
 				\ewgraFramework\PostgresqlDatabase::create()->
 				setHost(POSTGRESQL_TEST_HOST)->
 				setDatabase(POSTGRESQL_TEST_DATABASE)->
@@ -25,7 +18,7 @@
 				setCharset(POSTGRESQL_TEST_CHARSET);
 
 			try {
-				$this->instance->connect();
+				$instance->connect();
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't connect to test postgresql server");
@@ -33,11 +26,11 @@
 			}
 
 			try {
-				$this->instance->queryRawNull(
+				$instance->queryRawNull(
 					'DROP SCHEMA IF EXISTS test CASCADE'
 				);
 
-				$this->instance->queryRawNull(
+				$instance->queryRawNull(
 					'CREATE SCHEMA test'
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
@@ -47,7 +40,7 @@
 			}
 
 			try {
-				$this->instance->selectCharset();
+				$instance->selectCharset();
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't select test postgresql charset");
@@ -55,7 +48,7 @@
 			}
 
 			try {
-				$this->instance->queryRawNull(
+				$instance->queryRawNull(
 					'CREATE TEMP TABLE "TestTable" (
   						"id" serial NOT NULL,
 						"field" bigint NULL
@@ -66,40 +59,8 @@
 				$this->markTestSkipped("can't create test table");
 				// @codeCoverageIgnoreEnd
 			}
-		}
 
-		public function tearDown()
-		{
-			$this->instance = null;
-		}
-
-		public function testConnectException()
-		{
-			$this->instance->disconnect();
-			$this->instance->setHost('nonExistsHost');
-
-			try {
-				$this->instance->connect();
-				// @codeCoverageIgnoreStart
-				$this->fail();
-				// @codeCoverageIgnoreEnd
-			} catch (\ewgraFramework\DatabaseConnectException $e) {
-				# good
-			}
-		}
-
-		public function testDatabaseNotExistsException()
-		{
-			$this->instance->setDatabase('nonExistsDatabase');
-
-			try {
-				$this->instance->disconnect()->connect();
-				// @codeCoverageIgnoreStart
-				$this->fail();
-				// @codeCoverageIgnoreEnd
-			} catch (\ewgraFramework\DatabaseConnectException $e) {
-				# good
-			}
+			$this->setInstance($instance);
 		}
 	}
 ?>

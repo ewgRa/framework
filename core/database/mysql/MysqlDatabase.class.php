@@ -100,8 +100,8 @@
 		public function disconnect()
 		{
 			mysql_close($this->getLinkIdentifier());
-			$this->disconnected();
-			return $this;
+
+			return parent::disconnect();
 		}
 
 		public function getInsertedId()
