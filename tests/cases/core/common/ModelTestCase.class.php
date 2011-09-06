@@ -44,5 +44,14 @@
 				# all good
 			}
 		}
+
+		public function testNullValue()
+		{
+			$model = \ewgraFramework\Model::create();
+
+			$model->set('a', null);
+
+			$this->assertTrue($model->has('a'));
+		}
 	}
 ?>
