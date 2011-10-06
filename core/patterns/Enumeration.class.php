@@ -60,6 +60,11 @@
 			return $this->names[$this->getId()];
 		}
 
+		public function getLowerName()
+		{
+			return StringUtils::toLower($this->getName());
+		}
+
 		public function getNames()
 		{
 			return $this->names;
