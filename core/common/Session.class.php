@@ -65,6 +65,20 @@
 			if ($this->isStarted()) {
 				$this->isStarted = false;
 				session_destroy();
+				unset($_SESSION);
+			}
+
+			return $this;
+		}
+
+		/**
+		 * @return Session
+		 */
+		public function startAsNew()
+		{
+			if ($this->isStarted()) {
+				session_regenerate_id();
+				$this->clean();
 			}
 
 			return $this;
@@ -106,6 +120,15 @@
 		public function drop($key)
 		{
 			unset($_SESSION[$key]);
+			return $this;
+		}
+
+		/**
+		 * @return Session
+		 */
+		public function clean()
+		{
+			$_SESSION = array();
 			return $this;
 		}
 	}
