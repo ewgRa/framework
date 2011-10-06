@@ -49,9 +49,22 @@
 		 */
 		public function start()
 		{
-			if (!$this->isStarted) {
+			if (!$this->isStarted()) {
 				$this->isStarted = true;
 				session_start();
+			}
+
+			return $this;
+		}
+
+		/**
+		 * @return Session
+		 */
+		public function destroy()
+		{
+			if ($this->isStarted()) {
+				$this->isStarted = false;
+				session_destroy();
 			}
 
 			return $this;

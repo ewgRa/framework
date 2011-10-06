@@ -319,6 +319,16 @@
 			return $this->getServerVar('HTTP_REFERER');
 		}
 
+		public function getRemoteIp()
+		{
+			return $this->getServerVar('REMOTE_ADDR');
+		}
+
+		public function getUserAgent()
+		{
+			return $this->getServerVar('HTTP_USER_AGENT');
+		}
+
 		/**
 		 * @return HttpUrl
 		 */
