@@ -46,14 +46,14 @@
 			return parent::create($id);
 		}
 
-		public function getGenetiveName()
+		public function getGenitiveName()
 		{
-			return $this->genetiveNames[$this->getId()];
+			return $this->genitiveNames[$this->getId()];
 		}
 
-		public function getLowerGenetiveName()
+		public function getLowerGenitiveName()
 		{
-			return StringUtils::toLower($this->getGenetiveName());
+			return StringUtils::toLower($this->getGenitiveName());
 		}
 	}
 ?>
