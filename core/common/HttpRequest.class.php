@@ -321,12 +321,18 @@
 
 		public function getRemoteIp()
 		{
-			return $this->getServerVar('REMOTE_ADDR');
+			return
+				$this->hasServerVar('REMOTE_ADDR')
+					? $this->getServerVar('REMOTE_ADDR')
+					: null;
 		}
 
 		public function getUserAgent()
 		{
-			return $this->getServerVar('HTTP_USER_AGENT');
+			return
+				$this->hasServerVar('HTTP_USER_AGENT')
+					? $this->getServerVar('HTTP_USER_AGENT')
+					: null;
 		}
 
 		/**
