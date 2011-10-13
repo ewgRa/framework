@@ -21,6 +21,11 @@
 			return $this;
 		}
 
+		public function getQuery()
+		{
+			return $this->query;
+		}
+
 		public function setValues(array $values)
 		{
 			$this->values = $values;
