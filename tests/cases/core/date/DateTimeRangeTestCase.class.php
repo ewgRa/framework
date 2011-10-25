@@ -20,6 +20,18 @@
 			$this->assertSame($dateStart, $dateRange->getStart());
 
 			$this->assertSame($dateEnd, $dateRange->getEnd());
+
+			$this->assertFalse($dateRange->isEqMonth());
+
+			$dateStart = \ewgraFramework\DateTime::create('2010-01-01');
+			$dateEnd = \ewgraFramework\DateTime::create('2010-01-02');
+
+			$dateRange =
+				\ewgraframework\DateTimeRange::create()->
+				setStart($dateStart)->
+				setEnd($dateEnd);
+
+			$this->assertTrue($dateRange->isOneMonth());
 		}
 	}
 ?>

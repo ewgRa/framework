@@ -44,19 +44,19 @@
 			return $this->end;
 		}
 
+		/**
+		 * @deprecated use isEqMonth instead
+		 */
 		public function isOneMonth()
+		{
+			return $this->isEqMonth();
+		}
+
+		public function isEqMonth()
 		{
 			return
 				$this->start->getYear() == $this->end->getYear()
 				&& $this->start->getMonth() == $this->end->getMonth();
-		}
-
-		public function isOneYear()
-		{
-			return
-				$this->start->getYear() == $this->end->getYear()
-				&& $this->start->getMonth() == 1
-				&& $this->end->getMonth() == 12;
 		}
 	}
 ?>
