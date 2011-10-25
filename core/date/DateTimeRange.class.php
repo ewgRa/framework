@@ -47,8 +47,16 @@
 		public function isOneMonth()
 		{
 			return
-				$this->start->getYear() == $this->start->getYear()
-				&& $this->start->getMonth() == $this->start->getMonth();
+				$this->start->getYear() == $this->end->getYear()
+				&& $this->start->getMonth() == $this->end->getMonth();
+		}
+
+		public function isOneYear()
+		{
+			return
+				$this->start->getYear() == $this->end->getYear()
+				&& $this->start->getMonth() == 1
+				&& $this->end->getMonth() == 12;
 		}
 	}
 ?>
