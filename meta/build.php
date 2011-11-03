@@ -85,6 +85,9 @@
 				);
 
 			if (!isset($protectedFiles[$builderName]) || !$file->isExists())
+				if (!$file->getDir()->isExists())
+					$file->getDir()->make();
+
 				$file->setContent(${$builderName}->transform($model));
 		}
 	}

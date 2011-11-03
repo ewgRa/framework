@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE meta []>
+<meta 
+	license="http://www.opensource.org/licenses/bsd-license.php BSD"
+	author="Evgeniy Sokolov &lt;ewgraf@gmail.com&gt;"
+	DAExtends="DatabaseRequester"
+	namespace="ewgraFramework\tests"
+>
+	<Test>
+		<properties>
+			<id />
+			<field />
+		</properties>
+	</Test>
+</meta>
