@@ -16,7 +16,7 @@
 					$this->getInstance()->insertQuery(
 						\ewgraFramework\DatabaseInsertQuery::create()->
 						setQuery(
-							'INSERT INTO `TestTable` SET `field` = ?'
+							'INSERT INTO `test` SET `field` = ?'
 						)->
 						setValues(array($row))
 					);
@@ -31,13 +31,13 @@
 
 			$result = $this->getInstance()->queryNull(
 				\ewgraFramework\DatabaseInsertQuery::create()->setQuery(
-					'INSERT INTO `TestTable` SET `field` = '.$rows[3]
+					'INSERT INTO `test` SET `field` = '.$rows[3]
 				)
 			);
 
 			$result = $this->getInstance()->query(
 				\ewgraFramework\DatabaseQuery::create()->
-				setQuery('SELECT * FROM `TestTable`')
+				setQuery('SELECT * FROM `test`')
 			);
 
 			$this->assertEquals(
@@ -64,7 +64,7 @@
 			}
 
 			try {
-				$this->getInstance()->queryRaw('SELECT * FROM `TestTable2`');
+				$this->getInstance()->queryRaw('SELECT * FROM `test2`');
 				$this->fail();
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
 				# good

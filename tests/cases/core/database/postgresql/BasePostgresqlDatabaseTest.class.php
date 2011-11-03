@@ -49,7 +49,7 @@
 
 			try {
 				$instance->queryRawNull(
-					'CREATE TEMP TABLE "TestTable" (
+					'CREATE TEMP TABLE "test" (
   						"id" serial NOT NULL,
 						"field" bigint NULL
 					)'

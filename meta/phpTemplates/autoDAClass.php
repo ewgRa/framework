@@ -39,7 +39,7 @@
 		{
 			$dialect = $this->db()->getDialect();
 
-			$dbQuery = 'INSERT INTO '.$dialect->escapeTable($this->getTable()).' ';
+			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
 			$fields = array();
 			$fieldValues = array();
 			$values = array();
@@ -105,7 +105,7 @@
 <?php
 	if ($idProperty) {
 ?>
-					setPrimaryKeyField('<?=$idProperty->getAttribute('downSeparatedName')?>')->
+					setPrimaryField('<?=$idProperty->getAttribute('downSeparatedName')?>')->
 <?php
 	}
 ?>
@@ -131,6 +131,7 @@
 		 */
 		public function save(<?=$classNode->nodeName?> $object)
 		{
+			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
 
 			$queryParts = array();
@@ -162,16 +163,16 @@
 ?>
 
 			if (<?=$rawValue?> === null)
-				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = NULL';
+				$queryParts[] = $dialect->escapeField('<?=$property->getAttribute('downSeparatedName')?>').' = NULL';
 			else {
-				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
+				$queryParts[] = $dialect->escapeField('<?=$property->getAttribute('downSeparatedName')?>').' = ?';
 				$queryParams[] = <?=$storeValue?>;
 			}
 
 <?php
 		} else {
 ?>
-			$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
+			$queryParts[] = $dialect->escapeField('<?=$property->getAttribute('downSeparatedName')?>').' = ?';
 			$queryParams[] = <?=$storeValue?>;
 <?php
 		}

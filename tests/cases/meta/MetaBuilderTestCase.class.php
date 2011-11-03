@@ -31,12 +31,52 @@
 
 		public function testMysqlDA()
 		{
-			$this->fail();
+			$mysqlTest = new MetaBuilderMysqlTest();
+			$mysqlTest->setUp();
+
+			$da = TestDA::me()->setPool($mysqlTest->getInstance());
+
+			$object = Test::create()->setField(2);
+
+			$object->da()->insert($object);
+
+			$this->assertSame(1, $object->getId());
+
+			$object->setField(3);
+			$object->da()->save($object);
+
+			$object = $da->getById(1);
+
+			$this->assertSame('3', $object->getField());
+
+			$object->da()->delete($object);
+
+			$this->assertNull($da->getById(1));
 		}
 
 		public function testPostgresqlDA()
 		{
-			$this->fail();
+			$postgresqlTest = new MetaBuilderPostgresqlTest();
+			$postgresqlTest->setUp();
+
+			$da = TestDA::me()->setPool($postgresqlTest->getInstance());
+
+			$object = Test::create()->setField(2);
+
+			$object->da()->insert($object);
+
+			$this->assertSame('1', $object->getId());
+
+			$object->setField(3);
+			$object->da()->save($object);
+
+			$object = $da->getById(1);
+
+			$this->assertSame('3', $object->getField());
+
+			$object->da()->delete($object);
+
+			$this->assertNull($da->getById(1));
 		}
 	}
 ?>
