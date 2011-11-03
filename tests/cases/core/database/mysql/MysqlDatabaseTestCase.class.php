@@ -12,20 +12,25 @@
 			$rows = array(1 => rand(), 2 => rand());
 
 			foreach ($rows as $key => $row) {
-				$this->getInstance()->queryRawNull(
-					'INSERT INTO `TestTable` SET `field` = '.$row
-				);
+				$result =
+					$this->getInstance()->insertQuery(
+						\ewgraFramework\DatabaseInsertQuery::create()->
+						setQuery(
+							'INSERT INTO `TestTable` SET `field` = ?'
+						)->
+						setValues(array($row))
+					);
 
 				$this->assertEquals(
 					$key,
-					$this->getInstance()->getInsertedId()
+					$result->getInsertedId()
 				);
 			}
 
 			$rows[3] = rand();
 
 			$result = $this->getInstance()->queryNull(
-				\ewgraFramework\DatabaseQuery::create()->setQuery(
+				\ewgraFramework\DatabaseInsertQuery::create()->setQuery(
 					'INSERT INTO `TestTable` SET `field` = '.$rows[3]
 				)
 			);

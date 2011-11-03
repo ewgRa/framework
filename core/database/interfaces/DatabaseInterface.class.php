@@ -26,6 +26,11 @@
 		/**
 		 * @throws DatabaseQueryException
 		 */
+		public function insertQuery(DatabaseInsertQueryInterface $query);
+
+		/**
+		 * @throws DatabaseQueryException
+		 */
 		public function queryNull(DatabaseQueryInterface $query);
 
 		/**
@@ -37,8 +42,6 @@
 		 * @throws DatabaseQueryException
 		 */
 		public function queryRawNull($queryString);
-
-		public function getInsertedId();
 
 		public function getError();
 	}

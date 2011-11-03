@@ -39,7 +39,7 @@
 		{
 			$this->assertEquals(
 				'`table`',
-				$this->getInstance()->getDialect()->quoteTable('table')
+				$this->getInstance()->getDialect()->escapeTable('table')
 			);
 		}
 	}

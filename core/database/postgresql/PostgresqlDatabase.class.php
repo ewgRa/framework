@@ -81,19 +81,26 @@
 			return parent::disconnect();
 		}
 
-		/**
-		 * You can get inserted id by "RETURNING" construction
-		 * @link http://www.postgresql.org/docs/current/static/sql-insert.html
-		 * or use currval(sequence)
-		 */
-		public function getInsertedId()
-		{
-			throw UnsupportedException::create();
-		}
-
 		public function getError()
 		{
 			return pg_errormessage($this->getLinkIdentifier());
+		}
+
+		public function insertQuery(DatabaseInsertQueryInterface $query)
+		{
+			$result =
+				$this->insertQueryRaw(
+					$query->toString($this->getDialect(), $this)
+					.' RETURNING '.$this->getDialect()->escapeField(
+						$query->getPrimaryField()
+					)
+				);
+
+			$row = $result->fetchRow();
+
+			$result->setInsertedId($row[$query->getPrimaryField()]);
+
+			return $result;
 		}
 
 		protected function runQuery($queryString)
@@ -113,6 +120,11 @@
 		protected function createResult()
 		{
 			return PostgresqlDatabaseResult::create();
+		}
+
+		protected function createInsertResult()
+		{
+			return PostgresqlDatabaseInsertResult::create();
 		}
 	}
 ?>

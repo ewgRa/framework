@@ -5,16 +5,22 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DatabaseQuery implements DatabaseQueryInterface
+	class DatabaseQuery implements DatabaseQueryInterface
 	{
 		private $query = null;
 		private $values = array();
 
+		/**
+		 * @return DatabaseQuery
+		 */
 		public static function create()
 		{
 			return new self;
 		}
 
+		/**
+		 * @return DatabaseQuery
+		 */
 		public function setQuery($query)
 		{
 			$this->query = $query;
@@ -26,6 +32,9 @@
 			return $this->query;
 		}
 
+		/**
+		 * @return DatabaseQuery
+		 */
 		public function setValues(array $values)
 		{
 			$this->values = $values;

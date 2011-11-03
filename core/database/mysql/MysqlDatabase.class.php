@@ -104,14 +104,18 @@
 			return parent::disconnect();
 		}
 
-		public function getInsertedId()
-		{
-			return mysql_insert_id($this->getLinkIdentifier());
-		}
-
 		public function getError()
 		{
 			return mysql_error($this->getLinkIdentifier());
+		}
+
+		public function insertQuery(DatabaseInsertQueryInterface $query)
+		{
+			$result = parent::insertQuery($query);
+
+			$result->setInsertedId(mysql_insert_id($this->getLinkIdentifier()));
+
+			return $result;
 		}
 
 		protected function runQuery($queryString)
@@ -125,6 +129,11 @@
 		protected function createResult()
 		{
 			return MysqlDatabaseResult::create();
+		}
+
+		protected function createInsertResult()
+		{
+			return MysqlDatabaseInsertResult::create();
 		}
 	}
 ?>

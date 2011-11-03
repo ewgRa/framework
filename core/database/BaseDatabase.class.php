@@ -21,6 +21,8 @@
 
 		abstract protected function createResult();
 
+		abstract protected function createInsertResult();
+
 		/**
 		 * @return BaseDatabase
 		 */
@@ -91,9 +93,20 @@
 			return $this->database;
 		}
 
+		public function insertQuery(DatabaseInsertQueryInterface $query)
+		{
+			return
+				$this->insertQueryRaw(
+					$query->toString($this->getDialect(), $this)
+				);
+		}
+
 		public function query(DatabaseQueryInterface $query)
 		{
-			return $this->queryRaw($query->toString($this->getDialect(), $this));
+			return
+				$this->queryRaw(
+					$query->toString($this->getDialect(), $this)
+				);
 		}
 
 		public function queryNull(DatabaseQueryInterface $query)
@@ -109,6 +122,14 @@
 		}
 
 		public function queryRaw($queryString)
+		{
+			return
+				$this->
+					createResult()->
+					setResource($this->queryRawResource($queryString));
+		}
+
+		public function queryRawResource($queryString)
 		{
 			if (!$this->isConnected())
 				$this->connect();
@@ -130,7 +151,7 @@
 				set('endTime', microtime(true))
 			);
 
-			return $this->createResult()->setResource($resource);
+			return $resource;
 		}
 
 		public function isConnected()
@@ -160,6 +181,17 @@
 		public function __sleep()
 		{
 			throw UnsupportedException::create();
+		}
+
+		/**
+		 * @return DatabaseInsertResultInterface
+		 */
+		protected function insertQueryRaw($queryString)
+		{
+			return
+				$this->
+					createInsertResult()->
+					setResource($this->queryRawResource($queryString));
 		}
 
 		/**

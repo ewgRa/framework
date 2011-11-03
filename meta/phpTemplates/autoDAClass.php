@@ -1,7 +1,5 @@
 <?php
 	namespace ewgraFramework;
-	// FIXME: insert method broken on PostgreSQL database, change insert style
-	// 		  and also use correct getInsertId for PostgreSQL
 
 	$meta = $model->get('meta');
 
@@ -32,16 +30,19 @@
 	 */
 	abstract class Auto<?=$classNode->nodeName?>DA extends <?=$extends.PHP_EOL?>
 	{
-		protected $tableAlias = '<?=$classNode->nodeName?>';
+		protected $tableAlias = '<?=EnglishStringUtils::separateByUpperKey($classNode->nodeName)?>';
 
 		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
 		public function insert(<?=$classNode->nodeName?> $object)
 		{
-			$dbQuery = 'INSERT INTO '.$this->getTable().' SET ';
-			$queryParts = array();
-			$queryParams = array();
+			$dialect = $this->db()->getDialect();
+
+			$dbQuery = 'INSERT INTO '.$dialect->escapeTable($this->getTable()).' ';
+			$fields = array();
+			$fieldValues = array();
+			$values = array();
 <?php
 	$idProperty =
 		$meta->getNode("properties/*[name() = 'id']", $classNode);
@@ -52,7 +53,13 @@
 			$classNode
 		);
 
+	$queryFields = array();
+
 	foreach ($properties as $property) {
+?>
+			$fields[] = $dialect->escapeField('<?=$property->getAttribute('downSeparatedName')?>');
+			$fieldValues[] = '?';
+<?php
 		$type = $property->getAttribute('type');
 
 		$class = $property->getAttribute('class');
@@ -76,34 +83,40 @@
 ?>
 
 			if (<?=$rawValue?> === null)
-				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = NULL';
+				$values[] = null;
 			else {
-				$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
-				$queryParams[] = <?=$storeValue?>;
+				$values[] = <?=$storeValue?>;
 			}
 
 <?php
 		} else {
 ?>
-			$queryParts[] = '`<?=$property->getAttribute('downSeparatedName')?>` = ?';
-			$queryParams[] = <?=$storeValue?>;
+			$values[] = <?=$storeValue?>;
 <?php
 		}
 	}
 ?>
+			$dbQuery .= '('.join(', ', $fields).') VALUES ';
+			$dbQuery .= '('.join(', ', $fieldValues).')';
 
-			$dbQuery .= join(', ', $queryParts);
-
-			$this->db()->query(
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery($dbQuery)->
-				setValues($queryParams)
-			);
+			$dbResult =
+				$this->db()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+<?php
+	if ($idProperty) {
+?>
+					setPrimaryKeyField('<?=$idProperty->getAttribute('downSeparatedName')?>')->
+<?php
+	}
+?>
+					setQuery($dbQuery)->
+					setValues($values)
+				);
 
 <?php
 	if ($idProperty) {
 ?>
-			$object->setId($this->db()->getInsertedId());
+			$object->setId($dbResult->getInsertedId());
 <?php
 	}
 ?>

@@ -12,7 +12,7 @@
 			$dbQuery =
 				\ewgraFramework\DatabaseQuery::create()->
 				setQuery(
-					'SELECT * FROM '.DummyDatabaseDialect::me()->quoteTable('a')
+					'SELECT * FROM '.DummyDatabaseDialect::me()->escapeTable('a')
 					.' WHERE id = ? and set_array IN (?) and set=?'
 					.DummyDatabaseDialect::me()->getLimit(1, 2)
 				)->

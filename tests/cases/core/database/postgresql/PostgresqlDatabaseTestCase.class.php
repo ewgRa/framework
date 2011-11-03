@@ -12,15 +12,18 @@
 			$rows = array(1 => rand(), 2 => rand());
 
 			foreach ($rows as $key => $row) {
-				$result = $this->getInstance()->queryRaw(
-					'INSERT INTO "TestTable" (id, field) VALUES(DEFAULT, '.$row.') RETURNING id'
+				$result = $this->getInstance()->insertQuery(
+					\ewgraFramework\DatabaseInsertQuery::create()->
+					setQuery(
+						'INSERT INTO "TestTable" (field) VALUES(?)'
+					)->
+					setValues(array($row))->
+					setPrimaryField('id')
 				);
-
-				$returnedRow = $result->fetchRow();
 
 				$this->assertEquals(
 					$key,
-					$returnedRow['id']
+					$result->getInsertedId()
 				);
 			}
 

@@ -58,9 +58,14 @@
 			return $variable;
 		}
 
-		public function quoteTable($table, DatabaseInterface $database = null)
+		public function escapeTable($table, DatabaseInterface $database = null)
 		{
 			return '`'.$table.'`';
+		}
+
+		public function escapeField($field, DatabaseInterface $database = null)
+		{
+			return '`'.$field.'`';
 		}
 	}
 ?>

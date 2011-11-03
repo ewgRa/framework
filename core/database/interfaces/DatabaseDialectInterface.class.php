@@ -19,6 +19,12 @@
 		 * @var $database needed for escaping, depended on charset
 		 * 					(e.g. mysql_real_escape_string)
 		 */
-		public function quoteTable($table, DatabaseInterface $database = null);
+		public function escapeTable($table, DatabaseInterface $database = null);
+
+		/**
+		 * @var $database needed for escaping, depended on charset
+		 * 					(e.g. mysql_real_escape_string)
+		 */
+		public function escapeField($field, DatabaseInterface $database = null);
 	}
 ?>

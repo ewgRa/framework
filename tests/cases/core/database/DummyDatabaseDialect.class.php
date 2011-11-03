@@ -50,9 +50,14 @@
 			return $variable;
 		}
 
-		public function quoteTable($table, \ewgraFramework\DatabaseInterface $database = null)
+		public function escapeTable($table, \ewgraFramework\DatabaseInterface $database = null)
 		{
 			return '|'.$table.'|';
+		}
+
+		public function escapeField($fied, \ewgraFramework\DatabaseInterface $database = null)
+		{
+			return '|'.$field.'|';
 		}
 	}
 ?>
