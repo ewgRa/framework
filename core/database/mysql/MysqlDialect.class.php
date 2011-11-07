@@ -58,14 +58,38 @@
 			return $variable;
 		}
 
-		public function escapeTable($table, DatabaseInterface $database = null)
+		public function escapeTable($table)
 		{
 			return '`'.$table.'`';
 		}
 
-		public function escapeField($field, DatabaseInterface $database = null)
+		public function escapeField($field)
 		{
 			return '`'.$field.'`';
+		}
+
+		public function condition($expression, $then, $else)
+		{
+			return 'IF('.$expression.', '.$then.', '.$else.')';
+		}
+
+		/**
+		 * @return DatabaseQueryOrderInterface
+		 */
+		public function createOrder($field)
+		{
+			return DatabaseQueryOrder::create($field);
+		}
+
+		public function getOrderString(DatabaseQueryOrderInterface $order)
+		{
+			return
+				(
+					$order->isNullsFirst()
+						? 'IF(ISNULL('.$this->escapeField($order->getField()).'), 0, 1), '
+						: 'IF(ISNULL('.$this->escapeField($order->getField()).'), 1, 0), '
+				)
+				.$this->escapeField($order->getField()).($order->isAsc() ? null : ' DESC');
 		}
 	}
 ?>

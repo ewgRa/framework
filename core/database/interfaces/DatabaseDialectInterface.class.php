@@ -19,12 +19,21 @@
 		 * @var $database needed for escaping, depended on charset
 		 * 					(e.g. mysql_real_escape_string)
 		 */
-		public function escapeTable($table, DatabaseInterface $database = null);
+		public function escapeTable($table);
 
 		/**
 		 * @var $database needed for escaping, depended on charset
 		 * 					(e.g. mysql_real_escape_string)
 		 */
-		public function escapeField($field, DatabaseInterface $database = null);
+		public function escapeField($field);
+
+		public function condition($expression, $then, $else);
+
+		/**
+		 * @return DatabaseQueryOrderInterface
+		 */
+		public function createOrder($field);
+
+		public function getOrderString(DatabaseQueryOrderInterface $order);
 	}
 ?>

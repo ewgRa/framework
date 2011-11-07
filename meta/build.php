@@ -33,19 +33,24 @@
 		'AutoBusinessClass' => META_BUILDER_DIR.'/phpTemplates/autoBusinessClass.php',
 		'BusinessClass' => META_BUILDER_DIR.'/phpTemplates/businessClass.php',
 		'AutoDAClass' => META_BUILDER_DIR.'/phpTemplates/autoDAClass.php',
-		'DAClass' => META_BUILDER_DIR.'/phpTemplates/DAClass.php'
+		'DAClass' => META_BUILDER_DIR.'/phpTemplates/DAClass.php',
+		'AutoProtoClass' => META_BUILDER_DIR.'/phpTemplates/autoProtoClass.php',
+		'ProtoClass' => META_BUILDER_DIR.'/phpTemplates/protoClass.php'
 	);
 
 	$targetFiles = array(
 		'AutoBusinessClass' => array(CLASSES_DIR.'/business/auto/Auto', '.class.php'),
 		'BusinessClass' => array(CLASSES_DIR.'/business/', '.class.php'),
 		'AutoDAClass' => array(CLASSES_DIR.'/da/auto/Auto', 'DA.class.php'),
-		'DAClass' => array(CLASSES_DIR.'/da/', 'DA.class.php')
+		'DAClass' => array(CLASSES_DIR.'/da/', 'DA.class.php'),
+		'AutoProtoClass' => array(CLASSES_DIR.'/proto/auto/Auto', 'Proto.class.php'),
+		'ProtoClass' => array(CLASSES_DIR.'/proto/', 'Proto.class.php')
 	);
 
 	$protectedFiles = array(
 		'BusinessClass' => true,
-		'DAClass' => true
+		'DAClass' => true,
+		'ProtoClass' => true
 	);
 
 	foreach ($builders as $builderName => $builderFile) {
@@ -84,11 +89,12 @@
 					join($node->nodeName, $targetFiles[$builderName])
 				);
 
-			if (!isset($protectedFiles[$builderName]) || !$file->isExists())
+			if (!isset($protectedFiles[$builderName]) || !$file->isExists()) {
 				if (!$file->getDir()->isExists())
 					$file->getDir()->make();
 
 				$file->setContent(${$builderName}->transform($model));
+			}
 		}
 	}
 

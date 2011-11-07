@@ -65,6 +65,14 @@
 		{
 			return <?=$classNode->nodeName?>DA::me();
 		}
+
+		/**
+		 * @return <?=$classNode->nodeName?>Proto
+		 */
+		public static function proto()
+		{
+			return <?=$classNode->nodeName?>Proto::me();
+		}
 <?php
 	$properties = $meta->getNodeList('properties/*', $classNode);
 
