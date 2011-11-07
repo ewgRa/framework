@@ -8,7 +8,7 @@
 	$extends = $meta->getDocumentElement()->getAttribute('ProtoExtends');
 
 	if (!$extends)
-		$extends = 'ProtoObject';
+		$extends = '\ewgraFramework\ProtoObject';
 
 	echo '<?php'.PHP_EOL;
 
