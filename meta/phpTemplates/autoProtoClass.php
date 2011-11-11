@@ -50,6 +50,21 @@
 	 */
 	abstract class Auto<?=$classNode->nodeName?>Proto extends <?=$extends.PHP_EOL?>
 	{
+<?php
+	$needEndLine = false;
+
+	foreach ($properties as $property) {
+		if($property->getAttribute('maxLength')) {
+			$needEndLine = true;
+?>
+		const MAX_<?=StringUtils::toUpper($property->getAttribute('downSeparatedName'))?>_LENGTH = <?=$property->getAttribute('maxLength')?>;
+<?php
+		}
+	}
+
+	if ($needEndLine)
+		echo PHP_EOL;
+?>
 		protected $dbFields = array(
 			<?=join(', '.PHP_EOL.'			',$dbFields).PHP_EOL?>
 		);
