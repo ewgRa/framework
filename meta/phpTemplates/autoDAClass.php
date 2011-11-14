@@ -71,7 +71,10 @@
 
 		if ($type == 'array')
 			$storeValue = 'serialize('.$value.')';
-		else if ($classType == 'Identifier' || $classType == 'Enumeration') {
+		else if ($type == 'boolean') {
+			$value = '('.$value.' ? 1 : 0)';
+			$storeValue = $value;
+		} else if ($classType == 'Identifier' || $classType == 'Enumeration') {
 			$value = $value.'->getId()';
 			$storeValue = $value;
 		} else if ($classType == 'Stringable') {
@@ -151,7 +154,10 @@
 
 		if ($type == 'array')
 			$storeValue = 'serialize('.$value.')';
-		else if ($classType == 'Identifier' || $classType == 'Enumeration') {
+		else if ($type == 'boolean') {
+			$value = '('.$value.' ? 1 : 0)';
+			$storeValue = $value;
+		} else if ($classType == 'Identifier' || $classType == 'Enumeration') {
 			$value = $value.'->getId()';
 			$storeValue = $value;
 		} else if ($classType == 'Stringable') {
