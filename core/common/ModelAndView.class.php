@@ -35,6 +35,14 @@
 			return $this;
 		}
 
+		/**
+		 * @return ViewInterface
+		 */
+		public function getView()
+		{
+			return $this->view;
+		}
+
 		public function hasView()
 		{
 			return !is_null($this->view);
