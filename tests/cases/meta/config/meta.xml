@@ -6,10 +6,13 @@
 	DAExtends="TestDatabaseRequester"
 	namespace="ewgraFramework\tests"
 >
+	<DateTime namespace="\ewgraFramework" type="Stringable" />
+
 	<Test>
 		<properties>
 			<id />
 			<field />
+			<created class="\ewgraFramework\DateTime" />
 		</properties>
 	</Test>
 </meta>

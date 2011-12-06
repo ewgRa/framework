@@ -59,5 +59,29 @@
 		{
 			return '|'.$field.'|';
 		}
+
+		public function condition($expression, $then, $else)
+		{
+			return 'IF('.$expression.', '.$then.', '.$else.')';
+		}
+
+		/**
+		 * @return DatabaseQueryOrderInterface
+		 */
+		public function createOrder($field)
+		{
+			return \ewgraFramework\DatabaseQueryOrder::create($field);
+		}
+
+		public function getOrderString(\ewgraFramework\DatabaseQueryOrderInterface $order)
+		{
+			return
+				$this->escapeField($order->getField()).($order->isAsc() ? null : ' DESC')
+				.(
+					$order->isNullsFirst()
+						? ' NULLS FIRST'
+						: ' NULLS LAST'
+				);
+		}
 	}
 ?>

@@ -34,7 +34,7 @@
 			return $this->pool;
 		}
 
-		public function setPool(DatabaseInterface $pool)
+		public function setPool(\ewgraFramework\DatabaseInterface $pool)
 		{
 			$this->pool = $pool;
 			return $this;

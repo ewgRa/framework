@@ -60,7 +60,8 @@
 					'CREATE TEMPORARY TABLE `test` (
   						`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 						`field` bigint(20) unsigned DEFAULT NULL,
-						PRIMARY KEY (`id`)
+						`created` datetime DEFAULT NULL,
+					PRIMARY KEY (`id`)
 					) ENGINE=MyISAM
 					DEFAULT CHARSET=utf8'
 				);

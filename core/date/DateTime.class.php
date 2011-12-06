@@ -17,6 +17,15 @@
 
 		/**
 		 * @return DateTime
+		 * NOTE: method for meta builder
+		 */
+		public static function createFromString($string)
+		{
+			return self::create($string);
+		}
+
+		/**
+		 * @return DateTime
 		 */
 		public static function createFromTimestamp($timestamp)
 		{
@@ -44,6 +53,11 @@
 		public function getYear()
 		{
 			return (int)$this->format('Y');
+		}
+
+		public function __toString()
+		{
+			return $this->format(self::ISO8601);
 		}
 	}
 ?>

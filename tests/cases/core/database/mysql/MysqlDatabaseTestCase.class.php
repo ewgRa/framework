@@ -48,7 +48,7 @@
 			$expectedList = array();
 
 			foreach ($rows as $key => $row)
-				$expectedList[] = array('id' => $key, 'field' => $row);
+				$expectedList[] = array('id' => $key, 'field' => $row, 'created' => null);
 
 			$this->assertEquals($expectedList, $result->fetchList());
 

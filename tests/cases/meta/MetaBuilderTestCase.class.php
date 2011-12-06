@@ -36,7 +36,12 @@
 
 			$da = TestDA::me()->setPool($mysqlTest->getInstance());
 
-			$object = Test::create()->setField(2);
+			$created = \ewgraFramework\DateTime::makeNow();
+
+			$object =
+				Test::create()->
+				setField(2)->
+				setCreated($created);
 
 			$object->da()->insert($object);
 
@@ -48,6 +53,7 @@
 			$object = $da->getById(1);
 
 			$this->assertSame('3', $object->getField());
+			$this->assertSame($created->__toString(), $object->getCreated()->__toString());
 
 			$object->da()->delete($object);
 
@@ -61,7 +67,12 @@
 
 			$da = TestDA::me()->setPool($postgresqlTest->getInstance());
 
-			$object = Test::create()->setField(2);
+			$created = \ewgraFramework\DateTime::makeNow();
+
+			$object =
+				Test::create()->
+				setField(2)->
+				setCreated($created);
 
 			$object->da()->insert($object);
 
@@ -73,6 +84,7 @@
 			$object = $da->getById(1);
 
 			$this->assertSame('3', $object->getField());
+			$this->assertSame($created->__toString(), $object->getCreated()->__toString());
 
 			$object->da()->delete($object);
 

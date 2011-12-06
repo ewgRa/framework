@@ -39,7 +39,8 @@
 							'password='.$this->getPassword(),
 							'dbname='.$this->getDatabase()
 						)
-					)
+					),
+					PGSQL_CONNECT_FORCE_NEW
 				);
 
 			if (!$db)

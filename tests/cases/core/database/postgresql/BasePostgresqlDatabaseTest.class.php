@@ -48,10 +48,13 @@
 			}
 
 			try {
+				$instance->queryRawNull('SET search_path TO public,test');
+
 				$instance->queryRawNull(
-					'CREATE TEMP TABLE "test" (
+					'CREATE TABLE "test"."test" (
   						"id" serial NOT NULL,
-						"field" bigint NULL
+						"field" bigint NULL,
+						"created" timestamp without time zone NULL
 					)'
 				);
 			} catch (\ewgraFramework\DatabaseQueryException $e) {
