@@ -86,6 +86,11 @@
 			return $this;
 		}
 
+		public function hasValue()
+		{
+			return ($this->value !== null);
+		}
+
 		public function getValue()
 		{
 			return $this->value;

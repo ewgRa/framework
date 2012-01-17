@@ -27,5 +27,31 @@
 			$this->assertSame($data, $primitive->getRawValue());
 			$this->assertSame((string)$data, $primitive->getValue());
 		}
+
+		public function testRange()
+		{
+			$data = 'aaaa';
+
+			$primitive =
+				\ewgraFramework\PrimitiveString::create('testPrimitive')->
+				setMin(5)->
+				import(array('testPrimitive' => $data));
+
+			$this->assertTrue($primitive->hasError($primitive::WRONG_ERROR));
+
+			$primitive =
+				\ewgraFramework\PrimitiveString::create('testPrimitive')->
+				setMax(5)->
+				import(array('testPrimitive' => $data));
+
+			$this->assertFalse($primitive->hasErrors());
+
+			$primitive =
+				\ewgraFramework\PrimitiveString::create('testPrimitive')->
+				setMax(5)->
+				import(array('testPrimitive' => 'aaaaaa'));
+
+			$this->assertTrue($primitive->hasError($primitive::WRONG_ERROR));
+		}
 	}
 ?>
