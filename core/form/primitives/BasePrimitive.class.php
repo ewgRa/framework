@@ -77,6 +77,14 @@
 					: $this->getDefaultValue();
 		}
 
+		public function getSafeRawValue()
+		{
+			return
+				$this->getRawValue()
+					? $this->getRawValue()
+					: $this->getDefaultValue();
+		}
+
 		/**
 		 * @return BasePrimitive
 		 */
