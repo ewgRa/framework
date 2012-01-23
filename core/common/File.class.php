@@ -90,6 +90,11 @@
 				setPath(pathinfo($this->getPath(), PATHINFO_DIRNAME));
 		}
 
+		public function getExtension()
+		{
+			return pathinfo($this->getPath(), PATHINFO_EXTENSION);
+		}
+
 		public function chmod($permission)
 		{
 			chmod($this->getPath(), $permission);
