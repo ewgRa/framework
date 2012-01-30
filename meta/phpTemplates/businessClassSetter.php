@@ -40,9 +40,19 @@
 		{
 <?php
 	if ($class && $classType == 'Identifier') {
+		if ($nullable) {
+?>
+			$this-><?=$name?>Id =
+				$<?=$name?> === null
+					? null
+					: <?=$value?>->getId();
+
+<?php
+		} else {
 ?>
 			$this-><?=$name?>Id = <?=$value?>->getId();
 <?php
+		}
 	}
 
 	if ($identifierId = $property->getAttribute('identifierId')) {
