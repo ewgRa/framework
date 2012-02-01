@@ -95,6 +95,11 @@
 			return pathinfo($this->getPath(), PATHINFO_EXTENSION);
 		}
 
+		public function getLowerExtension()
+		{
+			return StringUtils::toLower($this->getExtension());
+		}
+
 		public function chmod($permission)
 		{
 			chmod($this->getPath(), $permission);

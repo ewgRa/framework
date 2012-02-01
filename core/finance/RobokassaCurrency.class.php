@@ -9,13 +9,16 @@
 	{
 		const BANK_CARD 	= 1;
 		const QIWI_POCKET	= 2;
+		const WEBMONEY 		= 3;
 
 		protected $names = array(
+			self::WEBMONEY   => 'Webmoney',
 			self::BANK_CARD   => 'Банковская карта',
 			self::QIWI_POCKET => 'Qiwi кошелек'
 		);
 
 		protected $aliases = array(
+			self::WEBMONEY   => 'WMRM',
 			self::BANK_CARD   => 'BANKOCEAN2R',
 			self::QIWI_POCKET => 'QiwiR'
 		);

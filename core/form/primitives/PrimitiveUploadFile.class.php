@@ -46,7 +46,10 @@
 			if (!$this->hasErrors() && $this->getValue() !== null) {
 				$value = $this->getValue();
 
-				$extension = pathinfo($value['name'], PATHINFO_EXTENSION);
+				$extension =
+					StringUtils::toLower(
+						pathinfo($value['name'], PATHINFO_EXTENSION)
+					);
 
 				if (!empty($value['error']) && !empty($value['tmp_name'])) {
 					$this->addError(self::UPLOAD_ERROR);
