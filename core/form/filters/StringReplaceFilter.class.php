@@ -29,6 +29,14 @@
 			return $this;
 		}
 
+		public function setReplacement(array $search, array $replace)
+		{
+			$this->search = $search;
+			$this->replace = $replace;
+
+			return $this;
+		}
+
 		public function apply($var)
 		{
 			return
