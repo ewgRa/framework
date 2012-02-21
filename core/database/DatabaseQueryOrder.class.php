@@ -14,23 +14,30 @@
 		const NULLS_LAST 	= 2;
 
 		private $field = null;
+		private $table = null;
 		private $sortDirection = self::ASC;
 
 		private $nulls = self::NULLS_FIRST;
 
-		public static function create($field)
+		public static function create($field, $table = null)
 		{
-			return new self($field);
+			return new self($field, $table);
 		}
 
-		public function __construct($field)
+		public function __construct($field, $table = null)
 		{
 			$this->field = $field;
+			$this->table = $table;
 		}
 
 		public function getField()
 		{
 			return $this->field;
+		}
+
+		public function getTable()
+		{
+			return $this->table;
 		}
 
 		public function isAsc()

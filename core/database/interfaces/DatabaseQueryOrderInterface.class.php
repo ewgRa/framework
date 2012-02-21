@@ -7,9 +7,11 @@
 	*/
 	interface DatabaseQueryOrderInterface
 	{
-		public static function create($field);
+		public static function create($field, $table = null);
 
 		public function getField();
+
+		public function getTable();
 
 		public function isAsc();
 

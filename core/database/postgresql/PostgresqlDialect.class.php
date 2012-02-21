@@ -84,8 +84,14 @@
 
 		public function getOrderString(DatabaseQueryOrderInterface $order)
 		{
+			$field =
+				($order->getTable()
+						? $this->escapeTable($order->getTable()).'.'
+						: ''
+				).$this->escapeField($order->getField());
+
 			return
-				$this->escapeField($order->getField()).($order->isAsc() ? null : ' DESC')
+				$field.($order->isAsc() ? null : ' DESC')
 				.(
 					$order->isNullsFirst()
 						? ' NULLS FIRST'
