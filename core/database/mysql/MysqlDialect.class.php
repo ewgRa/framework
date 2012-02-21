@@ -83,13 +83,19 @@
 
 		public function getOrderString(DatabaseQueryOrderInterface $order)
 		{
+			$field =
+				($order->getTable()
+						? $this->escapeTable($order->getTable()).'.'
+						: ''
+				).$this->escapeField($order->getField());
+
 			return
 				(
 					$order->isNullsFirst()
-						? 'IF(ISNULL('.$this->escapeField($order->getField()).'), 0, 1), '
-						: 'IF(ISNULL('.$this->escapeField($order->getField()).'), 1, 0), '
+						? 'IF(ISNULL('.$field.'), 0, 1), '
+						: 'IF(ISNULL('.$field.'), 1, 0), '
 				)
-				.$this->escapeField($order->getField()).($order->isAsc() ? null : ' DESC');
+				.$field.($order->isAsc() ? null : ' DESC');
 		}
 	}
 ?>
