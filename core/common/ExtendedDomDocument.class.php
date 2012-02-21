@@ -18,6 +18,23 @@
 			return new self($version, $encoding);
 		}
 
+		public function load($filename, $options = null)
+		{
+			libxml_use_internal_errors(true);
+			return parent::load($filename, $options);
+		}
+
+		public function schemaValidate($filename)
+		{
+			libxml_use_internal_errors(true);
+			return parent::schemaValidate($filename);
+		}
+
+		public function getSchemaValidateErrors()
+		{
+			return libxml_get_errors();
+		}
+
 		/**
 		 * @return DomNode
 		 */
