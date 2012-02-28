@@ -63,4 +63,14 @@
 		}
 <?php
 	}
+
+	if ($name == 'id') {
+?>
+
+		public function has<?=$upperName?>()
+		{
+			return ($this-><?=$name?> !== null);
+		}
+<?php
+	}
 ?>
