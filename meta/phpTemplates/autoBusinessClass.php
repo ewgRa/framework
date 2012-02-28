@@ -37,6 +37,11 @@
 	$properies = $meta->getNodeList('properties/*', $classNode);
 
 	foreach ($properies as $property) {
+		$default =
+			$property->getAttribute('default')
+				? $property->getAttribute('default')
+				: 'null';
+
 		$class = $property->getAttribute('class');
 		$classType = $property->getAttribute('classType');
 
@@ -53,7 +58,7 @@
 <?php
 		}
 ?>
-		private $<?=$property->nodeName?> = null;
+		private $<?=$property->nodeName?> = <?=$default?>;
 
 <?php
 	}

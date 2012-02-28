@@ -47,6 +47,18 @@
 	$idProperty =
 		$meta->getNode("properties/*[name() = 'id']", $classNode);
 
+	if ($idProperty) {
+?>
+
+			if ($object->hasId()) {
+				$fields[] = $dialect->escapeField('id');
+				$fieldValues[] = '?';
+				$values[] = $object->getId();
+			}
+
+<?php
+	}
+
 	$properties =
 		$meta->getNodeList(
 			"properties/*[name() != 'id' and not(@classType = 'Identifier')]",
@@ -119,7 +131,8 @@
 <?php
 	if ($idProperty) {
 ?>
-			$object->setId($dbResult->getInsertedId());
+			if (!$object->hasId())
+				$object->setId($dbResult->getInsertedId());
 <?php
 	}
 ?>
