@@ -19,6 +19,24 @@
 			return new self;
 		}
 
+		public static function deleteDir($dir)
+		{
+			self::cleanDir($dir);
+			rmdir($dir);
+		}
+
+		public static function cleanDir($dir)
+		{
+			$files = glob(str_replace('\\', '\\\\', $dir).DIRECTORY_SEPARATOR.'*');
+
+			foreach ($files as $file) {
+				if(is_dir($file))
+					self::deleteDir($file);
+				else
+					unlink($file);
+			}
+		}
+
 		/**
 		 * @return Dir
 		 */
@@ -39,6 +57,12 @@
 			return $this;
 		}
 
+		public function clean()
+		{
+			self::cleanDir($this->getPath());
+			return $this;
+		}
+
 		public function isExists()
 		{
 			return file_exists($this->getPath());
@@ -55,20 +79,16 @@
 			return $this;
 		}
 
-		public static function deleteDir($dir)
+		public function getFiles()
 		{
-			$files = glob(str_replace('\\', '\\\\', $dir).DIRECTORY_SEPARATOR.'*');
+			$result = array();
 
-			$function = __FUNCTION__;
-
-			foreach ($files as $file) {
-				if(is_dir($file))
-					self::$function($file);
-				else
-					unlink($file);
+			foreach(new \FilesystemIterator($this->getPath()) as $file) {
+				if ($file->isFile())
+					$result[] = File::create()->setPath($file->getPathName());
 			}
 
-			rmdir($dir);
+			return $result;
 		}
 	}
 ?>
