@@ -23,6 +23,21 @@
 			return MysqlDialect::me();
 		}
 
+		public function begin()
+		{
+			throw \ewgraFramework\UnimplementedCodeException::create();
+		}
+
+		public function commit()
+		{
+			throw \ewgraFramework\UnimplementedCodeException::create();
+		}
+
+		public function rollback()
+		{
+			throw \ewgraFramework\UnimplementedCodeException::create();
+		}
+
 		/**
 		 * @return MysqlDatabase
 		 * @throws DatabaseConnectException

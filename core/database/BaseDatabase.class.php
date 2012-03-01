@@ -23,6 +23,17 @@
 
 		abstract protected function createInsertResult();
 
+		public function quietRollback()
+		{
+			try {
+				$this->rollback();
+			} catch(\Exception $e) {
+				// quiet
+			}
+
+			return $this;
+		}
+
 		/**
 		 * @return BaseDatabase
 		 */

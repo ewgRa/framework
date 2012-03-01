@@ -23,6 +23,24 @@
 			return PostgresqlDialect::me();
 		}
 
+		public function begin()
+		{
+			$this->queryRawNull('begin');
+			return $this;
+		}
+
+		public function commit()
+		{
+			$this->queryRawNull('commit');
+			return $this;
+		}
+
+		public function rollback()
+		{
+			$this->queryRawNull('rollback');
+			return $this;
+		}
+
 		/**
 		 * @return PostgresqlDatabase
 		 * @throws DatabaseConnectException

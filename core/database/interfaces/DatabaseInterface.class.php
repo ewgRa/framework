@@ -9,6 +9,11 @@
 	{
 		public static function create();
 
+		public function begin();
+		public function commit();
+		public function rollback();
+		public function quietRollback();
+
 		public function connect();
 
 		public function disconnect();
