@@ -7,6 +7,8 @@
 	*/
 	interface DatabaseDialectInterface
 	{
+		public function getLimitByPager(Pager $pager);
+
 		public function getLimit($count, $offset = null);
 
 		/**

@@ -5,7 +5,7 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class MysqlDialect extends Singleton implements DatabaseDialectInterface
+	final class MysqlDialect extends BaseDialect
 	{
 		/**
 		 * @return MysqlDialect

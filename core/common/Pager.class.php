@@ -126,10 +126,10 @@
 				import($request->getGet())->
 				importMore($request->getPost());
 
-			if ($form->getRawValue($this->getOffsetKey()))
-				$this->setOffset($form->getSafeValue($this->getOffsetKey()));
-			else
+			if ($form->getRawValue($this->getPageKey()))
 				$this->setPage($form->getSafeValue($this->getPageKey()));
+			else
+				$this->setOffset($form->getSafeValue($this->getOffsetKey()));
 
 			return $this;
 		}
