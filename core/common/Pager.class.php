@@ -11,6 +11,9 @@
 		private $offset = null;
 		private $limit = null;
 
+		private $offsetKey 	= 'offset';
+		private $pageKey 	= 'page';
+
 		/**
 		 * @return Pager
 		 */
@@ -59,6 +62,76 @@
 		public function getLimit()
 		{
 			return $this->limit;
+		}
+
+		/**
+		 * @return Pager
+		 */
+		public function setOffsetKey($key)
+		{
+			$this->offsetKey = $key;
+			return $this;
+		}
+
+		public function getOffsetKey()
+		{
+			return $this->offsetKey;
+		}
+
+		/**
+		 * @return Pager
+		 */
+		public function setPage($page)
+		{
+			\ewgraFramework\Assert::isNotNull($this->getLimit());
+			$this->setOffset(($page-1)*$this->getLimit());
+
+			return $this;
+		}
+
+		public function getPage()
+		{
+			\ewgraFramework\Assert::isNotNull($this->getLimit());
+			return floor($this->getOffset()/$this->getLimit())+1;
+		}
+
+		/**
+		 * @return Pager
+		 */
+		public function setPageKey($key)
+		{
+			$this->pageKey = $key;
+			return $this;
+		}
+
+		public function getPageKey()
+		{
+			return $this->pageKey;
+		}
+
+		public function fillFromRequest(HttpRequest $request)
+		{
+			$form =
+				\ewgraFramework\Form::create()->
+				addPrimitive(
+					\ewgraFramework\PrimitiveInteger::create($this->getOffsetKey())->
+					setDefaultValue(0)
+				)->
+				addPrimitive(
+					\ewgraFramework\PrimitiveInteger::create($this->getPageKey())->
+					setDefaultValue(1)
+				);
+
+			$form->
+				import($request->getGet())->
+				importMore($request->getPost());
+
+			if ($form->getRawValue($this->getOffsetKey()))
+				$this->setOffset($form->getSafeValue($this->getOffsetKey()));
+			else
+				$this->setPage($form->getSafeValue($this->getPageKey()));
+
+			return $this;
 		}
 	}
 ?>
