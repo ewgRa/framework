@@ -14,6 +14,8 @@
 		private $offsetKey 	= 'offset';
 		private $pageKey 	= 'page';
 
+		private $radius = null;
+
 		/**
 		 * @return Pager
 		 */
@@ -53,6 +55,20 @@
 		/**
 		 * @return Pager
 		 */
+		public function setRadius($radius)
+		{
+			$this->radius = $radius;
+			return $this;
+		}
+
+		public function getRadius()
+		{
+			return $this->radius;
+		}
+
+		/**
+		 * @return Pager
+		 */
 		public function setLimit($limit)
 		{
 			$this->limit = $limit;
@@ -76,6 +92,64 @@
 		public function getOffsetKey()
 		{
 			return $this->offsetKey;
+		}
+
+		public function getStartPage()
+		{
+			$result = $this->getPage()-$this->getRadius();
+			$endPage = $this->getPage()+$this->getRadius();
+
+			if ($endPage > $this->getPagesCount())
+				$result -= ($endPage - $this->getPagesCount());
+
+			if ($result < 1)
+				$result = 1;
+
+			return $result;
+		}
+
+		public function getEndPage()
+		{
+			$result = $this->getPage()+$this->getRadius();
+			$startPage = $this->getPage()-$this->getRadius();
+
+			if ($startPage < 1)
+				$result += abs($startPage)+1;
+
+			if ($result > $this->getPagesCount())
+				$result = $this->getPagesCount();
+
+			return $result;
+		}
+
+		public function getPrevPage()
+		{
+			$result =
+				$this->getPage() > 1
+					? $this->getPage()-1
+					: null;
+
+			if ($result && $result > $this->getPagesCount())
+				$result = $this->getPagesCount();
+
+			if (!$result)
+				$result = null;
+
+			return $result;
+		}
+
+		public function getNextPage()
+		{
+			return
+				$this->getPage() < $this->getPagesCount()
+					? $this->getPage()+1
+					: null;
+		}
+
+		public function getPagesCount()
+		{
+			\ewgraFramework\Assert::isNotNull($this->getLimit());
+			return ceil($this->getTotal() / $this->getLimit());
 		}
 
 		/**
