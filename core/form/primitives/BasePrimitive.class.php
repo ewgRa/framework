@@ -69,6 +69,11 @@
 			return $this->defaultValue;
 		}
 
+		public function getRawDefaultValue()
+		{
+			return $this->getDefaultValue();
+		}
+
 		public function getSafeValue()
 		{
 			return
@@ -82,7 +87,7 @@
 			return
 				$this->getRawValue()
 					? $this->getRawValue()
-					: $this->getDefaultValue();
+					: $this->getRawDefaultValue();
 		}
 
 		/**

@@ -26,6 +26,16 @@
 			return $this;
 		}
 
+		public function getRawDefaultValue()
+		{
+			$defaultValue = $this->getDefaultValue();
+
+			if ($defaultValue)
+				return $defaultValue->getId();
+
+			return null;
+		}
+
 		/**
 		 * @return PrimitiveEnumeration
 		 */
