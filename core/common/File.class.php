@@ -43,6 +43,11 @@
 			return file_put_contents($this->getPath(), $content);
 		}
 
+		public function touch()
+		{
+			return file_put_contents($this->getPath(), '');
+		}
+
 		public function isExists()
 		{
 			return file_exists($this->getPath());
@@ -78,9 +83,9 @@
 			return $this;
 		}
 
-		public function getBaseName()
+		public function getBaseName($suffix = null)
 		{
-			return basename($this->getPath());
+			return basename($this->getPath(), $suffix);
 		}
 
 		public function getDir()
