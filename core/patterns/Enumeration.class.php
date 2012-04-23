@@ -21,9 +21,7 @@
 		public static function any()
 		{
 			$class = get_called_class();
-			$reflection = new \ReflectionClass(get_called_class());
-
-			$result = null;
+			$reflection = new \ReflectionClass($class);
 
 			$props = $reflection->getDefaultProperties();
 
