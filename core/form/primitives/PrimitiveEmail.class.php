@@ -19,6 +19,11 @@
 
 		public function isWrong($value)
 		{
+			// FIXME: when fixme in BasePrimitive "we need check isWrong only if value is not empty" will be fixed
+			// this check can be removed
+			if ($this->isEmpty($value))
+				return false;
+
 			return !preg_match(self::MAIL_PATTERN, $value);
 		}
 	}

@@ -231,6 +231,8 @@
 			foreach ($this->preImportFilters as $filter)
 				$value = $filter->apply($value);
 
+			// FIXME: we need check isWrong only if value is not empty
+			// check isWrong child primitives also
 			if ($this->isWrong($value))
 				$this->markWrong();
 			else if(!$this->isEmpty($value))
