@@ -7,6 +7,8 @@
 	*/
 	final class PostgresqlDatabase extends BaseDatabase
 	{
+		private $dialect = null;
+
 		/**
 		 * @return PostgresqlDatabase
 		 */
@@ -15,12 +17,17 @@
 			return new self;
 		}
 
+		public function __construct()
+		{
+			$this->dialect = PostgresqlDialect::me();
+		}
+
 		/**
 		 * @return PostgresqlDialect
 		 */
 		public function getDialect()
 		{
-			return PostgresqlDialect::me();
+			return $this->dialect;
 		}
 
 		public function begin()
