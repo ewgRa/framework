@@ -37,6 +37,16 @@
 		 */
 		public function insert(<?=$classNode->nodeName?> $object)
 		{
+			$result = $this->rawInsert($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return <?=$classNode->nodeName.PHP_EOL?>
+		 */
+		public function rawInsert(<?=$classNode->nodeName?> $object)
+		{
 			$dialect = $this->db()->getDialect();
 
 			$dbQuery = 'INSERT INTO '.$this->getTable().' ';
@@ -137,8 +147,6 @@
 	}
 ?>
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -146,6 +154,16 @@
 		 * @return Auto<?=$classNode->nodeName?>DA
 		 */
 		public function save(<?=$classNode->nodeName?> $object)
+		{
+			$result = $this->rawSave($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Auto<?=$classNode->nodeName?>DA
+		 */
+		public function rawSave(<?=$classNode->nodeName?> $object)
 		{
 			$dialect = $this->db()->getDialect();
 			$dbQuery = 'UPDATE '.$this->getTable().' SET ';
@@ -215,8 +233,6 @@
 				setValues($queryParams)
 			);
 
-			$this->dropCache();
-
 			return $object;
 		}
 
@@ -224,6 +240,16 @@
 		 * @return Auto<?=$classNode->nodeName?>DA
 		 */
 		public function delete(<?=$classNode->nodeName?> $object)
+		{
+			$result = $this->rawDelete($object);
+			$this->dropCache();
+			return $result;
+		}
+
+		/**
+		 * @return Auto<?=$classNode->nodeName?>DA
+		 */
+		public function rawDelete(<?=$classNode->nodeName?> $object)
 		{
 			$dbQuery =
 				'DELETE FROM '.$this->getTable().' WHERE id = '.$object->getId();
@@ -233,8 +259,6 @@
 			);
 
 			$object->setId(null);
-
-			$this->dropCache();
 
 			return $this;
 		}
