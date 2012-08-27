@@ -50,5 +50,27 @@
 			$this->assertTrue($request->hasHttpReferer());
 			$this->assertSame('referer', $request->getHttpReferer());
 		}
+
+		public function testGetRemoteIp()
+		{
+			$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
+			$request =
+				\ewgraFramework\HttpRequest::create()->
+				setServer($_SERVER);
+
+			$this->assertSame($request->getRemoteIp(), '127.0.0.1');
+		}
+
+		public function testUserAgent()
+		{
+			$_SERVER['HTTP_USER_AGENT'] = 'my own browser';
+
+			$request =
+				\ewgraFramework\HttpRequest::create()->
+				setServer($_SERVER);
+
+			$this->assertSame($request->getUserAgent(), 'my own browser');
+		}
 	}
 ?>

@@ -21,6 +21,15 @@
 			$this->assertEquals($content, $file->getContent());
 		}
 
+		public function testExtension()
+		{
+			$file = \ewgraFramework\File::create()->setPath('/'.rand().'.jpG');
+
+			$this->assertEquals($file->getExtension(), 'jpG');
+			$this->assertEquals($file->getLowerExtension(), 'jpg');
+		}
+
+
 		public function testOperations()
 		{
 			$dirName = TMP_DIR.DIRECTORY_SEPARATOR.__CLASS__;

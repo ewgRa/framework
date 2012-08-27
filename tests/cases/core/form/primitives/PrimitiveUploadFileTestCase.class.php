@@ -72,7 +72,7 @@
 			$file = array(
 				'error' => 0,
 				'tmp_name' => '/tmp/fwef',
-				'name' => 'aaaa.jpg'
+				'name' => 'aaaa.jpG'
 			);
 
 			$primitive =
@@ -91,7 +91,7 @@
 			$file = array(
 				'error' => 0,
 				'tmp_name' => '/tmp/fwef',
-				'name' => 'aaaa.css'
+				'name' => 'aaaa.csS'
 			);
 
 			$primitive->import(array('testPrimitive' => $file));

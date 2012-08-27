@@ -11,13 +11,16 @@
 		{
 			$mav = \ewgraFramework\ModelAndView::create();
 
-			$mav->setView(
+			$view =
 				\ewgraFramework\PhpView::create()->
 				loadLayout(
 					\ewgraFramework\File::create()->
 					setPath(dirname(__FILE__).'/../view/renderPhpView.php')
-				)
-			);
+				);
+
+			$mav->setView($view);
+
+			$this->assertSame($mav->getView(), $view);
 
 			$mav->setModel(\ewgraFramework\Model::create()->set('data', 'value'));
 

@@ -42,5 +42,40 @@
 				$this->getInstance()->getDialect()->escapeTable('table')
 			);
 		}
+
+		public function testCondition()
+		{
+			$this->assertEquals(
+				'CASE WHEN 1 THEN 2 ELSE 3 END',
+				$this->getInstance()->getDialect()->condition(1, 2, 3)
+			);
+		}
+
+		public function testCreateOrder()
+		{
+			$this->assertTrue(
+				$this->getInstance()->getDialect()->createOrder('name')
+				instanceof DatabaseQueryOrderInterface
+			);
+		}
+
+		public function testOrderString()
+		{
+			$order = $this->getInstance()->getDialect()->createOrder('name');
+
+			$order->desc()->nullsLast();
+
+			$this->assertSame(
+				'"name" DESC NULLS LAST',
+				$this->getInstance()->getDialect()->getOrderString($order)
+			);
+
+			$order->desc()->nullsFirst();
+
+			$this->assertSame(
+				'"name" DESC NULLS FIRST',
+				$this->getInstance()->getDialect()->getOrderString($order)
+			);
+		}
 	}
 ?>

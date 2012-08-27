@@ -31,12 +31,16 @@
 
 		public function has($alias)
 		{
+			// @codeCoverageIgnoreStart
 			return isset($_COOKIE[$alias]);
+			// @codeCoverageIgnoreEnd
 		}
 
 		public function get($alias)
 		{
+			// @codeCoverageIgnoreStart
 			return $_COOKIE[$alias];
+			// @codeCoverageIgnoreEnd
 		}
 	}
 ?>

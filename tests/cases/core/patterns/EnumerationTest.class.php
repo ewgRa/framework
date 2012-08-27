@@ -11,7 +11,7 @@
 		const TEST2	= 2;
 
 		protected $names = array(
-			self::TEST 	=> 'test',
+			self::TEST 	=> 'Test',
 			self::TEST2 => 'test2'
 		);
 

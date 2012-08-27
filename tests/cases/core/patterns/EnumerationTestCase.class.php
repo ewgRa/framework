@@ -40,7 +40,8 @@
 		{
 			$enumeration = EnumerationTest::create(1);
 
-			$this->assertSame('test', $enumeration->getName());
+			$this->assertSame('Test', $enumeration->getName());
+			$this->assertSame('test', $enumeration->getLowerName());
 
 			$this->assertSame($enumeration->getName(), (string)$enumeration);
 
@@ -53,7 +54,7 @@
 			);
 
 			$this->assertEquals(
-				array(1 => 'test', 2 => 'test2'),
+				array(1 => 'Test', 2 => 'test2'),
 				$enumeration->getNames()
 			);
 		}
