@@ -188,6 +188,7 @@
 		else if ($type == 'boolean') {
 			$value = '('.$value.' ? 1 : 0)';
 			$storeValue = $value;
+		// FIXME: now in database enumeration store as "enumerationName", change it to "enumerationName_id"?
 		} else if ($classType == 'Identifier' || $classType == 'Enumeration') {
 			$value = $value.'->getId()';
 			$storeValue = $value;

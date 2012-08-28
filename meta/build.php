@@ -1,6 +1,8 @@
 <?php
 	namespace ewgraFramework;
 
+	// FIXME: Proto layer?
+
 	require_once(dirname(__FILE__).'/init.tpl.php');
 
 	$longOptions = array(

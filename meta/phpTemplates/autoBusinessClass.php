@@ -1,6 +1,8 @@
 <?php
 	namespace ewgraFramework;
 
+	// FIXME: if field field have nullable="false" add Assert::isNotNull to code
+
 	$meta = $model->get('meta');
 
 	$classNode = $meta->getNode($meta->getNode('className')->nodeValue);
