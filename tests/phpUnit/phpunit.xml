@@ -1,0 +1,10 @@
+<phpunit bootstrap="bootstrap.php">
+	<php>
+		<ini name="memory_limit" value="128M" />
+	</php>
+	<testsuites>
+		<testsuite name="All Tests">
+			<directory suffix="TestCase.class.php">../cases</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

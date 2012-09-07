@@ -17,6 +17,11 @@
 			return parent::me();
 		}
 
+		public function getLimitByPager(\ewgraFramework\Pager $pager)
+		{
+			return $this->getLimit($pager->getLimit(), $pager->getOffset());
+		}
+
 		public function getLimit($count, $offset = null)
 		{
 			if (!is_null($offset) && $offset < 0)
