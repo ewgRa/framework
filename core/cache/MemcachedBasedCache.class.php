@@ -7,6 +7,9 @@
 	*/
 	final class MemcachedBasedCache extends BaseCache
 	{
+		/**
+		 * @var Memcache
+		 */
 		private $memcache = null;
 
 		/**
@@ -35,11 +38,16 @@
 
 			if ($data = $this->getMemcache()->get($key)) {
 
-				$ticket->
-					setExpiredTime($data['lifeTime'])->
-					actual();
+				if ($data['lifeTime'] >= time()) {
+					$ticket->
+						setExpiredTime($data['lifeTime'])->
+						actual();
 
-				$result = $data['data'];
+					$result = $data['data'];
+				} else {
+					$ticket->setExpiredTime(null);
+					$ticket->expired();
+				}
 			} else {
 				$ticket->setExpiredTime(null);
 				$ticket->expired();

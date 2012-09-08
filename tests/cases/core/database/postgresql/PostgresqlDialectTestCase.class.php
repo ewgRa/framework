@@ -55,7 +55,7 @@
 		{
 			$this->assertTrue(
 				$this->getInstance()->getDialect()->createOrder('name')
-				instanceof DatabaseQueryOrderInterface
+				instanceof \ewgraFramework\DatabaseQueryOrderInterface
 			);
 		}
 
