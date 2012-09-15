@@ -35,6 +35,24 @@
 				setCacheInstance($this);
 		}
 
+		public function multiGet(array $tickets)
+		{
+			$result = array();
+
+			foreach ($tickets as $key => $ticket)
+				$result[$key] = $this->get($ticket);
+
+			return $result;
+		}
+
+		public function multiSet(array $tickets, array $data)
+		{
+			foreach ($tickets as $key => $ticket)
+				$this->set($ticket, $data[$key]);
+
+			return $this;
+		}
+
 		/**
 		 * @return BaseCache
 		 */
@@ -42,6 +60,14 @@
 		{
 			$this->dropByKey($this->compileKey($cacheTicket));
 			$cacheTicket->expired();
+			return $this;
+		}
+
+		public function multiDrop(array $tickets)
+		{
+			foreach ($tickets as $key => $ticket)
+				$this->drop($ticket);
+
 			return $this;
 		}
 
