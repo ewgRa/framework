@@ -39,8 +39,6 @@
 
 			$cacheInstance->clean();
 
-			\ewgraFramework\Cache::me()->addPool($cacheInstance, 'testPool');
-
 			$dbInstance =
 				\ewgraFramework\PostgresqlDatabase::create()->
 				setHost(POSTGRESQL_TEST_HOST)->
@@ -94,7 +92,11 @@
 				// @codeCoverageIgnoreEnd
 			}
 
-			\ewgraFramework\Database::me()->addPool($dbInstance, 'testPool');
+			$worker =
+				\ewgraFramework\DefaultDatabaseCacheWorker::create(
+					$dbInstance,
+					$cacheInstance
+				);
 
 			$dbInstance->queryNull(
 				\ewgraFramework\DatabaseQuery::create()->setQuery(
@@ -102,17 +104,11 @@
 				)
 			);
 
-			$request =
-				\ewgraFramework\DatabaseCacheRequest::create(
-					\ewgraFramework\DatabaseQuery::create()->
-					setQuery('SELECT * FROM "test" WHERE field=1'),
-					'testPool',
-					'testPool'
-				);
+			$query =
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM "test" WHERE field=1');
 
-			$worker = \ewgraFramework\DefaultDatabaseCacheWorker::me();
-
-			$result = $worker->getCached($request, array('tag1', 'tag2'));
+			$result = $worker->getCached($query, array('tag1', 'tag2'));
 
 			$this->assertSame($result, array('id' => '1', 'field' => '1'));
 
@@ -122,7 +118,7 @@
 				)
 			);
 
-			$result = $worker->getCached($request, array('tag1', 'tag2'));
+			$result = $worker->getCached($query, array('tag1', 'tag2'));
 
 			$this->assertSame($result, array('id' => '1', 'field' => '1'));
 
@@ -132,9 +128,9 @@
 				)
 			);
 
-			$worker->dropCache($request, array('tag2'));
+			$worker->dropCache($query, array('tag2'));
 
-			$result = $worker->getCached($request, array('tag1', 'tag2'));
+			$result = $worker->getCached($query, array('tag1', 'tag2'));
 
 			$this->assertSame($result, array('id' => '2', 'field' => '1'));
 

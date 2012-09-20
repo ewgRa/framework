@@ -5,28 +5,47 @@
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
 	*/
-	final class DefaultDatabaseCacheWorker extends Singleton
+	final class DefaultDatabaseCacheWorker
 	{
 		/**
-		 * @return DefaultDatabaseCacheWorker
-		 * method needed for methods hinting
+		 * @var DatabaseQueryInterface
 		 */
-		public static function me()
-		{
-			return parent::me();
+		private $database	= null;
+
+		/**
+		 * @var CacheInterface
+		 */
+		private $cache		= null;
+
+		/**
+		 * @return DefaultDatabaseCacheWorker
+		 */
+		public static function create(
+			DatabaseInterface $database,
+			CacheInterface $cache
+		) {
+			return new self($database, $cache);
+		}
+
+		public function __construct(
+			DatabaseInterface $database,
+			CacheInterface $cache
+		) {
+			$this->database = $database;
+			$this->cache = $cache;
 		}
 
 		public function getCached(
-			DatabaseCacheRequest $request,
+			DatabaseQueryInterface $query,
 			array $tags
 		) {
-			$cacheTicket = $this->createTicket($request);
+			$cacheTicket = $this->createTicket();
 
-			$tagsVersionList = $this->getTagsVersionList($request, $tags);
+			$tagsVersionList = $this->getTagsVersionList($tags);
 
 			$result =
 				$cacheTicket->
-				setKey(__FUNCTION__, $tags, $request->getQuery())->
+				setKey(__FUNCTION__, $tags, $query)->
 				restoreData();
 
 			if (
@@ -37,8 +56,7 @@
 			}
 
 			if ($cacheTicket->isExpired()) {
-				$dbInstance = $request->getDb();
-				$dbResult = $dbInstance->query($request->getQuery());
+				$dbResult = $this->database->query($query);
 
 				if ($dbResult->recordCount()) {
 					\ewgraFramework\Assert::isEqual(
@@ -60,16 +78,16 @@
 		}
 
 		public function getCachedList(
-			DatabaseCacheRequest $request,
+			DatabaseQueryInterface $query,
 			array $tags
 		) {
-			$cacheTicket = $this->createTicket($request);
+			$cacheTicket = $this->createTicket();
 
-			$tagsVersionList = $this->getTagsVersionList($request, $tags);
+			$tagsVersionList = $this->getTagsVersionList($tags);
 
 			$result =
 				$cacheTicket->
-				setKey(__FUNCTION__, $tags, $request->getQuery())->
+				setKey(__FUNCTION__, $tags, $query)->
 				restoreData();
 
 			if (
@@ -80,8 +98,7 @@
 			}
 
 			if ($cacheTicket->isExpired()) {
-				$dbInstance = $request->getDb();
-				$dbResult = $dbInstance->query($request->getQuery());
+				$dbResult = $this->database->query($query);
 
 				$result = array(
 					'tags' => $tagsVersionList,
@@ -98,11 +115,11 @@
 		 * @return DefaultCacheWorker
 		 */
 		public function dropCache(
-			DatabaseCacheRequest $request,
+			DatabaseQueryInterface $query,
 			array $tags
 		) {
-			$request->getCache()->multiDrop(
-				$this->createTagsTicketList($request, $tags)
+			$this->cache->multiDrop(
+				$this->createTagsTicketList($tags)
 			);
 
 			return $this;
@@ -111,15 +128,10 @@
 		/**
 		 * @return DefaultCacheWorker
 		 */
-		private function getTagsVersionList(
-			DatabaseCacheRequest $request,
-			array $tags
-		) {
-			$cacheInstance = $request->getCache();
+		private function getTagsVersionList(array $tags) {
+			$tagsTicketList = $this->createTagsTicketList($tags);
 
-			$tagsTicketList = $this->createTagsTicketList($request, $tags);
-
-			$cacheResult = $cacheInstance->multiGet($tagsTicketList);
+			$cacheResult = $this->cache->multiGet($tagsTicketList);
 
 			$dataToStore = array();
 			$ticketsToStore = array();
@@ -133,7 +145,7 @@
 				}
 			}
 
-			$cacheInstance->multiSet($ticketsToStore, $dataToStore);
+			$this->cache->multiSet($ticketsToStore, $dataToStore);
 
 			return $cacheResult;
 		}
@@ -141,23 +153,18 @@
 		/**
 		 * @return CacheTicket
 		 */
-		private function createTicket(DatabaseCacheRequest $request) {
-			return
-				$request->
-					getCache()->
-					createTicket()->
-					setPrefix($request->getDbPool().'-database');
+		private function createTicket()
+		{
+			return $this->cache->createTicket();
 		}
 
 		/**
 		 * @return CacheTicket
 		 */
-		private function createTagTicket(
-			DatabaseCacheRequest $request,
-			$tag
-		) {
-			$result = $this->createTicket($request);
-			$result->setPrefix($result->getPrefix().'-'.$tag.'-tag');
+		private function createTagTicket($tag)
+		{
+			$result = $this->createTicket();
+			$result->setPrefix($tag.'-tag');
 			$result->setKey($tag);
 
 			return $result;
@@ -166,14 +173,11 @@
 		/**
 		 * @return array
 		 */
-		private function createTagsTicketList(
-			DatabaseCacheRequest $request,
-			array $tags
-		) {
+		private function createTagsTicketList(array $tags) {
 			$result = array();
 
 			foreach ($tags as $tag)
-				$result[$tag] = $this->createTagTicket($request, $tag);
+				$result[$tag] = $this->createTagTicket($tag);
 
 			return $result;
 		}
