@@ -182,7 +182,7 @@
 
 			$this->assertSame($result, 'testData');
 
-			$this->cacheInstance->clean();
+			$worker->dropCache(array('tag2'));
 
 			$result = $worker->getCached($query, array('tag1', 'tag2'));
 
@@ -197,35 +197,24 @@
 					$this->cacheInstance
 				);
 
-			$query =
-				\ewgraFramework\DatabaseQuery::create()->
-				setQuery('SELECT * FROM "test" WHERE field=1');
+			$ticket = $this->cacheInstance->createTicket();
 
-			$result = $worker->getCached(
-				$query,
-				array('tag1', 'tag2'),
-				function () {
-					return 'testData';
-				}
-			);
+			$ticket->setKey('testKey');
 
-			$this->assertSame($result, 'testData');
+			$worker->storeTicketData($ticket, 'data', array('tag1', 'tag2'));
 
-			$result = $worker->getCachedList(
-				$query,
-				array('tag1', 'tag2'),
-				function () {
-					return 'testData';
-				}
-			);
+			$result = $worker->restoreTicketData($ticket);
+			return;
 
-			$this->assertSame($result, 'testData');
+			$this->assertFalse($cacheTicket->isExpired());
+			$this->assertSame($result, 'data');
 
-			$this->cacheInstance->clean();
+			$worker->dropCache(array('tag2'));
 
-			$result = $worker->getCached($query, array('tag1', 'tag2'));
+			$result = $worker->restoreTicketData($ticket);
 
-			$this->assertSame($result, array('id' => '1', 'field' => '1'));
+			$this->assertTrue($cacheTicket->isExpired());
+			$this->assertNull($result);
 		}
 	}
 ?>

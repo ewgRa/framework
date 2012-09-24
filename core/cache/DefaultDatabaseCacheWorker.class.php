@@ -39,7 +39,10 @@
 			$result = $cacheTicket->restoreData();
 
 			if (!$cacheTicket->isExpired()) {
-				$tagsVersionList = $this->getTagsVersionList($result['tags']);
+				$tagsVersionList =
+					$this->getTagsVersionList(
+						array_keys($result['tags'])
+					);
 
 				if ($tagsVersionList != $result['tags'])
 					$cacheTicket->drop();
