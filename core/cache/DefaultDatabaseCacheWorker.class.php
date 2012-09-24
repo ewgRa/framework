@@ -35,18 +35,48 @@
 			$this->cache = $cache;
 		}
 
-		public function getCached(
-			DatabaseQueryInterface $query,
-			array $tags
-		) {
-			$cacheTicket = $this->createTicket();
+		public function restoreTicketData(CacheTicket $cacheTicket) {
+			$result = $cacheTicket->restoreData();
 
+			if (!$cacheTicket->isExpired()) {
+				$tagsVersionList = $this->getTagsVersionList($result['tags']);
+
+				if ($tagsVersionList != $result['tags'])
+					$cacheTicket->drop();
+			}
+
+			return
+				$cacheTicket->isExpired()
+					? null
+					: $result['data'];
+		}
+
+		public function storeTicketData(
+			\ewgraFramework\CacheTicket $cacheTicket,
+			$data,
+			$tags
+		) {
 			$tagsVersionList = $this->getTagsVersionList($tags);
 
-			$result =
-				$cacheTicket->
-				setKey(__FUNCTION__, $tags, $query)->
-				restoreData();
+			$storeData = array(
+				'tags' => $tagsVersionList,
+				'data' => $data
+			);
+
+			return $cacheTicket->storeData($storeData);
+		}
+
+		public function getCached(
+			DatabaseQueryInterface $query,
+			array $tags,
+			\Closure $resultCallback = null
+		) {
+			$cacheTicket = $this->createTicket();
+			$cacheTicket->setKey(__FUNCTION__, $tags, $query);
+
+			$result = $cacheTicket->restoreData();
+
+			$tagsVersionList = $this->getTagsVersionList($tags);
 
 			if (
 				!$cacheTicket->isExpired()
@@ -56,20 +86,23 @@
 			}
 
 			if ($cacheTicket->isExpired()) {
-				$dbResult = $this->database->query($query);
+				$result = array('tags' => $tagsVersionList);
 
-				if ($dbResult->recordCount()) {
-					\ewgraFramework\Assert::isEqual(
-						$dbResult->recordCount(),
-						1,
-						'query returned more than one row'
-					);
+				if ($resultCallback)
+					$result['data'] = $resultCallback();
+				else {
+					$dbResult = $this->database->query($query);
+
+					if ($dbResult->recordCount()) {
+						\ewgraFramework\Assert::isEqual(
+							$dbResult->recordCount(),
+							1,
+							'query returned more than one row'
+						);
+					}
+
+					$result['data'] = $dbResult->fetchRow();
 				}
-
-				$result = array(
-					'tags' => $tagsVersionList,
-					'data' => $dbResult->fetchRow()
-				);
 
 				$cacheTicket->storeData($result);
 			}
@@ -79,16 +112,15 @@
 
 		public function getCachedList(
 			DatabaseQueryInterface $query,
-			array $tags
+			array $tags,
+			\Closure $resultCallback = null
 		) {
 			$cacheTicket = $this->createTicket();
+			$cacheTicket->setKey(__FUNCTION__, $tags, $query);
+
+			$result = $cacheTicket->restoreData();
 
 			$tagsVersionList = $this->getTagsVersionList($tags);
-
-			$result =
-				$cacheTicket->
-				setKey(__FUNCTION__, $tags, $query)->
-				restoreData();
 
 			if (
 				!$cacheTicket->isExpired()
@@ -98,12 +130,14 @@
 			}
 
 			if ($cacheTicket->isExpired()) {
-				$dbResult = $this->database->query($query);
+				$result = array('tags' => $tagsVersionList);
 
-				$result = array(
-					'tags' => $tagsVersionList,
-					'data' => $dbResult->fetchList()
-				);
+				if ($resultCallback)
+					$result['data'] = $resultCallback();
+				else {
+					$dbResult = $this->database->query($query);
+					$result['data'] = $dbResult->fetchList();
+				}
 
 				$cacheTicket->storeData($result);
 			}
@@ -112,12 +146,9 @@
 		}
 
 		/**
-		 * @return DefaultCacheWorker
+		 * @return DefaultDatabaseCacheWorker
 		 */
-		public function dropCache(
-			DatabaseQueryInterface $query,
-			array $tags
-		) {
+		public function dropCache(array $tags) {
 			$this->cache->multiDrop(
 				$this->createTagsTicketList($tags)
 			);
@@ -126,7 +157,7 @@
 		}
 
 		/**
-		 * @return DefaultCacheWorker
+		 * @return DefaultDatabaseCacheWorker
 		 */
 		private function getTagsVersionList(array $tags) {
 			$tagsTicketList = $this->createTagsTicketList($tags);

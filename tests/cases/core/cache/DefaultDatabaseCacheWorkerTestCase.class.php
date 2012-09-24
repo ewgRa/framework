@@ -10,29 +10,23 @@
 		private $savedDatabase = null;
 		private $savedCache = null;
 
+		/**
+		 * @var Cache
+		 */
+		private $cacheInstance = null;
+
+		/**
+		 * @var Database
+		 */
+		private $dbInstance = null;
+
 		public function setUp()
 		{
 			$this->savedDatabase = serialize(\ewgraFramework\Database::me());
 			\ewgraFramework\TestSingleton::dropInstance('ewgraFramework\Database');
 			$this->savedCache = serialize(\ewgraFramework\Cache::me());
 			\ewgraFramework\TestSingleton::dropInstance('ewgraFramework\Cache');
-		}
 
-		public function tearDown()
-		{
-			\ewgraFramework\TestSingleton::setInstance(
-				'ewgraFramework\Database',
-				unserialize($this->savedDatabase)
-			);
-
-			\ewgraFramework\TestSingleton::setInstance(
-				'ewgraFramework\Cache',
-				unserialize($this->savedCache)
-			);
-		}
-
-		public function testCommon()
-		{
 			$cacheInstance =
 				\ewgraFramework\MemcachedBasedCache::create()->
 				addServer(MEMCACHED_TEST_HOST, MEMCACHED_TEST_PORT);
@@ -92,17 +86,38 @@
 				// @codeCoverageIgnoreEnd
 			}
 
-			$worker =
-				\ewgraFramework\DefaultDatabaseCacheWorker::create(
-					$dbInstance,
-					$cacheInstance
-				);
-
 			$dbInstance->queryNull(
 				\ewgraFramework\DatabaseQuery::create()->setQuery(
 					'INSERT INTO "test" (id, field) VALUES(1, 1)'
 				)
 			);
+
+			$this->cacheInstance = $cacheInstance;
+			$this->dbInstance = $dbInstance;
+		}
+
+		public function tearDown()
+		{
+			\ewgraFramework\TestSingleton::setInstance(
+				'ewgraFramework\Database',
+				unserialize($this->savedDatabase)
+			);
+
+			\ewgraFramework\TestSingleton::setInstance(
+				'ewgraFramework\Cache',
+				unserialize($this->savedCache)
+			);
+
+			$this->cacheInstance->clean();
+		}
+
+		public function testCommon()
+		{
+			$worker =
+				\ewgraFramework\DefaultDatabaseCacheWorker::create(
+					$this->dbInstance,
+					$this->cacheInstance
+				);
 
 			$query =
 				\ewgraFramework\DatabaseQuery::create()->
@@ -112,7 +127,7 @@
 
 			$this->assertSame($result, array('id' => '1', 'field' => '1'));
 
-			$dbInstance->queryNull(
+			$this->dbInstance->queryNull(
 				\ewgraFramework\DatabaseQuery::create()->setQuery(
 					'DELETE FROM "test" WHERE id=1'
 				)
@@ -122,19 +137,95 @@
 
 			$this->assertSame($result, array('id' => '1', 'field' => '1'));
 
-			$dbInstance->queryNull(
+			$this->dbInstance->queryNull(
 				\ewgraFramework\DatabaseQuery::create()->setQuery(
 					'INSERT INTO "test" (id, field) VALUES(2, 1)'
 				)
 			);
 
-			$worker->dropCache($query, array('tag2'));
+			$worker->dropCache(array('tag2'));
 
 			$result = $worker->getCached($query, array('tag1', 'tag2'));
 
 			$this->assertSame($result, array('id' => '2', 'field' => '1'));
+		}
 
-			$cacheInstance->clean();
+		public function testResultCallback()
+		{
+			$worker =
+				\ewgraFramework\DefaultDatabaseCacheWorker::create(
+					$this->dbInstance,
+					$this->cacheInstance
+				);
+
+			$query =
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM "test" WHERE field=1');
+
+			$result = $worker->getCached(
+				$query,
+				array('tag1', 'tag2'),
+				function () {
+					return 'testData';
+				}
+			);
+
+			$this->assertSame($result, 'testData');
+
+			$result = $worker->getCachedList(
+				$query,
+				array('tag1', 'tag2'),
+				function () {
+					return 'testData';
+				}
+			);
+
+			$this->assertSame($result, 'testData');
+
+			$this->cacheInstance->clean();
+
+			$result = $worker->getCached($query, array('tag1', 'tag2'));
+
+			$this->assertSame($result, array('id' => '1', 'field' => '1'));
+		}
+
+		public function testTicketDataOperations()
+		{
+			$worker =
+				\ewgraFramework\DefaultDatabaseCacheWorker::create(
+					$this->dbInstance,
+					$this->cacheInstance
+				);
+
+			$query =
+				\ewgraFramework\DatabaseQuery::create()->
+				setQuery('SELECT * FROM "test" WHERE field=1');
+
+			$result = $worker->getCached(
+				$query,
+				array('tag1', 'tag2'),
+				function () {
+					return 'testData';
+				}
+			);
+
+			$this->assertSame($result, 'testData');
+
+			$result = $worker->getCachedList(
+				$query,
+				array('tag1', 'tag2'),
+				function () {
+					return 'testData';
+				}
+			);
+
+			$this->assertSame($result, 'testData');
+
+			$this->cacheInstance->clean();
+
+			$result = $worker->getCached($query, array('tag1', 'tag2'));
+
+			$this->assertSame($result, array('id' => '1', 'field' => '1'));
 		}
 	}
 ?>
