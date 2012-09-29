@@ -44,6 +44,9 @@
 		 */
 		public function connect()
 		{
+			if (!function_exists('mysql_connect'))
+				throw DefaultException::create('Mysql extension not installed');
+
 			$db =
 				@mysql_connect(
 					$this->getHost(),

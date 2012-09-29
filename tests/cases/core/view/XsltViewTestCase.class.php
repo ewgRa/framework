@@ -7,6 +7,12 @@
 	*/
 	final class XsltViewTestCase extends FrameworkTestCase
 	{
+		public function setUp()
+		{
+			if (!class_exists('\XsltProcessor', false))
+				$this->markTestSkipped('Xslt extension not installed');
+		}
+
 		public function testTransform()
 		{
 			$viewResult =
