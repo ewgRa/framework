@@ -9,6 +9,9 @@
 	{
 		public function setUp()
 		{
+			if (!function_exists('mysql_connect'))
+				$this->markTestSkipped("Mysql extension not installed.");
+
 			$instance =
 				\ewgraFramework\MysqlDatabase::create()->
 				setHost(MYSQL_TEST_HOST)->
@@ -22,6 +25,10 @@
 			} catch (\ewgraFramework\DatabaseConnectException $e) {
 				// @codeCoverageIgnoreStart
 				$this->markTestSkipped("can't connect to test mysql server");
+				// @codeCoverageIgnoreEnd
+			} catch (\ewgraFramework\DatabaseSelectDatabaseException $e) {
+				// @codeCoverageIgnoreStart
+				$this->markTestSkipped("could not select database");
 				// @codeCoverageIgnoreEnd
 			}
 

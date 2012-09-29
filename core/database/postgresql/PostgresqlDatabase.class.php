@@ -54,6 +54,9 @@
 		 */
 		public function connect()
 		{
+			if (!function_exists('pg_connect'))
+				throw DefaultException::create('Postgresql extension not installed');
+
 			$db =
 				@pg_connect(
 					join(
