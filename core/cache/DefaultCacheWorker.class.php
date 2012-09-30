@@ -15,6 +15,14 @@
 		/**
 		 * @return DefaultCacheWorker
 		 */
+		public static function createFromTicket(CacheTicket $ticket)
+		{
+			return new self($ticket->getCacheInstance());
+		}
+
+		/**
+		 * @return DefaultCacheWorker
+		 */
 		public static function create(CacheInterface $cache)
 		{
 			return new self($cache);
