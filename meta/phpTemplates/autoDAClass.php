@@ -33,6 +33,31 @@
 		protected $tableAlias = '<?=EnglishStringUtils::separateByUpperKey($classNode->nodeName)?>';
 
 		/**
+		 * @return array
+		 */
+		public function getTagList()
+		{
+<?php
+	$tags = array('\\'.$namespace.'\\'.$classNode->nodeName);
+
+	$propertyClasses =
+		$meta->getNodeList(
+			"properties/*[@class and @classType = 'Identifier']",
+			$classNode
+		);
+
+	foreach($propertyClasses as $node) {
+		$tags[] = (
+			strpos($node->getAttribute('class'), '\\') === false
+				? '\\'.$namespace.'\\'.$node->getAttribute('class')
+				: $node->getAttribute('class')
+		);
+	}
+?>
+			return array('<?=join("', '", array_unique($tags))?>');
+		}
+
+		/**
 		 * @return <?=$classNode->nodeName.PHP_EOL?>
 		 */
 		public function insert(<?=$classNode->nodeName?> $object)
@@ -331,29 +356,6 @@
 ?>
 				<?=join("->".PHP_EOL.'				', $methods).';'.PHP_EOL?>
 		}
-<?php
-		$relationNodes =
-			$meta->getNodeList("*[properties/*[@class='".$classNode->nodeName."']]");
-
-		if ($relationNodes->length) {
-?>
-
-		public function dropCache()
-		{
-<?php
-			foreach($relationNodes as $node) {
-				if ($node->nodeName == $classNode->nodeName)
-					continue;
-?>
-			<?=$node->nodeName?>::da()->dropCache();
-<?php
-			}
-?>
-			return parent::dropCache();
-		}
-<?php
-		}
-?>
 	}
 <?php
 	echo '?>';
