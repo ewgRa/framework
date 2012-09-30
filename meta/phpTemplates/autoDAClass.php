@@ -32,13 +32,18 @@
 	{
 		protected $tableAlias = '<?=EnglishStringUtils::separateByUpperKey($classNode->nodeName)?>';
 
+		public function getTag()
+		{
+			return '<?='\\'.$namespace.'\\'.$classNode->nodeName?>';
+		}
+
 		/**
 		 * @return array
 		 */
 		public function getTagList()
 		{
 <?php
-	$tags = array('\\'.$namespace.'\\'.$classNode->nodeName);
+	$tags = array();
 
 	$propertyClasses =
 		$meta->getNodeList(
@@ -54,7 +59,7 @@
 		);
 	}
 ?>
-			return array('<?=join("', '", array_unique($tags))?>');
+			return array($this->getTag()<?=$tags ? ", '".join("', '", array_unique($tags))."'" : null?>);
 		}
 
 		/**
