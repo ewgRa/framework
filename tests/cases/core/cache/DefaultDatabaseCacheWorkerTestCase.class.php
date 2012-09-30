@@ -115,8 +115,8 @@
 		{
 			$worker =
 				\ewgraFramework\DefaultDatabaseCacheWorker::create(
-					$this->dbInstance,
-					$this->cacheInstance
+					$this->cacheInstance,
+					$this->dbInstance
 				);
 
 			$query =
@@ -154,8 +154,8 @@
 		{
 			$worker =
 				\ewgraFramework\DefaultDatabaseCacheWorker::create(
-					$this->dbInstance,
-					$this->cacheInstance
+					$this->cacheInstance,
+					$this->dbInstance
 				);
 
 			$query =
@@ -193,8 +193,8 @@
 		{
 			$worker =
 				\ewgraFramework\DefaultDatabaseCacheWorker::create(
-					$this->dbInstance,
-					$this->cacheInstance
+					$this->cacheInstance,
+					$this->dbInstance
 				);
 
 			$ticket = $this->cacheInstance->createTicket();
