@@ -129,7 +129,7 @@
 		protected function createTagsTicketList(array $tags) {
 			$result = array();
 
-			foreach ($tags as $tag)
+			foreach (array_unique($tags) as $tag)
 				$result[$tag] = $this->createTagTicket($tag);
 
 			return $result;
