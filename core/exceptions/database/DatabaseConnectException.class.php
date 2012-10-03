@@ -4,6 +4,7 @@
 	/**
 	 * @license http://www.opensource.org/licenses/bsd-license.php BSD
 	 * @author Evgeniy Sokolov <ewgraf@gmail.com>
+	 * FIXME: drop this and use mmore common ConnectException
 	*/
 	class DatabaseConnectException extends DefaultException
 	{
