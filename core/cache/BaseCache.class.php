@@ -39,8 +39,12 @@
 		{
 			$result = array();
 
-			foreach ($tickets as $key => $ticket)
-				$result[$key] = $this->get($ticket);
+			foreach ($tickets as $key => $ticket) {
+				$data = $this->get($ticket);
+
+				if (!$ticket->isExpired())
+					$result[$key] = $data;
+			}
 
 			return $result;
 		}

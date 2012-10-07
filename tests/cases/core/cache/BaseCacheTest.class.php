@@ -58,6 +58,76 @@
 			$this->assertTrue($clonedTicket->isExpired());
 		}
 
+		public function testMultiSetAndGet()
+		{
+			$data = $this->getData();
+			$data2 = $this->getData();
+
+			$key1 = rand();
+			$key2 = rand();
+
+			$cacheTicket =
+				$this->realization->createTicket()->
+				setPrefix($this->getPrefix())->
+				setKey($key1);
+
+			$cacheTicket2 =
+				$this->realization->createTicket()->
+				setPrefix($this->getPrefix())->
+				setKey($key2);
+
+			$clonedTicket = clone $cacheTicket;
+			$clonedTicket2 = clone $cacheTicket2;
+
+			$settedData =
+				array(
+					$key1 => $data,
+					$key2 => $data2
+				);
+
+			$this->realization->multiSet(
+				array(
+					$key1 => $cacheTicket,
+					$key2 => $cacheTicket2
+				),
+				$settedData
+			);
+
+			$getData = $this->realization->multiGet(
+				array(
+					$key1 => $clonedTicket,
+					$key2 => $clonedTicket2
+				)
+			);
+
+			$this->assertFalse($clonedTicket->isExpired());
+			$this->assertFalse($clonedTicket2->isExpired());
+			$this->assertNotNull($clonedTicket->getExpiredTime());
+			$this->assertNotNull($clonedTicket2->getExpiredTime());
+
+			$this->assertSame(
+				$settedData,
+				$getData
+			);
+
+			$clonedTicket->drop();
+			$clonedTicket = clone $cacheTicket;
+
+			$getData = $this->realization->multiGet(
+				array(
+					$key1 => $clonedTicket,
+					$key2 => $clonedTicket2
+				)
+			);
+
+			$this->assertTrue($clonedTicket->isExpired());
+
+			$this->assertSame(
+				array($key2 => $data2),
+				$getData
+			);
+		}
+
 		public function testGetWithoutSet()
 		{
 			$data = $this->getData();
