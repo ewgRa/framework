@@ -30,6 +30,37 @@
 			return $this;
 		}
 
+		public function multiGet(array $tickets)
+		{
+			$keys = array();
+
+			foreach ($tickets as $key => $ticket)
+				$keys[$key] = $this->compileKey($ticket);
+
+			$data = $this->getMemcache()->get($keys);
+			$result = array();
+
+			foreach ($keys as $key => $ticketKey) {
+				$ticket = $tickets[$key];
+
+				if (!isset($data[$ticketKey])) {
+					$ticket->setExpiredTime(null);
+					$ticket->expired();
+				} else if ($data[$ticketKey]['lifeTime'] >= time()) {
+					$ticket->
+						setExpiredTime($data[$ticketKey]['lifeTime'])->
+						actual();
+
+					$result[$key] = $data[$ticketKey]['data'];
+				} else {
+					$ticket->setExpiredTime(null);
+					$ticket->expired();
+				}
+			}
+
+			return $result;
+		}
+
 		public function get(CacheTicket $ticket)
 		{
 			$result = null;

@@ -13,9 +13,15 @@
 
 		public function get(CacheTicket $ticket);
 
+		public function multiGet(array $tickets);
+
 		public function set(CacheTicket $ticket, $data);
 
+		public function multiSet(array $tickets, array $data);
+
 		public function drop(CacheTicket $cacheTicket);
+
+		public function multiDrop(array $tickets);
 
 		public function dropByKey($key);
 

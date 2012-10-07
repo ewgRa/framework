@@ -19,26 +19,6 @@
 	*/
 
 	\ewgraFramework\ClassesAutoloader::me()->addSearchDirectory(dirname(__FILE__)<?=($namespace ? ", __NAMESPACE__" : null)?>);
-
 <?php
-	$uniqueChecker = array();
-
-	foreach (
-		$meta->getNodeList(
-			'*/properties/*[@class=/meta/*[@generate="false" and @type="Identifier"]/@fullClassName]'
-		) as $node
-	) {
-		$parent = $node->parentNode->parentNode;
-		$string = "{$node->getAttribute('class')}::da()->addLinkedCacher({$parent->nodeName}::da());".PHP_EOL;
-
-		if (in_array($string, $uniqueChecker))
-			continue;
-
-		$uniqueChecker[] = $string;
-?>
-	<?=$string?>
-<?php
-	}
-
 	echo '?>';
 ?>
