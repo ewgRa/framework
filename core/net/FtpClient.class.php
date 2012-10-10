@@ -93,5 +93,15 @@
 
 			return $this;
 		}
+
+		/**
+		 * @return FtpClient
+		 */
+		public function changeDirectory($directory)
+		{
+			ftp_chdir($this->resource, $directory);
+
+			return $this;
+		}
 	}
 ?>
