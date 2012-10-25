@@ -68,6 +68,12 @@
 			return file_exists($this->getPath());
 		}
 
+		public function copyTo(Dir $destDir)
+		{
+			system('cp -R '.$this->getPath().'/* '.$destDir->getPath());
+			return $this;
+		}
+
 		/**
 		 * @return Dir
 		 */
@@ -89,6 +95,12 @@
 			}
 
 			return $result;
+		}
+
+		public function isEmpty()
+		{
+			$iterator = new \FilesystemIterator($this->getPath());
+			return (count($iterator) == 0);
 		}
 	}
 ?>
