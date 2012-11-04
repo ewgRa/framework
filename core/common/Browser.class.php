@@ -23,6 +23,11 @@
 			return mb_stripos($this->userAgent, 'msie 6', 0, 'utf8') !== false;
 		}
 
+		public function isIE7()
+		{
+			return mb_stripos($this->userAgent, 'msie 7', 0, 'utf8') !== false;
+		}
+
 		private function setUserAgent($userAgent)
 		{
 			$this->userAgent = $userAgent;
