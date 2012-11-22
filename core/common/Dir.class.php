@@ -100,7 +100,7 @@
 		public function isEmpty()
 		{
 			$iterator = new \FilesystemIterator($this->getPath());
-			return (count($iterator) == 0);
+			return !$iterator->valid();
 		}
 	}
 ?>
