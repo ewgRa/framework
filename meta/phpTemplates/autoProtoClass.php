@@ -66,7 +66,7 @@
 		echo PHP_EOL;
 ?>
 		protected $dbFields = array(
-			<?=join(', '.PHP_EOL.'			',$dbFields).PHP_EOL?>
+			<?=join(','.PHP_EOL.'			',$dbFields).PHP_EOL?>
 		);
 	}
 <?php
