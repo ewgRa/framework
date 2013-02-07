@@ -26,6 +26,20 @@
 
 		/**
 		 * @return DateTime
+		 * NOTE: method for meta builder
+		 */
+		public static function createFromFormat($format, $string, $object = null)
+		{
+			$dateTime =
+				$object
+					? parent::createFromFormat($format, $string, $object)
+					: parent::createFromFormat($format, $string);
+
+			return self::createFromTimestamp($dateTime->getTimestamp());
+		}
+
+		/**
+		 * @return DateTime
 		 */
 		public static function createFromTimestamp($timestamp)
 		{

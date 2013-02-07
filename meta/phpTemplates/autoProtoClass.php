@@ -42,6 +42,9 @@
 		if (!$property->getAttribute('class') && $property->getAttribute('type') =='boolean')
 			$primitive = '\ewgraFramework\PrimitiveBoolean';
 
+		if ($property->getAttribute('classNameWithNamespace') == '\ewgraFramework\DateTime')
+			$primitive = '\ewgraFramework\PrimitiveDateTime';
+
 		if ($property->getAttribute('classType') == 'Enumeration')
 			$primitive = '\ewgraFramework\PrimitiveEnumeration';
 
@@ -135,6 +138,16 @@
 					setValue($object->get<?=$property->getAttribute('upperName')?>());
 <?php
 				break;
+			case '\ewgraFramework\PrimitiveDateTime':
+				$format = '__toString()';
+
+				if ($property->getAttribute('format'))
+					$format = 'format("'.$property->getAttribute('format').'")';
+?>
+					setRawValue($object->get<?=$property->getAttribute('upperName')?>()-><?=$format?>)->
+					setValue($object->get<?=$property->getAttribute('upperName')?>());
+<?php
+				break;
 			case '\ewgraFramework\PrimitiveObject':
 			case '\ewgraFramework\PrimitiveEnumeration':
 ?>
@@ -167,7 +180,12 @@
 		switch ($primitive) {
 			case '\ewgraFramework\PrimitiveBoolean':
 			case '\ewgraFramework\PrimitiveString':
+			case '\ewgraFramework\PrimitiveDateTime':
 				$primitiveString[] = $primitive."::create('".$property->nodeName."')";
+
+				if ($primitive == '\ewgraFramework\PrimitiveDateTime' && $property->getAttribute('format'))
+					$primitiveString[] ="setFormat('".$property->getAttribute('format')."')";
+
 				break;
 			case '\ewgraFramework\PrimitiveObject':
 			case '\ewgraFramework\PrimitiveEnumeration':
