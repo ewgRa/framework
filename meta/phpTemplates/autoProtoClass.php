@@ -40,7 +40,7 @@
 			$primitive = '\ewgraFramework\PrimitiveString';
 
 		if (!$property->getAttribute('class') && $property->getAttribute('type') =='boolean')
-			$primitive = '\ewgraFramework\PrimitiveString';
+			$primitive = '\ewgraFramework\PrimitiveBoolean';
 
 		if ($property->getAttribute('classType') == 'Enumeration')
 			$primitive = '\ewgraFramework\PrimitiveEnumeration';
