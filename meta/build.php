@@ -118,11 +118,6 @@
 
 			if (!$node->getAttribute('type'))
 				$node->setAttribute('type', 'Identifier');
-		}
-
-		foreach ($meta->getDocumentElement()->childNodes as $node) {
-			if ($node->nodeType !== XML_ELEMENT_NODE)
-				continue;
 
 			$node->setAttribute(
 				'fullClassName',
@@ -133,6 +128,21 @@
 				)
 				.$node->nodeName
 			);
+
+			$node->setAttribute(
+				'classNameWithNamespace',
+				(
+					$node->getAttribute('namespace')
+						? $node->getAttribute('namespace').'\\'
+						: $meta->getDocumentElement()->getAttribute('namespace').'\\'
+				)
+				.$node->nodeName
+			);
+		}
+
+		foreach ($meta->getDocumentElement()->childNodes as $node) {
+			if ($node->nodeType !== XML_ELEMENT_NODE)
+				continue;
 
 			$propertiesNode = $node->getElementsByTagName('properties')->item(0);
 
@@ -167,6 +177,9 @@
 
 					$relationClass = $meta->getNode($classQuery);
 					Assert::isNotNull($relationClass, $classQuery);
+
+					$propertyNode->setAttribute('fullClassName', $relationClass->getAttribute('fullClassName'));
+					$propertyNode->setAttribute('classNameWithNamespace', $relationClass->getAttribute('classNameWithNamespace'));
 
 					$relationClassType = $relationClass->getAttribute('type');
 

@@ -77,7 +77,7 @@
 		public function getSafeValue()
 		{
 			return
-				$this->getValue()
+				$this->getValue() !== null
 					? $this->getValue()
 					: $this->getDefaultValue();
 		}

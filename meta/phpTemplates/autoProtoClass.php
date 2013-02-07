@@ -31,6 +31,25 @@
 	);
 
 	$properties = $meta->getNodeList("properties/*", $classNode);
+	$primitives = array();
+
+	foreach ($properties as $property) {
+		$primitive = null;
+
+		if (!$property->getAttribute('class') && !$property->getAttribute('type'))
+			$primitive = '\ewgraFramework\PrimitiveString';
+
+		if (!$property->getAttribute('class') && $property->getAttribute('type') =='boolean')
+			$primitive = '\ewgraFramework\PrimitiveString';
+
+		if ($property->getAttribute('classType') == 'Enumeration')
+			$primitive = '\ewgraFramework\PrimitiveEnumeration';
+
+		if ($property->getAttribute('classType') == 'Identifier' || $property->nodeName == 'id')
+			$primitive = '\ewgraFramework\PrimitiveObject';
+
+		$primitives[$property->nodeName] = $primitive;
+	}
 
 	$dbFields = array();
 
@@ -68,6 +87,115 @@
 		protected $dbFields = array(
 			<?=join(','.PHP_EOL.'			',$dbFields).PHP_EOL?>
 		);
+
+		public function formToObject(\ewgraFramework\Form $form, <?=$classNode->nodeName?> $object)
+		{
+<?php
+	foreach ($properties as $property) {
+?>
+			if ($form->hasPrimitive('<?=$property->nodeName?>')) {
+<?php
+		if ($property->nodeName == 'id') {
+?>
+				$value = $form->getSafeValue('<?=$property->nodeName?>');
+				$object->set<?=$property->getAttribute('upperName')?>($value ? $value->getId() : $value);
+<?php
+		} else {
+?>
+				$object->set<?=$property->getAttribute('upperName')?>($form->getSafeValue('<?=$property->nodeName?>'));
+<?php
+		}
+?>
+			}
+<?php
+	}
+?>
+
+			return $object;
+		}
+
+		public function objectToForm(<?=$classNode->nodeName?> $object, \ewgraFramework\Form $form)
+		{
+<?php
+	foreach ($properties as $property) {
+		$primitive = $primitives[$property->nodeName];
+
+		if (!$primitive)
+			continue;
+
+?>
+			if ($form->hasPrimitive('<?=$property->nodeName?>')) {
+				$form->getPrimitive('<?=$property->nodeName?>')->
+<?php
+		switch ($primitive) {
+			case '\ewgraFramework\PrimitiveBoolean':
+			case '\ewgraFramework\PrimitiveString':
+?>
+					setRawValue($object->get<?=$property->getAttribute('upperName')?>())->
+					setValue($object->get<?=$property->getAttribute('upperName')?>());
+<?php
+				break;
+			case '\ewgraFramework\PrimitiveObject':
+			case '\ewgraFramework\PrimitiveEnumeration':
+?>
+					setRawValue($object->get<?=$property->getAttribute('upperName')?>()->getId())->
+					setValue($object->get<?=$property->getAttribute('upperName')?>());
+<?php
+				break;
+		}
+?>
+			}
+<?php
+	}
+?>
+			return $object;
+		}
+
+		public function createForm($primitiveList = array())
+		{
+			$form = \ewgraFramework\Form::create();
+
+<?php
+	foreach ($properties as $property) {
+		$primitive = $primitives[$property->nodeName];
+
+		if (!$primitive)
+			continue;
+
+		$primitiveString = '';
+
+		switch ($primitive) {
+			case '\ewgraFramework\PrimitiveBoolean':
+			case '\ewgraFramework\PrimitiveString':
+				$primitiveString[] = $primitive."::create('".$property->nodeName."')";
+				break;
+			case '\ewgraFramework\PrimitiveObject':
+			case '\ewgraFramework\PrimitiveEnumeration':
+				$primitiveString[] = $primitive."::create('".$property->nodeName."')";
+
+				if ($property->nodeName == 'id') {
+					$primitiveString[] = "setClass('".$namespace.'\\'.($classNode->nodeName)."')";
+				} else
+					$primitiveString[] = "setClass('".$property->getAttribute('classNameWithNamespace')."')";
+				break;
+		}
+
+		if (!$property->getAttribute('nullable') && $primitive != '\ewgraFramework\PrimitiveBoolean')
+			$primitiveString[] = 'setRequired()';
+?>
+			if (!$primitiveList || in_array('<?=$property->nodeName?>', $primitiveList)) {
+				$form->addPrimitive(
+					<?=join('->
+					', $primitiveString)?>
+
+				);
+			}
+
+<?php
+	}
+?>
+			return $form;
+		}
 	}
 <?php
 	echo '?>';

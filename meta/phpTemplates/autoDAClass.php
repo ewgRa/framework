@@ -351,9 +351,14 @@
 				$value = $createValue;
 
 		} else if ($property->getAttribute('classType') == 'Stringable') {
-			$value =
+			$createValue =
 				$property->getAttribute('class')
 				.'::createFromString('.$value. ')';
+
+			if ($property->getAttribute('nullable') == 'true')
+				$value = $value.' === null ? null : '.$createValue;
+			else
+				$value = $createValue;
 		}
 
 		$methods[] = 'set'.$property->getAttribute('upperName').'('.$value.')';
