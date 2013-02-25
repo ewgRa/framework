@@ -59,12 +59,18 @@
 						if (is_null($value))
 							$part = "NULL";
 						else {
-							$value = $dialect->escape($value, $database);
+							if (!($value instanceof DatabaseValue))
+								$value = DatabaseValue::create($value);
+
+							$rawValue = $value->getRawValue();
+
+							if ($value->isEscapeNeeded())
+								$rawValue = $dialect->escape($rawValue, $database);
 
 							$part =
-								is_array($value)
-									? "'".join("', '", $value)."'"
-									: "'".$value."'";
+								is_array($rawValue)
+									? "'".join("', '", $rawValue)."'"
+									: ($value->isQuoteNeeded() ? "'".$rawValue."'" : $rawValue);
 						}
 
 						next($this->values);
