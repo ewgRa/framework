@@ -34,12 +34,16 @@
 			}
 		}
 
+		public function setOpt($opt, $value)
+		{
+			$this->options[$opt] = $value;
+		}
+
 		public function getResponse(\ewgraFramework\File $toFile = null)
 		{
 			$ch = curl_init();
 
 			curl_setopt_array($ch, $this->options);
-
 			$fp = null;
 
 			if ($toFile) {
