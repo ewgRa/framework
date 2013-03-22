@@ -56,7 +56,7 @@
 		private $symanticLink = array(
 			array(1),
 			array(2, 3, 4),
-			array(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900)
+			array(0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900)
 		);
 
 		private $dimensionWords = array();
@@ -91,23 +91,26 @@
 			);
 		}
 
-		public function toString($number)
+		public function toString($number, $showZeros = false, $asNumber = null, $kopShowZeros = false, $kopAsNumber = null)
 		{
 			$n = explode('.', $number);
 
-			$r = $this->process($n[0], $this->dimensionWords);
+			$r = $this->process($n[0], $this->dimensionWords, $showZeros, $asNumber);
+
+			if ($showZeros && !array_key_exists(1, $n))
+				$n[1] = 0;
 
 			if(array_key_exists(1, $n)) {
 				if(strlen($n[1]) == 1)
 					$n[1] *= 10;
 
-				$r = array_merge($r, $this->process($n[1]/100, $this->dimensionWordsKopeyka));
+				$r = array_merge($r, $this->process($n[1]/100, $this->dimensionWordsKopeyka, $kopShowZeros, $kopAsNumber));
 			}
 
-			return join($r, ' ');
+			return join(' ', $r);
 		}
 
-		private function process($number, $dimensionWords)
+		private function process($number, $dimensionWords, $showZeros, $asNumber)
 		{
 			$result = array();
 
@@ -120,14 +123,25 @@
 
 				if($count == 0) {
 					prev($dimensionWords);
+
+					if ($showZeros && $i == count($dimensionWords)-1) {
+						$asString = $this->getSingleString($count, $dimension);
+
+						$result = array(
+							$asNumber ? sprintf($asNumber, $count) : $asString,
+							$this->getDimensionalityString($count, $dimension, $dimensionWords)
+						);
+					}
 					continue;
 				}
 
 				$this->lastNumber = null;
 
+				$asString = $this->getString($count, $dimension);
+
 				$result = array_merge(
 					$result,
-					$this->getString($count, $dimension)
+					$asNumber ? array(sprintf($asNumber, $count)) : $asString
 				);
 
 				$dimensionResult =
