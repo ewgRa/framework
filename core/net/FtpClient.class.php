@@ -12,23 +12,25 @@
 		private $host = null;
 		private $user = null;
 		private $password = null;
+		private $port = null;
 
 		/**
 		 * @return FtpClient
 		 */
-		public static function create($host, $user, $password)
+		public static function create($host, $user, $password, $port = null)
 		{
-			return new self($host, $user, $password);
+			return new self($host, $user, $password, $port);
 		}
 
 		/**
 		 * @return FtpClient
 		 */
-		public function __construct($host, $user, $password)
+		public function __construct($host, $user, $password, $port = null)
 		{
 			$this->host = $host;
 			$this->user = $user;
 			$this->password = $password;
+			$this->port = $port;
 		}
 
 		/**
@@ -41,7 +43,7 @@
 				'Close previous connection before connect'
 			);
 
-			$this->resource = ftp_connect($this->host);
+			$this->resource = ftp_connect($this->host, $this->port);
 
 			if ($this->resource === false)
 				throw ConnectException::create();
@@ -79,19 +81,26 @@
 		/**
 		 * @return array
 		 */
-		public function getFileList($directory = '.')
+		public function getFileList($directory = '.', $ignore = array('..', '.'))
 		{
-			return ftp_nlist($this->resource, $directory);
+			$result = ftp_nlist($this->resource, $directory);
+
+			if ($ignore) {
+				foreach ($result as $key => $file) {
+					if (in_array(basename($file), $ignore))
+						unset($result[$key]);
+				}
+			}
+
+			return $result;
 		}
 
 		/**
-		 * @return FtpClient
+		 * @return boolean
 		 */
 		public function downloadFile($file, File $distination)
 		{
-			ftp_get($this->resource, $distination->getPath(), $file, FTP_BINARY);
-
-			return $this;
+			return ftp_get($this->resource, $distination->getPath(), $file, FTP_BINARY);
 		}
 
 		/**
