@@ -85,7 +85,7 @@
 		{
 			$result = ftp_nlist($this->resource, $directory);
 
-			if ($ignore) {
+			if ($result && $ignore) {
 				foreach ($result as $key => $file) {
 					if (in_array(basename($file), $ignore))
 						unset($result[$key]);
