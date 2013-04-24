@@ -33,6 +33,12 @@
 			$this->port = $port;
 		}
 
+		public function __destruct()
+		{
+			if ($this->isConnected())
+				$this->disconnect();
+		}
+
 		/**
 		 * @return FtpClient
 		 */
